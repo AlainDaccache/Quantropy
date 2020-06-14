@@ -72,17 +72,14 @@ def find_table_unit(table):
     return unit_dict['millions'] # default
 
 
-url = 'https://www.sec.gov/Archives/edgar/data/882095/000119312512075335/d260199d10k.htm'
+url = 'https://www.sec.gov/Archives/edgar/data/886982/000095012310018464/y81914e10vk.htm'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 
 not_useful = [] # for debugging
 all_in_one_dict = {} # TODO gotta make nested dictionary, with table name -> category -> entry name: entry data for year
 
-# TODO Make bold a category
-# TODO for the "TOTAL" section, it should be an exception: always to the main category
 # TODO override table multiplier if in row label it's written 'thousands' etc.
-# TODO search for table name stopping when reached another table
 
 # TODO debug page 76 https://www.sec.gov/Archives/edgar/data/886982/000095012310018464/y81914e10vk.htm
 
