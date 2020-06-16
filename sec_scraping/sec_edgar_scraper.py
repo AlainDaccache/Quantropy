@@ -1,11 +1,14 @@
 import collections
 import re
+import traceback
 from pprint import pprint
 import pandas as pd
 import requests
 import unicodedata
 from bs4 import BeautifulSoup, NavigableString
 from sec_scraping.scraping_regexes import date_regex
+import sec_scraping.sec_scraping_unit_tests as test
+
 '''
 Beautiful BeautifulSoup Usage
 
@@ -15,10 +18,20 @@ table = bs.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id
 rows = table.findAll(lambda tag: tag.name=='tr')
 '''
 
-def is_bold(row):
-    return len(row.find_all('b')) > 0 \
-           or len(row.find_all('span', {'style': re.compile(r'bold')})) > 0 \
-           or len(row.find_all('font', {'style': re.compile(r'bold')})) > 0
+def is_bold(row, intable, alltext=False):
+    bolded_row_text = row.find_all(lambda tag: tag.has_attr('style') and re.search('bold', str(tag['style'])))
+    bolded_row_text = ''.join([a.text for a in bolded_row_text]).strip()
+    row_text = row.text.strip()
+    if intable:
+        isbold = len(row.find_all('b')) > 0 or re.search('bold', str(row))
+        if alltext:
+            return isbold and len(bolded_row_text) == len(row_text)
+        else:
+            return isbold
+    # or len(row.find_all('span', {'style': re.compile(r'bold')})) > 0 \
+    # or len(row.find_all('font', {'style': re.compile(r'bold')})) > 0
+    else:
+        return len(row.find_all(lambda tag: tag.name != 'table' and tag.has_attr('style') and re.search('bold', str(tag['style'])))) > 0
 
 def is_italic(row):
     return len(row.find_all(lambda tag: tag.name=='b' or tag.name=='i')) > 0
@@ -41,28 +54,27 @@ def find_left_margin(td):
 
 def find_table_title(current_element):
     # sometimes the previous element is a new line metacharacter (&nbsp or encoded as '\n') so skip
-    try:
-        if current_element is None:
-            return 'No Table Title'
-
-        elif isinstance(current_element, NavigableString):
+        if isinstance(current_element, NavigableString):
             return find_table_title(current_element.previous_element)
-
+        elif current_element.name == 'div':
+            return find_table_title(current_element.previous_element)
         # stop when you've found another table (don't want to confuse both titles)
         elif len(current_element.find_all('table')) > 0:
-            return 'No Table Title'
+            # TODO some tables have titles above but they are in themselves tables
+            for row in current_element.find('table').find_all('tr'):
+                if len(re.findall(re.compile(r'\d{4}'), row.text)) > 1:
+                    return None
 
         # found bold or italic element
-        elif is_bold(current_element) or is_italic(current_element):
-            # sometimes the previous element is a detail of the title (i.e. (in thousands)), usually bracketed
-            if re.search('^\((.*?)\)$', current_element.text.strip()):
-                return find_table_title(current_element.previous_element)
-            else:
-                return current_element.text
+        elif is_bold(current_element, intable=False):
+            if is_italic(current_element):
+                # sometimes the previous element is a detail of the title (i.e. (in thousands)), usually bracketed
+                if re.search('^\((.*?)\)$', current_element.text.strip()): #
+                    return find_table_title(current_element.previous_element)
+                else:
+                    return current_element.text
         else:
             return find_table_title(current_element.previous_element)
-    except:
-        return 'No Table Title'
 
 def find_table_unit(table):
     unit_dict = {'thousands': 1000, 'millions': 1000000, 'billions': 1000000000}
@@ -72,9 +84,9 @@ def find_table_unit(table):
     return unit_dict['millions'] # default
 
 
-url = 'https://www.sec.gov/Archives/edgar/data/886982/000095012310018464/y81914e10vk.htm'
+url = 'https://www.sec.gov/Archives/edgar/data/789019/000156459019027952/msft-10k_20190630.htm'
 response = requests.get(url)
-soup = BeautifulSoup(response.text, 'html.parser')
+soup = BeautifulSoup(test.html_test12, 'html.parser')
 
 not_useful = [] # for debugging
 all_in_one_dict = {} # TODO gotta make nested dictionary, with table name -> category -> entry name: entry data for year
@@ -91,14 +103,11 @@ for table in soup.findAll('table'):
     previous_left_margin = 0
     indented_list = []
     rows = table.find_all('tr')
-
-    table_title = unicodedata.normalize("NFKD",
-                                        re.sub(r'\((?s).*\)',
-                                               '',
-                                               find_table_title(table.previous_element)).strip().replace('\n', ''))
-
-
-
+    try:
+        table_title = unicodedata.normalize("NFKD",
+                                            find_table_title(table.previous_element)).strip().replace('\n', '')
+    except: # when table title is none
+        table_title = 'No Table Title'
 
     table_multiplier = find_table_unit(table)
     # print(table_multiplier)
@@ -123,7 +132,7 @@ for table in soup.findAll('table'):
                 continue
 
             # if 'th' tag found or table data with bold, then found the header of the table
-            elif (len(row.find_all('th')) != 0 or is_bold(row)) and not header_found:
+            elif (len(row.find_all('th')) != 0 or is_bold(row, intable=True)) and not header_found:
                 header_found = True
                 # lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="Table1"
                 # make sure that table has a date header
@@ -133,7 +142,7 @@ for table in soup.findAll('table'):
                 if len(reg_row) == 0:
                     # look ahead one row, maybe date in next, as long as bold (check Goldman Sachs example)
                     try:
-                        if is_bold(rows[index+1]):
+                        if is_bold(rows[index+1], intable=True):
                             header_found = False
                             continue
                         not_useful.append(table_title)
@@ -160,13 +169,21 @@ for table in soup.findAll('table'):
             reg_row = [ele.text.strip() for ele in row.find_all('td')]
             current_left_margin = find_left_margin(row.findAll('td')[0])
 
+            # if it's a line
+            if len(row.find_all(lambda tag: tag.has_attr('style') and ('border-bottom:solid' in tag['style']
+                                                                       or 'border-top:solid' in tag['style']))) > 0:
+                continue
+            # empty line
+            elif len(''.join(reg_row).strip()) == 0:
+                continue
+
             try:
                 while current_left_margin <= indented_list[-1][0]:
                     # if there is bold, then master category
                     if current_left_margin == indented_list[-1][0]:
                         # TODO TEST MORE
                         if indented_list[-1][2]: # if last element of list is bold
-                            if is_bold(row): # if current row is bold
+                            if is_bold(row, intable=True, alltext=True): # if current row is bold
                                 # first_bolded_index = next(i for i, v in enumerate(indented_list) if v[2])
                                 # if first_bolded_index != len(indented_list)-1:
                                 #     indented_list.pop(first_bolded_index)
@@ -189,15 +206,17 @@ for table in soup.findAll('table'):
                 reg_row = [reg_row[0]] + list(filter(regex.search, reg_row[1:]))
 
                 try:
-                    if re.search(r'Total', reg_row[0], re.IGNORECASE):
-                        hi = reg_row[0].split('Total ', re.IGNORECASE)[1]
-                        indented_list = indented_list[:1]
-                        # while not re.search(hi, indented_list[-1][1], re.IGNORECASE):
-                        #     indented_list.pop()
-                except:
-                    pass
+                    if len(indented_list) > 0:
+                        if re.search(r'Total', reg_row[0], re.IGNORECASE):
+                            # TODO test further
+                            # while not re.search(r'^{}$'.format(reg_row[0].split('Total ', re.IGNORECASE)[1]), # current entry
+                            #                     indented_list[-1][1], # last category
+                            #                     re.IGNORECASE):
+                                indented_list.pop()
+                except Exception:
+                    traceback.print_exc()
 
-                indented_list.append((current_left_margin, reg_row[0], is_bold(row)))
+                indented_list.append((current_left_margin, reg_row[0], is_bold(row, intable=True, alltext=True)))
             except:
                 pass # usually shaded lines
 

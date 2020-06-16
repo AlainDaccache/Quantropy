@@ -2536,6 +2536,1140 @@ and 2010, respectively)</font></p></td>
 </tbody></table>
 '''
 
+html_test12 = '''
+<p style="text-align:center;margin-bottom:0pt;margin-top:0pt;text-indent:0%;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;"><a name="BALANCE_SHEETS"></a><font style="font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;"><a name="BALANCE_SHEETS"></a>BALANCE</font><font style="font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;"> SHEETS</font></p>
+<p style="margin-bottom:0pt;margin-top:0pt;text-align:justify;text-indent:0%;font-size:9pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p>
+<div>
+<table border="0" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse; width:100%;">
+<tbody><tr>
+<td valign="bottom" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:7.5pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">(In millions)</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="2" valign="bottom" style="width:6%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="2" valign="bottom" style="width:1%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="8" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="middle" style="width:82%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="4" valign="middle" style="width:6%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td colspan="3" valign="middle" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="middle" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="bottom" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:7.5pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">June 30,&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="2" valign="bottom" style="padding-left:0.7pt;padding-Right:0.7pt;padding-Top:0pt;padding-Bottom:0pt;width:6%;">
+<p style="text-align:right;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:7.5pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">2019</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:2pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="2" valign="bottom" style="padding-left:0.7pt;padding-Right:0.7pt;padding-Top:0pt;padding-Bottom:0pt;width:1%;">
+<p style="text-align:right;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:7.5pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">2018</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="middle" style="width:82%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td colspan="4" valign="middle" style="width:6%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td colspan="4" valign="middle" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">Assets</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Current assets:</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Cash and cash equivalents</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">11,356</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">11,946</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Short-term investments</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">122,463</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">121,822</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:justify;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:justify;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%; border-top:solid 0.75pt #000000;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-top:solid 0.75pt #000000;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-top:solid 0.75pt #000000;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-top:solid 0.75pt #000000;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="text-align:justify;line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:36pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total cash, cash equivalents, and short-term investments</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">133,819</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">133,768</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Accounts receivable, net of allowance for doubtful accounts of <font style="font-weight:bold;">$411</font> and $377</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">29,524</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">26,481</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Inventories</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">2,063</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">2,662</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Other</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">10,146</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">6,751</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:36pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total current assets</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">175,552</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">169,662</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Property and equipment, net of accumulated depreciation of <font style="font-weight:bold;">$35,330</font> and $29,223</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">36,477</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">29,460</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Operating lease right-of-use assets</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">7,379</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">6,686</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Equity investments</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">2,649</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">1,862</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Goodwill</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">42,026</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">35,683</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Intangible assets, net</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">7,750</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">8,053</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Other long-term assets</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">14,723</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">7,442</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:60pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total assets</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">286,556</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">258,848</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="bottom" style="width:82%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="bottom" style="width:82%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-top:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-top:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-top:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-top:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">Liabilities and stockholders’ equity</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Current liabilities:</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Accounts payable</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">9,382</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">8,617</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Current portion of long-term debt</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">5,516</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">3,998</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Accrued compensation</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">6,830</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">6,103</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Short-term income taxes</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">5,665</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">2,121</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Short-term unearned revenue</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">32,676</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">28,905</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Other</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">9,351</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">8,744</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:36pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total current liabilities</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">69,420</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">58,488</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Long-term debt</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">66,662</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">72,242</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Long-term income taxes</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">29,612</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">30,265</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Long-term unearned revenue</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">4,530</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">3,815</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Deferred income taxes</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">233</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">541</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Operating lease liabilities</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">6,188</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">5,568</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Other long-term liabilities</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">7,581</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">5,211</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:48pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total liabilities</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">184,226</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">176,130</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Commitments and contingencies</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:12pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Stockholders’ equity:</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Common stock and paid-in capital – shares authorized 24,000; outstanding <font style="font-weight:bold;">7,643</font> and&nbsp;7,677</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">78,520</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">71,223</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Retained earnings</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">24,150</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">13,682</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:24pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Accumulated other comprehensive loss</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">(340</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">)</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">(2,187</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">)&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:48pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total stockholders’ equity</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">102,330</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">82,718</p></td>
+<td valign="bottom" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 0.75pt #000000;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td colspan="4" valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-family:Times New Roman;font-size:11pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%;">
+<p style="text-align:left;margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="top" bgcolor="#E5E5E5" style="width:82%;">
+<p style="text-align:left;margin-bottom:0pt;margin-top:0pt;line-height:11pt;margin-left:60pt;;text-indent:-12pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">Total liabilities and stockholders’ equity</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">286,556</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-weight:bold;font-size:10pt;font-family:Arial;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:7.5pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">$</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:6%;">
+<p style="text-align:right;line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">258,848</p></td>
+<td valign="bottom" bgcolor="#E5E5E5" style="width:1%;white-space:nowrap;">
+<p style="line-height:11pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:10pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+</tr>
+<tr>
+<td valign="bottom" style="width:82%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Times New Roman;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:6%; border-bottom:solid 1.5pt #000000;">
+<p style="margin-top:0pt;line-height:4pt;border-top:none 0pt;padding-top:0pt;text-align:right;margin-bottom:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;font-family:Arial;font-weight:normal;font-style:normal;text-transform:none;font-variant: normal;">&nbsp;</p></td>
+<td valign="bottom" style="width:1%;">
+<p style="line-height:4pt;margin-bottom:0pt;margin-top:0pt;margin-left:0pt;;text-indent:0pt;;font-size:4pt;">&nbsp;</p></td>
+</tr>
+</tbody></table></div>
+'''
+
 all_in_one_dict_gilead = all_in_one_dict ={'': {'CONSOLIDATED STATEMENT OF INCOME DATA:Income from operations': '3789841',
                                                 'CONSOLIDATED STATEMENT OF INCOME DATA:Net income attributable to Gilead': '2803637',
                                                 'CONSOLIDATED STATEMENT OF INCOME DATA:Net income per share attributable to Gilead common stockholders—basic': '3.62',
