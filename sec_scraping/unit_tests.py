@@ -3670,6 +3670,931 @@ html_test12 = '''
 </tbody></table></div>
 '''
 
+html_test_13 = '''
+<table border="1" cellpadding="0" cellspacing="0" style="border:none;border-collapse:collapse;width:100%;">
+ <tbody><tr style="height:12.0pt;">
+  <td colspan="10" valign="bottom" width="100%" style="background:white;border:none;height:12.0pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Times New Roman,serif" style="font-size:9.0pt;">Wells Fargo &amp; Company and Subsidiaries</font></p>
+  </td>
+ </tr>
+<tr style="height:12.0pt;">
+  <td colspan="10" valign="bottom" width="100%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:12.0pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Times New Roman,serif" style="font-size:9.0pt;">Consolidated
+  Balance Sheet</font></b></p>
+  </td>
+ </tr>
+<tr style="height:7.5pt;">
+  <td colspan="10" valign="bottom" width="100%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="63%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="2" valign="bottom" width="11%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">December
+  31,</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">(in millions, except shares)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">2013&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">2012&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Assets</font></b></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Cash and due from banks</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">$&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;19,919&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;21,860&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Federal funds sold, securities purchased under resale agreements
+  and other short-term investments</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;213,793&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;137,313&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Trading assets</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;62,813&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;57,482&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Investment securities:</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Available-for-sale, at fair value</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;252,007&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;235,199&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Held-to-maturity, at cost (fair value $12,247 and $0)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;12,346&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;-&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Mortgages held for sale (includes $13,879 and $42,305 carried at
+  fair value) (1)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;16,763&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;47,149&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Loans held for sale (includes $1 and $6 carried at fair value)
+  (1)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;133&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;110&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:7.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="63%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Loans (includes $5,995 and $6,206 carried at fair value) (1)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;825,799&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;799,574&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Allowance for loan losses</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(14,502)&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(17,060)&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Net loans</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;811,297&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;782,514&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Mortgage servicing rights:</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Measured at fair value</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;15,580&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;11,538&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Amortized</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,229&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,160&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Premises and equipment, net</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;9,156&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;9,428&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Goodwill</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;25,637&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;25,637&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Other assets (includes $1,386 and $0 carried at fair value) (1)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;86,342&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;93,578&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="2" valign="bottom" width="66%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total assets (2)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">$&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,527,015&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,422,968&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Liabilities</font></b></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Noninterest-bearing deposits</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">$&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;288,117&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;288,207&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Interest-bearing deposits</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;791,060&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;714,628&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total deposits</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,079,177&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,002,835&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Short-term borrowings</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;53,883&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;57,175&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Accrued expenses and other liabilities</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;69,949&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;76,668&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Long-term debt (includes $0 and $1 carried at fair value) (1)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;152,998&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;127,379&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="3" valign="bottom" width="69%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total liabilities (3)</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,356,007&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,264,057&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Equity</font></b></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Wells Fargo stockholders' equity:</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Preferred stock</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;16,267&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;12,883&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Common stock – $1-2/3 par value, authorized 9,000,000,000
+  shares;</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="4" valign="bottom" width="72%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;issued 5,481,811,474 shares and 5,481,811,474 shares</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;9,136&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;9,136&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Additional paid-in capital</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;60,296&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;59,802&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Retained earnings</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;92,361&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;77,679&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Cumulative other comprehensive income</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,386&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;5,650&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Treasury stock – 224,648,769 shares and 215,497,298 shares</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(8,104)&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(6,610)&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="5" valign="bottom" width="75%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Unearned ESOP shares</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(1,200)&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;(986)&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="4" valign="bottom" width="72%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total Wells Fargo stockholders' equity</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;170,142&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;157,554&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:10.5pt;">
+  <td colspan="6" valign="bottom" width="78%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Noncontrolling interests</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;866&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.0pt;height:10.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,357&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="3" valign="bottom" width="69%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total equity</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;171,008&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:#CCEEFF;border:none;border-bottom:solid black 1.0pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;158,911&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:13.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td colspan="2" valign="bottom" width="66%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">Total liabilities and equity</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">$&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><b><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,527,015&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:7.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;border-bottom:solid black 1.5pt;height:13.5pt;padding:0in 0in 0in 0in;">
+  <p align="right" style="margin:0in;margin-bottom:.0001pt;text-align:right;"><font color="black" face="Arial,sans-serif" style="font-size:7.0pt;">&nbsp;1,422,968&nbsp;</font></p>
+  </td>
+ </tr>
+<tr style="height:7.5pt;">
+  <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="63%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ <td valign="bottom" width="2%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;"><b><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="9%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="3%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><b><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></b></p>
+  </td>
+ <td valign="bottom" width="8%" style="background:white;border:none;height:7.5pt;padding:0in 0in 0in 0in;">
+  <p style="margin:0in;margin-bottom:.0001pt;"><font color="black" face="Verdana,sans-serif" style="font-size:8.0pt;">&nbsp;&nbsp;</font></p>
+  </td>
+ </tr>
+</tbody></table>
+'''
 all_in_one_dict_gilead = all_in_one_dict ={'': {'CONSOLIDATED STATEMENT OF INCOME DATA:Income from operations': '3789841',
                                                 'CONSOLIDATED STATEMENT OF INCOME DATA:Net income attributable to Gilead': '2803637',
                                                 'CONSOLIDATED STATEMENT OF INCOME DATA:Net income per share attributable to Gilead common stockholders—basic': '3.62',
@@ -4128,3 +5053,72 @@ all_in_one_dict_gilead = all_in_one_dict ={'': {'CONSOLIDATED STATEMENT OF INCOM
                                            'We face credit risks from our Southern European customers that may adversely affect our results of operations.': {},
                                            'Working Capital': {},
                                            'or': {}}
+
+johnson_johnson_dict = {'CONSOLIDATED BALANCE SHEETS': {'Assets:Current assets:Accounts receivable trade, less allowances for doubtful accounts $248 (2017, $291)': '14098',
+                                                       'Assets:Current assets:Assets held for sale (Note 20)': '950',
+                                                       'Assets:Current assets:Cash and cash equivalents (Notes\xa01 and 2)': '18107',
+                                                       'Assets:Current assets:Inventories (Notes\xa01 and 3)': '8599',
+                                                       'Assets:Current assets:Marketable securities (Notes\xa01 and 2)': '1580',
+                                                       'Assets:Current assets:Prepaid expenses and other receivables': '2699',
+                                                       'Assets:Deferred taxes on income (Note 8)': '7640',
+                                                       'Assets:Goodwill (Notes\xa01 and 5)': '30453',
+                                                       'Assets:Intangible assets, net (Notes\xa01 and 5)': '47611',
+                                                       'Assets:Other assets': '4182',
+                                                       'Assets:Property, plant and equipment, net (Notes\xa01 and 4)': '17035',
+                                                       'Assets:Total current assets': '46033',
+                                                       'Current liabilities:Accounts payable': '7537',
+                                                       'Current liabilities:Accrued compensation and employee related obligations': '3098',
+                                                       'Current liabilities:Accrued liabilities': '7601',
+                                                       'Current liabilities:Accrued rebates, returns and promotions': '9380',
+                                                       'Current liabilities:Accrued taxes on income (Note 8)': '818',
+                                                       'Current liabilities:Loans and notes payable (Note\xa07)': '2796',
+                                                       'Deferred taxes on income (Note 8)': '7506',
+                                                       'Employee related obligations (Notes\xa09 and 10)': '9951',
+                                                       'Long-term debt (Note\xa07)': '27684',
+                                                       'Long-term taxes payable (Note 8)': '8242',
+                                                       'Other liabilities': '8589',
+                                                       'Shareholders’ equity:94,114': '91714',
+                                                       'Shareholders’ equity:Accumulated other comprehensive income (loss) (Note\xa013)': '-15222',
+                                                       'Shareholders’ equity:Common stock\xa0— par value $1.00 per share (Note\xa012) (authorized 4,320,000,000\xa0shares; issued 3,119,843,000\xa0shares)': '3120',
+                                                       'Shareholders’ equity:Less common stock held in treasury, at cost (Note\xa012) (457,519,000\xa0shares and 437,318,000\xa0shares)': '34362',
+                                                       'Shareholders’ equity:Preferred stock\xa0— without par value (authorized and unissued 2,000,000\xa0shares)': '—',
+                                                       'Shareholders’ equity:Retained earnings': '106216',
+                                                       'Total assets': '152954',
+                                                       'Total current liabilities': '31230',
+                                                       'Total liabilities': '93202',
+                                                       'Total liabilities and shareholders’ equity': '152954',
+                                                       'Total shareholders’ equity': '59752'}}
+
+microsoft_dict = {'BALANCE SHEETS': {'Assets:Current assets:Accounts receivable, net of allowance for doubtful accounts of $411 and $377': '29524',
+                                     'Assets:Current assets:Cash and cash equivalents': '11356',
+                                     'Assets:Current assets:Inventories': '2063',
+                                     'Assets:Current assets:Other': '10146',
+                                     'Assets:Current assets:Short-term investments': '122463',
+                                     'Assets:Current assets:Total cash, cash equivalents, and short-term investments': '133819',
+                                     'Assets:Current assets:Total current assets': '175552',
+                                     'Assets:Equity investments': '2649',
+                                     'Assets:Goodwill': '42026',
+                                     'Assets:Intangible assets, net': '7750',
+                                     'Assets:Operating lease right-of-use assets': '7379',
+                                     'Assets:Other long-term assets': '14723',
+                                     'Assets:Property and equipment, net of accumulated depreciation of $35,330 and $29,223': '36477',
+                                     'Assets:Total assets': '286556',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Accounts payable': '9382',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Accrued compensation': '6830',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Current portion of long-term debt': '5516',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Other': '9351',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Short-term income taxes': '5665',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Short-term unearned revenue': '32676',
+                                     'Liabilities and stockholders’ equity:Current liabilities:Total current liabilities': '69420',
+                                     'Liabilities and stockholders’ equity:Deferred income taxes': '233',
+                                     'Liabilities and stockholders’ equity:Long-term debt': '66662',
+                                     'Liabilities and stockholders’ equity:Long-term income taxes': '29612',
+                                     'Liabilities and stockholders’ equity:Long-term unearned revenue': '4530',
+                                     'Liabilities and stockholders’ equity:Operating lease liabilities': '6188',
+                                     'Liabilities and stockholders’ equity:Other long-term liabilities': '7581',
+                                     'Liabilities and stockholders’ equity:Stockholders’ equity:Accumulated other comprehensive loss': '-340',
+                                     'Liabilities and stockholders’ equity:Stockholders’ equity:Common stock and paid-in capital – shares authorized 24,000; outstanding 7,643 and\xa07,677': '78520',
+                                     'Liabilities and stockholders’ equity:Stockholders’ equity:Retained earnings': '24150',
+                                     'Liabilities and stockholders’ equity:Stockholders’ equity:Total liabilities and stockholders’ equity': '286556',
+                                     'Liabilities and stockholders’ equity:Stockholders’ equity:Total stockholders’ equity': '102330',
+                                     'Liabilities and stockholders’ equity:Total liabilities': '184226'}}
