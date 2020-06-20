@@ -1,5 +1,7 @@
 import re
 
+# TODO REVIEW THIS https://stackoverflow.com/questions/6259443/how-to-match-a-line-not-containing-a-word
+
 date_regex = re.compile(r'^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$' # match mm/dd/yyyy
                         r'|'
                         r'^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$' # match dd-mm-yyyy
@@ -7,88 +9,88 @@ date_regex = re.compile(r'^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](1
                         r'^([^\s]+) (\d{2}),? ?(\d{4})$' # match Month D, Yr (i.e. February 17, 2009 or February 17,2009)
                         r'|'
                         r'^\d{4}$' # match year (i.e. 2011)
-                            r'|'
+                        r'|'
                         'Fiscal\d{4}'
                         r'|'
                         r'^Change$'
                         r'|'
                         r'(\b\d{1,2}\D{0,3})?\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|(Nov|Dec)(?:ember)?)\D?(\d{1,2}\D?)?\D?((19[7-9]\d|20\d{2})|\d{2})')
 
-balance_sheet_regex = r'(balance sheet|condition)'
-cash_flow_statement_regex = r'Consolidated(.*?)cash flow'
-income_statement_regex = r'Consolidated(.*?)statements of earnings'
+balance_sheet_regex = r'(balance ?sheet|condition)'
+cash_flow_statement_regex = r'(Consolidated(.*?)cash flow)|(cash( ?)flow(s?) statement(s?))'
+income_statement_regex = r'(Consolidated(.*?)statements of earnings)|(Income Statement)'
 
 cash_flow_investing_activities = {
 
     # Plant, Property, and Equipment
-    'Payments to Acquire Productive Assets': re.compile(r'Capital expenditures – excluding equipment leased to others'),
-    'Payments to Acquire Equipment on Lease': re.compile(r'Expenditures for equipment leased to others'),
-    'Payments to Acquire Property, Plant, and Equipment': re.compile(r'(Purchase(s?) of property[ ?](, leasehold improvements )?and equipment)'
+    'Payments to Acquire Productive Assets': r'Capital expenditures – excluding equipment leased to others',
+    'Payments to Acquire Equipment on Lease': r'Expenditures for equipment leased to others',
+    'Payments to Acquire Property, Plant, and Equipment': r'(Purchase(s?) of property[ ?](, leasehold improvements )?and equipment)'
                                                                      r'|'
-                                                                     r'(Payments for acquisition of property, plant and equipment)'),
-    'Proceeds from Sale of Property, Plant, and Equipment': re.compile(r'Proceeds from disposals of leased assets and property, plant and equipment'),
+                                                                     r'(Payments for acquisition of property, plant and equipment)',
+    'Proceeds from Sale of Property, Plant, and Equipment': r'Proceeds from disposals of leased assets and property, plant and equipment',
 
     # Loans and Leases
-    'Issuance Short Term Loans To Subsidiaries Net': re.compile(r''),
-    'Payments for (Proceeds from) Loans and Leases': re.compile(r'Loans, net \(excluding loans held for sale\)'),
+    # 'Issuance Short Term Loans To Subsidiaries Net': r'',
+    'Payments for (Proceeds from) Loans and Leases': r'Loans, net \(excluding loans held for sale\)',
 
     # Business Acquisitions
-    'Payments to Acquire Businesses, Net of Cash Acquired': re.compile(r'(Investments and acquisitions \(net of cash acquired\))'
+    'Payments to Acquire Businesses, Net of Cash Acquired': r'(Investments and acquisitions \(net of cash acquired\))'
                                                                        r'|'
-                                                                       r'Payments made in connection with business acquisitions, net'),
-    'Proceeds from divestiture of businesses net of cash divested': re.compile(r'Proceeds from sale of businesses and investments \(net of cash sold\)'),
+                                                                       r'Payments made in connection with business acquisitions, net',
+    'Proceeds from divestiture of businesses net of cash divested': r'Proceeds from sale of businesses and investments \(net of cash sold\)',
 
     # Finance Receivables
-    'Payments to acquire finance receivables': re.compile(r'Additions to finance receivables'),
-    'Proceeds from collection of finance receivables': re.compile(r'Collections of finance receivables'),
-    'Proceeds from sale of finance receivables': re.compile(r'Proceeds from sale of finance receivables'),
+    'Payments to acquire finance receivables': r'Additions to finance receivables',
+    'Proceeds from collection of finance receivables': r'Collections of finance receivables',
+    'Proceeds from sale of finance receivables': r'Proceeds from sale of finance receivables',
 
     # Marketable Securities
     'Marketable Securities': {
-        'Payments to Acquire Marketable Securities': re.compile(r'(Purchases of|Investments in)( marketable?) securities'),
+        'Payments to Acquire Marketable Securities': r'(Purchases of|Investments in)( marketable?) securities',
         'Proceeds from sale and maturity of marketable securities': {
-            'Proceeds from Sale of Debt Securities, Available-for-sale': re.compile(r'(Proceeds from )?sale(s?) of( marketable?) securities'),
-            'Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale': re.compile(r'(Proceeds from )?Maturities of marketable securities')
+            'Proceeds from Sale of Debt Securities, Available-for-sale': r'(Proceeds from )?sale(s?) of( marketable?) securities',
+            'Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale': r'(Proceeds from )?Maturities of marketable securities',
         }
     },
 
     # Investments
-    'Proceeds from Sale of Investment Projects': re.compile(r'Purchase of investments'),
-    'Payments to Acquire Investments': re.compile(r'Proceeds from sales and paydowns of investments'),
+    'Proceeds from Sale of Investment Projects': r'Purchase of investments',
+    'Payments to Acquire Investments': r'Proceeds from sales and paydowns of investments',
 
     # Other
-    'Payments to Acquire Other Investments': re.compile(r''),
-    'Proceeds from Sale and Maturity of Other Investments': re.compile(r''),
+    # 'Payments to Acquire Other Investments': r'',
+    # 'Proceeds from Sale and Maturity of Other Investments': r'',
 
-    'Payments for (Proceeds from) Other Investing Activities': re.compile(r'Other( – net)?'),
-    'Net Cash Provided by (Used in) Investing Activities': re.compile(r'(Net cash provided by \(used for\) investing activities) |'
-                                                                      r'(Cash generated by/\(used in\) investing activities)')
+    'Payments for (Proceeds from) Other Investing Activities': r'Other( – net)?',
+    'Net Cash Provided by (Used in) Investing Activities': r'(Net cash provided by \(used for\) investing activities) |'
+                                                                      r'(Cash generated by/\(used in\) investing activities)'
 }
 
 cash_flow_operating_activities = {
-    'Net Income (Loss)': re.compile(r'(Net Earnings)|(Profit \(loss\) of consolidated and affiliated companies)'),
+    'Net Income (Loss)': r'(Net Earnings)|(Profit \(loss\) of consolidated and affiliated companies)',
     'Adjustments for non-cash items': {
-        'Depreciation, Depletion and Amortization, Nonproduction': re.compile(r'Depreciation and amortization'),
-        'DefinedBenefitPlanActuarialGainLoss': re.compile(r'Actuarial \(gain\) loss on pension and postretirement benefits'),
-        'Deferred Income Tax Expense (Benefit)': re.compile(r'(Provision \(benefit\) for )?deferred income taxes'),
-        'Share-based Compensation': re.compile(r'Share-based compensation'),
-        'Gain (Loss) on Extinguishment of Debt': re.compile(r'Gain related to extinguishment of unsecured borrowings'),
-        'Provision for Loan, Lease, and Other Losses': re.compile(r'Provision for credit losses'),
-        'OtherNoncashIncomeExpense': re.compile(r'Other')
+        'Depreciation, Depletion and Amortization, Nonproduction': r'Depreciation and amortization',
+        'DefinedBenefitPlanActuarialGainLoss': r'Actuarial \(gain\) loss on pension and postretirement benefits',
+        'Deferred Income Tax Expense (Benefit)': r'(Provision \(benefit\) for )?deferred income taxes',
+        'Share-based Compensation': r'Share-based compensation',
+        'Gain (Loss) on Extinguishment of Debt': r'Gain related to extinguishment of unsecured borrowings',
+        'Provision for Loan, Lease, and Other Losses': r'Provision for credit losses',
+        'OtherNoncashIncomeExpense': r'Other'
     },
     'Changes in assets, net of acquisitions and diverstitures': {
-        'Increase (Decrease) in Receivables': re.compile(r'Receivables'),
-        'Increase (Decrease) in Inventories': re.compile(r'Inventories'),
-        'Increase (Decrease) in Other Operating Assets': re.compile(r'Other assets – net'),
+        'Increase (Decrease) in Receivables': r'Receivables',
+        'Increase (Decrease) in Inventories': r'Inventories',
+        'Increase (Decrease) in Other Operating Assets': r'Other assets – net',
     },
     'Changes in liabilities, net of acquisitions and diverstitures': {
-        'Increase (Decrease) in Accounts Payable': re.compile(r'Accounts payable'),
-        'Increase (Decrease) in Accrued Liabilities': re.compile(r'Accrued expenses'),
-        'Increase (Decrease) in Employee Related Liabilities': re.compile(r'Accrued wages, salaries and employee benefits'),
-        'Increase (Decrease) in Customer Advances': re.compile(r'Customer advances'),
-        'Increase (Decrease) in Other Operating Liabilities': re.compile(r'Other liabilities – net')
+        'Increase (Decrease) in Accounts Payable': r'Accounts payable',
+        'Increase (Decrease) in Accrued Liabilities': r'Accrued expenses',
+        'Increase (Decrease) in Employee Related Liabilities': r'Accrued wages, salaries and employee benefits',
+        'Increase (Decrease) in Customer Advances': r'Customer advances',
+        'Increase (Decrease) in Other Operating Liabilities': r'Other liabilities – net'
     },
-    'Net Cash Provided by (Used in) Operating Activities': re.compile(r'Net cash provided by \(used for\) operating activities'),
+    'Net Cash Provided by (Used in) Operating Activities': r'Net cash provided by \(used for\) operating activities',
 
 }
 
@@ -101,112 +103,135 @@ financial_entries_regex_dict = {
         'Assets': {
             'Current Assets': {
                 'Cash and Short Term Investments': {
-                    'Cash and Cash Equivalents': re.compile(r'({}|Current Assets)(.*?)Cash and cash equivalents(.*?)(?!^Marketable Securities$)'.format(balance_sheet_regex)),
-                    'Marketable Securities Current': re.compile(r'(({}|(Current Assets))|(Short-term))(.*?)Marketable Securities'.format(balance_sheet_regex)),
-                    'Cash and Short Term Investments': re.compile(r'{}|Current Assets(.*?)Cash and short-term investments'.format(balance_sheet_regex))
+
+                    'Cash and Cash Equivalents': {
+                        'Cash and Due from Banks': r'(?=.*cash)(?=.*due from banks)',
+                        'Interest-bearing Deposits in Banks and Other Financial Institutions': r'(?=.*interest[- ]bearing deposits)',
+                        'Restricted Cash': r'(?=.*cash)(?=.*restricted)',
+                        'Other Cash and Cash Equivalents': r'(?!(?=.*cash)(?=.*due from banks))'
+                                                           r'(?!(?=.*interest[- ]bearing deposits))'
+                                                           r'(?!(?=.*cash)(?=.*restricted))'
+                                                            # it means if pattern's name is cash and cash equivalents (the underscore and $ constrain that)
+                                                           # do not include it in 'others'
+                                                           r'(?!.*marketable securities)(?=.*_cash and cash equivalents$)(?!.*marketable securities)',
+                        'Cash and Cash Equivalents': r'(?!.*marketable securities)(?=.*cash and cash equivalents)(?!.*marketable securities)',
+                    },
+
+                    'Marketable Securities Current': r'(?!.*non-current)(?=.*(current|short-term))(?=.*(marketable securities|investments))',
+                    'Cash and Short Term Investments': r'(?=.*cash)(?=.*(marketable securities|short-term investments))'
                 },
                 'Accounts Receivable': {
-                    'Gross Accounts Receivable': 0,
-                    'Allowances for Doubtful Accounts': re.compile(r'({}|Current Assets)(.*?)net of allowances of \$(\d+)'.format(balance_sheet_regex)), # TODO extract
-                    'Net Accounts Receivable': re.compile(r'({}|Current Assets)(.*?)Receivable'.format(balance_sheet_regex)),
+                    'Gross Accounts Receivable': r'$^', # TODO
+                    'Allowances for Doubtful Accounts': r'(?=.*Receivable)(?=.*allowances of \$(\d+))',
+                    'Other Receivables': r'(?!(?=.*Receivable)(?=.*allowances of \$(\d+)))'
+                                         r'(?!(?=.*Receivable)(?=.*net))'
+                                         r'(?=.*Receivable)'
+                                         r'(?!(?=.*Receivable)(?=.*allowances of \$(\d+)))'
+                                         r'(?!(?=.*Receivable)(?=.*net))',
+                    'Net Accounts Receivable': r'(?=.*Receivable)(?=.*(allowances|net))',
                 },
-                'Prepaid Expense, Current': re.compile(r'({}|Current Assets)(.*?)Prepaid expenses'.format(balance_sheet_regex)),
-                'Inventory, Net': re.compile(r'({}|Current Assets)(.*?)Inventor(y|ies)'.format(balance_sheet_regex)),
-                'Income Taxes Receivable, Current': re.compile(r'({}|Current Assets)(.*?)Income taxes receivable'),
-                'Assets Held-for-sale': re.compile(r'({}|Current Assets)(.*?)Assets Held[- ]for[- ]sale'),
+                'Prepaid Expense, Current': r'Prepaid expenses',
+                'Inventory, Net': r'(?=.*Inventor(y|ies))',
+                'Income Taxes Receivable, Current': r'Income taxes receivable',
+                'Assets Held-for-sale': r'Assets Held[- ]for[- ]sale',
                 # taxes that have been already paid despite not yet having been incurred
-                'Deferred Tax Assets, Current': re.compile(r'({}|Current Assets)(.*?)(Deferred tax(es)? (assets)|(on income))|(Prepaid taxes)'.format(balance_sheet_regex)),
+                'Deferred Tax Assets, Current': r'(?=.*(Deferred tax(es)? (assets)|(on income))|(Prepaid taxes))',
 
-                'Nontrade Receivables, Current': re.compile(r'({}|Current Assets)(.*?)(?!(?=.*non-?current))(Vendor non-trade receivables)'.format(balance_sheet_regex)),
-                'Other Assets, Current': re.compile(r'({}|Current Assets)(.*?)Other current assets'.format(balance_sheet_regex)),
-                'Total Assets, Current': re.compile(r'({}|Current Assets)(.*?)Total current assets'.format(balance_sheet_regex))
+                'Other Assets, Current': r'(?!.*non[- ]?current)(?=.*other)(?=.*assets)',
+                'Total Assets, Current': r'(?!.*non[- ]?current)(?=.*total)(?=.*assets)',
             },
             'Non Current Assets': {
-                # TODO marketable securities wrong
-                'Marketable Securities Non Current': re.compile(r'{}(.*?)((long-?term)|non-?current)(.*?)(marketable securities)'
-                                                                r'|'
-                                                                r'Investments'.format(balance_sheet_regex)),
+
+                'Marketable Securities Non Current': r'^(?!.*short-term)((?!.*current)|(?=.*non[- ]?current))(?=.*marketable securities|investments)',
+
                 'Property, Plant and Equipment': {
-                    'Gross Property, Plant and Equipment': re.compile(r'Property(.*?)Plant(.*?)Equipment(.*?)Gross'),
-                    'Accumulated Depreciation and Amortization': re.compile(r'Depreciation(.*?)Amortization'),
-                    'Property, Plant and Equipment, Net': re.compile(r'Property(.*?)(Plant)?(.*?)Equipment(.*?)Net'),
+                    'Gross Property, Plant and Equipment': r'(?=.*Property)(?=.*(Plant|Land))(?=.*Equipment)(?=.*Gross)',
+                    'Accumulated Depreciation and Amortization': r'(?=.*Depreciation)(?=.*Amortization)',
+                    'Property, Plant and Equipment, Net': r'(?=.*Property)(?=.*(Plant|Land))(?=.*Equipment)(?=.*Net)',
                 },
-                'Operating Lease Right-of-use Assets': re.compile(r'Operating lease right-of-use assets'),
-                'Deferred Tax Assets Non Current': re.compile(r'Noncurrent deferred tax assets'),
+                'Operating Lease Right-of-use Assets': r'Operating lease right-of-use assets',
+                'Deferred Tax Assets Non Current': r'(?=.*non[- ]?current)(?=.*deferred tax assets)',
                 'Intangible Assets': {
-                    'Goodwill': re.compile(r'(({}|Intangible Assets)(.*?)Goodwill)'.format(balance_sheet_regex)),
-                    'Other Intangible Assets': 0,
-                    'Total Intangible Assets': re.compile(r'{}(.*?)Intangible Assets(.*?)(?!^Goodwill$)'.format(balance_sheet_regex)),
+                    'Goodwill': r'(?!.*net)(?=.*Goodwill)(?!.*net)',
+                    'Intangible Assets, Net (Excluding Goodwill)': r'(?=.*(other|net))(?=.*intangible assets)',
+                    'Total Intangible Assets': r'(?!.*other)(?!.*goodwill)(?!.*net)(?=.*intangible assets)(?!.*goodwill)(?!.*other)(?!.*net)',
                 },
-                'Other Non Current Assets': re.compile(r'(?=.*Other)((?!(?=.*current))|(?=.*non-?current))(?=.*assets)'),
-                'Total Non Current Assets': re.compile(r'(?=.*Total)((?!(?=.*current))|(?=.*non-?current))(?=.*assets)'),
+                'Other Non Current Assets': r'((?=.*non[- ]?current)|(?!.*current))(?=.*other)(?=.*assets)', # the space before current is on purpose
+                'Total Non Current Assets': r'((?=.*non[- ]?current)|(?!.*current))(?=.*total)(?=.*assets)',
             },
-            'Total Assets': re.compile(r'Total ?(?!^Current$) ?Assets')
+            'Total Assets': r'(?!.*non[- ]?current)(?!.*current)(?=.*total assets)(?!.*non[- ]?current)(?!.*current)'
         },
         'Liabilities and Shareholders\' Equity': {
             'Liabilities': {
                 'Current Liabilities': {
-                    'Short-Term Debt': re.compile(r'({}|Current Liabilities)(.*?)((Commercial Paper)|(Current Debt))'.format(balance_sheet_regex)),
-                    'Long-term Debt, Current Maturities': re.compile(r'Current Liabilities(.*?)((Term Debt)|Loans and notes payable)'.format(balance_sheet_regex)),
-                    'Accounts Payable, Current': re.compile(r'^(?=.*Accounts Payable)(?!(?=.*non-?current)).*$'.format(balance_sheet_regex)),
-                    'Accounts Payable, Trade, Current': re.compile(r'Current Liabilities(.*?)(Partners Payable)'.format(balance_sheet_regex)),
-                    'Operating Lease, Liability, Current': re.compile(r'Current Liabilities(.*?)(Operating lease liabilities, current)'.format(balance_sheet_regex)),
-                    'Current Deferred Revenues': re.compile(r'({}|Current Liabilities)(.*?)((Deferred Revenue)|(Short-term unearned revenue))'.format(balance_sheet_regex)),
-                    'Employee-related Liabilities, Current': re.compile(r'Current Liabilities(.*?)Accrued Compensation'),
-                    'Accrued Income Taxes': re.compile(r'Current Liabilities(.*?)Accrued(?=.*Income)(?=.*Taxes)'),
-                    'Accrued Liabilities, Current': re.compile(r'Accrued (expenses|liabilities)'.format(balance_sheet_regex)),
-                    'Income Taxes Payable': re.compile(r'(Income taxes payable)|(Short-term Income taxes)'),
-                    'Other Current Liabilities': re.compile(r'^(?=.*other)(?=.*liabilities)(?!(?=.*non-?current)).*$'),
-                    'Total Current Liabilities': re.compile(r'({}|Current Liabilities)(.*?)(Total Current Liabilities)'.format(balance_sheet_regex)),
+                    'Short-Term Debt': r'(?=.*(Commercial Paper|Current Debt))',
+                    'Long-term Debt, Current Maturities': r'(?=.*(Long-)?Term Debt|Loans and notes payable)',
+                    'Accounts Payable, Current': r'(?=.*Accounts Payable)(?!(?=.*non-?current))',
+                    'Accounts Payable, Trade, Current': r'(?=.*Partners Payable)',
+                    'Operating Lease, Liability, Current': r'(?=.*Operating lease liabilities, current)',
+                    'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue))',
+                    'Employee-related Liabilities, Current': r'(?=.*Accrued Compensation)',
+                    'Accrued Income Taxes': r'Accrued(?=.*Income)(?=.*Taxes)',
+                    'Accrued Liabilities, Current': r'(?=.*Accrued)(?=.*(Expense|Liabilities))',
+                    'Income Taxes Payable': r'(?=.*Income taxes payable)|(?=.*Short-term Income taxes)',
+                    'Other Current Liabilities': r'(?!non-?current)(?=.*other)(?=.*liabilities)(?!.*non-?current)',
+                    'Total Current Liabilities': r'(?=.*Total Current Liabilities)',
                 },
                 'Non Current Liabilities': {
-                    'Deferred Tax Liabilities': re.compile(r'(Deferred(?=.*Income)(?=.*Taxes))|(Deferred tax liabilities)'),
+                    'Deferred Tax Liabilities': r'(Deferred(?=.*Income)(?=.*Taxes))|(Deferred tax liabilities)',
                     # this debt is due after one year in contrast to current maturities which are due within this year
-                    'Long-term Debt, Noncurrent Maturities': re.compile(r'Long-term debt(?!.*?within)'),
-                    'Operating Lease, Liability, Noncurrent': re.compile(r'(Operating lease liabilities(?!.*? current))'),
-                    'Liability, Defined Benefit Plan, Noncurrent': re.compile(r'Employee related obligations'),
-                    'Accrued Income Taxes, Noncurrent': re.compile(r'(Long-term ((income taxes)|(taxes payable)))'),
-                    'Long-Term Unearned Revenue': re.compile(r'(Long-term unearned revenue)'),
-                    'Other Liabilities, Noncurrent': re.compile(r'(?=.*other)(?=.*liabilities)(?!(?=.*current))'),
-                    'Total Long-Term Liabilities': re.compile(r'Non-current liabilities') # total liabilities - total current liabilities
+                    'Long-term Debt, Noncurrent Maturities': r'Long-term debt(?!.*?within)',
+                    'Operating Lease, Liability, Noncurrent': r'(Operating lease liabilities(?!.*? current))',
+                    'Liability, Defined Benefit Plan, Noncurrent': r'Employee related obligations',
+                    'Accrued Income Taxes, Noncurrent': r'(Long-term ((income taxes)|(taxes payable)))',
+                    'Deferred Revenue, Noncurrent': r'Deferred revenue(.*?)non-?current',
+                    'Long-Term Unearned Revenue': r'(Long-term unearned revenue)',
+                    'Other Liabilities, Noncurrent': r'(?=.*other)(?=.*liabilities)(?!.*[a-zA-Z]current)',
+                    'Total Long-Term Liabilities': r'(?=.*Non-current liabilities)' # total liabilities - total current liabilities
                 },
-                'Total Liabilities': re.compile(r'Total Liabilities')
+                'Total Liabilities': r'(?=.*Total Liabilities)(?!.*Equity$)'
             },
             'Shareholders\' Equity': {
-                'Preferred Stock, Value, Issued': re.compile(r'Preferred stock(?!(?=.*treasury))'),
-                'Common Stock, Value, Issued': re.compile(r'Common stock(?!(?=.*treasury))'),
-                'Additional Paid in Capital': re.compile(r'Additional paid-in capital'),
-                'Treasury Stock, Value': re.compile(r'Treasury stock'),
-                'Retained Earnings (Accumulated Deficit)': re.compile(r'(Accumulated deficit)|(Retained earnings)'),
-                'Accumulated Other Comprehensive Income': re.compile(r'Accumulated other comprehensive income'),
-                'Deferred Stock Compensation': re.compile(r'Deferred stock compensation'),
-                'Stockholders\' Equity Attributable to Parent': re.compile(r'Common stock'),
-                # TODO figure out how to process this edge case
-                'Minority Interest': re.compile(r'Noncontrolling interests'),
-                'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest': re.compile(r'Total ((Stockholders[’\'] )|(Shareholders[’\'] ))?Equity'),
+                'Preferred Stock, Value, Issued': r'Preferred stock(?!.*treasury)',
+                'Common Stock and Additional Paid in Capital': {
+                    'Common Stock, Value, Issued': r'(?=.*Common stock)(?!.*treasury)(?!.*additional paid[- ]in capital)',
+                    'Additional Paid in Capital': r'(?!.*Common stock)(?=.*additional paid[- ]in capital)',
+                    'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock and additional paid[- ]in capital)'
+                },
+
+                'Treasury Stock, Value': r'Treasury stock',
+                'Retained Earnings (Accumulated Deficit)': r'(?=.*Accumulated deficit)|(Retained earnings)',
+                'Accumulated Other Comprehensive Income': r'(?=.*Accumulated other comprehensive income)',
+                'Deferred Stock Compensation': r'(?=.*Deferred stock compensation)',
+                'Minority Interest': r'(?=.*Noncontrolling interests)',
+                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total shareholders[’\'] equity)',
             },
-            'Total Liabilities and Shareholders\' Equity': re.compile(r'Total Liabilities and Equity')
+            'Total Liabilities and Shareholders\' Equity': r'(?=.*Total Liabilities)(?=.*Equity)'
         },
     },
     'Income Statement': {
         'Revenues': {
-            'Net Sales': re.compile(r'(Net|Product) sales'),
-            'Gross Margin': re.compile(r'Gross margin')
+            'Net Sales': r'((Net|Product) sales)|(Revenue)',
+            'Gross Margin': r'Gross margin'
         },
-        'Cost of Goods and Services Sold': re.compile(r'Cost of (goods sold|sales)'),
+        'Cost of Goods and Services Sold': r'Cost of (goods sold|sales|revenue)',
         'Operating Expenses': {
-            'Research and Development': re.compile(r'Research and development'),
-            'Selling, General and Administrative': re.compile(r'Selling, general and administrative'),
-            'Total Operating Expenses': re.compile(r'Total operating expenses')
+            'Research and Development': r'Research and development',
+            'Selling, General and Administrative': {
+                'Sales and Marketing': r'Sales and Marketing',
+                'General and Administrative': r'General and Administrative',
+                'Selling, General and Administrative': r'Selling, general and administrative',
+            },
+            'Total Operating Expenses': r'Total operating expenses'
         },
-        'Operating Income (Loss) / EBIT': re.compile(r'Operating income'),
-        'Non-Operating Income (Expenses)': 0,
-        'Net Income (Loss)': 0,
-        'Net Income Loss Attributable to Noncontrolling Interest': 0
+        'Operating Income (Loss) / EBIT': r'Operating income',
+        # 'Non-Operating Income (Expenses)': r'',
+        # 'Net Income (Loss)': r'',
+        # 'Net Income Loss Attributable to Noncontrolling Interest': r''
     },
     'Cash Flow Statement': {
-        'Operating Activities': re.compile(r'{}(.*?)Operating activities:(.*?)'.format(cash_flow_statement_regex)),
-        'Investing Activities': re.compile(r'{}(.*?)Investing activities:(.*?)'.format(cash_flow_statement_regex)),
-        'Financing Activities': re.compile(r'{}(.*?)Financing activities:(.*?)'.format(cash_flow_statement_regex)),
+        'Operating Activities': r'{}(.*?)Operating activities:(.*?)'.format(cash_flow_statement_regex),
+        'Investing Activities': r'{}(.*?)Investing activities:(.*?)'.format(cash_flow_statement_regex),
+        'Financing Activities': r'{}(.*?)Financing activities:(.*?)'.format(cash_flow_statement_regex),
     }
 }
