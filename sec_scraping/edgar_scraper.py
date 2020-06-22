@@ -1,4 +1,5 @@
 import collections
+import os
 import re
 import traceback
 from pprint import pprint
@@ -9,17 +10,13 @@ from bs4 import BeautifulSoup, NavigableString
 import sec_scraping.regex_patterns as fin_reg
 import sec_scraping.unit_tests as test
 
-# TODO clean up data
-# - \n should be replaced with ' '
-
-# TODO try getting data from previous years from the same statements,
-#  and skip the financial reports of those years to save time
-
-# TODO currency and unit multiplier checking in table
-
 # TODO fill 0's with NaNs and order dataframe properly
 
 # TODO Review regexes of balance sheet, more testing
+
+# TODO implement 'Other' for each category. it is total of current category - anything in current category (and sub) not having 'total'
+
+# TODO If Interest Income/Expense in revenues, then readjust Net Sales (add back)
 '''
 Beautiful BeautifulSoup Usage
 
@@ -131,21 +128,39 @@ def is_centered(row):
 
 
 def find_left_margin(reg_row, td):
-    current_left_margin = 0
     pattern_match = re.search('(margin-left|padding-left):(\d+)', str(td))
     if pattern_match:
         return int(pattern_match.groups()[-1])
 
-    # TODO find better way
     else: # other times it has a '' before the text
-        for i in range(len(reg_row)):
-            if reg_row[i] == '':
-                current_left_margin += 1
-            else:
-                break
+        return next((i for i, v in enumerate(reg_row) if v != ''), len(reg_row))
 
-    return current_left_margin
+# TODO MERGE FIND META TABLE INFO AND TABLE TITLE METHODS
 
+def find_meta_table_info(table):
+
+    table_multiplier, table_currency = '', ''
+    multiplier_pattern = re.compile('(thousands|millions|billions|percentage)', re.IGNORECASE)
+    currency_pattern = re.compile('([$€¥£])', re.IGNORECASE)
+    current_element = table
+    try:
+        while current_element.previous_element is not None:
+
+            if isinstance(current_element, NavigableString):
+                current_element = current_element.previous_element
+                continue
+
+            if re.search(multiplier_pattern, current_element.text) and len(table_multiplier) == 0:
+                table_multiplier = re.search(multiplier_pattern, current_element.text).groups()[-1]
+
+            if re.search(currency_pattern, current_element.text) and len(table_currency) == 0:
+                table_currency = re.search(currency_pattern, current_element.text).groups()[-1]
+
+            current_element = current_element.previous_element
+    except:
+        traceback.print_exc()
+
+    return table_multiplier, table_currency
 
 def find_table_title(table):
 
@@ -185,21 +200,6 @@ def find_table_title(table):
     else:
         return 'No Table Title'
 
-
-# TODO override table multiplier if in row label it's written 'thousands' etc.
-# SHOULD START FROM ROW, THEN CATEGORY ALl THE WAY TO HEADER THEN TITLE
-def find_table_unit(table):
-    unit_dict = {'thousands': 1000, 'millions': 1000000, 'billions': 1000000000}
-    for unit in unit_dict.keys():
-        if unit in table.text: # TODO, unit might also be outside the table, above it (but below [and including] title)
-            return unit_dict[unit]
-    return unit_dict['millions'] # default
-
-
-def find_table_currency(table):
-    pass
-
-
 def flatten_dict(d, parent_key='', sep='_'):
     items = []
     for k, v in d.items():
@@ -222,92 +222,61 @@ def scrape_xbrl_tables_from_url(url):
 def scrape_html_tables_from_url(url):
 
     response = requests.get(url)
-    table = '''
-    <div style="line-height:120%;padding-top:24px;text-align:justify;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;font-weight:bold;">Other Income/(Expense), Net</font></div>
-    <div style="line-height:120%;text-align:justify;font-size:10pt;"><div style="padding-left:0px;text-indent:0px;line-height:normal;padding-top:10px;"><table cellpadding="0" cellspacing="0" style="font-family:Times New Roman;font-size:10pt;width:100%;border-collapse:collapse;text-align:left;"><tbody><tr><td colspan="18"></td></tr><tr><td style="width:40%;"></td><td style="width:1%;"></td><td style="width:10%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:9%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:10%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:9%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:1%;"></td><td style="width:10%;"></td><td style="width:1%;"></td></tr><tr><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="3" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:center;font-size:8pt;"><font style="font-family:Helvetica,sans-serif;font-size:8pt;font-weight:bold;">2017</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:center;font-size:8pt;"><font style="font-family:Helvetica,sans-serif;font-size:8pt;font-weight:bold;">Change</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="3" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:center;font-size:8pt;"><font style="font-family:Helvetica,sans-serif;font-size:8pt;font-weight:bold;">2016</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:center;font-size:8pt;"><font style="font-family:Helvetica,sans-serif;font-size:8pt;font-weight:bold;">Change</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="3" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:center;font-size:8pt;"><font style="font-family:Helvetica,sans-serif;font-size:8pt;font-weight:bold;">2015</font></div></td></tr><tr><td style="vertical-align:top;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:left;padding-left:12px;text-indent:-12px;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">Interest and dividend income</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">5,201</font></div></td><td style="vertical-align:bottom;border-top:1px solid #000000;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">3,999</font></div></td><td style="vertical-align:bottom;border-top:1px solid #000000;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;padding-top:2px;padding-bottom:2px;border-top:1px solid #000000;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">2,921</font></div></td><td style="vertical-align:bottom;border-top:1px solid #000000;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td></tr><tr><td style="vertical-align:top;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:left;padding-left:12px;text-indent:-12px;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">Interest expense</font></div></td><td colspan="2" style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(2,323</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(1,456</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(733</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td></tr><tr><td style="vertical-align:top;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:left;padding-left:12px;text-indent:-12px;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">Other expense, net</font></div></td><td colspan="2" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(133</font></div></td><td style="vertical-align:bottom;border-bottom:1px solid #000000;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(1,195</font></div></td><td style="vertical-align:bottom;border-bottom:1px solid #000000;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td colspan="2" style="vertical-align:bottom;border-bottom:1px solid #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">(903</font></div></td><td style="vertical-align:bottom;border-bottom:1px solid #000000;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">)</font></div></td></tr><tr><td style="vertical-align:top;background-color:#efefef;padding-left:28px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="text-align:left;padding-left:12px;text-indent:-12px;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">Total other income/(expense), net</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;background-color:#efefef;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">2,745</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">104</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">%</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;background-color:#efefef;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">1,348</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">5</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-right:2px;padding-top:2px;padding-bottom:2px;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">%</font></div></td><td style="vertical-align:bottom;background-color:#efefef;padding-left:2px;padding-top:2px;padding-bottom:2px;padding-right:2px;"><div style="overflow:hidden;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;">&nbsp;</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;padding-left:2px;padding-top:2px;padding-bottom:2px;background-color:#efefef;"><div style="text-align:left;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">$</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;padding-top:2px;padding-bottom:2px;"><div style="text-align:right;font-size:9pt;"><font style="font-family:Helvetica,sans-serif;font-size:9pt;">1,285</font></div></td><td style="vertical-align:bottom;border-bottom:3px double #000000;background-color:#efefef;"><div style="text-align:left;font-size:10pt;"><font style="font-family:inherit;font-size:10pt;"><br></font></div></td></tr></tbody></table></div></div>
-    '''
     soup = BeautifulSoup(response.text, 'html.parser')
-
-    not_useful = [] # for debugging
     all_in_one_dict = {}
-
-    # TODO GOLDMAN SACHS debug page 76 https://www.sec.gov/Archives/edgar/data/886982/000095012310018464/y81914e10vk.htm
 
     for table in soup.findAll('table'):
 
         columns = []
         header_found = False
-        current_category = ''
-        previous_left_margin = 0
         indented_list = []
         rows = table.find_all('tr')
-        try:
-            table_title = unicodedata.normalize("NFKD",
-                                                find_table_title(table)).strip().replace('\n', '')
-        except:
-            table_title = 'No Table Title'
-        table_multiplier = find_table_unit(table)
-        # print(table_multiplier)
+        header_index = 0
+        table_title, table_currency, table_multiplier = '', '', ''
 
         for index, row in enumerate(rows):
 
-            reg_row = [ele.text.strip() for ele in row.find_all('td')]
+            # Clean up each row's data
+            reg_row = [ele.text.strip() for ele in row.find_all(lambda tag: tag.name == 'td' or tag.name == 'th')]
             reg_row = [unicodedata.normalize("NFKD", x) for x in reg_row]
 
-            if not header_found:
+            current_left_margin = find_left_margin(reg_row, row.findAll('td')[0])
+            if len(reg_row) > 0:
+                reg_row[0] = reg_row[0].replace(':', '').replace('\n', ' ')
 
-                if len(reg_row) == 0:
-                    reg_row = [ele.text.strip() for ele in row.find_all('th')]
+            reg_row = list(filter(lambda x: x != "" and '%' not in x, reg_row))  # remove empty strings (table datas) from list
+                                                                                 # as well as percentages
 
-                # first, we want to reach the header of the table, so we skip
-                # - the empty rows i.e. those that have no table data 'td' (or those for which the td's are empty) [length 0]
-                # - the descriptive rows (i.e. 'dollars in millions', 'fiscal year', etc.) [length 1]
-                reg_row = list(filter(lambda x: x != "", reg_row))  # remove empty strings (table datas) from list
-                reg_row = [re.sub(r'\n', '', x) for x in reg_row]
+            # first, we want to reach the header of the table, so we skip
+            # - the empty rows i.e. those that have no table data 'td' (or those for which the td's are empty) [length 0]
+            # - the descriptive rows (i.e. 'dollars in millions', 'fiscal year', etc.) [length 1]
+            if not header_found and len(reg_row) > 1:
 
-                if len(reg_row) <= 1:
-                    continue
+                # if 'th' tag found or table data with bold, then found a potential header for the table
+                if (len(row.find_all('th')) != 0 or is_bold(row)) and len(list(filter(fin_reg.date_regex.search, reg_row))) > 0:
 
-                # if 'th' tag found or table data with bold, then found the header of the table
-                elif (len(row.find_all('th')) != 0 or is_bold(row)) and not header_found:
+                    # sometimes same title (i.e. if table is split in two pages, they repeat page title twice
+                    table_multiplier, table_currency = find_meta_table_info(table)
+                    table_title = unicodedata.normalize("NFKD",  find_table_title(table)).strip().replace('\n', '')
+
+                    if table_multiplier == 'percentage':
+                        break
+
+                    if table_title not in all_in_one_dict.keys():
+                        all_in_one_dict[table_title] = {}
+
                     header_found = True
-                    # lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="Table1"
-                    # make sure that table has a date header
-                    reg_row = list(filter(fin_reg.date_regex.search, reg_row))
-                    # TODO need to save relevant header index (to compare year, find currency, unit around the row...)
-                    # if the table does not have a date as its headers, we're not interested in it, so move on to the next table
-                    if len(reg_row) == 0:
-                        # look ahead one row, maybe date in next, as long as bold (check Goldman Sachs example)
-                        try:
-                            if is_bold(rows[index+1]):
-                                header_found = False
-                                continue
-                            not_useful.append(table_title)
-                            break
-                        except BaseException: # exception because no more next row, so move to next table
-                            not_useful.append(table_title)
-                            break
 
-                    # otherwise, it is a relevant table, so we go to the next row
-                    else:
-
-                        if table_title not in all_in_one_dict.keys():
-                            all_in_one_dict[table_title] = {}
-                        # print(table)
-                        # TODO have to skip yearly table if we're interested in quarterly statements and vice versa
-                        #  then, we want only the tables for which two consecutive columns are separated by more than a quarter (for yearly)
-
-                        # TODO better normalize date format (but can just use filing date)
-                        columns = ['Keys'] + [re.sub(r'[,\d] |[, ]', ' ', x) for x in reg_row]
-                        continue
-
-            if header_found:
-
-                reg_row = [ele.text.strip() for ele in row.find_all('td')]
-                if len(reg_row) == 0:
+                else:
                     continue
 
-                current_left_margin = find_left_margin(reg_row, row.findAll('td')[0])
+            elif header_found and len(reg_row) > 0:
+
+                reg_row = [reg_row[0]] + [re.sub(r'\(', '-', x) for x in reg_row[1:]]
+                reg_row = [reg_row[0]] + [re.sub("[^0-9\-]", "", r) for r in reg_row[1:]]
+                reg_row = [reg_row[0]] + [re.sub("^-$", "", r) for r in reg_row[1:]] # for NOT the minus sign
+                reg_row = [reg_row[0]] + [re.sub(r',', '', x) for x in reg_row[1:]]
+                reg_row = list(filter(lambda x: x != "" and '%' not in x, reg_row))
 
                 # if it's a line
                 if len(row.find_all(lambda tag: tag.has_attr('style') and ('border-bottom:solid' in tag['style']
@@ -317,54 +286,41 @@ def scrape_html_tables_from_url(url):
                 elif len(''.join(reg_row).strip()) == 0:
                     continue
 
-                try:
-                    while current_left_margin <= indented_list[-1][0]:
-                        # if there is bold, then master category
-                        if current_left_margin == indented_list[-1][0]:
-                            # TODO TEST MORE
-                            if indented_list[-1][2]: # if last element of list is bold
-                                if is_bold(row, alltext=True): # if current row is bold
-                                    # first_bolded_index = next(i for i, v in enumerate(indented_list) if v[2])
-                                    # if first_bolded_index != len(indented_list)-1:
-                                    #     indented_list.pop(first_bolded_index)
-                                    indented_list.pop() # remove that last element of list
-                                    break # and stop popping
-                                else:
-                                    break # otherwise, just subentry so don't pop
-                        indented_list.pop()
-                except:
-                    pass
-
-                reg_row = list(filter(lambda x: x != "", reg_row))  # remove empty strings (table datas) from list
-                # remove table datas with '$', for some reason ')' gets its own table data, as well as ''
+                while len(indented_list) > 0 and current_left_margin <= indented_list[-1][0]:
+                    # if there is bold, then master category
+                    if current_left_margin == indented_list[-1][0]:
+                        # TODO TEST MORE
+                        if indented_list[-1][2]: # if last element of list is bold
+                            if is_bold(row, alltext=True): # if current row is bold
+                                # first_bolded_index = next(i for i, v in enumerate(indented_list) if v[2])
+                                # if first_bolded_index != len(indented_list)-1:
+                                #     indented_list.pop(first_bolded_index)
+                                indented_list.pop() # remove that last element of list
+                                break # and stop popping
+                            else:
+                                break # otherwise, just subentry so don't pop
+                    indented_list.pop()
 
                 try:
-                    reg_row[0] = reg_row[0].replace(':', '').replace('\n', ' ')
-                    reg_row = [reg_row[0]] + [re.sub(r'\(', '-', x) for x in reg_row[1:]]
-                    reg_row = [reg_row[0]] + [re.sub(r',', '', x) for x in reg_row[1:]]
-                    regex = re.compile(r'[^\$|^$|)]')
-                    reg_row = [reg_row[0]] + list(filter(regex.search, reg_row[1:]))
+                    if len(indented_list) > 0:
+                        if re.search(r'Total', reg_row[0], re.IGNORECASE):
+                            # TODO test further
+                            # while not re.search(r'^{}$'.format(reg_row[0].split('Total ', re.IGNORECASE)[1]), # current entry
+                            #                     indented_list[-1][1], # last category
+                            #                     re.IGNORECASE):
+                            indented_list.pop()
+                except Exception:
+                    traceback.print_exc()
 
-                    try:
-                        if len(indented_list) > 0:
-                            if re.search(r'Total', reg_row[0], re.IGNORECASE):
-                                # TODO test further
-                                # while not re.search(r'^{}$'.format(reg_row[0].split('Total ', re.IGNORECASE)[1]), # current entry
-                                #                     indented_list[-1][1], # last category
-                                #                     re.IGNORECASE):
-                                indented_list.pop()
-                    except Exception:
-                        traceback.print_exc()
+                indented_list.append((current_left_margin, reg_row[0], is_bold(row, alltext=True)))
+                current_category = '_'.join([x[1] for x in indented_list])
+                try:
+                    if len(reg_row) > 1: # not category column:
+                        if current_category not in all_in_one_dict[table_title].keys():
+                            all_in_one_dict[table_title][current_category] = float(re.sub('^$', '0', reg_row[1])) # * table_multiplier (ugly)
 
-                    indented_list.append((current_left_margin, reg_row[0], is_bold(row, alltext=True)))
                 except:
-                    pass # usually shaded lines
-
-                current_category = ':'.join([x[1] for x in indented_list])
-
-                if len(reg_row) > 1: # not category column:
-                    if current_category not in all_in_one_dict[table_title].keys():
-                        all_in_one_dict[table_title][current_category] = reg_row[1]
+                    traceback.print_exc()
     # pprint(not_useful)
     return all_in_one_dict
 
@@ -379,11 +335,52 @@ def scrape_tables_from_url(url):
     elif extension == 'txt':
         return scrape_txt_tables_from_url(url)
 
+# TODO maybe for first round of normalization ADD to the patterns the _ trick (but keep them r
 def normalization_first_level(input_dict):
-    pass
+    pprint(input_dict)
+    master_dict = {} # do OrderedDict()
+    for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
+        master_dict[normalized_category] = 0
+    visited_data_names = []
+    for title, table in input_dict.items():
 
+        for scraped_name, scraped_value in flatten_dict(table).items():
+
+            found_match = False # JUST FOR DEBUGGING PURPOSES
+
+            for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
+
+                if ('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, title, re.IGNORECASE))\
+                        or ('Income Statement' in normalized_category.split('_')[0] and re.search(fin_reg.income_statement_regex, title, re.IGNORECASE))\
+                        or ('Cash Flow Statement' in normalized_category.split('_')[0] and re.search(fin_reg.cash_flow_statement_regex, title, re.IGNORECASE) ):
+                    # first we want to give priority to the elements in the consolidated financial statements
+
+                    if re.search('^' + pattern_string, scraped_name, re.IGNORECASE):
+                        found_match = True # for debugging, can remove later
+
+                        # The idea is that if we go to another table and we have a value similar to one we already have on the sheet,
+                        # i do not want to include it (because its a duplicate). But if the value is similar in the same sheet, then
+                        # i want to add it to the already existing value
+                        if master_dict[normalized_category] == 0:
+                            visited_data_names.append(title+pattern_string)
+                        if title+pattern_string in visited_data_names:
+                            master_dict[normalized_category] += scraped_value
+
+                        if 'Allowances for Doubtful Accounts' in normalized_category:
+                            master_dict[normalized_category] = float(re.search(pattern_string, scraped_name, re.IGNORECASE).groups()[-1])
+                            continue
+                        else:
+                            break
+
+            if not found_match and (re.search(fin_reg.balance_sheet_regex, scraped_name, re.IGNORECASE)
+                                    or re.search(fin_reg.income_statement_regex, scraped_name, re.IGNORECASE)
+                                    or re.search(fin_reg.cash_flow_statement_regex, scraped_name, re.IGNORECASE)):
+                print('No match for ' + scraped_name)
+
+    return master_dict
 
 def normalization_second_level(input_dict):
+    # OTher normalizations should only work on null (0, empty) values! Cannot fill twice from different tables otherwise will add up
     #                 for cat in normalized_category.split('_')[1:-1]:
     #                     category_regexed.append('(?=.*{})'.format(cat))
     #                 # last_cat = normalized_category.split('_')[-1]
@@ -396,69 +393,61 @@ def normalizatation_third_level(input_dict):
 
 
 def normalize_tables(input_dict):
-    # pprint(input_dict)
-    master_dict = collections.OrderedDict()
-    for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
-        master_dict[normalized_category] = 0
-            # float('Nan')
-    for scraped_name, scraped_value in flatten_dict(input_dict).items():
+    master_dict = normalization_first_level(input_dict)
+    # master_dict = normalization_second_level(master_dict)
+    # master_dict = normalizatation_third_level(master_dict)
 
-        found_match = False
+    master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Gross Accounts Receivable'] = \
+        master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Net Accounts Receivable'] + \
+        master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Allowances for Doubtful Accounts']
 
-        for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
-            relevant = False
-            if ('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, scraped_name, re.IGNORECASE))\
-                    or ('Income Statement' in normalized_category.split('_')[0] and re.search(fin_reg.income_statement_regex, scraped_name, re.IGNORECASE))\
-                    or ('Cash Flow Statement' in normalized_category.split('_')[0] and re.search(fin_reg.cash_flow_statement_regex, scraped_name, re.IGNORECASE)):
-
-                pattern_string = '^' + pattern_string
-
-                # first we want to give priority to the elements in the consolidated financial statements
-                if re.search(pattern_string, scraped_name, re.IGNORECASE):
-                    found_match = True
-
-                # this takes care of having two entries for marketable securities, accounts receivables as in Goldman Sachs
-                    # so if the entry is already in the master dict, then we add to it (as in we've found before same entry, so we add to it)
-                    master_dict[normalized_category] += float(re.sub('[-—–]', '0', scraped_value))
-                    # np.nan_to_num(0)
-                    if 'Allowances for Doubtful Accounts' in normalized_category:
-                        master_dict[normalized_category] = float(re.search(pattern_string, scraped_name, re.IGNORECASE).groups()[-1])
-
-        if not found_match and (re.search(fin_reg.balance_sheet_regex, scraped_name, re.IGNORECASE)
-                                or re.search(fin_reg.income_statement_regex, scraped_name, re.IGNORECASE)
-                                or re.search(fin_reg.cash_flow_statement_regex, scraped_name, re.IGNORECASE)):
-            print('No match for ' + scraped_name)
-
-    if 'Balance Sheet_Assets_Current Assets_Accounts Receivable_Net Accounts Receivable' in master_dict.keys():
-        if 'Balance Sheet_Assets_Current Assets_Accounts Receivable_Allowances for Doubtful Accounts' in master_dict.keys():
-            master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Gross Accounts Receivable'] = \
-                master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Net Accounts Receivable'] + \
-                master_dict['Balance Sheet_Assets_Current Assets_Accounts Receivable_Allowances for Doubtful Accounts']
-
-    balance_sheet = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Balance Sheet', i)}
-    income_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Income Statement', i)}
-    cash_flow_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Cash Flow Statement', i)}
+    # balance_sheet = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Balance Sheet', i)}
+    # income_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Income Statement', i)}
+    # cash_flow_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Cash Flow Statement', i)}
     return master_dict
 
 
 def testing():
-    url = 'https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/a10-k20179302017.htm'
-    # all_in_one_dict = scrape_html_tables_from_url(url)
-    all_in_one_dict = test.aapl_dict
+    url = 'https://www.sec.gov/Archives/edgar/data/1326801/000132680119000009/fb-12312018x10k.htm'
+    all_in_one_dict = scrape_html_tables_from_url(url)
+    pprint(all_in_one_dict)
+    # all_in_one_dict = test.aapl_dict
     # pprint(all_in_one_dict)
-    hi = {}
-    hi['199'] = normalize_tables(all_in_one_dict)
-    pprint(hi)
-    df = pd.DataFrame.from_dict(hi)
-    # pprint(df[(df.T != 0).any()])
-    df = df[(df.T != 0).any()]
-    df = df.replace(0, {0: float('Nan')})
-    print(df)
-    # pprint(normalize_tables(all_in_one_dict))
+    gs_dict = {'Consolidated Statements of Financial Condition': {'Assets:Cash and cash equivalents': 130547.0,
+                                                                  'Assets:Collateralized agreements:Securities borrowed (includes $23,142 and $78,189 at fair value)': 135285.0,
+                                                                  'Assets:Collateralized agreements:Securities purchased under agreements to resell (includes $139,220 and $120,420 at fair value)': 139258.0,
+                                                                  'Assets:Financial instruments owned (at fair value and includes $55,081 and $50,335 pledged as collateral)': 336161.0,
+                                                                  'Assets:Other assets': 30640.0,
+                                                                  'Assets:Receivables:Customer and other receivables (includes $3,189 and $3,526 at fair value)': 79315.0,
+                                                                  'Assets:Receivables:Loans receivable': 80590.0,
+                                                                  'Liabilities and shareholders’ equity:Collateralized financings:Other secured financings (includes $20,904 and $24,345 at fair value)': 21433.0,
+                                                                  'Liabilities and shareholders’ equity:Collateralized financings:Securities loaned (includes $3,241 and $5,357 at fair value)': 11808.0,
+                                                                  'Liabilities and shareholders’ equity:Collateralized financings:Securities sold under agreements to repurchase (at fair value)': 78723.0,
+                                                                  'Liabilities and shareholders’ equity:Customer and other payables': 180235.0,
+                                                                  'Liabilities and shareholders’ equity:Deposits (includes $21,060 and $22,902 at fair value)': 158257.0,
+                                                                  'Liabilities and shareholders’ equity:Financial instruments sold, but not yet purchased (at fair value)': 108897.0,
+                                                                  'Liabilities and shareholders’ equity:Other liabilities (includes $132 and $268 at fair value)': 17607.0,
+                                                                  'Liabilities and shareholders’ equity:Unsecured long-term borrowings (includes $46,584 and $38,638 at fair value)': 224149.0,
+                                                                  'Liabilities and shareholders’ equity:Unsecured short-term borrowings (includes $16,963 and $16,904 at fair value)': 40502.0,
+                                                                  'Shareholders’ equity:Accumulated other comprehensive income/(loss)': 693.0,
+                                                                  'Shareholders’ equity:Additional paid-in capital': 54005.0,
+                                                                  'Shareholders’ equity:Common stock; 891,356,284 and 884,592,863 shares issued, and 367,741,973 and 374,808,805 shares outstanding': 9.0,
+                                                                  'Shareholders’ equity:Nonvoting common stock; no shares issued and outstanding': 0.0,
+                                                                  'Shareholders’ equity:Preferred stock; aggregate liquidation preference of $11,203 and $11,853': 11203.0,
+                                                                  'Shareholders’ equity:Retained earnings': 100100.0,
+                                                                  'Shareholders’ equity:Share-based awards': 2845.0,
+                                                                  'Shareholders’ equity:Stock held in treasury, at cost; 523,614,313 and 509,784,060 shares': -78670.0,
+                                                                  'Total assets': 931796.0,
+                                                                  'Total liabilities': 841611.0,
+                                                                  'Total liabilities and shareholders’ equity': 931796.0,
+                                                                  'Total shareholders’ equity': 90185.0}}
+    pprint(normalize_tables(all_in_one_dict))
+
 
 if __name__ == '__main__':
+    ticker = 'FB'
     financials_dictio = {}
-    filings_dictio = get_filings_urls_second_layer('AAPL', '10-K')
+    filings_dictio = get_filings_urls_second_layer(ticker, '10-K')
     pprint(filings_dictio)
     for key, value in filings_dictio.items():
         for filing_date, link in value:
@@ -470,23 +459,29 @@ if __name__ == '__main__':
 
     financials_dictio = {k: v for k, v in financials_dictio.items() if v is not None}
     balance_sheet_dict, income_statement_dict, cash_flow_statement_dict = {}, {}, {}
-    columns = list(financials_dictio.keys())
-    for key, value in financials_dictio.items():
-        balance_sheet_dict[key] = {}
-        income_statement_dict[key] = {}
-        cash_flow_statement_dict[key] = {}
-        for kk, vv in value.items():
-            if re.search(fin_reg.balance_sheet_regex, kk, re.IGNORECASE):
-                balance_sheet_dict[key][kk.split('_')[-1]] = vv
-            elif re.search(fin_reg.income_statement_regex, kk, re.IGNORECASE):
-                income_statement_dict[key][kk.split('_')[-1]] = vv
-            elif re.search(fin_reg.cash_flow_statement_regex, kk, re.IGNORECASE):
-                cash_flow_statement_dict[key][kk.split('_')[-1]] = vv
 
-    df = pd.DataFrame.from_dict(balance_sheet_dict)
-    df = df[(df.T != 0).any()]
-    df = df.replace(0, {0: float('Nan')})
-    print(df.to_string())
+    for dictio, regex in zip([balance_sheet_dict, income_statement_dict, cash_flow_statement_dict],
+                           [fin_reg.balance_sheet_regex, fin_reg.income_statement_regex, fin_reg.cash_flow_statement_regex]):
+        for key, value in financials_dictio.items():
+            dictio[key] = {}
+            for kk, vv in value.items():
+                if re.search(regex, kk, re.IGNORECASE):
+                    dictio[key][kk.split('_')[-1]] = vv
 
+    financial_statements_folder_path = 'Financial Statements'
+    if not os.path.exists(financial_statements_folder_path):
+        os.makedirs(financial_statements_folder_path)
+
+    financial_statements_file_path = "{}/{}.xlsx".format(financial_statements_folder_path, ticker)
+    writer = pd.ExcelWriter(financial_statements_file_path, engine='xlsxwriter')
+
+    for sheet_name, dict in zip(['Balance Sheets', 'Income Statements', 'Cash Flow Statements'],
+                                [balance_sheet_dict, income_statement_dict, cash_flow_statement_dict]):
+        with open(financial_statements_file_path, "w") as csv:
+            df = pd.DataFrame.from_dict(dict)
+            df = df[(df.T != 0).any()]
+            df.to_excel(writer, sheet_name=sheet_name)
+
+    writer.save()
+    writer.close()
     # testing()
-
