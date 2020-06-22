@@ -1,18 +1,18 @@
 # MAtilDA
 
-##Step #1: Data Scraping
+## Step #1: Data Scraping
 
-###Financial Statements Scraping
+### Financial Statements Scraping
 
-##Step #2: Company Analysis
+## Step #2: Company Analysis
 In this section, we take the numerical values from the financial statements in order to analyse the companies behind those stocks.
 
-###Valuation Methods
+### Valuation Methods
 There are two main categories when estimating the value of a business
 - **Breakup Value**
 - **Going Concern Value:** Discounted Cash Flow Analysis, Comparable Company Analysis, Precedent Transactions
 
-###Financial Ratios
+### Financial Ratios
 Financial ratios can be used in order to assess a company's performance, typically to track their changes in value over time and to compare them with those of competitors in the industry.
 
 - **Liquidity ratios:** Current Ratio, Acid-Test Ratio, Cash Ratio, Operating Cash Flow Ratio
@@ -21,7 +21,7 @@ Financial ratios can be used in order to assess a company's performance, typical
 - **Profitability ratios:** Gross Margin Ratio, Operating Margin Ratio, Return on Assets Ratio, Return on Equity Ratio
 - **Market value ratios:** Book Value per Share Ratio, Dividend Yield Ratio, Earnings per Share Ratio, Price to Earnings Ratio
 
-###Miscellaneous
+### Miscellaneous
 A plethora of financial models use financial ratios in order to identify whether companies are experiencing financial distress, manipulating their earnings... 
 - **Financial Health Scores:** Piotroski's F-Score, Altman's Z-Score, Ohlson's O-Score
 - **Earnings Manipulation Scores**: Beneish's M-Score, Montier's C-Score, Nichols O-Score
