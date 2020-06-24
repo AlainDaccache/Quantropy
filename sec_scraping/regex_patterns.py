@@ -18,7 +18,7 @@ date_regex = re.compile(r'^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](1
 
 balance_sheet_regex = r'(balance ?sheet|condition)'
 cash_flow_statement_regex = r'(Consolidated(.*?)cash flow)|(cash( ?)flow(s?) statement(s?))'
-income_statement_regex = r'(Consolidated(.*?)statements of (income|earnings))|(income statement)'
+income_statement_regex = r'(Consolidated(.*?)statements of (income|earnings))|(income statement)|(CONSOLIDATED STATEMENTS OF OPERATIONS)'
 
 cash_flow_investing_activities = {
 
@@ -118,6 +118,7 @@ financial_entries_regex_dict = {
                 'Accounts Receivable': {
                     'Gross Accounts Receivable': r'$^', # TODO
                     'Allowances for Doubtful Accounts': r'(?=.*Receivable)(?=.*allowances.*\$(\d+))',
+                    # bug in this one (?=.*Receivable.*allowances).*(\$(\d+))*,
                     'Other Receivables': r'(?=.*Receivable)(?!.*(allowances|net))',
                     'Net Accounts Receivable': r'(?=.*Receivable)(?=.*(allowances|net))',
                 },
@@ -129,7 +130,7 @@ financial_entries_regex_dict = {
                 'Deferred Tax Assets, Current': r'(?=.*(Deferred tax(es)? (assets)|(on income))|(Prepaid taxes))',
 
                 'Other Assets, Current': r'$^',
-                'Total Assets, Current': r'(?=.*Total Current Assets(?!.*[_:]))'
+                'Total Assets, Current': r'(?=.*Total(?!.*[_]))(?=.*Current(?!.*[_]))(?=.*Assets(?!.*[_:]))'
             },
             'Non Current Assets': {
 
@@ -147,8 +148,8 @@ financial_entries_regex_dict = {
                     'Intangible Assets, Net (Excluding Goodwill)': r'(?=.*(other|net))(?=.*intangible assets)',
                     'Total Intangible Assets': r'(?!.*other)(?!.*goodwill)(?!.*net)(?=.*intangible assets)(?!.*goodwill)(?!.*other)(?!.*net)',
                 },
-                'Other Non Current Assets': r'$^',
-                'Total Non Current Assets': r'(?=.*non[- ]?current)(?=.*total)(?=.*assets)',
+                'Other Non Current Assets': r'(?=.*Other)(?=.*assets(?!.*[_]))((?!.*current)|(?=.*non[- ]?current))',
+                'Total Non Current Assets': r'(?=.*Total(?!.*[_]))(?=.*assets(?!.*[_]))(?=.*non[- ]?current(?!.*[_]))',
             },
             'Total Assets': r'(?=.*Total Assets(?!.*[_:]))'
         },
@@ -156,27 +157,27 @@ financial_entries_regex_dict = {
             'Liabilities': {
                 'Current Liabilities': {
                     'Short-Term Debt': r'(?=.*(Commercial Paper|Current Debt))',
-                    'Long-term Debt, Current Maturities': r'(?=.*(Long-)?Term Debt|Loans and notes payable)',
-                    'Accounts Payable, Current': r'(?=.*Payable)(?!.*non-?current)',
+                    'Long-term Debt, Current Maturities': r'((?=.*current)|(?!.*non[- ]?current))(?=.*(Long-)?Term Debt|Loans and notes payable)',
+                    'Accounts Payable, Current': r'(?=.*Payable)((?!.*current)|(?=.*non[- ]?current))',
                     'Operating Lease, Liability, Current': r'(?=.*Operating lease liabilities, current)',
-                    'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue))',
+                    'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue))((?=.*current)|(?!.*non[- ]?current))',
                     'Employee-related Liabilities, Current': r'(?=.*Accrued Compensation)',
                     'Accrued Income Taxes': r'Accrued(?=.*Income)(?=.*Taxes)',
                     'Accrued Liabilities, Current': r'(?=.*Accrued)(?=.*(Expense|Liabilities))',
                     'Income Taxes Payable': r'(?=.*Income taxes payable)|(?=.*Short-term Income taxes)',
-                    'Other Current Liabilities': r'$^',
+                    'Other Current Liabilities': r'(?=.*Other liabilities)((?=.*current)|(?!.*non[- ]?current))',
                     'Total Current Liabilities': r'(?=.*Total Current Liabilities)',
                 },
                 'Non Current Liabilities': {
                     'Deferred Tax Liabilities': r'(Deferred(?=.*Income)(?=.*Taxes))|(Deferred tax liabilities)',
                     # this debt is due after one year in contrast to current maturities which are due within this year
-                    'Long-term Debt, Noncurrent Maturities': r'(?=.*Long-term (borrowings|debt))(?!.*within)',
-                    'Operating Lease, Liability, Noncurrent': r'(Operating lease liabilities(?!.*? current))',
+                    'Long-term Debt, Noncurrent Maturities': r'(?=.*Long-term (borrowings|debt))(?!.*within)((?!.*current)|(?=.*non[- ]?current))',
+                    'Operating Lease, Liability, Noncurrent': r'(?=.*Operating lease (liabilities|liability))((?!.*current)|(?=.*non[- ]?current))',
                     'Liability, Defined Benefit Plan, Noncurrent': r'Employee related obligations',
                     'Accrued Income Taxes, Noncurrent': r'(Long-term ((income taxes)|(taxes payable)))',
                     'Deferred Revenue, Noncurrent': r'Deferred revenue(.*?)non-?current',
                     'Long-Term Unearned Revenue': r'(Long-term unearned revenue)',
-                    'Other Liabilities, Noncurrent': r'$^',
+                    'Other Liabilities, Noncurrent': r'(?=.*Other(?!.*[_:]))(?=.*liabilities(?!.*[_:]))((?!.*current)|(?=.*non[- ]?current))',
                     'Total Long-Term Liabilities': r'(?=.*Non-current liabilities)' # total liabilities - total current liabilities
                 },
                 'Total Liabilities': r'(?=.*Total Liabilities)(?!.*Equity$)'
@@ -194,7 +195,7 @@ financial_entries_regex_dict = {
                 'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss))',
                 'Deferred Stock Compensation': r'(?=.*Deferred stock compensation)',
                 'Minority Interest': r'(?=.*Noncontrolling interests)',
-                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total shareholders[’\'] equity)',
+                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total (shareholders|stockholders)[’\'] equity)',
             },
             'Total Liabilities and Shareholders\' Equity': r'(?=.*Total Liabilities)(?=.*Equity)'
         },
@@ -208,8 +209,7 @@ financial_entries_regex_dict = {
         },
 
         'Costs and Expenses': {
-            'Cost of Goods and Services Sold': r'(?=.*Cost of (goods sold|sales|revenue))',
-            'Gross Margin': r'(?=.*Gross margin)',
+            'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales|goods|services))',
             'Provision for Loan, Lease, and Other Losses': r'(?=.*Provision for credit losses)',
             'Operating Expenses': {
                 'Research and Development Expense': r'(?=.*Research and development)',
@@ -232,28 +232,28 @@ financial_entries_regex_dict = {
         'Non-Operating Income (Expense)': {
             'Earnings Before Interest and Taxes (EBIT)': r'$^',
             'Interest Income (Expense)': {
-                'Interest Income': r'(?=.*Interest income(?!.*[_:]))(?!.*net(?!.*[_:]))',
-                'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net(?!.*[_:]))', # nope, debug
+                'Investment Income, Interest': r'(?=.*Interest income(?!.*[_:]))(?!.*net(?!.*[_:]))',
+                'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net)', # nope, debug
                 'Interest Income (Expense), Net': r'(?=.*Interest income(?!.*[_:]))(?=.*net(?!.*[_:]))',
             },
-            'Dividend Income': '$^',
-            'Investment Profits (Losses)': '$^',
-            'Gains (Losses) Incurred By Foreign Exchange': '$^',
-            'Asset Write-Downs': '$^',
-            'Non-Operating Income (Expense)': r'(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
+
+            # hardcoded for Note 13.Interest and other income, net_Other
+            'Other Nonoperating Income (Expense)': '(?=.*interest)(?=.*other income)(?=.*other(?!.*[_]))',
+            # below is for Interest and other income, net
+            'Non-Operating Income (Expense)': r'(?=.*interest(?!.*[_:]))(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
         },
 
         'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before provision for income taxes|Pre-tax earnings))',
         'Income Tax Expense (Benefit)': r'(?=.*Provision for (income )?taxes)',
-        'Net Income (Loss)': r'(?=.*Net (income|earnings))',
+        'Net Income (Loss)': r'(?=.*Net (income|earnings)$)',
         'Undistributed Earnings (Loss) Allocated to Participating Securities, Basic': r'(?=.*Net income attributable to participating securities)',
         'Net Income Loss Attributable to Noncontrolling (Minority) Interest': r'(?=.*Net Income Attributable to Noncontrolling Interest)',
         'Preferred Stock Dividends, Income Statement Impact': r'(?=.*Preferred stock dividends)',
         'Net Income (Loss) Available to Common Stockholders, Basic': r'(?=.*Net (income|earnings) (attributable|applicable) to.*common (stockholders|shareholders))'
     },
     'Cash Flow Statement': {
-        'Operating Activities': r'(?=.*Operating activities(?!.*[_:]))(?=.*net(?!.*[_:]))',
-        'Investing Activities': r'(?=.*Investing activities(?!.*[_:]))(?=.*net(?!.*[_:]))',
-        'Financing Activities': r'(?=.*Financing activities(?!.*[_:]))(?=.*net(?!.*[_:]))'
+        'Operating Activities': r'(?=.*Operating activities(?!.*[_:]))(?=.*cash(?!.*[_:]))',
+        'Investing Activities': r'(?=.*Investing activities(?!.*[_:]))(?=.*cash(?!.*[_:]))',
+        'Financing Activities': r'(?=.*Financing activities(?!.*[_:]))(?=.*(net )?cash(?!.*[_:]))'
     }
 }
