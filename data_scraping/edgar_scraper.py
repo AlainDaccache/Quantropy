@@ -4,6 +4,8 @@ import re
 import traceback
 from datetime import datetime
 from pprint import pprint
+from time import sleep
+
 import pandas as pd
 import requests
 import unicodedata
@@ -561,6 +563,7 @@ if __name__ == '__main__':
     company_tickers = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TSLA', 'NFLX',
                        'GS', 'MS', 'JPM', 'WFC', 'C', 'BAC',
                        'KO', 'PG', 'JNJ', 'DIS', 'PEP', 'VZ']
-    for ticker in company_tickers[3:6]:
+    for ticker in company_tickers[:6]:
         scrape_stock_prices(ticker)
-        scrape_financial_statements(ticker, '10-K')
+        sleep(2)
+        # scrape_financial_statements(ticker, '10-K')

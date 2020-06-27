@@ -98,7 +98,7 @@ It makes sense to invest in a portfolio of assets that would maximize returns an
 
 #### Unsystematic Risk
 
-Unsystematic risk, or that associated to a specific company or industry), can be reduced by diversifying across assets. 
+Unsystematic risk, or that associated to a specific company or industry, can be reduced by diversifying across assets. 
 
 Markowitz's pioneering work on **Modern Portfolio Theory** formalizes and extends diversification, using the variance of asset prices as a proxy for risk.  Its key insight is that an asset's risk and return should not be assessed by itself, but by how it contributes to a portfolio's overall risk and return. In other words, less correlation between pairs of assets would imply less risk of the overall portfolio. 
 
@@ -106,7 +106,7 @@ Improvements on this theory, such as *Post-Modern Portfolio Theory* and *Blackâ€
 
 #### Systematic Risk
 
-Systematic risk, or that inherent to the entire market or market segment), can be reduced by employing **market-neutral strategies**. For example, in *pairs trading*, we would look for highly historically correlated assets, and when the correlation would temporarily weaken, we short the outperforming stock and long the underperforming one. The weights allocated would be such that the weighted average beta is zero, meaning the portfolio has no market exposure.
+Systematic risk, or that inherent to the entire market or market segment, can be reduced by employing **market-neutral strategies**. For example, in *pairs trading*, we would look for highly historically correlated assets, and when the correlation would temporarily weaken, we short the outperforming stock and long the underperforming one. The weights allocated would be such that the weighted average beta is zero, meaning the portfolio has no market exposure.
 
 ## Step #4: Backtesting and Tracking
 

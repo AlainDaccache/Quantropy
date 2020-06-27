@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 import numpy as np
 import xlrd
 
+
 def get_date_index(df, date, date_axis):
     dates_values = df.columns if date_axis == 'column' else df.index.values
     if isinstance(dates_values[0], str):
@@ -20,6 +21,7 @@ def get_date_index(df, date, date_axis):
             return next((index for (index, item) in enumerate(dates_values) if item >= date), -1)
     else:
         return 0
+
 
 def save_into_csv(stock, df, sheet_name):
     financials_path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, stock)
