@@ -25,20 +25,15 @@ def get_date_index(df, date, date_axis):
 
 def save_into_csv(stock, df, sheet_name):
     financials_path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, stock)
-    if os.path.exists(financials_path):
-        excelBook = load_workbook(financials_path)
-        with pd.ExcelWriter(financials_path, engine='openpyxl') as writer:
-                # Save your file workbook as base
-                writer.book = excelBook
-                writer.sheets = dict((ws.title, ws) for ws in excelBook.worksheets)
-                df.to_excel(writer, sheet_name)
-                writer.save()
-                writer.close()
-    else:
-        with pd.ExcelWriter(financials_path, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name)
-            writer.save()
-            writer.close()
+
+    with pd.ExcelWriter(financials_path, engine='openpyxl') as writer:
+        if os.path.exists(financials_path):
+            excel_book = load_workbook(financials_path)
+            writer.book = load_workbook(financials_path)
+            writer.sheets = dict((ws.title, ws) for ws in excel_book.worksheets)
+        df.to_excel(writer, sheet_name)
+        writer.save()
+        writer.close()
 
 
 def read_df_from_csv(stock, sheet_name):

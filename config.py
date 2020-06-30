@@ -14,8 +14,8 @@ quarterly = '10-Q'
 balance_sheet_quarterly = '{} {}'.format(balance_sheet_name, quarterly)
 balance_sheet_yearly = '{} {}'.format(balance_sheet_name, yearly)
 
-income_statement_quarterly = '{} {}'.format(balance_sheet_name, quarterly)
-income_statement_yearly = '{} {}'.format(balance_sheet_name, yearly)
+income_statement_quarterly = '{} {}'.format(income_statement_name, quarterly)
+income_statement_yearly = '{} {}'.format(income_statement_name, yearly)
 
 cash_flow_statement_quarterly = '{} {}'.format(cash_flow_statement_name, quarterly)
 cash_flow_statement_yearly = '{} {}'.format(cash_flow_statement_name, yearly)

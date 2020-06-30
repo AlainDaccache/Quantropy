@@ -1,6 +1,6 @@
 import math
 from datetime import datetime, timedelta
-import company_analysis.financial_statements_entries as fi
+import company_analysis.fundamental_analysis.financial_statements_entries as fi
 import pandas as pd
 from abc import ABC, abstractmethod
 import data_scraping.excel_helpers as excel
@@ -68,7 +68,7 @@ class MovingAverage:
         self.ma_type = ma_type
         self.shift = shift
         self.time_series = time_series
-        self.moving_average = self.all_series_ma()
+        self.moving_average = pd.Series()
 
 
 class Strategy(ABC):
@@ -93,10 +93,6 @@ class Strategy(ABC):
         pass
 
     @abstractmethod
-    def stock_selection_strategy(self):
-        pass
-
-    @abstractmethod
     def weight_of_portfolio_for_trade(self):
         pass
 
@@ -104,23 +100,20 @@ class Strategy(ABC):
 class MovingAverageCrossover(Strategy):
     def __init__(self, short_term_moving_average: MovingAverage, long_term_moving_average: MovingAverage):
         super().__init__()
-        self.short_term_moving_average = short_term_moving_average
-        self.long_term_moving_average = long_term_moving_average
+        self.short_term_moving_average = short_term_moving_average.moving_average
+        self.long_term_moving_average = long_term_moving_average.moving_average
 
     def long_entry_condition(self):
-        return self.short_term_moving_average.moving_average > self.long_term_moving_average.moving_average
+        return self.short_term_moving_average[-1] > self.long_term_moving_average[-1]
 
     def long_exit_condition(self):
-        return self.short_term_moving_average.moving_average < self.long_term_moving_average.moving_average
+        return self.short_term_moving_average[-1] < self.long_term_moving_average[-1]
 
     def short_entry_condition(self):
-        return self.short_term_moving_average.moving_average < self.long_term_moving_average.moving_average
+        return self.short_term_moving_average[-1] < self.long_term_moving_average[-1]
 
     def short_exit_condition(self):
-        return self.short_term_moving_average.moving_average > self.long_term_moving_average.moving_average
-
-    def stock_selection_strategy(self):
-        return ['AAPL', 'AMZN']
+        return self.short_term_moving_average > self.long_term_moving_average
 
     def weight_of_portfolio_for_trade(self):
         return 0.1
@@ -196,18 +189,19 @@ class Simulation:
 
     def simulate(self):
         strategy = None
-
+        coll = pd.Series()
         for stock in self.stock_universe:
 
             if isinstance(self.trading_strategy, MovingAverageCrossover):
+                self.trading_strategy.short_term_moving_average.append()
                 moving_average_1 = MovingAverage(window=self.trading_strategy.short_term_moving_average.window,
                                                  ma_type=self.trading_strategy.short_term_moving_average.ma_type,
                                                  time_series=stock.price_data)
                 moving_average_2 = MovingAverage(window=self.trading_strategy.long_term_moving_average.window,
                                                  ma_type=self.trading_strategy.long_term_moving_average.ma_type,
                                                  time_series=stock.price_data)
-                strategy = MovingAverageCrossover(short_term_moving_average=moving_average_1,
-                                                  long_term_moving_average=moving_average_2)
+
+                coll[stock.ticker] = (moving_average_1, moving_average_2)
 
         for date in pd.date_range(start=self.start_date, end=self.end_date):
             self.update_from_last_day(date)
@@ -215,9 +209,15 @@ class Simulation:
 
             for stock in self.stock_universe:
 
-                portfolio_weight = round_shares_from_portfolio_weight(stock=stock,
-                                                                      weight=self.trading_strategy.weight_of_portfolio_for_trade(),
-                                                                      balance=self.portfolio.balance)
+                if isinstance(self.trading_strategy, MovingAverageCrossover):
+                    date_index = next((index for (index, item) in enumerate(all_dates) if item >= date), -1)
+                    moving_average_1 = coll[stock][0].moving_average[moving_average_1.moving_average.index]
+                    moving_average_2 = coll[stock][1].moving_average[moving_average_2.moving_average.index]
+                    strategy = MovingAverageCrossover(moving_average_1, moving_average_2)
+                    portfolio_weight = round_shares_from_portfolio_weight(stock=stock,
+                                                                          weight=self.trading_strategy.weight_of_portfolio_for_trade(),
+                                                                          balance=self.portfolio.balance)
+
                 if strategy.long_entry_condition() and stock not in stocks_in_portfolio:
                     open_position(self.portfolio, Trade(stock=stock, direction=True,
                                                         shares=portfolio_weight, date=date))
@@ -234,7 +234,7 @@ class Simulation:
 # apple = Stock('AAPL')
 # trade = Trade(apple, True, 100, datetime.now())
 # portfolio = Portfolio(10000, [trade])
-moving_average_1 = MovingAverage(window=50, ma_type='sma', shift=0)
-moving_average_2 = MovingAverage(window=100, ma_type='sma', shift=0)
-moving_average_crossover = MovingAverageCrossover(moving_average_1, moving_average_2)
-Simulation(0, moving_average_crossover).simulate()
+# moving_average_1 = MovingAverage(window=50, ma_type='sma', shift=0)
+# moving_average_2 = MovingAverage(window=100, ma_type='sma', shift=0)
+# moving_average_crossover = MovingAverageCrossover(moving_average_1, moving_average_2)
+# Simulation(0, moving_average_crossover).simulate()

@@ -49,144 +49,154 @@ def read_cash_flow_statement_entry(stock_ticker, entry_name, date=datetime.now()
                                 entry_name)
 
 
-def cash_and_cash_equivalents(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+'''
+Balance Sheet: preferably get the most recent (because it's a statement of position), 
+so quarterly instead of yearly by default, and ttm if yearly by default
+'''
+
+
+def cash_and_cash_equivalents(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Cash and Cash Equivalents', date, annual, ttm)
 
 
-def current_marketable_securities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_marketable_securities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Marketable Securities Current', date, annual, ttm)
 
 
-def gross_accounts_receivable(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def gross_accounts_receivable(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Gross Accounts Receivable', date, annual, ttm)
 
 
-def allowances_for_doubtful_accounts(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def allowances_for_doubtful_accounts(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Allowances for Doubtful Accounts', date, annual, ttm)
 
 
-def net_accounts_receivable(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def net_accounts_receivable(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Net Accounts Receivable', date, annual, ttm)
 
 
-def current_prepaid_expenses(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_prepaid_expenses(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Prepaid Expense, Current', date, annual, ttm)
 
 
-def net_inventory(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def net_inventory(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Inventory, Net', date, annual, ttm)
 
 
-def current_income_taxes_receivable(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_income_taxes_receivable(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Income Taxes Receivable, Current', date, annual, ttm)
 
 
-def assets_held_for_sale(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def assets_held_for_sale(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Assets Held-for-sale', date, annual, ttm)
 
 
-def current_deferred_tax_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_deferred_tax_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Deferred Tax Assets, Current', date, annual, ttm)
 
 
-def other_current_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def other_current_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Other Assets, Current', date, annual, ttm)
 
 
-def current_total_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_total_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Assets, Current', date, annual, ttm)
 
 
-def non_current_marketable_securities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def non_current_marketable_securities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Marketable Securities Non Current', date, annual, ttm)
 
 
-def net_property_plant_equipment(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def net_property_plant_equipment(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Property, Plant and Equipment, Net', date, annual, ttm)
 
 
-def operating_lease_right_of_use_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def operating_lease_right_of_use_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Operating Lease Right-of-use Assets', date, annual, ttm)
 
 
-def non_current_deferred_tax_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def non_current_deferred_tax_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Deferred Tax Assets Non Current', date, annual, ttm)
 
 
-def goodwill(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def goodwill(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Goodwill', date, annual, ttm)
 
 
-def net_intangible_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def net_intangible_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Intangible Assets, Net (Excluding Goodwill)', date, annual, ttm)
 
 
-def total_intangible_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def total_intangible_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Intangible Assets', date, annual, ttm)
 
 
-def other_non_current_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def other_non_current_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Other Non Current Assets', date, annual, ttm)
 
 
-def total_non_current_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def total_non_current_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Non Current Assets', date, annual, ttm)
 
 
-def total_assets(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def total_assets(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Assets', date, annual, ttm)
 
 
-def long_term_debt_current_maturities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def long_term_debt_current_maturities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Long-term Debt, Current Maturities', date, annual, ttm)
 
 
-def current_accounts_payable(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_accounts_payable(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Accounts Payable, Current', date, annual, ttm)
 
 
-def current_deferred_revenues(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_deferred_revenues(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Current Deferred Revenues', date, annual, ttm)
 
 
-def current_accrued_liabilities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_accrued_liabilities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Accrued Liabilities, Current', date, annual, ttm)
 
 
-def current_total_liabilities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def current_total_liabilities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Current Liabilities', date, annual, ttm)
 
 
-def total_non_current_liabilities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
-    return read_balance_sheet_entry(stock_ticker, 'Total Long-Term Liabilities', date, annual, ttm)
+def total_non_current_liabilities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
+    try:
+        return read_balance_sheet_entry(stock_ticker, 'Total Long-Term Liabilities', date, annual, ttm)
+    except:
+        return read_balance_sheet_entry(stock_ticker, 'Total Liabilities', date, annual, ttm) -\
+               read_balance_sheet_entry(stock_ticker, 'Total Current Liabilities', date, annual, ttm)
 
 
-def total_liabilities(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def total_liabilities(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Total Liabilities', date, annual, ttm)
 
 
-def preferred_stock_value(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def preferred_stock_value(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Preferred Stock, Value, Issued', date, annual, ttm)
 
 
-def additional_paid_in_capital(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def additional_paid_in_capital(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Additional Paid in Capital', date, annual, ttm)
 
 
-def retained_earnings(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def retained_earnings(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Retained Earnings (Accumulated Deficit)', date, annual, ttm)
 
 
-def accumulated_other_comprehensive_income(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def accumulated_other_comprehensive_income(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Accumulated Other Comprehensive Income (Loss)', date, annual, ttm)
 
 
-def total_shares_outstanding(stock_ticker, date=datetime.now(), diluted=True, annual=True, ttm=False):
+def total_shares_outstanding(stock_ticker, date=datetime.now(), diluted=True, annual=False, ttm=True):
     entry = 'Weighted Average Number of Shares Outstanding, Diluted' if diluted else 'Weighted Average Number of Shares Outstanding, Basic'
     return read_balance_sheet_entry(stock_ticker, entry, date, annual, ttm)
 
 
-def total_shareholders_equity(stock_ticker, date=datetime.now(), annual=True, ttm=False):
+def total_shareholders_equity(stock_ticker, date=datetime.now(), annual=False, ttm=True):
     return read_balance_sheet_entry(stock_ticker, 'Stockholders\' Equity Attributable to Parent', date, annual, ttm)
 
 

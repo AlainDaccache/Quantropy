@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import company_analysis.financial_statements_entries as fi
-import company_analysis.financial_metrics as me
+import company_analysis.fundamental_analysis.financial_statements_entries as fi
+import company_analysis.fundamental_analysis.financial_metrics as me
 import numpy as np
 
 '''
@@ -40,14 +40,22 @@ Leverage ratios measure the amount of capital that comes from debt. In other wor
 
 # The debt ratio measures the relative amount of a company’s assets that are provided from debt
 # Debt ratio = Total liabilities / Total assets
-def debt_ratio(stock, date=datetime.now(), annual=True, ttm=True):
-    return fi.total_liabilities(stock, date, annual, ttm) / fi.total_assets(stock, date, annual, ttm)
+def debt_to_assets(stock, date=datetime.now(), annual=True, ttm=True, long_term=False):
+    numerator = fi.total_non_current_liabilities(stock, date, annual, ttm) if long_term else fi.total_liabilities(stock, date, annual, ttm)
+    return numerator / fi.total_assets(stock, date, annual, ttm)
 
 
 # The debt to equity ratio calculates the weight of total debt and financial liabilities against shareholders’ equity
 # Debt to equity ratio = Total liabilities / Shareholder’s equity
-def debt_to_equity(stock, date=datetime.now(), annual=True, ttm=True):
-    return fi.total_liabilities(stock, date, annual, ttm) / fi.total_shareholders_equity(stock, date, annual, ttm)
+def debt_to_equity(stock, date=datetime.now(), annual=True, ttm=True, long_term=False):
+    numerator = fi.total_non_current_liabilities(stock, date, annual, ttm) if long_term else fi.total_liabilities(stock, date, annual, ttm)
+    return numerator / fi.total_shareholders_equity(stock, date, annual, ttm)
+
+
+def debt_to_capital(stock, date=datetime.now(), annual=True, ttm=True, long_term=False):
+    numerator = fi.total_non_current_liabilities(stock, date, annual, ttm) if long_term else fi.total_liabilities(stock, date, annual, ttm)
+    return numerator / (fi.total_shareholders_equity(stock, date, annual, ttm)
+                                                             + fi.total_liabilities(stock, date, annual, ttm))
 
 
 # The interest coverage ratio shows how easily a company can pay its interest expenses
@@ -160,7 +168,12 @@ def earnings_per_share(stock, date=datetime.now(), annual=True, ttm=True, dilute
 # The price-earnings ratio compares a company’s share price to its earnings per share:
 # Price-earnings ratio = Share price / Earnings per share
 def price_to_earnings(stock, date=datetime.now(), annual=True, ttm=True, diluted=True, deduct_operating_income=False, deduct_preferred_dividends=True):
-    return me.market_price(stock, date) / earnings_per_share(stock, date, ttm, diluted, deduct_operating_income, deduct_preferred_dividends)
+    return me.market_price(stock, date) / earnings_per_share(stock, date, annual, ttm, diluted, deduct_operating_income, deduct_preferred_dividends)
+
+
+def price_to_earnings_to_growth(stock, date=datetime.now(), annual=True, ttm=True, diluted=True, deduct_operating_income=False, deduct_preferred_dividends=True):
+    eps_last_5_years = [earnings_per_share(stock, date-timedelta(365*i), annual, ttm, diluted, deduct_operating_income, deduct_preferred_dividends) for i in range(5)]
+    return price_to_earnings(stock, date, annual, ttm, diluted, deduct_operating_income, deduct_preferred_dividends) / average_growth(eps_last_5_years)
 
 
 # inverse of price to earnings
@@ -191,3 +204,6 @@ def average_growth(list): # the list starts at most recent (so growth is backwar
     for i in range(len(list)-1):
         growths.append((list[i]-list[i+1])/list[i+1])
     return np.mean(growths)
+
+if __name__ == '__main__':
+    print(current_ratio('GOOG', ttm=False))

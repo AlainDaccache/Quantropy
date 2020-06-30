@@ -112,7 +112,7 @@ financial_entries_regex_dict = {
                         'Cash and Cash Equivalents': r'(?!.*marketable securities)(?=.*cash and cash equivalents)(?!.*marketable securities)',
                     },
 
-                    'Marketable Securities Current': r'(?!.*non-current)(?=.*(current|short-term))(?=.*(marketable securities|investments))',
+                    'Marketable Securities Current': r'(?!.*non-current)(?=.*(current|short-term))(?=.*(marketable securities|investments))', # (?!.*cash.*_)
                     'Cash and Short Term Investments': r'(?=.*cash)(?=.*(marketable securities|short-term investments))'
                 },
                 'Accounts Receivable': {
@@ -137,7 +137,7 @@ financial_entries_regex_dict = {
 
                 'Property, Plant and Equipment': {
                     'Gross Property, Plant and Equipment': r'(?=.*Property)(?=.*(Plant|Land))(?=.*Equipment)(?=.*Gross)',
-                    'Accumulated Depreciation and Amortization': r'(?=.*Depreciation)',
+                    'Accumulated Depreciation and Amortization': r'(?=.*(Property|Equipment).*_)(?=.*accumulated depreciation(?!.*[_]))',
                     'Property, Plant and Equipment, Net': r'(?=.*Property)(?=.*(Plant|Land))?(?=.*Equipment)(?=.*Net)',
                 },
                 'Operating Lease Right-of-use Assets': r'Operating lease right-of-use assets',
@@ -187,9 +187,9 @@ financial_entries_regex_dict = {
                     'Common Stock, Value, Issued': r'(?=.*Common stock)(?!.*treasury)(?!.*additional paid[- ]in capital)',
                     'Additional Paid in Capital': r'(?!.*Common stock)(?=.*additional paid[- ]in capital)',
                     'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock and additional paid[- ]in capital)',
-                'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?=.*basic(?!.*[_:]))(?!.*diluted)(?!.*earnings(?!.*[_]))',
+                'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?=.*basic)(?!.*earnings(?!.*[_]))',
                 'Weighted Average Number Diluted Shares Outstanding Adjustment': r'(?=.*dilutive)(?=.*effect(?!.*[_:]))',
-                'Weighted Average Number of Shares Outstanding, Diluted': r'(?=.*shares)(?=.*Diluted(?!.*[_:]))(?!.*earnings(?!.*[_]))',
+                'Weighted Average Number of Shares Outstanding, Diluted': r'(?=.*shares)(?=.*diluted)(?!.*earnings(?!.*[_]))',
                 },
 
                 'Treasury Stock, Value': r'Treasury stock',
@@ -206,7 +206,7 @@ financial_entries_regex_dict = {
         'Revenues': {
             # 'Service Sales': '(?=.*Sales)(?=.*Service(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
             # 'Product Sales': '(?=.*Sales)(?=.*Product(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
-            'Net Sales': r'(?=.*(Net sales|Revenue)(?!.*[_:]))',
+            'Net Sales': r'(?=.*(Net sales|Revenue)(?!.*[_:]))(?!.*Cost)',
             'Noninterest Income': r'(?=.*Non[- ]?interest (revenue|income))',
         },
 
@@ -214,8 +214,9 @@ financial_entries_regex_dict = {
             'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales|goods|services)(?!.*[_:]))',
             'Provision for Loan, Lease, and Other Losses': r'(?=.*Provision for credit losses)',
             'Operating Expenses': {
-                'Research and Development Expense': r'(?=.*Research and development)',
+                'Research and Development Expense': r'(?=.*(Research|Technology) and development)',
                 'Selling, General and Administrative': {
+                    'Marketing Expense': r'(?!.*(Sales|selling))(?=.*Marketing)',
                     'Selling and Marketing Expense': r'(?=.*(Sales|Selling))(?=.*Marketing)',
                     'General and Administrative Expense': r'(?=.*General)(?=.*Administrative)',
                     'Selling, General and Administrative': r'(?=.*Selling, general and administrative)'
@@ -224,7 +225,7 @@ financial_entries_regex_dict = {
                 'Communications and Information Technology': r'(?=.*Communications and technology)',
                 'Other Operating Expenses': r'$^', # TODO
                 'EBITDA': r'$^',
-                'Depreciation, Depletion and Amortization, Nonproduction': r'(?=.*Depreciation and amortization(?!.*[_:]))',
+                'Depreciation, Depletion and Amortization, Nonproduction': r'(?!.*accumulated)(?=.*Depreciation(?!.*[_:]))(?=.*amortization(?!.*[_:]))',
                 'Total Operating Expenses': r'(?=.*Total operating expenses)'
             },
             'Costs and Expenses': r'(?=.*Total costs and expenses)'
@@ -236,21 +237,21 @@ financial_entries_regex_dict = {
 
             'Interest and Dividend Income': {
                 'Interest Income (Expense)': {
-                'Interest Income': r'(?=.*Interest(?!.*[_:]))(income(?!.*[_:]))(?!.*dividend(?!.*[_:]))(?!.*net(?!.*[_:]))',
-                'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net)', # nope, debug
-                'Interest Income (Expense), Net': r'(?=.*Interest income(?!.*[_:]))(?=.*net(?!.*[_:]))',
+                    'Interest Income': r'(?=.*Interest(?!.*[_:]))(?=.*income(?!.*[_:]))(?!.*dividend(?!.*[_:]))(?!.*net(?!.*[_:]))',
+                    'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net(?!.*[_:]))',
+                    'Interest Income (Expense), Net': r'(?=.*Interest income(?!.*[_:]))(?=.*net(?!.*[_:]))',
                 },
                 'Dividend Income': r'(?=.*Dividend(?!.*[_:]))(income(?!.*[_:]))(?!.*interest(?!.*[_:]))(?!.*net(?!.*[_:]))',
                 'Interest and Dividend Income': r'(?=.*Interest(?!.*[_:]))(income(?!.*[_:]))(?=.*dividend(?!.*[_:]))(?!.*net(?!.*[_:]))'
             },
             # hardcoded for Note 13.Interest and other income, net_Other
-            'Other Nonoperating Income (Expense)': '(?=.*interest)(?=.*other income)(?=.*other(?!.*[_]))',
+            'Other Nonoperating Income (Expense)': '(?=.*other income)(?=.*other(?!.*[_]))',
             # below is for Interest and other income, net
             'Non-Operating Income (Expense)': r'(?=.*interest(?!.*[_:]))(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
         },
 
-        'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before provision for income taxes|Pre-tax earnings))',
-        'Income Tax Expense (Benefit)': r'(?=.*Provision for (income )?taxes)',
+        'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before (?=.*Provision for)?(?=.*(income )?taxes)|Pre-tax earnings))',
+        'Income Tax Expense (Benefit)': r'(?=.*Provision for)(?=.*(income )?taxes)',
         'Net Income (Loss)': r'(?=.*Net (income|earnings)$)',
         'Undistributed Earnings (Loss) Allocated to Participating Securities, Basic': r'(?=.*Net income attributable to participating securities)',
         'Net Income Loss Attributable to Noncontrolling (Minority) Interest': r'(?=.*Net Income Attributable to Noncontrolling Interest)',

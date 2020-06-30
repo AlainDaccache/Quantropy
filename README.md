@@ -1,7 +1,7 @@
 # MAtilDA Overview
-This project is the culmination of three years of learning about the financial markets, and a year of (on/off) developing a platform in order to provide a comprehensive and unified approach to trading the financial markets
+This project is the culmination of three years of learning about the financial markets, and a year of (on/off) developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
 
-## Step #1: Data Scraping
+## Step #1: Data Gathering
 
 Relevant historical data points are collected
 
@@ -24,9 +24,16 @@ Financial ratios are used in order to assess a company's performance, typically 
 - **Market value ratios:** Book Value per Share Ratio, Dividend Yield Ratio, Earnings per Share Ratio, Price to Earnings Ratio
 
 #### Valuation Methods
-There are two main categories when estimating the value of a business.
-- **Breakup Value**
-- **Going Concern Value:** Discounted Cash Flow Analysis, Comparable Company Analysis, Precedent Transactions
+There are two main categories when calculating the fair value of a business.
+
+##### Absolute (Intrinsic) Valuation Models
+- **Dividend discount models:** including the Gordon growth model and multi-stage dividend discount model
+- **Discounted cash flow (DCF)**
+- **Residual income**
+- **Asset-based models**
+
+##### Relative Valuation Models
+- Comparable models: calculating multiples or ratios, such as the price-to-earnings or P/E multiple, and comparing them to the multiples of other comparable firms.
 
 #### Scoring Systems
 A plethora of financial models use financial ratios in order to identify whether companies are experiencing financial distress, manipulating their earnings... 
@@ -39,11 +46,13 @@ In this section, we take the prices and volumes scraped from above.
 
 #### Technical Indicators
 
-Notice some indicators fit into more than one category. There are many, many others, but the following are the **most** widely used:
-- **Trend Indicators:** Moving Averages (MA) (Simple, Smoothed, Exponential, Double Exponential, Kaufman's Adaptive), Moving Average Convergence Divergence (MACD), Ichimoku Kinko Hyo, Relative Strength Index (RSI), Average Directional Index (ADX), Bollinger Bands®, Parabolic SAR, On-Balance Volume (OBV)
-- **Momentum Oscillators:** Moving Average Convergence Divergence (MACD), Ichimoku Kinko Hyo, Relative Strength Index (RSI), Average Directional Index (ADX), Stochastic Oscillator
-- **Volume Indicators**: On-Balance Volume (OBV), Chaikin Money Flow, and Klinger Volume Oscillator
-- **Volatility Indicators:** Volatility Index (VIX), Average True Range (ATR), and Bollinger Bands®
+|           |   Indicators
+|:----------:|:---------:|
+|Trend|Moving Average Convergence Divergence (MACD)<br />Average Directional Movement Index (ADX)<br />Vortex Indicator (VI)<br />Trix (TRIX)<br />Mass Index (MI)<br />Commodity Channel Index (CCI)<br />Detrended Price Oscillator (DPO)<br />KST Oscillator (KST)<br />Ichimoku Kinkō Hyō (Ichimoku)<br />Parabolic Stop And Reverse (Parabolic SAR)|
+|Momentum|Money Flow Index (MFI)<br />Relative Strength Index (RSI)<br />True strength index (TSI)<br />Ultimate Oscillator (UO)<br />Stochastic Oscillator (SR)<br />Williams %R (WR)<br />Awesome Oscillator (AO)<br />Kaufman's Adaptive Moving Average (KAMA)<br />Rate of Change (ROC)|
+|Volume|Accumulation/Distribution Index (ADI)<br />On-Balance Volume (OBV)<br />Chaikin Money Flow (CMF)<br />Force Index (FI)<br />Ease of Movement (EoM, EMV)<br />Volume-price Trend (VPT)<br />Negative Volume Index (NVI)<br />Volume Weighted Average Price (VWAP)|
+|Volatility|Average True Range (ATR)<br />Bollinger Bands (BB)<br />Keltner Channel (KC)<br />Donchian Channel (DC)|
+|Others|Daily Return (DR)<br />Daily Log Return (DLR)<br />Cumulative Return (CR)|
 
 
 #### Miscellaneous
@@ -85,32 +94,39 @@ Strategies either use values as **absolute** (i.e. a good Current Ratio is agree
 
 Definitely, the option to create your custom stock screener is available
 
-### Portfolio Allocation
+### Portfolio Optimization
 
-It makes sense to invest in a portfolio of assets that would maximize returns and minimize risk, in other words maximize risk-adjusted returns. Several measures of risk exist in order to assess the risk-adjusted performance of a portfolio.
+This section attempts to build a portfolio that maximizes the returns for the level of risk the investor is willing to take (i.e. risk-adjusted returns). Quantifying the risk of a portfolio of assets has been an area of research for several decades. 
+
+#### Unsystematic Risk
+
+**Unsystematic risk**, or that associated to a specific company or industry. It can be reduced by diversifying across uncorrelated assets. 
+
+Originally, Markowitz's pioneering work on **Modern Portfolio Theory** modeled the risk of a portfolio to be equal to the standard deviation of its returns, in other words, how far, on average, were the returns of the portfolio dispersed from its mean. In the case of a combination of assets, risk would therefore be computed via the covariance between the pairs of investments.
+This formalizes and extends diversification, because, an asset's risk and return should not be assessed by itself, but by how it contributes to a portfolio's overall risk and return. In other words, less correlation between pairs of assets would imply less risk of the overall portfolio. 
+
+However, this methodology has several downfalls. Since it uses the standard deviation, the model assumes a Gaussian distribution of the returns, which is hardly the case. It thus considers returns above the mean to be risk as well. Since it is an average, it gives the same weight to both sides, effectively underestimating downside risk. Since investment returns tend to have a non-normal distribution, however, there in fact tend to be different probabilities for losses than for gains. Abnormalities like kurtosis, fatter tails and higher peaks, or skewness on the distribution can be problematic to risk measures based on volatility alone. 
+
+Downside risk measures have since been developed. Also, improvements on this theory, such as *Post-Modern Portfolio Theory* and *Black–Litterman Model* optimization, help (1) adopt non-normally distributed, asymmetric, and fat-tailed measures of risk, and (2) incorporate relative and absolute 'views' on inputs of risk and returns from, respectively.
+
 
 | Measure of Risk | Risk-adjusted Performance Measures |
 |:---------------:|:-----:|
 |Volatility|Treynor Ratio<br />Sharpe Ratio<br />Information Ratio<br />Modigliani Ratio|
-|Expected Shortfall (Value at Risk (VaR))|Excess VaR<br />Conditional Sharpe Ratio
-|Downside Risk|Sortino Ratio<br />Omega Ratio<br />Kappa Ratio<br />Gain-Loss Ratio<br />Upside Potential Ratio|
+|Downside Risk|Expected Shortfall<br /> Value at Risk (VaR)<br /> Roy's Safety First Ratio <br />Excess VaR<br />Conditional Sharpe Ratio<br />Sortino Ratio<br />Omega Ratio<br />Kappa Ratio<br />Gain-Loss Ratio<br />Upside Potential Ratio|
 |Drawdown Risk|Calmar Ratio<br />Sterling Ratio<br />Burke Ratio|
 
-#### Unsystematic Risk
+Even then, downside measures would still suffer from something fundamental; they assume a constant long-term mean and variance, independent of time (*stationary process*), which isn't realistic, as *black-swan events* may occur. Techniques have been developed in order to transform the time series data so that it becomes stationary. 
+- If the non-stationary process is a random walk with or without a drift, it is transformed to stationary process by differencing. 
+- On the other hand, if the time series data analyzed exhibits a deterministic trend, the spurious results can be avoided by detrending. 
+- Sometimes the non-stationary series may combine a stochastic and deterministic trend at the same time and to avoid obtaining misleading results both differencing and detrending should be applied, as differencing will remove the trend in the variance and detrending will remove the deterministic trend.
 
-Unsystematic risk, or that associated to a specific company or industry, can be reduced by diversifying across assets. 
-
-Markowitz's pioneering work on **Modern Portfolio Theory** formalizes and extends diversification, using the variance of asset prices as a proxy for risk.  Its key insight is that an asset's risk and return should not be assessed by itself, but by how it contributes to a portfolio's overall risk and return. In other words, less correlation between pairs of assets would imply less risk of the overall portfolio. 
-
-Improvements on this theory, such as *Post-Modern Portfolio Theory* and *Black–Litterman Model* optimization, help (1) adopt non-normally distributed, asymmetric, and fat-tailed measures of risk, and (2) incorporate relative and absolute 'views' on inputs of risk and returns from, respectively.
 
 #### Systematic Risk
 
-Systematic risk, or that inherent to the entire market or market segment, can be reduced by employing **market-neutral strategies**. For example, in *pairs trading*, we would look for highly historically correlated assets, and when the correlation would temporarily weaken, we short the outperforming stock and long the underperforming one. The weights allocated would be such that the weighted average beta is zero, meaning the portfolio has no market exposure.
+**Systematic risk**, or that inherent to the entire market or market segment. Systematic risk cannot be diversified away, but can be reduced (within one market) through market-neutral strategies, by using both long and short positions within one portfolio. Market neutral portfolios, therefore, will be uncorrelated with broader market indices. For example, in *pairs trading*, we would look for highly historically correlated assets, and when the correlation would temporarily weaken, we short the outperforming stock and long the underperforming one. The weights allocated would be such that the weighted average beta is zero, meaning the portfolio has no market exposure.
 
 ## Step #4: Backtesting and Tracking
-
-### Portfolio Evaluation
 
 To evaluate how a portfolio performs, we run regression models that use factors in an attempt to describe the returns of the portfolio with the returns of the market as a whole (i.e. a benchmark/index such as the S&P 500 for the American market, the FTSE 100 for the European market...). 
 The *alpha* is the return on an investment that is not a result of the risk-factors in the model (i.e. for CAPM, the general movement in the greater market).
@@ -119,3 +135,5 @@ The *alpha* is the return on an investment that is not a result of the risk-fact
 - Fama-French Three-Factor Model
 - Carhart Four-Factor Model
 - Fama-French Five-Factor Model
+
+The software also allows developers to implement interfaces for entry and exit conditions, and observe how the portfolio has performed over time (as well as tracks i.e. *forward testing*)

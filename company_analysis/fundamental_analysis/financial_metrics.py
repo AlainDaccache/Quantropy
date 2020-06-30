@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 import pandas as pd
-import company_analysis.financial_statements_entries as fi
+import company_analysis.fundamental_analysis.financial_statements_entries as fi
 import data_scraping.excel_helpers as excel
 import config
 
@@ -62,9 +62,5 @@ def enterprise_value(stock, date=datetime.now(), annual=True, ttm=False):
     return output
 
 
-def cost_of_debt(stock, date=datetime.now(), pretax=True):
-    output = fi.interest_expense(stock, date) / fi.total_liabilities(stock, date)
-    if not pretax:
-        pass # output *= tax_rate TODO
-enterprise_value('FB')
-
+if __name__ == '__main__':
+    enterprise_value('FB')
