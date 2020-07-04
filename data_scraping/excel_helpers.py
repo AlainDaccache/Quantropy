@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 import pandas as pd
 import config
-import data_scraping.edgar_scraper as scraper
+import data_scraping.financial_data_scraper as scraper
 from openpyxl import load_workbook
 import numpy as np
 import xlrd
@@ -89,3 +89,12 @@ def read_dates_from_csv(ticker, sheet_name):
             return [datetime.strptime(x, '%Y-%m-%d') for x in df.columns]
     else:
         return []
+
+
+def get_stock_universe():
+    tickers = []
+    directory = config.financial_statements_folder_path
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            tickers.append(os.path.splitext(file)[0])
+    return tickers

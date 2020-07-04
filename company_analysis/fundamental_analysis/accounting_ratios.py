@@ -141,7 +141,7 @@ def return_on_assets(stock, date=datetime.now(), annual=True, ttm=False):
 def return_on_equity(stock, date=datetime.now(), annual=True, ttm=False):
     average_shareholders_equity = (fi.total_shareholders_equity(stock, date, annual, ttm)
                                    + fi.total_shareholders_equity(stock, date-timedelta(days=365), annual, ttm)) / 2
-    return fi.net_income_attributable_to_shareholders(stock, date, annual, ttm) / average_shareholders_equity
+    return fi.net_income(stock, date, annual, ttm) / average_shareholders_equity
 
 '''
 Market value ratios are used to evaluate the share price of a company’s stock.

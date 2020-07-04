@@ -77,6 +77,9 @@ In this section, we take the prices and volumes scraped from above.
 
 ## Step #3 Portfolio Construction
 
+When designing an investment strategy, we:
+1. Screen Stocks based on some criteria. Some papers eliminate 
+2. 
 Strategies dictate the choice of the stocks, direction of the trade, allocation of portfolio balance to those stocks, as well as entry and exit conditions
 
 ### Stock Selection Strategies
@@ -89,6 +92,7 @@ Strategies either use values as **absolute** (i.e. a good Current Ratio is agree
 | Value Investing| Price-to-Earnings<br />Price-to-Sales<br />Price-to-Book<br />Debt-to-Equity<br /> Price-to-Free Cash Flow|Enterprising vs Defensive Investor Criteria (Benjamin Graham, in *The Intelligent Investor*)<br />Magic Formula Investing (Joel Greenblatt, in *The Little Book that Beats the Market*)                                        |
 | Growth Investing|Net Profit Margin<br />Sales Growth<br />Earnings Growth<br />Free Cash Flow Growth|CAN SLIM (William J. O'Neil, in *How to Make Money in Stocks: A Winning System In Good Times or Bad*)                                      |
 | GARP Investing (Hybrid)|Price-to-Earnings-to-Growth|Lynch Fair Value (Peter Lynch, in *One Up on Wall Street* and *Learn to Earn*)                                     |
+|Quality Investing|Operating Margin<br />ROE<br />ROI<br />||
 | Momentum Investing|Momentum Indicators<br />Biggest Winners / Losers|Narasimhan Jegadeesh and Sheridan Titman, in *Returns to Buying Winners and Selling Losers*|  
 | Income Investing|Dividend Yield<br />Payout Ratio<br />Dividend Growth<br />|                                        |
 

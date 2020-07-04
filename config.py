@@ -1,13 +1,18 @@
 import os
+# project_dir_name = os.path.dirname(os.path.abspath("config.py"))
+# financial_statements_folder_path = os.path.join(os.path.abspath(os.getcwd()).rsplit('company_analysis\\', 1)[0],
+#                                                 'data_scraping',
+#                                                 'financial_statements').replace('\\', '/')
 
-financial_statements_folder_path = os.path.join(os.path.abspath(os.getcwd()).rsplit('\\', 1)[0],
-                                                'data_scraping',
-                                                'financial_statements').replace('\\', '/')
+financial_statements_folder_path = 'C:\\Users\\15148\\IdeaProjects\\Seeking_Order_In_Chaos\\data_scraping\\financial_statements'.replace('\\', '/')
 stock_prices_sheet_name = 'Stock Prices'
 
 balance_sheet_name = 'Balance Sheets'
 income_statement_name = 'Income Statements'
 cash_flow_statement_name = 'Cash Flow Statements'
+
+technical_indicators_name = 'Technical Indicators'
+
 yearly = '10-K'
 quarterly = '10-Q'
 
