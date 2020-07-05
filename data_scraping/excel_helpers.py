@@ -6,6 +6,7 @@ import data_scraping.financial_data_scraper as scraper
 from openpyxl import load_workbook
 import numpy as np
 import xlrd
+from sxl import Workbook
 
 
 def get_date_index(df, date, date_axis):
@@ -39,7 +40,8 @@ def save_into_csv(stock, df, sheet_name):
 def read_df_from_csv(stock, sheet_name):
     financials_path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, stock)
     if os.path.exists(financials_path):
-        sheets = xlrd.open_workbook(financials_path, on_demand=True).sheet_names()
+        workbook = xlrd.open_workbook(financials_path, on_demand=True)
+        sheets = workbook.sheet_names()
         if sheet_name not in sheets:
             return pd.DataFrame()
         else:

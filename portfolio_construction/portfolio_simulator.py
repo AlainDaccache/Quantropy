@@ -5,20 +5,20 @@ import pandas as pd
 from abc import ABC, abstractmethod
 import data_scraping.excel_helpers as excel
 import config
-from functools import partial
-from pandas.util.testing import assert_frame_equal
+import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
 
-# TODO: Build dataframe tracking everyday portfolio holdings
+
 # TODO: Add statistics i.e. average drawdown, alpha, beta/sharpe/sortino...
 # TODO: Functionality for reinvesting dividends
+# TODO: Functionality for stock screening
+# TODO: implement technical indicators in corresponding files
 
-def rsi(x, date):
-    df = excel.read_df_from_csv(x, config.technical_indicators_name)
+def rsi(df, date):
     return df['momentum_rsi'].loc[date]
 
 
-def cci(x, date):
-    df = excel.read_df_from_csv(x, config.technical_indicators_name)
+def cci(df, date):
     return df['trend_cci'].loc[date]
 
 
@@ -27,7 +27,7 @@ class Stock:
     def __init__(self, ticker: str):
         self.ticker = ticker
         self.price_data = excel.read_df_from_csv(self.ticker, config.stock_prices_sheet_name)
-
+        self.technical_indicators = excel.read_df_from_csv(self.ticker, config.technical_indicators_name)
 
 class Trade:
     def __init__(self, stock: Stock, direction: bool, shares: int, date: datetime,
@@ -45,7 +45,7 @@ class Portfolio:
     def __init__(self, balance: float, trades: list):
         self.balance = balance
         self.trades = trades
-        self.float = balance
+        self.float = float(balance)
         self.date = 0
 
 
@@ -139,12 +139,18 @@ def round_shares_from_portfolio_weight(stock_price, weight, balance):
 
 
 def make_position(portfolio: Portfolio, trade: Trade, entry: bool):
+    current_price = trade.stock.price_data['Adj Close'].loc[portfolio.date]
     # if entering a long position or exiting a short position, then subtract from account
     if (trade.direction and entry) or (not trade.direction and not entry):
-        portfolio.balance -= (trade.stock.price_data['Adj Close'].loc[portfolio.date] * trade.shares + trade.commission)
+        portfolio.balance -= (current_price * trade.shares + trade.commission)
+        portfolio.float -= (current_price * trade.shares + trade.commission)
     else:
-        portfolio.balance += (trade.stock.price_data['Adj Close'].loc[portfolio.date] * trade.shares + trade.commission)
-
+        # if exiting a long position, add to account
+        if trade.direction and not entry:
+            portfolio.balance += (current_price * trade.shares + trade.commission)
+            portfolio.float += (current_price * trade.shares + trade.commission)
+        else: # if entering a short position, nothing to balance
+            pass
 
 class Simulation:
     def __init__(self, balance, trading_strategy: Strategy,
@@ -165,7 +171,7 @@ class Simulation:
         pass
 
     def simulate(self):
-
+        results = []
         # populate stock universe
         for ticker in excel.get_stock_universe()[:1]:
             stock_obj = Stock(ticker)
@@ -189,20 +195,25 @@ class Simulation:
                 if date not in trade.stock.price_data['Adj Close'].index:
                     continue
                 else:
-                    daily_return = trade.stock.price_data['pct_change'].loc[date]
+                    daily_pct_return = trade.stock.price_data['pct_change'].loc[date] # TODO should do date before most likely since day starts at midnight
+                    daily_doll_return = daily_pct_return * trade.stock.price_data['Adj Close'].loc[date] * trade.shares
                     if trade.direction: # if going long
-                        self.portfolio.float += daily_return * trade.shares
+                        self.portfolio.float += daily_doll_return
                     else:
-                        self.portfolio.float -= daily_return * trade.shares
+                        self.portfolio.float -= daily_doll_return
 
+            # print('Portfolio float on {} is ${:.2f}'.format(date.strftime("%Y-%m-%d"),
+            #                                                 self.portfolio.float))
             for stock in self.stock_universe:
 
                 if date not in stock.price_data['Adj Close'].index:
                     continue
 
-                if self.trading_strategy.long_entry_condition()(stock.ticker, date) and stock not in stocks_in_portfolio:
+                if (self.trading_strategy.long_entry_condition()(stock.technical_indicators, date)
+                    or self.trading_strategy.short_entry_condition()(stock.technical_indicators, date))  \
+                        and stock not in stocks_in_portfolio:
                     trade = Trade(stock=stock,
-                                  direction=True,
+                                  direction=True if self.trading_strategy.long_entry_condition()(stock.technical_indicators, date) else False,
                                   shares=round_shares_from_portfolio_weight(stock.price_data['Adj Close'].loc[date],
                                                                             self.trading_strategy.weight_of_portfolio_for_trade(),
                                                                             self.portfolio.balance),
@@ -210,25 +221,39 @@ class Simulation:
                     if self.portfolio.balance > trade.commission + (trade.shares * trade.stock.price_data['Adj Close'].loc[date]):
                         self.portfolio.trades.append(trade)
                         make_position(self.portfolio, trade, entry=True)
-
-                elif self.trading_strategy.short_entry_condition()(stock.ticker, date) and stock not in stocks_in_portfolio:
-                    trade = Trade(stock=stock,
-                                  direction=False,
-                                  shares=round_shares_from_portfolio_weight(stock.price_data['Adj Close'].loc[date],
-                                                                            self.trading_strategy.weight_of_portfolio_for_trade(),
-                                                                            self.portfolio.balance),
-                                  date=date)
-                    if self.portfolio.balance > trade.commission + (trade.shares * trade.stock.price_data['Adj Close'].loc[date]):
-                        self.portfolio.trades.append(trade)
-                        make_position(self.portfolio, trade, entry=True)
+                        # print('Went {} for {} shares of {} at ${:.2f}. Balance is now ${:.2f}'.format('Long' if trade.direction else 'Short',
+                        #                                                                               trade.shares,
+                        #                                                                               trade.stock.ticker,
+                        #                                                                               trade.stock.price_data['Adj Close'].loc[date],
+                        #                                                                               self.portfolio.balance))
 
             for trade in self.portfolio.trades:
-                if self.trading_strategy.long_exit_condition()(trade.stock.ticker, date):
+                if date not in trade.stock.price_data['Adj Close'].index:
+                    continue
+                if (self.trading_strategy.long_exit_condition()(trade.stock.technical_indicators, date) and trade.direction) \
+                        or (self.trading_strategy.short_exit_condition()(trade.stock.technical_indicators, date) and not trade.direction):
                     self.portfolio.trades.pop(self.portfolio.trades.index(trade))
                     make_position(self.portfolio, trade, entry=False)
-                elif self.trading_strategy.short_exit_condition()(trade.stock.ticker, date):
-                    self.portfolio.trades.pop(self.portfolio.trades.index(trade))
-                    make_position(self.portfolio, trade, entry=False)
+                    # print('Close {} Position of {} for {} shares at ${:.2f}. Balance is now ${:.2f}'.format('Long' if self.trading_strategy.long_exit_condition()(trade.stock.technical_indicators, date) else 'Short',
+                    #                                                                                     trade.stock.ticker,
+                    #                                                                                     trade.shares,
+                    #                                                                                     trade.stock.price_data['Adj Close'].loc[date],
+                    #                                                                                     self.portfolio.balance))
+
+            results.append([date.strftime("%Y-%m-%d"),
+                            [(x.stock.ticker, x.shares) for x in self.portfolio.trades],
+                            round(self.portfolio.balance, 2),
+                            round(self.portfolio.float, 2)])
+
+        evolution_df = pd.DataFrame(results, columns=['Date', 'Holdings', 'Balance', 'Float'])
+        evolution_df.set_index('Date', inplace=True)
+        evolution_df['Daily ($) Return'] = evolution_df['Float'] - evolution_df['Float'].shift(-1)
+        evolution_df['Cumulative (%) Return'] = evolution_df['Float'].pct_change().cumsum()
+        evolution_df['Cumulative (%) Return'].plot(grid=True, figsize=(8, 5))
+        plt.show()
+        with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+            print(evolution_df.to_string())
+        return evolution_df
 
 
 def helper_condition(indicator, comparator, otherside):
@@ -243,16 +268,16 @@ class UserStrategy(Strategy):
         super().__init__()
 
     def long_entry_condition(self):
-        return helper_condition(rsi, '>', 40) and helper_condition(cci, '>', 50)
+        return helper_condition(rsi, '>', 70)
 
     def long_exit_condition(self):
-        return helper_condition(rsi, '<', 40) and helper_condition(cci, '<', 50)
+        return helper_condition(rsi, '<', 30)
 
     def short_entry_condition(self):
-        return helper_condition(rsi, '<', 40) and helper_condition(cci, '<', 50)
+        return helper_condition(rsi, '<', 30)
 
     def short_exit_condition(self):
-        return helper_condition(rsi, '>', 40) and helper_condition(cci, '>', 50)
+        return helper_condition(rsi, '>', 70)
 
     def weight_of_portfolio_for_trade(self):
         return 0.1
