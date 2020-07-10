@@ -37,8 +37,8 @@ There are two main categories when calculating the fair value of a business.
 
 #### Scoring Systems
 A plethora of financial models use financial ratios in order to identify whether companies are experiencing financial distress, manipulating their earnings... 
-- **Financial Health Scores:** Piotroski's F-Score, Altman's Z-Score, Ohlson's O-Score
-- **Earnings Manipulation Scores**: Beneish's M-Score, Montier's C-Score, Nichols O-Score
+- **Default (Bankruptcy) Models:** Altman's Z-Score, Ohlson's O-Score
+- **Earnings Manipulation Models**: Beneish's M-Score, Montier's C-Score, Nichols O-Score
 - **Misc**: Zacks Rank (uses earnings estimates and their revisions)
 
 ### Technical Analysis
@@ -89,7 +89,7 @@ Strategies either use values as **absolute** (i.e. a good Current Ratio is agree
 
 | Investing Style     | Common Metrics Used   | Popular Strategies / Investors / Funds |
 |:--------------------:|:--------------------- |:--------------------------------------:|
-| Value Investing| Price-to-Earnings<br />Price-to-Sales<br />Price-to-Book<br />Debt-to-Equity<br /> Price-to-Free Cash Flow|Enterprising vs Defensive Investor Criteria (Benjamin Graham, in *The Intelligent Investor*)<br />Magic Formula Investing (Joel Greenblatt, in *The Little Book that Beats the Market*)                                        |
+| Value Investing| Price-to-Earnings<br />Price-to-Sales<br />Price-to-Book<br />Debt-to-Equity<br /> Price-to-Free Cash Flow|Piotroski F-Score (Joseph Piotroski, in *Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers*)<br />Enterprising vs Defensive Investor Criteria (Benjamin Graham, in *The Intelligent Investor*)<br />Magic Formula Investing (Joel Greenblatt, in *The Little Book that Beats the Market*)                                        |
 | Growth Investing|Net Profit Margin<br />Sales Growth<br />Earnings Growth<br />Free Cash Flow Growth|CAN SLIM (William J. O'Neil, in *How to Make Money in Stocks: A Winning System In Good Times or Bad*)                                      |
 | GARP Investing (Hybrid)|Price-to-Earnings-to-Growth|Lynch Fair Value (Peter Lynch, in *One Up on Wall Street* and *Learn to Earn*)                                     |
 |Quality Investing|Operating Margin<br />ROE<br />ROI<br />||

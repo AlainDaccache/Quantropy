@@ -4,7 +4,16 @@ import os
 #                                                 'data_scraping',
 #                                                 'financial_statements').replace('\\', '/')
 
-financial_statements_folder_path = 'C:\\Users\\15148\\IdeaProjects\\Seeking_Order_In_Chaos\\data_scraping\\financial_statements'.replace('\\', '/')
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR_NAME = 'data'
+MARKET_TICKERS_DIR_NAME = 'market_tickers'
+FACTORS = 'factors_data'
+FINANCIAL_STATEMENTS_DIR_NAME = 'financial_statements'
+
+data_scraping_path = 'C:\\Users\\15148\\IdeaProjects\\Seeking_Order_In_Chaos\\data_scraping\\'
+beta_factors_file_path = (data_scraping_path + 'Beta Factors.xlsx').replace('\\', '/')
+
 stock_prices_sheet_name = 'Stock Prices'
 
 balance_sheet_name = 'Balance Sheets'
@@ -30,7 +39,5 @@ quarterly_statements = [balance_sheet_quarterly, income_statement_quarterly, cas
 
 all_financial_statements = yearly_statements + quarterly_statements
 
-
-
-
-
+monthly_factors = 'Monthly'
+yearly_factors = 'Yearly'
