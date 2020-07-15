@@ -225,13 +225,6 @@ def get_company_meta():
 
 
 if __name__ == '__main__':
-    if not os.path.exists(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME)):
-        os.mkdir(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME))
-    if not os.path.exists(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME)):
-        os.mkdir(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME))
-    if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_NAME):
-        os.mkdir(config.FINANCIAL_STATEMENTS_DIR_NAME)
-
     save_gics()
     save_dow_jones_tickers()
     save_sp500_tickers()

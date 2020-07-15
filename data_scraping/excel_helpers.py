@@ -10,33 +10,28 @@ import xlrd
 from typing import Callable
 
 
-def get_date_index(df, date, date_axis):
-    dates_values = df.index.values if date_axis == 'y-axis' else df.columns
+def get_date_index(date, dates_values):
     if isinstance(dates_values[0], str):
         dates_values = [datetime.strptime(x, '%Y-%m-%d') for x in dates_values]
     elif isinstance(dates_values[0], np.datetime64):
         dates_values = [x.astype('M8[ms]').astype('O') for x in dates_values]
     if len(dates_values) > 1:
         if dates_values[0] > dates_values[1]: # if dates decreasing rightwards or downwards
-            return next((index for (index, item) in enumerate(dates_values) if item <= date), 0)
+            return next((index for (index, item) in enumerate(dates_values) if item < date), 0) - 1
         else: # if dates increasing rightwards or downwards
-            return next((index for (index, item) in enumerate(dates_values) if item >= date), -1)
+            return next((index for (index, item) in enumerate(dates_values) if item > date), -1) - 1
     else:
         return 0
 
 
-def save_into_csv(path, df, sheet_name, overwrite_sheet=True, overwrite_file=True):
+def save_into_csv(path, df, sheet_name):
 
     with pd.ExcelWriter(path, engine='openpyxl') as writer:
         if os.path.exists(path):
-            excel_book = load_workbook(path)
             writer.book = load_workbook(path)
-            writer.sheets = dict((ws.title, ws) for ws in excel_book.worksheets)
-            if overwrite_sheet and sheet_name in [ws.title for ws in excel_book.worksheets]:
-                excel_book.remove(excel_book[sheet_name])
-                excel_book.save(path)
+            writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         df.to_excel(writer, sheet_name=sheet_name)
-        writer.save()
+        writer.book.save(path)
         writer.close()
 
 
@@ -53,11 +48,11 @@ def read_df_from_csv(path, sheet_name):
     return pd.DataFrame()
 
 
-def read_entry_from_csv(path, sheet_name, date, entry):
+def read_entry_from_csv(path, sheet_name, x, y):
 
     if os.path.exists(path):
         # maybe the file exists, but the sheet is not in the file
-        if config.financial_statements_folder_path in path:
+        if config.FINANCIAL_STATEMENTS_DIR_PATH in path:
             stock = Path(path).stem
             sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
             if sheet_name not in sheets:
@@ -71,23 +66,27 @@ def read_entry_from_csv(path, sheet_name, date, entry):
 
     # if the file doesn't exist
     else:
-        if config.financial_statements_folder_path in path:
+        if config.FINANCIAL_STATEMENTS_DIR_PATH in path:
             stock = Path(path).stem
             scraper.get_stock_prices(stock)
             scraper.scrape_financial_statements(stock, '10-K')
             # scraper.scrape_financial_statements(stock, '10-Q')
-        elif path == config.beta_factors_file_path:
-            scraper.get_beta_factors()
+        # elif path == config.beta_factors_file_path:
+        #     scraper.get_beta_factors()
 
     xls = pd.ExcelFile(path)
     df = pd.read_excel(xls, sheet_name, index_col=0)
 
-    if isinstance(df.index, pd.DatetimeIndex): # if there is a column for dates
-        date_index = get_date_index(df, date, date_axis='y-axis')
-        return df[entry].iloc[date_index]
-    else: # if there is a row for dates
-        date_index = get_date_index(df, date, date_axis='x-axis')
-        return df.iloc[:, date_index].loc[entry]
+    if isinstance(y, datetime):  # if the input is a date...
+        # if isinstance(df.index, pd.DatetimeIndex):
+        date_index = get_date_index(y, dates_values=df.index.values)
+        return df[x].iloc[date_index]
+
+    elif isinstance(x, datetime):
+        date_index = get_date_index(x, dates_values=df.columns)
+        return df.iloc[:, date_index].loc[y]
+    else:
+        return df[x].loc[y]
 
 
 def read_dates_from_csv(path, sheet_name):

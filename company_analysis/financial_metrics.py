@@ -60,5 +60,14 @@ def enterprise_value(stock, date=datetime.now(), annual=True, ttm=False):
     return output
 
 
+def gross_national_product_price_index(date):
+    return float(excel.read_entry_from_csv(config.MACRO_DATA_FILE_PATH, 'Yearly', 'GNP Price Index', date))
+
+
+def get_stock_industry(stock):
+    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Industry', stock)
+
+
 if __name__ == '__main__':
-    enterprise_value('FB')
+    print(gross_national_product_price_index(datetime(2018, 5, 3)))
+    print(get_stock_industry('AAPL'))

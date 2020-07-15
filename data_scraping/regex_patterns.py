@@ -109,7 +109,7 @@ financial_entries_regex_dict = {
                     'Cash and Cash Equivalents': {
                         'Cash and Due from Banks': r'(?=.*cash)(?=.*due from banks)',
                         'Interest-bearing Deposits in Banks and Other Financial Institutions': r'(?=.*interest[- ]bearing deposits)',
-                        'Restricted Cash Current': r'(?=.*cash)(?=.*restricted){}'.format(current),
+                        'Restricted Cash Current': r'(?=.*cash)(?=.*restricted)',
                         'Other Cash and Cash Equivalents': r'$^',
                         'Cash and Cash Equivalents': r'(?!.*marketable securities)(?=.*cash and cash equivalents)(?!.*marketable securities)',
                     },

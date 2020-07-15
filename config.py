@@ -6,20 +6,29 @@ import os
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR_NAME = 'data'
-MARKET_TICKERS_DIR_NAME = 'market_tickers'
-FACTORS = 'factors_data'
-FINANCIAL_STATEMENTS_DIR_NAME = 'financial_statements'
 
-data_scraping_path = 'C:\\Users\\15148\\IdeaProjects\\Seeking_Order_In_Chaos\\data_scraping\\'
-beta_factors_file_path = (data_scraping_path + 'Beta Factors.xlsx').replace('\\', '/')
+DATA_DIR_NAME = 'data'
+DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
+
+MARKET_TICKERS_DIR_NAME = 'market_tickers'
+MARKET_TICKERS_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_TICKERS_DIR_NAME)
+
+FACTORS_DIR_NAME = 'factors_data'
+FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, FACTORS_DIR_NAME)
+
+FINANCIAL_STATEMENTS_DIR_NAME = 'financial_statements'
+FINANCIAL_STATEMENTS_DIR_PATH = os.path.join(DATA_DIR_PATH, FINANCIAL_STATEMENTS_DIR_NAME)
+
+MACRO_DATA_FILE_NAME = 'Macro-Data.xlsx'
+MACRO_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, MACRO_DATA_FILE_NAME)
+
+COMPANY_META_DATA_FILE_NAME = 'US-Stock-Symbols.xlsx'
+COMPANY_META_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, COMPANY_META_DATA_FILE_NAME)
 
 stock_prices_sheet_name = 'Stock Prices'
-
 balance_sheet_name = 'Balance Sheets'
 income_statement_name = 'Income Statements'
 cash_flow_statement_name = 'Cash Flow Statements'
-
 technical_indicators_name = 'Technical Indicators'
 
 yearly = '10-K'

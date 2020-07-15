@@ -7,6 +7,8 @@ import urllib.request
 import zipfile
 from datetime import datetime, timedelta
 from pprint import pprint
+from time import sleep
+
 import numpy as np
 import pandas as pd
 import requests
@@ -21,9 +23,9 @@ import tabula
 import ta
 import config
 from titlecase import titlecase
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
 
-
-# TODO If Interest Income/Expense in revenues, then readjust Net Sales (add back)
 
 # TODO format excel for categories (re-format multi-index)
 
@@ -36,6 +38,7 @@ bs = BeautifulSoup(html)
 table = bs.find(lambda tag: tag.name=='table' and tag.has_attr('id') and tag['id']=="Table1") 
 rows = table.findAll(lambda tag: tag.name=='tr')
 '''
+
 
 def get_company_cik(ticker):
     URL = 'http://www.sec.gov/cgi-bin/browse-edgar?CIK={}&Find=Search&owner=exclude&action=getcompany'.format(ticker)
@@ -60,14 +63,11 @@ def get_filings_urls_first_layer(cik, filing_type):
     return doc_links
 
 
-
-
-
 def get_filings_urls_second_layer(filing_type, doc_links):
     links_dictionary = {
-        'XBRL Links': [], # for new submissions
-        'HTML Links': [], # if no XML, then we put HTML (for older submissions).
-        'TXT Links': [] # if no HTML, then we put TXT (for even older submissions)
+        'XBRL Links': [],  # for new submissions
+        'HTML Links': [],  # if no XML, then we put HTML (for older submissions).
+        'TXT Links': []  # if no HTML, then we put TXT (for even older submissions)
     }
 
     for doc_link in doc_links:
@@ -80,13 +80,16 @@ def get_filings_urls_second_layer(filing_type, doc_links):
         cell_index = next((index for (index, item) in enumerate(head_divs) if item.text == 'Period of Report'), -1)
 
         period_of_report = ''
-        siblings = head_divs[cell_index].next_siblings
-        for sib in siblings:
-            if isinstance(sib, NavigableString):
-                continue
-            else:
-                period_of_report = sib.text
-                break
+        try:
+            siblings = head_divs[cell_index].next_siblings
+            for sib in siblings:
+                if isinstance(sib, NavigableString):
+                    continue
+                else:
+                    period_of_report = sib.text
+                    break
+        except:
+            traceback.print_exc()
 
     # first, try finding a XML document
         table_tag = soup.find('table', class_='tableFile', summary='Data Files')
@@ -158,6 +161,7 @@ def find_left_margin(reg_row, td):
 
 # TODO MERGE FIND META TABLE INFO AND TABLE TITLE METHODS
 
+
 def find_meta_table_info(table):
 
     table_multiplier, table_currency = '', ''
@@ -182,6 +186,7 @@ def find_meta_table_info(table):
         traceback.print_exc()
 
     return table_multiplier, table_currency
+
 
 def find_table_title(table):
 
@@ -223,6 +228,7 @@ def find_table_title(table):
     except:
         return 'No Table Title'
 
+
 def flatten_dict(d, parent_key='', sep='_'):
     items = []
     for k, v in d.items():
@@ -256,7 +262,15 @@ def scrape_html_tables_from_url(url):
     soup = BeautifulSoup(response.text, 'html.parser')
     all_in_one_dict = {}
 
+    if 'Inline XBRL Viewer' in soup.text:
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver.get(url)
+        sleep(2)
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+
     for table in soup.findAll('table'):
+
         columns = []
         dates = []
         header_found = False
@@ -272,7 +286,8 @@ def scrape_html_tables_from_url(url):
             reg_row[0] = reg_row[0].replace(':', '').replace('\n', ' ') if len(reg_row) > 0 else reg_row[0]
 
             # first, we want to reach the header of the table, so we skip
-            # - the empty rows i.e. those that have no table data 'td' (or those for which the td's are empty) [length 0]
+            # - the empty rows i.e. those that have no table data 'td' (or those for which the td's are empty)
+            # [length 0]
             # - the descriptive rows (i.e. 'dollars in millions', 'fiscal year', etc.) [length 1]
             if not header_found and len(reg_row) > 1:
                 reg_row = list(filter(lambda x: x != "", reg_row))
@@ -334,7 +349,7 @@ def scrape_html_tables_from_url(url):
 
                 indices = [i for i, x in enumerate(reg_row) if re.search(r'\d', x)]
                 reg_row = [reg_row[0]] + [re.sub(r'\(', '-', x) for x in reg_row[1:]]
-                reg_row = [reg_row[0]] + [re.sub("[^0-9\-]", "", r) for r in reg_row[1:]]
+                reg_row = [reg_row[0]] + [re.sub("[^0-9-]", "", r) for r in reg_row[1:]]
                 reg_row = [reg_row[0]] + [re.sub("^-$", "", r) for r in reg_row[1:]] # for NOT the minus sign
                 reg_row = [reg_row[0]] + [re.sub(r',', '', x) for x in reg_row[1:]]
                 reg_row = list(filter(lambda x: x != "", reg_row))
@@ -342,11 +357,10 @@ def scrape_html_tables_from_url(url):
                 #     continue
                 # print(indices)
 
-
             # if re.compile('%.|.%'), catch index to skip all column
                 # if it's a line
-                # if len(row.find_all(lambda tag: tag.has_attr('style') and ('border-bottom:solid' in tag['style']
-                #                                                            or 'border-top:solid' in tag['style']))) > 0:
+                # if len(row.find_all(lambda tag: tag.has_attr('style')
+                # and ('border-bottom:solid' in tag['style'] or 'border-top:solid' in tag['style']))) > 0:
                 #     continue
                 # empty line
                 if len(''.join(reg_row).strip()) == 0:
@@ -360,22 +374,22 @@ def scrape_html_tables_from_url(url):
 
                     if current_left_margin == indented_list[-1][0]:
 
-                        if indented_list[-1][2]: # if last element of list is bold
-                            if is_bold(row, alltext=True): # if current row is bold
+                        if indented_list[-1][2] or indented_list[-1][1].isupper():  # if last element of list is bold
+                            if is_bold(row, alltext=True) or row.text.isupper():  # if current row is bold
                                 # first_bolded_index = next(i for i, v in enumerate(indented_list) if v[2])
                                 # if first_bolded_index != len(indented_list)-1:
                                 #     indented_list.pop(first_bolded_index)
-                                indented_list.pop() # remove that last element of list
-                                break # and stop popping
+                                indented_list.pop()  # remove that last element of list
+                                break  # and stop popping
                             else:
-                                break # otherwise, just subentry so don't pop
+                                break  # otherwise, just subentry so don't pop
                     indented_list.pop()
 
                 try:
                     # if re.search(r'Total', reg_row[0], re.IGNORECASE):
                     #     indented_list.pop()
                     for i in range(len(indented_list)):
-                        if re.search(r'^{}$'.format(reg_row[0].split('Total ')[-1]), # current entry
+                        if re.search(r'^{}$'.format(reg_row[0].split('Total ')[-1]),  # current entry
                                      indented_list[-i][1], # last category
                                      re.IGNORECASE):
                             indented_list.pop()
@@ -440,34 +454,54 @@ def normalization_iteration(iteration_count, input_dict, master_dict, filing_typ
                             visited_data_names.append(data_name)
                         if data_name in visited_data_names:
                             master_dict[normalized_category] = np.nan_to_num(master_dict[normalized_category]) + scraped_value
+                        break
 
                     # otherwise it is flexible if it should just match the category (i.e. current assets, operating expenses...)
                     if flexible_entry and re.search(normalized_category.split('_')[-2], scraped_name, re.IGNORECASE):
-
-                        match = False
+                        no_match = True
                         for data_name in visited_data_names:
-                            if re.search(data_name['Table Title'], title, re.IGNORECASE) and \
-                                    re.search(data_name['Pattern String'], scraped_name, re.IGNORECASE):
-                                match = True
-                        if not match:
-                            # else, it might match word for word an entry that wasn't hardcoded
-                            for data_name in visited_data_names:
-                                if not data_name['Hardcoded']:
-                                    pattern_name = titlecase(data_name['Pattern String'])
-                                    scraped_name_without_category = titlecase(scraped_name.split('_')[-1])
-                                    # TODO should probably compare category as well
-                                    if all(x in pattern_name for x in scraped_name_without_category.split()) \
-                                            or all(x in scraped_name_without_category for x in pattern_name.split()):
-                                        scraped_name = pattern_name
-
+                            if re.search(data_name['Pattern String'], pattern_string, re.IGNORECASE):
+                                no_match = False
+                                break
+                        if no_match:
                             master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
 
                             visited_data_names.append({'Iteration Count': str(iteration_count),
                                                        'Hardcoded': False,
                                                        'Table Title': title,
-                                                       'Pattern String': titlecase(scraped_name.split('_')[-1])})
-                        else:
+                                                       'Pattern String': scraped_name})
                             break
+                        # match = False
+                        # for data_name in visited_data_names:
+                        #     try:
+                        #         if re.search(data_name['Table Title'].replace('(', '').replace(')', ''),
+                        #                      r'{}'.format(title.replace('(', '').replace(')', '')), re.IGNORECASE) and \
+                        #                 re.search(data_name['Pattern String'],
+                        #                           r'{}'.format(scraped_name), re.IGNORECASE):
+                        #             match = True
+                        #     except:
+                        #         traceback.print_exc()
+                        #         print(data_name['Table Title'], data_name['Pattern String'])
+                        # if not match:
+                            # else, it might match word for word an entry that wasn't hardcoded
+                            # for data_name in visited_data_names:
+                            #     if not data_name['Hardcoded']:
+                            #         pattern_name = titlecase(data_name['Pattern String'])
+                            #         scraped_name_without_category = titlecase(scraped_name.split('_')[-1])
+                            #         # TODO should probably compare category as well
+                            #         if all(x in pattern_name for x in scraped_name_without_category.split()) \
+                            #                 or all(x in scraped_name_without_category for x in pattern_name.split()):
+                            #             scraped_name = pattern_name
+                            #             break
+                            # print('_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1]))
+                            # master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
+                            #
+                            # visited_data_names.append({'Iteration Count': str(iteration_count),
+                            #                            'Hardcoded': False,
+                            #                            'Table Title': title,
+                            #                            'Pattern String': titlecase(scraped_name.split('_')[-1])})
+                        # else:
+                        #     break
 
     return visited_data_names, master_dict
 
@@ -483,7 +517,7 @@ def normalize_tables(input_dict, filing_type, visited_data_names):
     master_dict = {}
     for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
         master_dict[normalized_category] = np.nan
-
+    # pprint(input_dict)
     # first we want to give priority to the elements in the consolidated financial statements
     visited_data_names, master_dict = normalization_iteration(0, input_dict, master_dict, filing_type, visited_data_names, flexible_sheet=False, flexible_entry=False)
     visited_data_names, master_dict = normalization_iteration(1, input_dict, master_dict, filing_type, visited_data_names, flexible_sheet=False, flexible_entry=True)
@@ -492,19 +526,21 @@ def normalize_tables(input_dict, filing_type, visited_data_names):
     # balance_sheet = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Balance Sheet', i)}
     # income_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Income Statement', i)}
     # cash_flow_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Cash Flow Statement', i)}
-
-    return visited_data_names, master_dict
+    # TODO If Interest Income/Expense in revenues, then readjust Net Sales (add back)
+    return visited_data_names, flatten_dict(unflatten(master_dict))
 
 
 def testing():
-    # url = 'https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/d452995d10k.htm'
-    # all_in_one_dict = scrape_html_tables_from_url(url)
-    # pprint(all_in_one_dict)
-    # all_in_one_dict = test.aapl_dict
-    # pprint(all_in_one_dict)
-    dict = test.tsla_normalized
-    pprint(unflatten(dict))
-    # pprint(normalize_tables(dict, filing_type='10-K'))
+    # url = 'https://www.sec.gov/Archives/edgar/data/1018724/000101872419000004/amzn-20181231x10k.htm#sD176CF43DDC1589FB3C3D7F2EFA46F0A'
+    # dict = scrape_html_tables_from_url(url)
+    # pprint(dict)
+    # pprint(normalize_tables(dict, filing_type='10-K', visited_data_names=[]))
+    dict = {'2019-09-28':
+                {'Balance Sheet':
+                     {'Assets':
+                          {'Current Assets': {'Cash and Short Term Investments': {'Cash and Cash Equivalents': {'Cash and Due from Banks': np.nan, 'Interest-bearing Deposits in Banks and Other Finp.nancial Institutions': np.nan, 'Restricted Cash Current': 119134.0, 'Other Cash and Cash Equivalents': np.nan, 'Cash and Cash Equivalents': 48844.0}, 'Marketable Securities Current': 51713.0, 'Cash and Short Term Investments': 205898.0}, 'Accounts Receivable': {'Gross Accounts Receivable': np.nan, 'Allowances for Doubtful Accounts': np.nan, 'Other Receivables': 22878.0, 'Net Accounts Receivable': 22926.0, 'Accounts Receivable, Net': 22926.0}, 'Prepaid Expense, Current': np.nan, 'Inventory, Net': 4106.0, 'Income Taxes Receivable, Current': np.nan, 'Assets Held-for-sale': np.nan, 'Deferred Tax Assets, Current': np.nan, 'Other Assets, Current': np.nan, 'Total Assets, Current': 162819.0, 'Marketable Securities': 105341.0, 'Inventories': 4106.0, 'Vendor Non-Trade Receivables': 22878.0, 'Other Current Assets': 12352.0, 'Total Current Assets': 162819.0, 'Property, Plant and Equipment, Net': 37378.0, 'Other Non-Current Assets': 32978.0, 'Total Non-Current Assets': 175697.0}, 'Non Current Assets': {'Marketable Securities Non Current': 105341.0, 'Restricted Cash Non Current': np.nan, 'Property, Plant and Equipment': {'Gross Property, Plant and Equipment': 95957.0, 'Accumulated Depreciation and Amortization': -58579.0, 'Property, Plant and Equipment, Net': 37378.0}, 'Operating Lease Right-of-use Assets': np.nan, 'Deferred Tax Assets Non Current': 71386.0, 'Intangible Assets': {'Goodwill': np.nan, 'Intangible Assets, Net (Excluding Goodwill)': np.nan, 'Total Intangible Assets': np.nan}, 'Other Non Current Assets': 32978.0, 'Total Non Current Assets': 514213.0}, 'Total Assets': 338516.0}, "Liabilities and Shareholders' Equity": {'Liabilities': {'Current Liabilities': {'Short-Term Debt': 5980.0, 'Long-term Debt, Current Maturities': 102067.0, 'Accounts Payable, Current': 46236.0, 'Operating Lease, Liability, Current': np.nan, 'Current Deferred Revenues': 5522.0, 'Employee-related Liabilities, Current': np.nan, 'Accrued Income Taxes': np.nan, 'Accrued Liabilities, Current': np.nan, 'Income Taxes Payable': np.nan, 'Other Current Liabilities': 37720.0, 'Total Current Liabilities': 105718.0, 'Accounts Payable': 46236.0, 'Deferred Revenue': 5522.0, 'Commercial Paper': 5980.0, 'Term Debt': 91807.0, 'Other Non-Current Liabilities': 50503.0, 'Total Non-Current Liabilities': 142310.0, 'Total Liabilities': 248028.0}, 'Non Current Liabilities': {'Deferred Tax Liabilities': np.nan, 'Long-term Debt, Noncurrent Maturities': np.nan, 'Operating Lease, Liability, Noncurrent': np.nan, 'Liability, Defined Benefit Plan, Noncurrent': np.nan, 'Accrued Income Taxes, Noncurrent': np.nan, 'Deferred Revenue, Noncurrent': np.nan, 'Long-Term Unearned Revenue': np.nan, 'Other Liabilities, Noncurrent': 50503.0, 'Total Long-Term Liabilities': 390338.0}, 'Total Liabilities': np.nan}, "Shareholders' Equity": {'Preferred Stock, Value, Issued': np.nan, 'Common Stock and Additional Paid in Capital': {'Common Stock, Value, Issued': -68130.0, 'Additional Paid in Capital': np.nan, 'Common Stocks, Including Additional Paid in Capital': 45174.0, 'Weighted Average Number of Shares Outstanding, Basic': 4617834.0, 'Weighted Average Number Diluted Shares Outstanding Adjustment': 31079.0, 'Weighted Average Number of Shares Outstanding, Diluted': 4648913.0}, 'Treasury Stock, Value': np.nan, 'Retained Earnings (Accumulated Deficit)': 45898.0, 'Accumulated Other Comprehensive Income (Loss)': -584.0, 'Deferred Stock Compensation': np.nan, 'Minority Interest': np.nan, "Stockholders' Equity Attributable to Parent": 90488.0}, "Total Liabilities and Shareholders' Equity": 338516.0}}}}
+    df = pd.DataFrame.from_dict(dict, orient='index')
+    print(df.to_string())
 
 
 def unflatten(dictionary):
@@ -529,7 +565,7 @@ def scrape_financial_statements(ticker, filing_type):
     names = ['{} {}'.format(name, filing_type) for name in [config.balance_sheet_name, config.income_statement_name, config.cash_flow_statement_name]]
     output = pd.Series()
     for sheet_name in names:
-        financials_path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, ticker)
+        financials_path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, ticker)
         output[sheet_name] = (excel.read_dates_from_csv(financials_path, sheet_name),
                               excel.read_df_from_csv(financials_path, sheet_name))
     existing_dates_with_df = excel.read_dates_from_csv(ticker, names)
@@ -544,7 +580,7 @@ def scrape_financial_statements(ticker, filing_type):
     visited_data_names = []
     for index, (filing_date, link) in enumerate(missing_dates_links):
         try:
-            if index > 1:
+            if index > 2:
                 break
             print(filing_date, link)
             visited_data_names, financials_dictio[filing_date] = normalize_tables(scrape_tables_from_url(link),
@@ -557,25 +593,27 @@ def scrape_financial_statements(ticker, filing_type):
     balance_sheet_dict, income_statement_dict, cash_flow_statement_dict = {}, {}, {}
     for dictio, regex in zip([balance_sheet_dict, income_statement_dict, cash_flow_statement_dict],
                              [fin_reg.balance_sheet_regex, fin_reg.income_statement_regex, fin_reg.cash_flow_statement_regex]):
+        flattened = {}
         for key, value in financials_dictio.items():
-            dictio[key] = {}
+            flattened[key] = {} # dictio is each sheet, and key is for the date
             for kk, vv in value.items():
-                if re.search(regex, kk, re.IGNORECASE):
-                    dictio[key][kk.split('_')[-1]] = vv
+                if re.search(regex, kk, re.IGNORECASE): # that's for the sheet name
+                    flattened[key][kk] = vv
 
-    if not os.path.exists(config.financial_statements_folder_path):
-        os.makedirs(config.financial_statements_folder_path)
+        for key, value in flattened.items():
+        #     dictio[key] = unflatten(value)
+              dictio[key] = value
 
-    financial_statements_file_path = "{}/{}.xlsx".format(config.financial_statements_folder_path, ticker)
+    financial_statements_file_path = "{}/{}.xlsx".format(config.FINANCIAL_STATEMENTS_DIR_PATH, ticker)
 
     for sheet_name, dict in zip(names,
                                 [balance_sheet_dict, income_statement_dict, cash_flow_statement_dict]):
-        df = pd.DataFrame.from_dict(dict)
+        df = pd.DataFrame.from_dict(dict, orient='index')
         if len(existing_dates_with_df) > 0:
             df = pd.concat([df, existing_dates_with_df[sheet_name][1]], axis=1).fillna(0)
         df.dropna(axis=0, how='all', inplace=True)
         df = df.loc[:, df.any()]
-        path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, ticker)
+        path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, ticker)
         excel.save_into_csv(path, df, sheet_name)
 
 
@@ -584,7 +622,7 @@ def get_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
     if df.empty:
         df = web.DataReader(stock.replace('.', '-'), data_source='yahoo', start=start, end=end)
         df['pct_change'] = df['Adj Close'].pct_change()
-        path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, stock)
+        path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, stock)
         excel.save_into_csv(path, df, config.stock_prices_sheet_name)
         return df
     return df
@@ -596,7 +634,7 @@ def get_technical_indicators(stock):
         df = get_stock_prices(stock)
         df = ta.add_all_ta_features(
             df, open="Open", high="High", low="Low", close="Adj Close", volume="Volume", fillna=True)
-        path = '{}/{}.xlsx'.format(config.financial_statements_folder_path, stock)
+        path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, stock)
         excel.save_into_csv(path, df, config.technical_indicators_name)
         return df
     else:
@@ -621,83 +659,76 @@ def save_gnp_price_index():
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df)
 
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Factors-Data.xlsx')
-    existing_df = excel.read_df_from_csv(path, config.yearly_factors)
+    existing_df = excel.read_df_from_csv(config.MACRO_DATA_FILE_PATH, config.yearly_factors)
     final_df = existing_df.merge(df, how='outer', left_index=True, right_index=True)
-    excel.save_into_csv(path, final_df, config.yearly_factors, overwrite_sheet=True)
+    excel.save_into_csv(config.MACRO_DATA_FILE_PATH, final_df, config.yearly_factors)
     os.remove('temp.csv')
+
 
 three_factors_url_daily = ''
 three_factors_url_weekly = ''
 three_factors_url_monthly_yearly = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-
 five_factors_url_daily = ''
 five_factors_url_weekly = ''
 five_factors_url_monthly_yearly = ''
-
 momentum_factor_url_daily = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'
 momentum_factor_url_monthly_yearly = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip'
-
-
 carhart_four_factor_url_monthly = 'https://breakingdownfinance.com/wp-content/uploads/2019/07/Carhart-4-factor-data.xlsx'
 
 # TODO compile daily, weekly, monthly, yearly Fama French Factors (it also includes momentum)
 
+
 def save_factors_data(url):
-    # Web url
-    ff_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-    # Download the file and save it. We will name it fama_french.zip file
-    urllib.request.urlretrieve(ff_url,'fama_french.zip')
+    urllib.request.urlretrieve(url,'fama_french.zip')
     zip_file = zipfile.ZipFile('fama_french.zip', 'r')
-    # Next we extact the file data
     zip_file.extractall()
-    # Make sure you close the file after extraction
     zip_file.close()
 
-    # Now open the CSV file
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Factors-Data.xlsx')
-    ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows=3, index_col=0)
+    # TODO FIND MORE PYTHONIC WAY
+    file_name = ''
+    for f in [f for f in os.listdir('.') if os.path.isfile(f)]:
+        if re.search('F-F', f):
+            file_name = f
+            break
+
+    ff_factors = pd.read_csv(file_name, skiprows=3, index_col=0)
     # We want to find out the row with NULL value. We will skip these rows
     ff_row = np.array(ff_factors.isnull().any(1)).nonzero()
-    monthly_ff_row = ff_row[0][0]
-    # Read the csv file again with skipped rows
-    ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows=3, nrows=monthly_ff_row, index_col=0)
-    # Format the date index
-    ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m')
-    # Format dates to end of month
-    ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
-    # Convert from percent to decimal
-    ff_factors = ff_factors.apply(lambda x: x / 100)
-    excel.save_into_csv(path, ff_factors, config.monthly_factors)
+    for nrow in ff_row[0]:
+        # Read the csv file again with skipped rows
+        ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows=3, nrows=nrow, index_col=0)
+        ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m')
+        ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
+        ff_factors = ff_factors.apply(lambda x: x / 100)
+        path = os.path.join(config.FACTORS_DIR_PATH, 'Factors.xlsx')
+        excel.save_into_csv(path, ff_factors, config.monthly_factors)
 
-    # Read the csv file again with skipped rows
-    yearly_ff_row = ff_row[0][1]
-    ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows=3, index_col=0)
-    ff_factors = ff_factors[monthly_ff_row+2:yearly_ff_row]
-    # Format the date index
-    ff_factors.index = pd.to_datetime(ff_factors.index.str.strip(), format='%Y')
-    ff_factors.index = ff_factors.index + pd.offsets.YearEnd()
-
-    # Convert from percent to decimal
-    ff_factors = ff_factors.apply(lambda x: pd.to_numeric(x, errors='coerce') / 100)
-    excel.save_into_csv(path, ff_factors, config.yearly_factors)
-    os.remove('F-F_Research_Data_Factors.csv')
+    os.remove(file_name)
     os.remove('fama_french.zip')
     return ff_factors
 
 
 if __name__ == '__main__':
+
+    if not os.path.exists(config.DATA_DIR_PATH):
+        os.mkdir(config.DATA_DIR_PATH)
+    if not os.path.exists(config.MARKET_TICKERS_DIR_PATH):
+        os.mkdir(config.MARKET_TICKERS_DIR_PATH)
+    if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_PATH):
+        os.mkdir(config.FINANCIAL_STATEMENTS_DIR_PATH)
+    if not os.path.exists(config.FACTORS_DIR_PATH):
+        os.mkdir(config.FACTORS_DIR_PATH)
+
     company_tickers = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TSLA', 'NFLX',
                        'MS', 'JPM', 'WFC', 'C', 'BAC',
                        'KO', 'PG', 'JNJ', 'PEP', 'VZ', 'GS']
     # testing()
-    # for ticker in ['TSLA']:
+    for ticker in company_tickers[:6]:
         # get_stock_prices(ticker)
         # get_technical_indicators(ticker)
-        # scrape_financial_statements(ticker, '10-K')
+        scrape_financial_statements(ticker, '10-K')
     # ff_factors = get_beta_factors()
     # print(ff_factors)
     # testing()
     # scrape_pdf()
-    save_factors_data()
-    save_gnp_price_index()
+    # save_factors_data(momentum_factor_url_daily)
