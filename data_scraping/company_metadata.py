@@ -165,12 +165,24 @@ def get_company_meta():
                               'J': 'Delinquent and Bankrupt',
                               'K': 'Deficient, Delinquent, and Bankrupt'}
 
-    for ticker in nasdaq_tickers[:1000]:
+    sic_codes_division = {(1, 9+1): 'Agriculture, Forestry, and Fishing',
+                          (10, 14+1): 'Mining',
+                          (15, 17+1): 'Construction',
+                          (20, 39+1): 'Manufacturing',
+                          (40, 49+1): 'Transportation, Communications, Electric, Gas, And Sanitary Services',
+                          (50, 51+1): 'Wholesale Trade',
+                          (52, 59+1): 'Retail Trade',
+                          (60, 67+1): 'Finance, Insurance, and Real Estate',
+                          (70, 89+1): 'Services',
+                          (90, 99+1): 'Public Administration'}
+
+    for ticker in nasdaq_tickers:
 
         security_name = nasdaq_df['Security Name'].loc[ticker].split('-')[0].strip()
         security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else 'Exchange-Traded Fund'
         financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
-        industry, cik = '', ''
+        industry, sector, cik = '', '', ''
+        sic_code = 0
 
         try:
             for i in range(2):  # just try again if didn't work first time, might be advertisement showed up
@@ -200,7 +212,19 @@ def get_company_meta():
                 soup = BeautifulSoup(resp, 'html.parser')
                 # name = soup.find('span', class_='companyName').text.split(' CIK')[0]
                 cik = re.compile(r'.*CIK#: (\d{10}).*').findall(soup.text)[0]
-                industry = soup.find('p', class_="identInfo").find('br').previousSibling.split('- ')[1]
+                ident_info = soup.find('p', class_="identInfo")
+                industry = ident_info.find('br').previousSibling.split('- ')[-1]
+                sic_code = re.search(r'(\d{4})', ident_info.text).group()
+
+                for key, value in sic_codes_division.items():
+                    if int(sic_code[0]) == 0:
+                        if int(sic_code[1]) in range(key[0], key[1]):
+                            sector = value
+                            break
+                    elif int(sic_code[:2]) in range(key[0], key[1]):
+                        sector = value
+                        break
+
                 break
 
             # except TimeoutException or ElementNotInteractableException:
@@ -211,23 +235,25 @@ def get_company_meta():
             comp_list.append([ticker,
                               security_name,
                               industry.title(),
+                              sector.title(),
+                              sic_code,
                               cik,
                               security_type,
                               financial_status])
 
-    comp_df = pd.DataFrame(comp_list, columns=['Ticker', 'Company Name', 'Industry', 'CIK', 'Security Type', 'Financial Status'])
+    comp_df = pd.DataFrame(comp_list, columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Security Type', 'Financial Status'])
     comp_df.set_index('Ticker', inplace=True)
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         print(comp_df.to_string())
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Stock-Symbols.xlsx')
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Companies.xlsx')
     comp_df.to_excel(path, engine='xlsxwriter')
 
 
 if __name__ == '__main__':
-    save_gics()
-    save_dow_jones_tickers()
-    save_sp500_tickers()
-    save_russell_3000_tickers()
-    save_nasdaq()
+    # save_gics()
+    # save_dow_jones_tickers()
+    # save_sp500_tickers()
+    # save_russell_3000_tickers()
+    # save_nasdaq()
     get_company_meta()

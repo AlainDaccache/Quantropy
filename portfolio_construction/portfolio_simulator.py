@@ -1,9 +1,13 @@
 import math
 from datetime import datetime
+import typing
+from functools import partial
+
 import pandas as pd
 from abc import ABC, abstractmethod
 import data_scraping.excel_helpers as excel
 import config
+import company_analysis.accounting_ratios as fi
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 
@@ -230,5 +234,85 @@ class UserStrategy(Strategy):
         return 0.1
 
 
+class PortfolioAllocation:
+
+    def long_only(self):
+        pass
+
+    def short_only(self):
+        pass
+
+    def long_short_market_neutral(self):  # weighted sum of betas is 0
+        pass
+
+    # Requires that the sum of the weights (positive or negative) of all assets in the portfolio fall between min and max
+    # For example, net_exposure(-0.1, 0.1) constrains the difference in value between the portfolio's longs and shorts to be between -10% and 10% of the current portfolio value.
+    # Special case: min=0, max=0 means no difference in weight, so dollar neutral (i.e. 50% long, 50% short)
+    # TODO: Special case: min=50, max=70 means 1X0/X0?
+    def long_short_net_exposure(self, minimum_exposure: int, maximum_exposure: int, percent_tolerance: int):
+        pass
+
+class RebalancingFrequency:
+    def daily(self):
+        return 1
+
+    def monthly(self):
+        return 21
+
+    def yearly(self):
+        return 252
+
+class Optimization:
+    def maximize_treynor(self):
+        pass
+
+    def maximize_sharpe(self):
+        pass
+
+    def maximize_sortino(self):
+        pass
+
+    def maximize_modigliani(self):
+        pass
+
+    def maximize_information(self):
+        pass
+
+    def maximize_kelly_criterion(self):
+        pass
+
+    def maximize_roys_safety_first_criterion(self):
+        pass
+
+    def maximize_upside_potential(self):
+        pass
+
+    def maximize_jensens_alpha(self):
+        pass
+
 if __name__ == '__main__':
     Simulation(10000, UserStrategy()).simulate()
+
+
+def simulate(starting_capital: float,
+             securities_universe: typing.List[str],
+             portfolio_rebalancing_frequency: typing.Callable,
+             pre_filter: typing.List,
+             metrics: pd.Series(dtype=typing.List[typing.Callable]),
+             stocks_in_portfolio: int,
+             portfolio_allocation: typing.Callable,
+             portfolio_optimization: typing.Callable,
+             maximum_leverage: float = 1.0):
+    pass
+
+
+simulate(starting_capital=10000,
+         maximum_leverage=1.0,
+         securities_universe=['AAPL', 'GOOGL'],
+         pre_filter=[helper_condition(rsi, '>', 70)],
+         metrics=pd.Series([partial(fi.price_to_earnings), partial(fi.return_on_capital)]),
+         stocks_in_portfolio=12,
+         portfolio_allocation=PortfolioAllocation.long_only,
+         portfolio_optimization=Optimization.maximize_jensens_alpha,
+         portfolio_rebalancing_frequency=RebalancingFrequency.monthly
+         )
