@@ -93,7 +93,7 @@ def get_filings_urls_second_layer(filing_type, doc_links):
         except:
             traceback.print_exc()
 
-    # first, try finding a XML document
+        # first, try finding a XML document
         table_tag = soup.find('table', class_='tableFile', summary='Data Files')
         no_xml_link = True
         if table_tag is not None:
@@ -338,8 +338,8 @@ def scrape_html_tables_from_url(url):
                                         pass
 
                         most_recent_column_index = next((index for index, zips in enumerate(zip(dates, columns))
-                                                        if (not re.search('six', zips[1], re.IGNORECASE))
-                                                        and index == dates.index(max(dates))), 0)
+                                                         if (not re.search('six', zips[1], re.IGNORECASE))
+                                                         and index == dates.index(max(dates))), 0)
 
                 else:
                     continue
@@ -352,7 +352,7 @@ def scrape_html_tables_from_url(url):
             #             if x == item:
             #                 duplicate_index = index
             #                 break
-                # slice = [max_date_index, max_date_index+duplicate_index-1]
+            # slice = [max_date_index, max_date_index+duplicate_index-1]
 
             elif header_found and len(reg_row) > 0:
 
@@ -366,7 +366,7 @@ def scrape_html_tables_from_url(url):
                 #     continue
                 # print(indices)
 
-            # if re.compile('%.|.%'), catch index to skip all column
+                # if re.compile('%.|.%'), catch index to skip all column
                 # if it's a line
                 # if len(row.find_all(lambda tag: tag.has_attr('style')
                 # and ('border-bottom:solid' in tag['style'] or 'border-top:solid' in tag['style']))) > 0:
@@ -435,14 +435,14 @@ def normalization_iteration(iteration_count, input_dict, master_dict, filing_typ
 
             for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
 
-                if flexible_sheet or (not flexible_sheet and ('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, title, re.IGNORECASE))\
+                if flexible_sheet or (not flexible_sheet and ('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, title, re.IGNORECASE)) \
                                       or ('Income Statement' in normalized_category.split('_')[0] and re.search(fin_reg.income_statement_regex, title, re.IGNORECASE))
                                       or ('Cash Flow Statement' in normalized_category.split('_')[0] and re.search(fin_reg.cash_flow_statement_regex, title, re.IGNORECASE))):
 
                     # an entry is not flexible if it should match a hardcoded pattern
 
                     if ((not flexible_entry) and re.search('^(?!.*{})'.format('Year' if filing_type=='10-Q' else 'Quarter') +
-                                 pattern_string, title+'_'+scraped_name, re.IGNORECASE)):
+                                                           pattern_string, title+'_'+scraped_name, re.IGNORECASE)):
 
                         data_name = {'Iteration Count': str(iteration_count),
                                      'Hardcoded': True,
@@ -485,23 +485,23 @@ def normalization_iteration(iteration_count, input_dict, master_dict, filing_typ
                         #         traceback.print_exc()
                         #         print(data_name['Table Title'], data_name['Pattern String'])
                         # if not match:
-                            # else, it might match word for word an entry that wasn't hardcoded
-                            # for data_name in visited_data_names:
-                            #     if not data_name['Hardcoded']:
-                            #         pattern_name = titlecase(data_name['Pattern String'])
-                            #         scraped_name_without_category = titlecase(scraped_name.split('_')[-1])
-                            #         # TODO should probably compare category as well
-                            #         if all(x in pattern_name for x in scraped_name_without_category.split()) \
-                            #                 or all(x in scraped_name_without_category for x in pattern_name.split()):
-                            #             scraped_name = pattern_name
-                            #             break
-                            # print('_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1]))
-                            # master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
-                            #
-                            # visited_data_names.append({'Iteration Count': str(iteration_count),
-                            #                            'Hardcoded': False,
-                            #                            'Table Title': title,
-                            #                            'Pattern String': titlecase(scraped_name.split('_')[-1])})
+                        # else, it might match word for word an entry that wasn't hardcoded
+                        # for data_name in visited_data_names:
+                        #     if not data_name['Hardcoded']:
+                        #         pattern_name = titlecase(data_name['Pattern String'])
+                        #         scraped_name_without_category = titlecase(scraped_name.split('_')[-1])
+                        #         # TODO should probably compare category as well
+                        #         if all(x in pattern_name for x in scraped_name_without_category.split()) \
+                        #                 or all(x in scraped_name_without_category for x in pattern_name.split()):
+                        #             scraped_name = pattern_name
+                        #             break
+                        # print('_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1]))
+                        # master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
+                        #
+                        # visited_data_names.append({'Iteration Count': str(iteration_count),
+                        #                            'Hardcoded': False,
+                        #                            'Table Title': title,
+                        #                            'Pattern String': titlecase(scraped_name.split('_')[-1])})
                         # else:
                         #     break
 
@@ -530,22 +530,6 @@ def normalize_tables(input_dict, filing_type, visited_data_names):
     # cash_flow_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Cash Flow Statement', i)}
     # TODO If Interest Income/Expense in revenues, then readjust Net Sales (add back)
     return visited_data_names, flatten_dict(unflatten(master_dict))
-
-
-def testing():
-    url = 'https://www.sec.gov/Archives/edgar/data/1018724/000101872419000004/amzn-20181231x10k.htm#sD176CF43DDC1589FB3C3D7F2EFA46F0A'
-    dict = scrape_html_tables_from_url(url)
-    pprint(dict)
-    # pprint(dict)
-    # pprint(normalize_tables(dict, filing_type='10-K', visited_data_names=[]))
-    dict = {'2019-09-28':
-                {'Balance Sheet':
-                     {'Assets':
-                          {'Current Assets': {'Cash and Short Term Investments': {'Cash and Cash Equivalents': {'Cash and Due from Banks': np.nan, 'Interest-bearing Deposits in Banks and Other Finp.nancial Institutions': np.nan, 'Restricted Cash Current': 119134.0, 'Other Cash and Cash Equivalents': np.nan, 'Cash and Cash Equivalents': 48844.0}, 'Marketable Securities Current': 51713.0, 'Cash and Short Term Investments': 205898.0}, 'Accounts Receivable': {'Gross Accounts Receivable': np.nan, 'Allowances for Doubtful Accounts': np.nan, 'Other Receivables': 22878.0, 'Net Accounts Receivable': 22926.0, 'Accounts Receivable, Net': 22926.0}, 'Prepaid Expense, Current': np.nan, 'Inventory, Net': 4106.0, 'Income Taxes Receivable, Current': np.nan, 'Assets Held-for-sale': np.nan, 'Deferred Tax Assets, Current': np.nan, 'Other Assets, Current': np.nan, 'Total Assets, Current': 162819.0, 'Marketable Securities': 105341.0, 'Inventories': 4106.0, 'Vendor Non-Trade Receivables': 22878.0, 'Other Current Assets': 12352.0, 'Total Current Assets': 162819.0, 'Property, Plant and Equipment, Net': 37378.0, 'Other Non-Current Assets': 32978.0, 'Total Non-Current Assets': 175697.0}, 'Non Current Assets': {'Marketable Securities Non Current': 105341.0, 'Restricted Cash Non Current': np.nan, 'Property, Plant and Equipment': {'Gross Property, Plant and Equipment': 95957.0, 'Accumulated Depreciation and Amortization': -58579.0, 'Property, Plant and Equipment, Net': 37378.0}, 'Operating Lease Right-of-use Assets': np.nan, 'Deferred Tax Assets Non Current': 71386.0, 'Intangible Assets': {'Goodwill': np.nan, 'Intangible Assets, Net (Excluding Goodwill)': np.nan, 'Total Intangible Assets': np.nan}, 'Other Non Current Assets': 32978.0, 'Total Non Current Assets': 514213.0}, 'Total Assets': 338516.0}, "Liabilities and Shareholders' Equity": {'Liabilities': {'Current Liabilities': {'Short-Term Debt': 5980.0, 'Long-term Debt, Current Maturities': 102067.0, 'Accounts Payable, Current': 46236.0, 'Operating Lease, Liability, Current': np.nan, 'Current Deferred Revenues': 5522.0, 'Employee-related Liabilities, Current': np.nan, 'Accrued Income Taxes': np.nan, 'Accrued Liabilities, Current': np.nan, 'Income Taxes Payable': np.nan, 'Other Current Liabilities': 37720.0, 'Total Current Liabilities': 105718.0, 'Accounts Payable': 46236.0, 'Deferred Revenue': 5522.0, 'Commercial Paper': 5980.0, 'Term Debt': 91807.0, 'Other Non-Current Liabilities': 50503.0, 'Total Non-Current Liabilities': 142310.0, 'Total Liabilities': 248028.0}, 'Non Current Liabilities': {'Deferred Tax Liabilities': np.nan, 'Long-term Debt, Noncurrent Maturities': np.nan, 'Operating Lease, Liability, Noncurrent': np.nan, 'Liability, Defined Benefit Plan, Noncurrent': np.nan, 'Accrued Income Taxes, Noncurrent': np.nan, 'Deferred Revenue, Noncurrent': np.nan, 'Long-Term Unearned Revenue': np.nan, 'Other Liabilities, Noncurrent': 50503.0, 'Total Long-Term Liabilities': 390338.0}, 'Total Liabilities': np.nan}, "Shareholders' Equity": {'Preferred Stock, Value, Issued': np.nan, 'Common Stock and Additional Paid in Capital': {'Common Stock, Value, Issued': -68130.0, 'Additional Paid in Capital': np.nan, 'Common Stocks, Including Additional Paid in Capital': 45174.0, 'Weighted Average Number of Shares Outstanding, Basic': 4617834.0, 'Weighted Average Number Diluted Shares Outstanding Adjustment': 31079.0, 'Weighted Average Number of Shares Outstanding, Diluted': 4648913.0}, 'Treasury Stock, Value': np.nan, 'Retained Earnings (Accumulated Deficit)': 45898.0, 'Accumulated Other Comprehensive Income (Loss)': -584.0, 'Deferred Stock Compensation': np.nan, 'Minority Interest': np.nan, "Stockholders' Equity Attributable to Parent": 90488.0}, "Total Liabilities and Shareholders' Equity": 338516.0}}}}
-
-    df = pd.DataFrame.from_dict(dict, orient='index')
-    # print(df.to_string())
-
 
 def unflatten(dictionary):
     resultDict = dict()
@@ -584,7 +568,7 @@ def scrape_financial_statements(ticker, filing_type):
     visited_data_names = []
     for index, (filing_date, link) in enumerate(missing_dates_links):
         try:
-            if index > 0:
+            if index > 4:
                 break
             print(filing_date, link)
             visited_data_names, financials_dictio[filing_date] = normalize_tables(scrape_tables_from_url(link),
@@ -594,39 +578,17 @@ def scrape_financial_statements(ticker, filing_type):
             traceback.print_exc()
 
     financials_dictio = {k: v for k, v in financials_dictio.items() if v is not None}
-    balance_sheet_dict, income_statement_dict, cash_flow_statement_dict = collections.OrderedDict(), collections.OrderedDict(), collections.OrderedDict()
-    for dictio, regex in zip([balance_sheet_dict, income_statement_dict, cash_flow_statement_dict],
-                             [fin_reg.balance_sheet_regex, fin_reg.income_statement_regex, fin_reg.cash_flow_statement_regex]):
-        # flattened = {}
-        for key, value in financials_dictio.items():
-            # flattened[key] = {} # dictio is each sheet, and key is for the date
-            dictio[key] = {}
-            for kk, vv in value.items():
-                if re.search(regex, kk, re.IGNORECASE): # that's for sheet name
-                    if kk.split('_')[1] not in dictio[key].keys():
-                        dictio[key][kk.split('_')[1]] = {}
+    pprint(financials_dictio)
+    for sheet_name in names:
 
-                    # if regex != fin_reg.balance_sheet_regex:
-                    third_level = kk.split('_')[-1] if kk.split('_')[-1] != kk.split('_')[1] else ''
-                    dictio[key][kk.split('_')[1]][third_level] = vv
-                    # else:
-                    #     third_level = kk.split('_')[-2] if kk.split('_')[-2] != kk.split('_')[1] else ''
-                    #     fourth_level = kk.split('_')[-1] if kk.split('_')[-1] != kk.split('_')[1] else ''
-                    #     if len(kk.split('_')) > 2 and kk.split('_')[2] not in dictio[key][kk.split('_')[1]].keys():
-                    #         dictio[key][kk.split('_')[1]][kk.split('_')[2]] = {}
-                    #     dictio[key][kk.split('_')[1]][kk.split('_')[2]][kk.split('_')[-1]] = vv
+        dictio = {i: {(j.split('_')[1], j.split('_')[-1] if j.split('_')[1] != j.split('_')[-1] else '') if 'Balance Sheet' not in sheet_name
+                      else ((j.split('_')[1], j.split('_')[2] if (len(j.split('_')) > 2) else '', j.split('_')[-1] if j.split('_')[1] != j.split('_')[-1] else ''))
+                      : financials_dictio[i][j]
+                      for i in financials_dictio.keys()  # date
+                      for j in financials_dictio[i].keys() if j.split('_')[0] in sheet_name  # sheet name
+                      } for i in financials_dictio.keys()}
 
-        pprint(balance_sheet_dict)
-
-    for sheet_name, dict in zip(names,
-                                [balance_sheet_dict, income_statement_dict, cash_flow_statement_dict]):
-
-        df = pd.DataFrame.from_dict({(j, k): dict[i][j][k]  # index is year:category, and value is name:value
-                                     for i in dict.keys()
-                                     for j in dict[i].keys()
-                                     for k in dict[i][j].keys()
-                                     }, orient='index', columns=dict.keys()
-                                    )
+        df = pd.DataFrame.from_dict(dictio)
 
         if len(existing_dates_with_df) > 0:
             df = pd.concat([df, existing_dates_with_df[sheet_name][1]], axis=1).fillna(0)
@@ -727,6 +689,10 @@ def save_factors_data(url):
     return ff_factors
 
 
+def testing():
+    pass
+
+
 if __name__ == '__main__':
 
     if not os.path.exists(config.DATA_DIR_PATH):
@@ -742,14 +708,17 @@ if __name__ == '__main__':
                        'KO', 'PG', 'JNJ', 'PEP', 'VZ',
                        'GS','MS', 'JPM', 'WFC', 'C', 'BAC']
     # testing()
-    for ticker in company_tickers[:1]:
+    for ticker in company_tickers[:10]:
         # get_stock_prices(ticker)
         # get_technical_indicators(ticker)
-        # scrape_financial_statements(ticker, '10-Q')
         scrape_financial_statements(ticker, '10-K')
+        # scrape_financial_statements(ticker, '10-Q')
 
     # ff_factors = get_beta_factors()
     # print(ff_factors)
     # testing()
     # scrape_pdf()
     # save_factors_data(momentum_factor_url_daily)
+
+
+
