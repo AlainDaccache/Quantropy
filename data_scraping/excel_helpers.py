@@ -52,7 +52,6 @@ def read_entry_from_csv(path, sheet_name, x, y):
 
     if os.path.exists(path):
         # maybe the file exists, but the sheet is not in the file
-        if config.FINANCIAL_STATEMENTS_DIR_PATH in path:
             stock = Path(path).stem
             sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
             if sheet_name not in sheets:
@@ -75,7 +74,14 @@ def read_entry_from_csv(path, sheet_name, x, y):
         #     scraper.get_beta_factors()
 
     xls = pd.ExcelFile(path)
-    df = pd.read_excel(xls, sheet_name, index_col=0)
+    if config.balance_sheet_name in sheet_name:
+        index_col = [0, 1, 2]
+    elif config.income_statement_name in sheet_name or config.cash_flow_statement_name in sheet_name:
+        index_col = [0, 1]
+    else:
+        index_col = [0]
+
+    df = pd.read_excel(xls, sheet_name, index_col=index_col)
 
     if isinstance(y, datetime):  # if the input is a date...
         # if isinstance(df.index, pd.DatetimeIndex):
@@ -84,7 +90,10 @@ def read_entry_from_csv(path, sheet_name, x, y):
 
     elif isinstance(x, datetime):
         date_index = get_date_index(x, dates_values=df.columns)
-        return df.iloc[:, date_index].loc[y]
+        reduced_df = df.iloc[:, date_index]
+        for el in list(y):
+            reduced_df = reduced_df.loc[el]
+        return reduced_df
     else:
         return df[x].loc[y]
 

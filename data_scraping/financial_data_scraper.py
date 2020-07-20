@@ -6,9 +6,7 @@ import traceback
 import urllib.request
 import zipfile
 from datetime import datetime, timedelta
-from pprint import pprint
 from time import sleep
-
 import numpy as np
 import pandas as pd
 import requests
@@ -25,12 +23,6 @@ import config
 from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
-
-
-# TODO format excel for categories (re-format multi-index)
-# TODO bug: duplicate entries despite pattern match check
-# TODO
-
 
 '''
 Beautiful BeautifulSoup Usage
@@ -107,7 +99,7 @@ def get_filings_urls_second_layer(filing_type, doc_links):
 
         # if no XML document found, try finding html documents
         no_html_link = True
-        no_xml_link = True # TODO this is to include XML links as HTMLs to test HTML scraping, so remove when done
+        no_xml_link = True # this is to include XML links as HTMLs to test HTML scraping, so remove when done with xml
         if no_xml_link:
             table_tag = soup.find('table', class_='tableFile', summary='Document Format Files')
             rows = table_tag.find_all('tr')
@@ -362,16 +354,7 @@ def scrape_html_tables_from_url(url):
                 reg_row = [reg_row[0]] + [re.sub("^-$", "", r) for r in reg_row[1:]] # for NOT the minus sign
                 reg_row = [reg_row[0]] + [re.sub(r',', '', x) for x in reg_row[1:]]
                 reg_row = list(filter(lambda x: x != "", reg_row))
-                # if len(reg_row) < len(indices): # TODO for now, skipping when there is a missing value
-                #     continue
-                # print(indices)
 
-                # if re.compile('%.|.%'), catch index to skip all column
-                # if it's a line
-                # if len(row.find_all(lambda tag: tag.has_attr('style')
-                # and ('border-bottom:solid' in tag['style'] or 'border-top:solid' in tag['style']))) > 0:
-                #     continue
-                # empty line
                 if len(''.join(reg_row).strip()) == 0:
                     continue
 
@@ -407,7 +390,7 @@ def scrape_html_tables_from_url(url):
                     if len(reg_row) > 1: # not category column:
                         if current_category not in all_in_one_dict[table_title].keys():
                             # 1+ in order to skip the name (first element in reg_row)
-                            all_in_one_dict[table_title][current_category] = float(re.sub('^$', '0', reg_row[1+most_recent_column_index])) # TODO FIX
+                            all_in_one_dict[table_title][current_category] = float(re.sub('^$', '0', reg_row[1+most_recent_column_index]))
 
                 except:
                     traceback.print_exc()
@@ -426,8 +409,7 @@ def scrape_tables_from_url(url):
         return scrape_txt_tables_from_url(url)
 
 
-# TODO maybe for first round of normalization ADD to the patterns the _ trick (but keep them r
-def normalization_iteration(iteration_count, input_dict, master_dict, filing_type, visited_data_names=None, flexible_sheet=False, flexible_entry=False):
+def normalization_iteration(iteration_count, input_dict, master_dict, filing_type, visited_data_names, year, flexible_sheet=False, flexible_entry=False):
 
     for title, table in input_dict.items():
 
@@ -435,101 +417,95 @@ def normalization_iteration(iteration_count, input_dict, master_dict, filing_typ
 
             for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
 
-                if flexible_sheet or (not flexible_sheet and ('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, title, re.IGNORECASE)) \
-                                      or ('Income Statement' in normalized_category.split('_')[0] and re.search(fin_reg.income_statement_regex, title, re.IGNORECASE))
-                                      or ('Cash Flow Statement' in normalized_category.split('_')[0] and re.search(fin_reg.cash_flow_statement_regex, title, re.IGNORECASE))):
+                # if you're a flexible sheet, the sheet we're checking at least shouldn't match the other concerning statements (i.e. depreciation and amortization's pattern in balance sheet regex shouldn't match cash flow statement change in depreciation and amortization)
+                if (flexible_sheet and (('Balance Sheet' in normalized_category.split('_')[0]
+                and not re.search(r'{}|{}'.format(fin_reg.cash_flow_statement_regex, fin_reg.income_statement_regex), title, re.IGNORECASE))
+                or ('Income Statement' in normalized_category.split('_')[0]
+                    and not re.search(r'{}|{}'.format(fin_reg.cash_flow_statement_regex, fin_reg.balance_sheet_regex), title, re.IGNORECASE))
+                or ('Cash Flow Statement' in normalized_category.split('_')[0]
+                    and not re.search(r'{}|{}'.format(fin_reg.balance_sheet_regex, fin_reg.income_statement_regex), title, re.IGNORECASE)))
+
+                        # if you're not a flexible sheet, the sheet we're checking must match regex sheet
+                        or ((not flexible_sheet)
+                                      and (('Balance Sheet' in normalized_category.split('_')[0] and re.search(fin_reg.balance_sheet_regex, title, re.IGNORECASE))
+                                           or ('Income Statement' in normalized_category.split('_')[0] and re.search(fin_reg.income_statement_regex, title, re.IGNORECASE))
+                                           or ('Cash Flow Statement' in normalized_category.split('_')[0] and re.search(fin_reg.cash_flow_statement_regex, title, re.IGNORECASE))))):
 
                     # an entry is not flexible if it should match a hardcoded pattern
 
                     if ((not flexible_entry) and re.search('^(?!.*{})'.format('Year' if filing_type=='10-Q' else 'Quarter') +
                                                            pattern_string, title+'_'+scraped_name, re.IGNORECASE)):
 
+
                         data_name = {'Iteration Count': str(iteration_count),
                                      'Hardcoded': True,
                                      'Table Title': title,
                                      'Pattern String': pattern_string}
 
-                        # The idea is that if we go to another table and we have a value similar to one we already have on the sheet,
-                        # i do not want to -include it (because its a duplicate). But if the value is similar in the same sheet, then
-                        # i want to add it to the already existing value
                         if math.isnan(master_dict[normalized_category]):
-                            visited_data_names.append(data_name)
-                        if data_name in visited_data_names:
+                            if year not in visited_data_names.keys():
+                                visited_data_names[year] = []
+                            visited_data_names[year].append(data_name)  # that table takes ownership for the data
+                        if data_name in visited_data_names[year]:
                             master_dict[normalized_category] = np.nan_to_num(master_dict[normalized_category]) + scraped_value
+
                         break
 
-                    # otherwise it is flexible if it should just match the category (i.e. current assets, operating expenses...)
+                    # otherwise it is flexible if it should just match the category
+                    # (i.e. current assets, operating expenses...)
                     if flexible_entry and re.search(normalized_category.split('_')[-2], scraped_name, re.IGNORECASE):
-                        no_match = True
-                        for data_name in visited_data_names:
-                            if re.search(data_name['Pattern String'], pattern_string, re.IGNORECASE):
-                                no_match = False
-                                break
-                        if no_match:
+                        already_have_it = False
+                        for el in visited_data_names[year]:
+
+                            if re.search(el['Pattern String'], scraped_name, re.IGNORECASE):
+                                same_sheet = False
+                                for regex_title in [fin_reg.balance_sheet_regex, fin_reg.income_statement_regex, fin_reg.cash_flow_statement_regex]:
+                                    if re.search(regex_title, title, re.IGNORECASE) and re.search(regex_title, el['Table Title'], re.IGNORECASE):
+                                        same_sheet = True
+
+                                if same_sheet:
+                                    already_have_it = True
+
+                        if not already_have_it:
                             master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
 
-                            visited_data_names.append({'Iteration Count': str(iteration_count),
-                                                       'Hardcoded': False,
-                                                       'Table Title': title,
-                                                       'Pattern String': scraped_name})
-                            break
-                        # match = False
-                        # for data_name in visited_data_names:
-                        #     try:
-                        #         if re.search(data_name['Table Title'].replace('(', '').replace(')', ''),
-                        #                      r'{}'.format(title.replace('(', '').replace(')', '')), re.IGNORECASE) and \
-                        #                 re.search(data_name['Pattern String'],
-                        #                           r'{}'.format(scraped_name), re.IGNORECASE):
-                        #             match = True
-                        #     except:
-                        #         traceback.print_exc()
-                        #         print(data_name['Table Title'], data_name['Pattern String'])
-                        # if not match:
-                        # else, it might match word for word an entry that wasn't hardcoded
-                        # for data_name in visited_data_names:
-                        #     if not data_name['Hardcoded']:
-                        #         pattern_name = titlecase(data_name['Pattern String'])
-                        #         scraped_name_without_category = titlecase(scraped_name.split('_')[-1])
-                        #         # TODO should probably compare category as well
-                        #         if all(x in pattern_name for x in scraped_name_without_category.split()) \
-                        #                 or all(x in scraped_name_without_category for x in pattern_name.split()):
-                        #             scraped_name = pattern_name
-                        #             break
-                        # print('_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1]))
-                        # master_dict['_'.join(normalized_category.split('_')[:-1])+'_'+titlecase(scraped_name.split('_')[-1])] = scraped_value
-                        #
-                        # visited_data_names.append({'Iteration Count': str(iteration_count),
-                        #                            'Hardcoded': False,
-                        #                            'Table Title': title,
-                        #                            'Pattern String': titlecase(scraped_name.split('_')[-1])})
-                        # else:
-                        #     break
+                            visited_data_names[year].append({'Iteration Count': str(iteration_count),
+                                                           'Hardcoded': False,
+                                                           'Table Title': title,
+                                                           'Pattern String': scraped_name})
+                        break
 
     return visited_data_names, master_dict
 
-# def test():
-#     if not match_found:
-#         for unique_category in set([normalized_category.split('_')[-2] for normalized_category, _ in flatten_dict(fin_reg.financial_entries_regex_dict).items()])
-#             if re.search(unique_category, scraped_name, re.IGNORECASE):
-#                 master_dict[''.join(normalized_category.split('_')[:-1])+'_'+scraped_name.split('_')[-1]] = scraped_value
-
-
-def normalize_tables(input_dict, filing_type, visited_data_names):
-
+def normalize_tables(input_dict, filing_type, visited_data_names, year):
+    # pprint(input_dict)
     master_dict = {}
+
+    # TODO maybe should save all data_names to further compare across years? (the flexible entries)
+
     for normalized_category, pattern_string in flatten_dict(fin_reg.financial_entries_regex_dict).items():
         master_dict[normalized_category] = np.nan
-    # pprint(input_dict)
-    # first we want to give priority to the elements in the consolidated financial statements
-    visited_data_names, master_dict = normalization_iteration(0, input_dict, master_dict, filing_type, visited_data_names, flexible_sheet=False, flexible_entry=False)
-    visited_data_names, master_dict = normalization_iteration(1, input_dict, master_dict, filing_type, visited_data_names, flexible_sheet=False, flexible_entry=True)
-    visited_data_names, master_dict = normalization_iteration(2, input_dict, master_dict, filing_type, visited_data_names, flexible_sheet=True, flexible_entry=False)
-    pprint(master_dict)
-    # balance_sheet = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Balance Sheet', i)}
-    # income_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Income Statement', i)}
-    # cash_flow_statement = {i: master_dict[i] for i in master_dict.keys() if re.search(r'Cash Flow Statement', i)}
-    # TODO If Interest Income/Expense in revenues, then readjust Net Sales (add back)
+
+    # first we want to give priority to the elements that strictly match our regex patterns,
+    # and that are in the consolidated financial statements
+    visited_data_names, master_dict = normalization_iteration(0, input_dict, master_dict, filing_type, visited_data_names, year, flexible_sheet=False, flexible_entry=False)
+
+    # then we want to give priority to the elements that strictly match our regex patterns,
+    # but not in the consolidated financial statements
+    visited_data_names, master_dict = normalization_iteration(1, input_dict, master_dict, filing_type, visited_data_names, year, flexible_sheet=True, flexible_entry=False)
+
+    # finally, we want to give priority to the rest of the elements (i.e. those that do not
+    # match our regex patterns) that are in the consolidated financial statements
+    # TODO bug: duplicate entries despite pattern match check
+    visited_data_names, master_dict = normalization_iteration(2, input_dict, master_dict, filing_type, visited_data_names, year, flexible_sheet=False, flexible_entry=True)
+
+    # TODO Final Standardization, Fill in Differences!
+    # If Interest Income/Expense in revenues, then readjust Net Sales (add back)
+    # total noncurrent = total - total current  for assets, liabilities
+    # if total noncurrent nan, else total = total current + total noncurrent
+
     return visited_data_names, flatten_dict(unflatten(master_dict))
+
 
 def unflatten(dictionary):
     resultDict = dict()
@@ -545,7 +521,7 @@ def unflatten(dictionary):
 
 
 def scrape_financial_statements(ticker, filing_type):
-    financials_dictio = {}
+    dictio = {}
     cik = get_company_cik(ticker)
     doc_links = get_filings_urls_first_layer(cik, filing_type)
     filings_dictio = get_filings_urls_second_layer(filing_type, doc_links)
@@ -565,30 +541,34 @@ def scrape_financial_statements(ticker, filing_type):
     else:
         missing_dates_links = [(x, y) for x, y in filings_dictio['HTML Links']]
 
-    visited_data_names = []
     for index, (filing_date, link) in enumerate(missing_dates_links):
         try:
-            if index > 4:
+            if index > 0:
                 break
             print(filing_date, link)
-            visited_data_names, financials_dictio[filing_date] = normalize_tables(scrape_tables_from_url(link),
-                                                                                  filing_type,
-                                                                                  visited_data_names)
+            # scrape_tables_from_url(link)
+            dictio[filing_date] = scrape_tables_from_url(link)
         except Exception:
             traceback.print_exc()
 
+    pprint(dictio)
+    financials_dictio = {}
+    visited_data_names = {}
+    for key, value in dictio.items():
+        visited_data_names, financials_dictio[key] = normalize_tables(value, filing_type, visited_data_names, key)
+
+
     financials_dictio = {k: v for k, v in financials_dictio.items() if v is not None}
-    pprint(financials_dictio)
+    # pprint(financials_dictio)
     for sheet_name in names:
 
-        dictio = {i: {(j.split('_')[1], j.split('_')[-1] if j.split('_')[1] != j.split('_')[-1] else '') if 'Balance Sheet' not in sheet_name
+        diction = {i: {(j.split('_')[1], j.split('_')[-1] if j.split('_')[1] != j.split('_')[-1] else '') if 'Balance Sheet' not in sheet_name
                       else ((j.split('_')[1], j.split('_')[2] if (len(j.split('_')) > 2) else '', j.split('_')[-1] if j.split('_')[1] != j.split('_')[-1] else ''))
                       : financials_dictio[i][j]
-                      for i in financials_dictio.keys()  # date
                       for j in financials_dictio[i].keys() if j.split('_')[0] in sheet_name  # sheet name
-                      } for i in financials_dictio.keys()}
+                      } for i in financials_dictio.keys()}  # date
 
-        df = pd.DataFrame.from_dict(dictio)
+        df = pd.DataFrame.from_dict(diction)
 
         if len(existing_dates_with_df) > 0:
             df = pd.concat([df, existing_dates_with_df[sheet_name][1]], axis=1).fillna(0)
@@ -635,7 +615,7 @@ def save_gnp_price_index():
     df.columns = ['Date', 'GNP Price Index']
     df.set_index(df.columns[0], inplace=True)
     df.index = pd.to_datetime(df.index, format='%Y-%m-%d')
-    df.index = df.index - timedelta(days=1)
+    # df.index = df.index - timedelta(days=1)
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df)
@@ -690,7 +670,8 @@ def save_factors_data(url):
 
 
 def testing():
-    pass
+    dictio = {}
+    pprint(normalize_tables(dictio, '10-K', []))
 
 
 if __name__ == '__main__':
@@ -708,7 +689,7 @@ if __name__ == '__main__':
                        'KO', 'PG', 'JNJ', 'PEP', 'VZ',
                        'GS','MS', 'JPM', 'WFC', 'C', 'BAC']
     # testing()
-    for ticker in company_tickers[:10]:
+    for ticker in company_tickers[:1]:
         # get_stock_prices(ticker)
         # get_technical_indicators(ticker)
         scrape_financial_statements(ticker, '10-K')
@@ -719,6 +700,3 @@ if __name__ == '__main__':
     # testing()
     # scrape_pdf()
     # save_factors_data(momentum_factor_url_daily)
-
-
-
