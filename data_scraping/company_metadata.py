@@ -153,6 +153,7 @@ def get_company_meta():
     with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"), "rb") as f:
         nasdaq_df = pickle.load(f)
 
+    nasdaq_df = nasdaq_df[:-1]
     nasdaq_tickers = nasdaq_df.index
     driver = webdriver.Chrome(ChromeDriverManager().install())
     comp_list = []
@@ -176,18 +177,34 @@ def get_company_meta():
                           (70, 89+1): 'Services',
                           (90, 99+1): 'Public Administration'}
 
-    for ticker in nasdaq_tickers:
+    for ticker in nasdaq_tickers[:500]:
 
         security_name = nasdaq_df['Security Name'].loc[ticker].split('-')[0].strip()
-        security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else 'Exchange-Traded Fund'
+        security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() \
+            if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else ''
         financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
         industry, sector, cik = '', '', ''
         sic_code = 0
 
         try:
             for i in range(2):  # just try again if didn't work first time, might be advertisement showed up
-                if security_type == 'Exchange-Traded Fund':
-                    break # still should go to the 'finally' block
+                if i == 1:
+                    button = driver.find_element_by_xpath("//a[@class='acsCloseButton acsAbandonButton ']")
+                    button.click()
+                    sleep(1)
+                if nasdaq_df['ETF'].loc[ticker] == 'Y':
+                    driver.get('https://www.sec.gov/edgar/searchedgar/mutualsearch.html')
+                    field = driver.find_element_by_xpath("//input[@id='gen_input']")
+                    field.send_keys(ticker)
+                    sleep(1)
+                    field.send_keys(Keys.ENTER)
+                    sleep(1)
+                    if 'No records matched your query' not in driver.page_source:
+                        for t in driver.find_elements_by_xpath("//b[@class='blue']"):
+                            if t.text == ticker:
+                                cik = driver.find_element_by_xpath('').text
+                                security_type = driver.find_element_by_xpath('').text
+                    break  # still should go to the 'finally' block
 
                 base_url = 'https://www.sec.gov/cgi-bin/browse-edgar?CIK={}'.format(ticker)
                 resp = requests.get(base_url).text
@@ -242,6 +259,7 @@ def get_company_meta():
                               financial_status])
 
     comp_df = pd.DataFrame(comp_list, columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Security Type', 'Financial Status'])
+    comp_df = comp_df[comp_df['Security Type'] != 'Exchange-Traded Fund']  # remove ETFs for now
     comp_df.set_index('Ticker', inplace=True)
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):

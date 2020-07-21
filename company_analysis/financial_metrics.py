@@ -4,58 +4,80 @@ import data_scraping.excel_helpers as excel
 import config
 
 
-def market_price(stock, date=datetime.today()):
-    output = excel.read_entry_from_csv(stock, config.stock_prices_sheet_name, date, 'Adj Close')
+def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
+    output = excel.read_entry_from_csv(stock, config.stock_prices_sheet_name, date, 'Adj Close', lookback_period)
     print('Market Price for {} on the {} is: {}'.format(stock, date, output))
     return output
 
 
-def gross_profit(stock, date=datetime.today(), annual=True, ttm=False):
-    return fi.net_sales(stock, date, annual, ttm) - fi.cost_of_goods_services(stock, date, annual, ttm)
+def gross_profit(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+    return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                        ttm=ttm) - fi.cost_of_goods_services(stock=stock, date=date, lookback_period=lookback_period,
+                                                             annual=annual, ttm=ttm)
 
 
-def ebit(stock, date=datetime.today(), annual=True, ttm=False):
+def ebit(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     try:
-        return fi.net_income(stock, date) + fi.interest_expense(stock, date) + fi.income_tax_expense(stock, date)
+        return fi.net_income(stock, date, lookback_period, annual, ttm) + fi.interest_expense(stock, date,
+                                                                                              lookback_period, annual,
+                                                                                              ttm) + fi.income_tax_expense(
+            stock, date, lookback_period, annual, ttm)
     except:
-        return fi.net_sales(stock, date) - fi.cost_of_goods_services(stock, date) - fi.total_operating_expenses(stock, date) - fi.accumulated_depreciation_amortization(stock, date)
+        return fi.net_sales(stock, date, lookback_period, annual, ttm) - fi.cost_of_goods_services(stock, date,
+                                                                                                   lookback_period,
+                                                                                                   annual,
+                                                                                                   ttm) - fi.total_operating_expenses(
+            stock, date, lookback_period, annual, ttm) - fi.accumulated_depreciation_amortization(stock, date,
+                                                                                                  lookback_period,
+                                                                                                  annual, ttm)
 
 
-def ebitda(stock, date, annual=True, ttm=False):
-    output = ebit(stock, date) + fi.accumulated_depreciation_amortization(stock, date)
+def ebitda(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+    output = ebit(stock, date, lookback_period, annual, ttm) + fi.accumulated_depreciation_amortization(stock, date,
+                                                                                                        lookback_period,
+                                                                                                        annual, ttm)
     print('EBITDA for {} on the {} is: {}'.format(stock, date, output))
     return output
 
 
-def capex(stock, date, annual=True, ttm=False):
-    ppe_delta = (fi.net_property_plant_equipment(stock, date, annual, ttm)
+def capex(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False):
+    ppe_delta = (fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                                 ttm=ttm)
                  - fi.net_property_plant_equipment(stock, date - timedelta(days=365), annual, ttm))
-    return ppe_delta + fi.accumulated_depreciation_amortization(stock, date, annual, ttm)
+    return ppe_delta + fi.accumulated_depreciation_amortization(stock=stock, date=date, lookback_period=lookback_period,
+                                                                annual=annual, ttm=ttm)
 
 
-def debt_service(stock, date=datetime.now(), annual=True, ttm=True):
-    return fi.interest_expense(stock, date, annual, ttm)  # TODO Review
+def debt_service(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
+    return fi.interest_expense(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                               ttm=ttm)  # TODO Review
 
 
-def net_credit_sales(stock, date=datetime.now(), annual=True, ttm=True):
-    return fi.net_sales(stock, date, annual, ttm) - fi.net_accounts_receivable(stock, date, annual, ttm)  # TODO Review
+def net_credit_sales(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
+    return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                        ttm=ttm) - fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period,
+                                                              annual=annual, ttm=ttm)  # TODO Review
 
 
-def working_capital(stock, date=datetime.now(), annual=True, ttm=True):
-    return fi.current_total_assets(stock, date, annual, ttm) - fi.current_total_liabilities(stock, date, annual, ttm)
+def working_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
+    return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                   ttm=ttm) - fi.current_total_liabilities(stock=stock, date=date,
+                                                                           lookback_period=lookback_period,
+                                                                           annual=annual, ttm=ttm)
 
 
-def market_capitalization(stock, date=datetime.now(), diluted_shares=True):
-    shares_outstanding = fi.total_shares_outstanding(stock, date, diluted_shares)
-    output = market_price(stock, date) * shares_outstanding
+def market_capitalization(stock, date=datetime.now(), lookback_period=timedelta(days=0), diluted_shares=True, annual=False, ttm=False):
+    shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm, diluted=diluted_shares)
+    output = market_price(stock, date, lookback_period) * shares_outstanding
     print('Market Capitalization for {} on the {} is: {}'.format(stock, date, output))
     return output
 
 
-def enterprise_value(stock, date=datetime.now(), annual=True, ttm=False):
-    output = market_capitalization(stock, date) \
-             + fi.total_liabilities(stock, date, annual, ttm) \
-             - fi.cash_and_cash_equivalents(stock, date, annual, ttm)
+def enterprise_value(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+    output = market_capitalization(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+             + fi.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+             - fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                            ttm=ttm)
     print('Enterprise Value for {} on the {} is: {}'.format(stock, date, output))
     return output
 
@@ -71,3 +93,4 @@ def get_stock_industry(stock):
 if __name__ == '__main__':
     print(gross_national_product_price_index(datetime(2018, 5, 3)))
     print(get_stock_industry('AAPL'))
+    print(enterprise_value)

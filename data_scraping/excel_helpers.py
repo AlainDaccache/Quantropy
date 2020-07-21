@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
 import config
@@ -10,22 +10,30 @@ import xlrd
 from typing import Callable
 
 
-def get_date_index(date, dates_values):
+def get_date_index(date, dates_values, lookback_index=0):
     if isinstance(dates_values[0], str):
         dates_values = [datetime.strptime(x, '%Y-%m-%d') for x in dates_values]
     elif isinstance(dates_values[0], np.datetime64):
         dates_values = [x.astype('M8[ms]').astype('O') for x in dates_values]
     if len(dates_values) > 1:
-        if dates_values[0] > dates_values[1]: # if dates decreasing rightwards or downwards
-            return next((index for (index, item) in enumerate(dates_values) if item < date), 0) - 1
-        else: # if dates increasing rightwards or downwards
-            return next((index for (index, item) in enumerate(dates_values) if item > date), -1) - 1
+        if dates_values[0] > dates_values[1]:  # if dates decreasing rightwards or downwards
+            date_index, date_item = next(((index, item) for (index, item) in enumerate(dates_values) if item < date), 0)
+            # adjusted_lookback = date_item - lookback_period
+            # lookback_index = next((
+            #     index for (index, item) in enumerate(dates_values[date_index:]) if item <= adjusted_lookback), 0)
+            return date_index + lookback_index
+        else:  # if dates increasing rightwards or downwards
+            date_index, date_item = next(((index, item) for (index, item) in enumerate(dates_values) if item > date),
+                                         -1)
+            # adjusted_lookback = date_item - lookback_period
+            # lookback_index = next((
+            #     index for (index, item) in enumerate(dates_values[date_index:]) if item > adjusted_lookback), -1)
+            return date_index - lookback_index
     else:
         return 0
 
 
 def save_into_csv(path, df, sheet_name):
-
     with pd.ExcelWriter(path, engine='openpyxl') as writer:
         if os.path.exists(path):
             writer.book = load_workbook(path)
@@ -36,7 +44,6 @@ def save_into_csv(path, df, sheet_name):
 
 
 def read_df_from_csv(path, sheet_name):
-
     if os.path.exists(path):
         workbook = xlrd.open_workbook(path, on_demand=True)
         sheets = workbook.sheet_names()
@@ -48,20 +55,19 @@ def read_df_from_csv(path, sheet_name):
     return pd.DataFrame()
 
 
-def read_entry_from_csv(path, sheet_name, x, y):
-
+def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0):
     if os.path.exists(path):
         # maybe the file exists, but the sheet is not in the file
-            stock = Path(path).stem
-            sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
-            if sheet_name not in sheets:
-                if sheet_name == config.stock_prices_sheet_name:
-                    scraper.get_stock_prices(stock)
-                elif sheet_name in config.quarterly_statements:
-                    # scraper.scrape_financial_statements(stock, '10-Q')
-                    return Exception
-                elif sheet_name in config.yearly_statements:
-                    scraper.scrape_financial_statements(stock, '10-K')
+        stock = Path(path).stem
+        sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
+        if sheet_name not in sheets:
+            if sheet_name == config.stock_prices_sheet_name:
+                scraper.get_stock_prices(stock)
+            elif sheet_name in config.quarterly_statements:
+                # scraper.scrape_financial_statements(stock, '10-Q')
+                return Exception
+            elif sheet_name in config.yearly_statements:
+                scraper.scrape_financial_statements(stock, '10-K')
 
     # if the file doesn't exist
     else:
@@ -85,14 +91,19 @@ def read_entry_from_csv(path, sheet_name, x, y):
 
     if isinstance(y, datetime):  # if the input is a date...
         # if isinstance(df.index, pd.DatetimeIndex):
-        date_index = get_date_index(y, dates_values=df.index.values)
+        date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
         return df[x].iloc[date_index]
 
     elif isinstance(x, datetime):
-        date_index = get_date_index(x, dates_values=df.columns)
+        date_index = get_date_index(date=x, dates_values=df.columns, lookback_index=lookback_index)
+
         reduced_df = df.iloc[:, date_index]
         for el in list(y):
-            reduced_df = reduced_df.loc[el]
+            if el in reduced_df.index:
+                reduced_df = reduced_df.loc[el]
+            else:
+                print('{} for {} not found!'.format(y, x))
+                return np.nan
         return reduced_df
     else:
         return df[x].loc[y]
@@ -113,7 +124,7 @@ def read_dates_from_csv(path, sheet_name):
 
 def get_stock_universe():
     tickers = []
-    directory = config.financial_statements_folder_path
+    directory = config.FINANCIAL_STATEMENTS_DIR_PATH
     for root, dirs, files in os.walk(directory):
         for file in files:
             tickers.append(os.path.splitext(file)[0])
@@ -150,6 +161,7 @@ def companies_comparative_metrics(metrics_series: pd.Series(dtype='float64'), pe
         output = [ticker for ticker, metric_value in metrics_series.iteritems() if metric_value < quantile]
     return output
 
+
 if __name__ == '__main__':
     # metrics_series = metric_in_industry(partial(fi.earnings_per_share, ttm=False), 'SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.')
     # companies = companies_comparative_metrics(metrics_series, percentile=25, comparator='>')
@@ -157,4 +169,4 @@ if __name__ == '__main__':
     financial_path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_NAME, 'TSLA')
     # print(read_entry_from_csv(financial_path, config.stock_prices_sheet_name, datetime.now(), 'Adj Close'))
     # print(read_entry_from_csv(financial_path, config.balance_sheet_yearly, datetime(2018, 4, 4), 'Restricted Cash Non Current'))
-    print(read_entry_from_csv(config.beta_factors_file_path, config.yearly_factors, datetime(2001, 1, 1), 'RF'))
+    print(read_entry_from_csv(config.FACTORS_DIR_PATH, config.yearly_factors, datetime(2001, 1, 1), 'RF'))

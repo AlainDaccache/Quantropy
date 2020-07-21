@@ -20,7 +20,7 @@ balance_sheet_regex = r'(balance ?sheet|condition)'
 cash_flow_statement_regex = r'(Consolidated(.*?)cash flow)|(cash( ?)flow(s?) statement(s?))'
 income_statement_regex = r'(Consolidated(.*?)statements of (income|earnings))|(income statement)|(CONSOLIDATED STATEMENTS OF OPERATIONS)'
 
-non_current = '(?=.*non[- ]?current(?!.*[_]))'
+non_current = '(?=.*non[- ]?current)|(?=.*long-term)'
 current = '(?!.*non[- ]?current)(?=.*(current|short-term))'
 
 financial_entries_regex_dict = {
@@ -36,7 +36,6 @@ financial_entries_regex_dict = {
                     # 'Gross Accounts Receivable': r'$^', # TODO
                     # 'Allowances for Doubtful Accounts': r'(?=.*Receivable)(?=.*allowances.*\$(\d+))',
                     # bug in this one (?=.*Receivable.*allowances).*(\$(\d+))*,
-                    'Other Receivables': r'(?=.*Receivable)(?!.*(allowances|net))',
                     'Net Accounts Receivable': r'(?=.*Receivable)(?=.*(allowances|net))',
                 },
                 'Prepaid Expense, Current': r'(?=.*Prepaid expenses)',
@@ -45,8 +44,8 @@ financial_entries_regex_dict = {
                 'Assets Held-for-sale': r'Assets Held[- ]for[- ]sale',
                 # taxes that have been already paid despite not yet having been incurred
                 'Deferred Tax Assets, Current': r'(?=.*(Deferred tax(es)? (assets)|(on income))|(Prepaid taxes)){}'.format(current),
-                'Other Assets, Current': r'$^',
-                'Total Assets, Current': r'(?=.*Total(?!.*[_]))(?=.*Assets(?!.*[_:])){}'.format(current)
+                'Other Current Assets': r'$^',
+                'Total Current Assets': r'(?=.*Total(?!.*[_]))(?=.*Assets(?!.*[_:])){}'.format(current)
             },
             'Non Current Assets': {
 
@@ -72,12 +71,12 @@ financial_entries_regex_dict = {
         'Liabilities and Shareholders\' Equity': {
             'Liabilities': {
                 'Current Liabilities': {
-                    'Short-Term Debt': r'(?=.*(Commercial Paper|Current Debt))',
-                    'Long-term Debt, Current Maturities': r'((?=.*current)|(?!.*non[- ]?current))(?=.*(Long-)?Term Debt|Loans and notes payable)',
-                    'Accounts Payable, Current': r'(?=.*Payable)((?=.*current)|(?!.*non[- ]?current))',
-                    'Operating Lease, Liability, Current': r'(?=.*Operating lease liabilities)((?=.*current)|(?!.*non[- ]?current))',
-                    'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue))((?=.*current)|(?!.*non[- ]?current))',
-                    'Employee-related Liabilities, Current': r'(?=.*Accrued Compensation)',
+                    # this is the short-term debt, i.e. the amount of a loan that is payable to the lender within one year.
+                    'Long-term Debt, Current Maturities': r'(?=.*(Long-)?Term Debt|Loans and notes payable){}'.format(current),
+                    'Accounts Payable, Current': r'(?=.*Payable){}'.format(current),
+                    'Operating Lease, Liability, Current': r'(?=.*Operating lease liabilities){}'.format(current),
+                    'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue)){}'.format(current),
+                    'Employee-related Liabilities, Current': r'(?=.*Accrued Compensation){}'.format(current),
                     'Accrued Income Taxes': r'Accrued(?=.*Income)(?=.*Taxes)',
                     'Accrued Liabilities, Current': r'(?=.*Accrued)(?=.*(Expense|Liabilities))',
                     'Income Taxes Payable': r'(?=.*Income taxes payable)|(?=.*Short-term Income taxes)',
@@ -87,16 +86,16 @@ financial_entries_regex_dict = {
                 'Non Current Liabilities': {
                     'Deferred Tax Liabilities': r'(Deferred(?=.*Income)(?=.*Taxes))|(Deferred tax liabilities)',
                     # this debt is due after one year in contrast to current maturities which are due within this year
-                    'Long-term Debt, Noncurrent Maturities': r'(?=.*Long-term (borrowings|debt))(?!.*within)((?!.*current.*[_])|(?=.*non[- ]?current))',
+                    'Long-term Debt, Noncurrent Maturities': r'(?=.*term debt)(?!.*within){}'.format(non_current),
                     'Operating Lease, Liability, Noncurrent': r'(?=.*Operating lease (liabilities|liability))((?!.*current.*[_])|(?=.*non[- ]?current))',
                     'Liability, Defined Benefit Plan, Noncurrent': r'Employee related obligations',
                     'Accrued Income Taxes, Noncurrent': r'(Long-term ((income taxes)|(taxes payable)))',
-                    'Deferred Revenue, Noncurrent': r'(?=.*Deferred Revenue)((?!.*current)|(?=.*non[- ]?current))',
+                    'Deferred Revenue, Noncurrent': r'(?=.*Deferred Revenue){}'.format(non_current),
                     'Long-Term Unearned Revenue': r'(?=.*unearned)(?=.*revenue)((?!.*current)|(?=.*non[- ]?current)|(?=.*long[- ]?term))',
                     'Other Liabilities, Noncurrent': r'(?=.*Other(?!.*[_:]))(?=.*liabilities(?!.*[_:]))((?!.*current)|(?=.*non[- ]?current))',
-                    'Total Long-Term Liabilities': r'(?=.*Non-current liabilities)' # total liabilities - total current liabilities
+                    'Total Non Current Liabilities': r'$^'
                 },
-                'Total Liabilities': r'(?=.*Total Liabilities)(?!.*Equity(?!.*[_]))'
+                'Total Liabilities': r'(?=.*Total Liabilities)(?!.*Equity(?!.*[_]))(?!.*Other(?!.*[_]))' # sometimes at the bottom there are two tabs, our code can't catch it i.e. Other non-current liabilities then tab Total non-current liabilities then tab Total liabilities
             },
             'Shareholders\' Equity': {
                 'Preferred Stock, Value, Issued': r'(?=.*Preferred stock)(?!.*treasury)',
@@ -116,7 +115,7 @@ financial_entries_regex_dict = {
                 'Minority Interest': r'(?=.*Noncontrolling interests)',
                 'Stockholders\' Equity Attributable to Parent': r'(?=.*Total (shareholders|stockholders)[’\'] equity)',
             },
-            'Total Liabilities and Shareholders\' Equity': r'(?=.*Total Liabilities)(?=.*Equity)'
+            'Total Liabilities and Shareholders\' Equity': r'(?=.*Total Liabilities(?!.*[_:]))(?=.*Equity(?!.*[_:]))'
         },
     },
     'Income Statement': {
