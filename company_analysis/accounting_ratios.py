@@ -143,8 +143,8 @@ def asset_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(d
                                                                    annual, ttm)) / 2
     else:
         total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-
-    return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) / total_assets
+    revenues = fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+    return revenues / total_assets
 
 
 # The inventory turnover ratio measures how many times a company’s inventory is sold and replaced over a given period

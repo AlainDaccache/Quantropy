@@ -21,7 +21,7 @@ def piotroski_f_score(stock, date=datetime.now(), annual=True, ttm=True, diluted
                         }
 
     # Return on Assets (1 point if it is positive in the current year, 0 otherwise)
-    return_on_assets_current_year = ratios.return_on_assets(stock=stock, date=date, annual=annual, ttm=ttm,
+    return_on_assets_current_year = ratios.return_on_assets(stock=stock, date=date, annual=False, ttm=ttm,
                                                             average_assets=average_assets)
     piotroski_dictio['Profitability']['Return on Assets'] = {
         'Return on Assets Current Year': '{:.3f}'.format(return_on_assets_current_year),
@@ -105,10 +105,18 @@ def piotroski_f_score(stock, date=datetime.now(), annual=True, ttm=True, diluted
         'Asset Turnover Ratio Previous Year': '{:.3f}'.format(asset_turnover_previous_year),
         'ATO Current Year > ATO Previous Year ?': asset_turnover_current_year > asset_turnover_previous_year}
 
-    piotroski_dictio['Piotroski F-Score'][' '][' '] = sum([v for i in piotroski_dictio.keys()
-                                                           for j in piotroski_dictio[i].keys()
-                                                           for k, v in piotroski_dictio[i][j].items()
-                                                           if isinstance(v, bool)])
+    # piotroski_dictio['Piotroski F-Score'][' '][' '] = sum([vvv for key, value in piotroski_dictio.items()
+    #                                                        for kk, vv in value.items()
+    #                                                        for kkk, vvv in vv.items()
+    #                                                        if isinstance(vvv, np.bool_)])
+    number_of_trues = 0
+    for k, v in piotroski_dictio.items():
+        for kk, vv in v.items():
+            for kkk, vvv in vv.items():
+                if isinstance(vvv, np.bool_) and vvv:
+                    number_of_trues = number_of_trues + 1
+
+    piotroski_dictio['Piotroski F-Score'][' '][' '] = number_of_trues
 
     return piotroski_dictio
 

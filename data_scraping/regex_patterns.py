@@ -109,8 +109,8 @@ financial_entries_regex_dict = {
                 },
 
                 'Treasury Stock, Value': r'Treasury stock',
-                'Retained Earnings (Accumulated Deficit)': r'(?=.*Accumulated deficit)|(Retained earnings)',
-                'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss))',
+                'Retained Earnings (Accumulated Deficit)': r'(?=.*Accumulated deficit)|(Retained earnings)(?!.*Beginning)',
+                'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss))(?!.*Beginning)',
                 'Deferred Stock Compensation': r'(?=.*Deferred stock compensation)',
                 'Minority Interest': r'(?=.*Noncontrolling interests)',
                 'Stockholders\' Equity Attributable to Parent': r'(?=.*Total (shareholders|stockholders)[’\'] equity)',

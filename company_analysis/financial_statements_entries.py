@@ -11,21 +11,23 @@ import math
 def read_balance_sheet_entry(stock, entry_name, date=datetime.now(), lookback_period=timedelta(days=0),
                              annual=False, ttm=True):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    if ttm:
-        return np.mean([excel.read_entry_from_csv(path=path,
-                                                  sheet_name=config.balance_sheet_quarterly,
-                                                  y=entry_name,
-                                                  x=date,
-                                                  lookback_index=math.floor(i + (lookback_period.days / 90)))
-                        # here we are at quarterlies
-                        # lookback_period=timedelta(days=lookback_period.days + i * 90))
-                        for i in range(4)])
+    # if ttm:
+    # return np.mean([excel.read_entry_from_csv(path=path,
+    #                                           sheet_name=config.balance_sheet_quarterly,
+    #                                           y=entry_name,
+    #                                           x=date,
+    #                                           lookback_index=math.floor(i + (lookback_period.days / 90)))
+    #                 # here we are at quarterlies
+    #                 # lookback_period=timedelta(days=lookback_period.days + i * 90))
+    #                 for i in range(4)])
 
     return excel.read_entry_from_csv(path=path,
-                                     sheet_name=config.balance_sheet_quarterly if not annual else config.balance_sheet_yearly,
+                                     sheet_name=config.balance_sheet_quarterly if (
+                                                                                      not annual) or ttm else config.balance_sheet_yearly,
                                      y=entry_name,
                                      x=date,
-                                     lookback_index=math.floor(lookback_period.days / 90) if not annual else math.floor(
+                                     lookback_index=math.floor(lookback_period.days / 90) if (
+                                                                                                 not annual) or ttm else math.floor(
                                          lookback_period.days / 365))
 
 
@@ -507,5 +509,4 @@ def cash_flow_financing_activities(stock, date=datetime.now(), lookback_period=t
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
 
-
-cash_and_cash_equivalents('AAPL', datetime(2019, 7, 21), lookback_period=timedelta(days=90))
+# cash_and_cash_equivalents('AAPL', datetime(2019, 7, 21), lookback_period=timedelta(days=90))
