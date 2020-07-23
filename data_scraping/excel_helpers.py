@@ -38,7 +38,14 @@ def save_into_csv(path, df, sheet_name):
         if os.path.exists(path):
             writer.book = load_workbook(path)
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        df.to_excel(writer, sheet_name=sheet_name)
+        startrow = 0
+        try:
+            existing_dfs = pd.read_excel(pd.ExcelFile(path), sheet_name)
+            startrow = len(existing_dfs.index)+config.ROW_SPACE_BETWEEN_DFS
+        except:
+            pass
+
+        df.to_excel(writer, sheet_name=sheet_name, startrow=startrow)
         writer.book.save(path)
         writer.close()
 

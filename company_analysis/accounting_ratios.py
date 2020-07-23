@@ -76,7 +76,8 @@ def debt(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=T
 def debt_to_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
                    interest_expense=False, all_liabilities=False, long_term_debt=True):
     denominator = (fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) +
-                   fi.total_assets(stock=stock, date=date, lookback_period=timedelta(days=365), annual=annual, ttm=ttm)) / 2
+                   fi.total_assets(stock=stock, date=date, lookback_period=timedelta(days=365), annual=annual,
+                                   ttm=ttm)) / 2
 
     return debt(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
                 interest_expense=interest_expense, all_liabilities=all_liabilities,
@@ -89,7 +90,8 @@ def debt_to_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0)
                    interest_expense=False, all_liabilities=False, long_term_debt=True):
     denominator = (fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                                 ttm=ttm) +
-                   fi.total_shareholders_equity(stock=stock, date=date, lookback_period=timedelta(days=365), annual=annual, ttm=ttm)) / 2
+                   fi.total_shareholders_equity(stock=stock, date=date, lookback_period=timedelta(days=365),
+                                                annual=annual, ttm=ttm)) / 2
 
     return debt(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
                 interest_expense=interest_expense, all_liabilities=all_liabilities,
@@ -101,9 +103,9 @@ def debt_to_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0
     total_debt = debt(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
                       interest_expense=interest_expense, all_liabilities=all_liabilities, long_term_debt=long_term_debt)
 
-    return total_debt / total_debt + fi.total_shareholders_equity(stock=stock, date=date,
-                                                                  lookback_period=lookback_period, annual=annual,
-                                                                  ttm=ttm)
+    return total_debt / (total_debt + fi.total_shareholders_equity(stock=stock, date=date,
+                                                                   lookback_period=lookback_period, annual=annual,
+                                                                   ttm=ttm))
 
 
 # The interest coverage ratio shows how easily a company can pay its interest expenses
@@ -306,7 +308,8 @@ def earnings_yield(stock, date=datetime.now(), lookback_period=timedelta(days=0)
                    diluted=True,
                    deduct_operating_income=False,
                    deduct_preferred_dividends=True):
-    return earnings_per_share(stock=stock, date=date, ttm=ttm, diluted=diluted, deduct_operating_income=deduct_operating_income,
+    return earnings_per_share(stock=stock, date=date, ttm=ttm, diluted=diluted,
+                              deduct_operating_income=deduct_operating_income,
                               deduct_preferred_dividends=deduct_preferred_dividends) / me.market_price(stock, date)
 
 

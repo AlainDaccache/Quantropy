@@ -6,35 +6,40 @@ import os
 import data_scraping.excel_helpers as excel
 import math
 
+'''
+We can read an entry
+- at the start of fiscal year --> annual = True, ttm = False
+- at the start of a quarter --> annual = False, ttm = False
+- as an average (for balance sheet, since position) or sum (for income and cash flow statements, since cumulative) 
+during a year --> annual = True, ttm = True
+'''
 
-# for balance sheets, when doing trailing twelve months, we compute the mean
+# By default, we read the most recent position for balance sheets
 def read_balance_sheet_entry(stock, entry_name, date=datetime.now(), lookback_period=timedelta(days=0),
-                             annual=False, ttm=True):
+                             annual=False, ttm=False):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    # if ttm:
-    # return np.mean([excel.read_entry_from_csv(path=path,
-    #                                           sheet_name=config.balance_sheet_quarterly,
-    #                                           y=entry_name,
-    #                                           x=date,
-    #                                           lookback_index=math.floor(i + (lookback_period.days / 90)))
-    #                 # here we are at quarterlies
-    #                 # lookback_period=timedelta(days=lookback_period.days + i * 90))
-    #                 for i in range(4)])
+    if ttm and annual:
+        return np.mean([excel.read_entry_from_csv(path=path,
+                                                  sheet_name=config.balance_sheet_quarterly,
+                                                  y=entry_name,
+                                                  x=date,
+                                                  lookback_index=math.floor(i + (lookback_period.days / 90)))
+                        for i in range(4)])
 
     return excel.read_entry_from_csv(path=path,
-                                     sheet_name=config.balance_sheet_quarterly if (
-                                                                                      not annual) or ttm else config.balance_sheet_yearly,
+                                     sheet_name=config.balance_sheet_quarterly if not (
+                                             annual or ttm) else config.balance_sheet_yearly,
                                      y=entry_name,
                                      x=date,
-                                     lookback_index=math.floor(lookback_period.days / 90) if (
-                                                                                                 not annual) or ttm else math.floor(
+                                     lookback_index=math.floor(lookback_period.days / 90) if not (
+                                             annual or ttm) else math.floor(
                                          lookback_period.days / 365))
 
 
 def read_income_statement_entry(stock, entry_name, date=datetime.now(), lookback_period=timedelta(days=0),
                                 annual=True, ttm=False):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    if ttm:
+    if ttm and annual:
         return np.sum([excel.read_entry_from_csv(path=path,
                                                  sheet_name=config.income_statement_quarterly,
                                                  y=entry_name,
@@ -42,17 +47,19 @@ def read_income_statement_entry(stock, entry_name, date=datetime.now(), lookback
                                                  lookback_index=math.floor(i + (lookback_period.days / 90)))
                        for i in range(4)])
     return excel.read_entry_from_csv(path=path,
-                                     sheet_name=config.income_statement_quarterly if not annual else config.income_statement_yearly,
+                                     sheet_name=config.income_statement_quarterly if not (
+                                                 annual or ttm) else config.income_statement_yearly,
                                      y=entry_name,
                                      x=date,
-                                     lookback_index=math.floor(lookback_period.days / 90) if not annual else math.floor(
+                                     lookback_index=math.floor(lookback_period.days / 90) if not (
+                                                 annual or ttm) else math.floor(
                                          lookback_period.days / 365))
 
 
 def read_cash_flow_statement_entry(stock, entry_name, date=datetime.now(),
                                    lookback_period=timedelta(days=0), annual=True, ttm=False):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    if ttm:
+    if ttm and annual:
         return np.sum([excel.read_entry_from_csv(path=path,
                                                  sheet_name=config.cash_flow_statement_quarterly,
                                                  y=entry_name,
@@ -60,28 +67,30 @@ def read_cash_flow_statement_entry(stock, entry_name, date=datetime.now(),
                                                  lookback_index=math.floor(i + (lookback_period.days / 90)))
                        for i in range(4)])
     return excel.read_entry_from_csv(path=path,
-                                     sheet_name=config.cash_flow_statement_quarterly if not annual else config.cash_flow_statement_yearly,
+                                     sheet_name=config.cash_flow_statement_quarterly if not (
+                                                 annual or ttm) else config.cash_flow_statement_yearly,
                                      x=date,
                                      y=entry_name,
-                                     lookback_index=math.floor(lookback_period.days / 90) if not annual else math.floor(
+                                     lookback_index=math.floor(lookback_period.days / 90) if not (
+                                                 annual or ttm) else math.floor(
                                          lookback_period.days / 365))
 
 
 '''
 Balance Sheet: preferably get the most recent (because it's a statement of position), 
-so quarterly instead of yearly by default, and ttm=ttm if yearly by default
+so quarterly instead of yearly by default, ttm false by default (otherwise would compute average)
 '''
 
 
 def cash_and_cash_equivalents(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                              ttm=True):
+                              ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Cash and Cash Equivalents'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def current_marketable_securities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                  annual=False, ttm=True):
+                                  annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets',
                                                 'Marketable Securities Current'],
@@ -89,14 +98,14 @@ def current_marketable_securities(stock, date=datetime.now(), lookback_period=ti
 
 
 def gross_accounts_receivable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                              ttm=True):
+                              ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Gross Accounts Receivable'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def allowances_for_doubtful_accounts(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                     annual=False, ttm=True):
+                                     annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets',
                                                 'Allowances for Doubtful Accounts'],
@@ -104,27 +113,27 @@ def allowances_for_doubtful_accounts(stock, date=datetime.now(), lookback_period
 
 
 def net_accounts_receivable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                            ttm=True):
+                            ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Net Accounts Receivable'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def current_prepaid_expenses(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                             ttm=True):
+                             ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Prepaid Expense, Current'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def net_inventory(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=True):
+def net_inventory(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Inventory, Net'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def current_income_taxes_receivable(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                    annual=False, ttm=True):
+                                    annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets',
                                                 'Income Taxes Receivable, Current'],
@@ -132,35 +141,35 @@ def current_income_taxes_receivable(stock, date=datetime.now(), lookback_period=
 
 
 def assets_held_for_sale(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                         ttm=True):
+                         ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Assets Held-for-sale'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def current_deferred_tax_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                                ttm=True):
+                                ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Deferred Tax Assets, Current'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def other_current_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                         ttm=True):
+                         ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Other Assets, Current'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def current_total_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                         ttm=True):
+                         ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Total Current Assets'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def non_current_marketable_securities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                      annual=False, ttm=True):
+                                      annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Marketable Securities Non Current'],
@@ -168,7 +177,7 @@ def non_current_marketable_securities(stock, date=datetime.now(), lookback_perio
 
 
 def net_property_plant_equipment(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                 annual=False, ttm=True):
+                                 annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Property, Plant and Equipment, Net'],
@@ -176,7 +185,7 @@ def net_property_plant_equipment(stock, date=datetime.now(), lookback_period=tim
 
 
 def operating_lease_right_of_use_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                        annual=False, ttm=True):
+                                        annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Operating Lease Right-of-use Assets'],
@@ -184,21 +193,21 @@ def operating_lease_right_of_use_assets(stock, date=datetime.now(), lookback_per
 
 
 def non_current_deferred_tax_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                    annual=False, ttm=True):
+                                    annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Deferred Tax Assets Non Current'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def goodwill(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=True):
+def goodwill(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets', 'Goodwill'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def net_intangible_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                          ttm=True):
+                          ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Intangible Assets, Net (Excluding Goodwill)'],
@@ -206,34 +215,34 @@ def net_intangible_assets(stock, date=datetime.now(), lookback_period=timedelta(
 
 
 def total_intangible_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                            ttm=True):
+                            ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets', 'Total Intangible Assets'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def other_non_current_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                             ttm=True):
+                             ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets', 'Other Non Current Assets'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def total_non_current_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                             ttm=True):
+                             ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets', 'Total Non Current Assets'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def total_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=True):
+def total_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Total Assets', 'Total Assets'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def long_term_debt_current_maturities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                      annual=False, ttm=True):
+                                      annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Long-term Debt, Current Maturities'],
@@ -241,7 +250,7 @@ def long_term_debt_current_maturities(stock, date=datetime.now(), lookback_perio
 
 
 def current_accounts_payable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                             ttm=True):
+                             ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Accounts Payable, Current'],
@@ -249,7 +258,7 @@ def current_accounts_payable(stock, date=datetime.now(), lookback_period=timedel
 
 
 def current_deferred_revenues(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                              ttm=True):
+                              ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Current Deferred Revenues'],
@@ -257,7 +266,7 @@ def current_deferred_revenues(stock, date=datetime.now(), lookback_period=timede
 
 
 def current_accrued_liabilities(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                                ttm=True):
+                                ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Accrued Liabilities, Current'],
@@ -265,7 +274,7 @@ def current_accrued_liabilities(stock, date=datetime.now(), lookback_period=time
 
 
 def current_total_liabilities(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                              ttm=True):
+                              ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Total Current Liabilities'],
@@ -273,7 +282,7 @@ def current_total_liabilities(stock, date=datetime.now(), lookback_period=timede
 
 
 def long_term_debt_excluding_current_portion(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                             annual=False, ttm=True):
+                                             annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Long-term Debt, Noncurrent Maturities'],
@@ -281,7 +290,7 @@ def long_term_debt_excluding_current_portion(stock, date=datetime.now(), lookbac
 
 
 def total_long_term_debt(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                         ttm=True):
+                         ttm=False):
     return long_term_debt_current_maturities(stock=stock, date=date, lookback_period=lookback_period,
                                              annual=annual, ttm=ttm) + \
            long_term_debt_excluding_current_portion(stock=stock, date=date, lookback_period=lookback_period,
@@ -289,7 +298,7 @@ def total_long_term_debt(stock, date=datetime.now(), lookback_period=timedelta(d
 
 
 def total_non_current_liabilities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                  annual=False, ttm=True):
+                                  annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Total Non Current Liabilities'],
@@ -297,7 +306,7 @@ def total_non_current_liabilities(stock, date=datetime.now(), lookback_period=ti
 
 
 def total_liabilities(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                      ttm=True):
+                      ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Total Liabilities'],
@@ -305,7 +314,7 @@ def total_liabilities(stock, date=datetime.now(), lookback_period=timedelta(days
 
 
 def preferred_stock_value(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                          ttm=True):
+                          ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
@@ -314,7 +323,7 @@ def preferred_stock_value(stock, date=datetime.now(), lookback_period=timedelta(
 
 
 def additional_paid_in_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                               ttm=True):
+                               ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
@@ -323,7 +332,7 @@ def additional_paid_in_capital(stock, date=datetime.now(), lookback_period=timed
 
 
 def retained_earnings(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                      ttm=True):
+                      ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
@@ -332,7 +341,7 @@ def retained_earnings(stock, date=datetime.now(), lookback_period=timedelta(days
 
 
 def accumulated_other_comprehensive_income(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                           annual=False, ttm=True):
+                                           annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
@@ -351,17 +360,12 @@ def total_shares_outstanding(stock, date=datetime.now(), lookback_period=timedel
 
 
 def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                              ttm=True):
+                              ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
                                                 'stock=stockholders\' Equity Attributable to Parent'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-
-    # print(cash_and_cash_equivalents('FB'))
-
-    # for income statements and cash flow statements, when doing trailing twelve months, we compute the sum
-    # by default, we use annual because its accumulation instead of position (unlike balance sheet)
 
 
 def net_sales(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
@@ -508,5 +512,3 @@ def cash_flow_financing_activities(stock, date=datetime.now(), lookback_period=t
                                                       'Net Cash Provided by (Used in) Financing Activities'],
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
-
-# cash_and_cash_equivalents('AAPL', datetime(2019, 7, 21), lookback_period=timedelta(days=90))

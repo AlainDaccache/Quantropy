@@ -50,3 +50,5 @@ all_financial_statements = yearly_statements + quarterly_statements
 
 monthly_factors = 'Monthly'
 yearly_factors = 'Yearly'
+
+ROW_SPACE_BETWEEN_DFS = 3
