@@ -49,7 +49,7 @@ financial_entries_regex_dict = {
             },
             'Non Current Assets': {
 
-                'Marketable Securities Non Current': r'(?!.*short-term)(?=.*marketable securities|investments){}'.format(non_current),
+                'Marketable Securities Non Current': r'(?=.*marketable securities|investments){}'.format(non_current),
                 'Restricted Cash Non Current': r'(?=.*Restricted cash){}'.format(non_current),
                 'Property, Plant and Equipment': {
                     'Gross Property, Plant and Equipment': r'(?=.*Property)(?=.*(Plant|Land))(?=.*Equipment)(?=.*Gross)',

@@ -19,7 +19,6 @@ import urllib
 
 
 def save_gics():
-
     url = 'https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -51,7 +50,8 @@ def save_gics():
                     for kk, vv in value.items():
                         for kkk, vvv in vv.items():
                             if kkk[0] == industry_number:
-                                gics_dict[key][kk][kkk].append((td.text.rstrip(), td.nextSibling.nextSibling.text.rstrip()))
+                                gics_dict[key][kk][kkk].append(
+                                    (td.text.rstrip(), td.nextSibling.nextSibling.text.rstrip()))
 
     pprint(gics_dict)
     cleaned_gics_dict = {}
@@ -85,7 +85,8 @@ def save_gics():
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df)
 
-    writer = pd.ExcelWriter(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Industry-Classification.xlsx'), engine='xlsxwriter')
+    writer = pd.ExcelWriter(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Industry-Classification.xlsx'),
+                            engine='xlsxwriter')
     df.to_excel(writer, sheet_name='GICS')
 
     writer.save()
@@ -96,7 +97,8 @@ def save_nasdaq():
     path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt')
     urllib.request.urlretrieve(url, path)
     df = pd.read_csv(path, sep="|", index_col=0)
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"),"wb") as f:
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"),
+              "wb") as f:
         pickle.dump(df, f)
     os.remove(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt'))
     return
@@ -113,7 +115,8 @@ def save_dow_jones_tickers():
         ticker = ticker.strip()
         tickers.append(ticker)
 
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "djia30_tickers.pickle"),"wb") as f:
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME,
+                           "djia30_tickers.pickle"), "wb") as f:
         pickle.dump(tickers, f)
 
     return tickers
@@ -130,7 +133,9 @@ def save_sp500_tickers():
         ticker = ticker.strip()
         tickers.append(ticker)
 
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "sp500_tickers.pickle"),"wb") as f:
+    with open(
+            os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "sp500_tickers.pickle"),
+            "wb") as f:
         pickle.dump(tickers, f)
 
     return tickers
@@ -138,19 +143,21 @@ def save_sp500_tickers():
 
 def save_russell_3000_tickers():
     url = "http://www.beatthemarketanalyzer.com/blog/wp-content/uploads/2016/10/Russell-3000-Stock-Tickers-List.xlsx"
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'Russell-3000-Stock-Tickers-List.xlsx')
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME,
+                        'Russell-3000-Stock-Tickers-List.xlsx')
     urllib.request.urlretrieve(url, path)
     df = pd.read_excel(pd.ExcelFile(path), index_col=0, skiprows=3)
     print(df.to_string())
     tickers = list(df.index)
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "russell3000_tickers.pickle"),"wb") as f:
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME,
+                           "russell3000_tickers.pickle"), "wb") as f:
         pickle.dump(tickers, f)
     os.remove(path)
 
 
 def get_company_meta():
-
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"), "rb") as f:
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"),
+              "rb") as f:
         nasdaq_df = pickle.load(f)
 
     nasdaq_df = nasdaq_df[:-1]
@@ -166,16 +173,16 @@ def get_company_meta():
                               'J': 'Delinquent and Bankrupt',
                               'K': 'Deficient, Delinquent, and Bankrupt'}
 
-    sic_codes_division = {(1, 9+1): 'Agriculture, Forestry, and Fishing',
-                          (10, 14+1): 'Mining',
-                          (15, 17+1): 'Construction',
-                          (20, 39+1): 'Manufacturing',
-                          (40, 49+1): 'Transportation, Communications, Electric, Gas, And Sanitary Services',
-                          (50, 51+1): 'Wholesale Trade',
-                          (52, 59+1): 'Retail Trade',
-                          (60, 67+1): 'Finance, Insurance, and Real Estate',
-                          (70, 89+1): 'Services',
-                          (90, 99+1): 'Public Administration'}
+    sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',
+                          (10, 14 + 1): 'Mining',
+                          (15, 17 + 1): 'Construction',
+                          (20, 39 + 1): 'Manufacturing',
+                          (40, 49 + 1): 'Transportation, Communications, Electric, Gas, And Sanitary Services',
+                          (50, 51 + 1): 'Wholesale Trade',
+                          (52, 59 + 1): 'Retail Trade',
+                          (60, 67 + 1): 'Finance, Insurance, and Real Estate',
+                          (70, 89 + 1): 'Services',
+                          (90, 99 + 1): 'Public Administration'}
 
     for ticker in nasdaq_tickers[:500]:
 
@@ -216,8 +223,10 @@ def get_company_meta():
                     input_box.send_keys(ticker)
                     html = driver.page_source
                     # wait until the autofill box loads
-                    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//tr[@class='smart-search-hint smart-search-selected-hint']")))
-                    element = driver.find_element_by_xpath("//tr[@class='smart-search-hint smart-search-selected-hint']")
+                    WebDriverWait(driver, 10).until(EC.visibility_of_element_located(
+                        (By.XPATH, "//tr[@class='smart-search-hint smart-search-selected-hint']")))
+                    element = driver.find_element_by_xpath(
+                        "//tr[@class='smart-search-hint smart-search-selected-hint']")
                     if not re.search(r'(\(|[^A-Z]){}([^A-Z]|\))'.format(ticker), element.text):
                         break
                     sleep(1)
@@ -258,7 +267,9 @@ def get_company_meta():
                               security_type,
                               financial_status])
 
-    comp_df = pd.DataFrame(comp_list, columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Security Type', 'Financial Status'])
+    comp_df = pd.DataFrame(comp_list,
+                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Security Type',
+                                    'Financial Status'])
     comp_df = comp_df[comp_df['Security Type'] != 'Exchange-Traded Fund']  # remove ETFs for now
     comp_df.set_index('Ticker', inplace=True)
 
@@ -273,5 +284,5 @@ if __name__ == '__main__':
     # save_dow_jones_tickers()
     # save_sp500_tickers()
     # save_russell_3000_tickers()
-    # save_nasdaq()
+    save_nasdaq()
     get_company_meta()

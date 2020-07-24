@@ -31,17 +31,17 @@ income_statement_name = 'Income Statements'
 cash_flow_statement_name = 'Cash Flow Statements'
 technical_indicators_name = 'Technical Indicators'
 
-yearly = '10-K'
-quarterly = '10-Q'
+yearly = 'Yearly'
+quarterly = 'Quarterly'
 
-balance_sheet_quarterly = '{} {}'.format(balance_sheet_name, quarterly)
-balance_sheet_yearly = '{} {}'.format(balance_sheet_name, yearly)
+balance_sheet_quarterly = '{} ({})'.format(balance_sheet_name, quarterly)
+balance_sheet_yearly = '{} ({})'.format(balance_sheet_name, yearly)
 
-income_statement_quarterly = '{} {}'.format(income_statement_name, quarterly)
-income_statement_yearly = '{} {}'.format(income_statement_name, yearly)
+income_statement_quarterly = '{} ({})'.format(income_statement_name, quarterly)
+income_statement_yearly = '{} ({})'.format(income_statement_name, yearly)
 
-cash_flow_statement_quarterly = '{} {}'.format(cash_flow_statement_name, quarterly)
-cash_flow_statement_yearly = '{} {}'.format(cash_flow_statement_name, yearly)
+cash_flow_statement_quarterly = '{} ({})'.format(cash_flow_statement_name, quarterly)
+cash_flow_statement_yearly = '{} ({})'.format(cash_flow_statement_name, yearly)
 
 yearly_statements = [balance_sheet_yearly, income_statement_yearly, cash_flow_statement_yearly]
 quarterly_statements = [balance_sheet_quarterly, income_statement_quarterly, cash_flow_statement_quarterly]

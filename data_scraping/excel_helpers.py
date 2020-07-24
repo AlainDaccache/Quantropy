@@ -2,6 +2,8 @@ import os
 from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
+from openpyxl.styles import PatternFill, Font
+
 import config
 import data_scraping.financial_data_scraper as scraper
 from openpyxl import load_workbook
@@ -38,14 +40,30 @@ def save_into_csv(path, df, sheet_name):
         if os.path.exists(path):
             writer.book = load_workbook(path)
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        startrow = 0
+
+        # if sheet_name not in [ws.title for ws in writer.book.worksheets]:
+        #     writer.book.create_sheet(sheet_name)
+
         try:
             existing_dfs = pd.read_excel(pd.ExcelFile(path), sheet_name)
-            startrow = len(existing_dfs.index)+config.ROW_SPACE_BETWEEN_DFS
+            if existing_dfs.empty:
+                startrow = 1
+            else:
+                startrow = len(existing_dfs.index) + config.ROW_SPACE_BETWEEN_DFS
         except:
-            pass
+            startrow = 1  # excel rows start at 1
 
-        df.to_excel(writer, sheet_name=sheet_name, startrow=startrow)
+        if isinstance(df, str):
+            worksheet_index = next(i for i, item in enumerate(writer.book.worksheets) if item.title == sheet_name)
+            cell = writer.book.worksheets[worksheet_index].cell(row=startrow, column=1)
+            cell.value = df.upper()
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color='FFFF00',
+                                    end_color='ADFF2F',
+                                    fill_type='solid')
+
+        else:
+            df.to_excel(writer, sheet_name=sheet_name, startrow=startrow-1)
         writer.book.save(path)
         writer.close()
 
@@ -62,7 +80,7 @@ def read_df_from_csv(path, sheet_name):
     return pd.DataFrame()
 
 
-def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0):
+def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_sheet=False):
     if os.path.exists(path):
         # maybe the file exists, but the sheet is not in the file
         stock = Path(path).stem
@@ -95,7 +113,11 @@ def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0):
         index_col = [0]
 
     df = pd.read_excel(xls, sheet_name, index_col=index_col)
-
+    nan_row = np.array(df.isnull().any(1)).nonzero()[0]
+    if not skip_first_sheet:
+        pass
+    else:
+        pass
     if isinstance(y, datetime):  # if the input is a date...
         # if isinstance(df.index, pd.DatetimeIndex):
         date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
