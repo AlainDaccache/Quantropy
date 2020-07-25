@@ -26,22 +26,27 @@ COMPANY_META_DATA_FILE_NAME = 'US-Stock-Symbols.xlsx'
 COMPANY_META_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, COMPANY_META_DATA_FILE_NAME)
 
 stock_prices_sheet_name = 'Stock Prices'
-balance_sheet_name = 'Balance Sheets'
-income_statement_name = 'Income Statements'
-cash_flow_statement_name = 'Cash Flow Statements'
+balance_sheet_name = 'Balance Sheet'
+income_statement_name = 'Income Statement'
+cash_flow_statement_name = 'Cash Flow Statement'
 technical_indicators_name = 'Technical Indicators'
 
 yearly = 'Yearly'
 quarterly = 'Quarterly'
+six_months = '6 Months'
+nine_months = '9 Months'
+periods = [quarterly, six_months, nine_months, yearly]
 
 balance_sheet_quarterly = '{} ({})'.format(balance_sheet_name, quarterly)
 balance_sheet_yearly = '{} ({})'.format(balance_sheet_name, yearly)
 
 income_statement_quarterly = '{} ({})'.format(income_statement_name, quarterly)
 income_statement_yearly = '{} ({})'.format(income_statement_name, yearly)
+income_statements = ['{} ({})'.format(income_statement_name, period) for period in periods]
 
 cash_flow_statement_quarterly = '{} ({})'.format(cash_flow_statement_name, quarterly)
 cash_flow_statement_yearly = '{} ({})'.format(cash_flow_statement_name, yearly)
+cash_flow_statements = ['{} ({})'.format(cash_flow_statement_name, period) for period in periods]
 
 yearly_statements = [balance_sheet_yearly, income_statement_yearly, cash_flow_statement_yearly]
 quarterly_statements = [balance_sheet_quarterly, income_statement_quarterly, cash_flow_statement_quarterly]

@@ -35,23 +35,29 @@ def get_date_index(date, dates_values, lookback_index=0):
         return 0
 
 
-def save_into_csv(path, df, sheet_name):
+def save_into_csv(path, df, sheet_name, overwrite_sheet=True):
+    if os.path.exists(path):
+        book = load_workbook(path)
+
     with pd.ExcelWriter(path, engine='openpyxl') as writer:
         if os.path.exists(path):
-            writer.book = load_workbook(path)
+            writer.book = book
             writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
 
         # if sheet_name not in [ws.title for ws in writer.book.worksheets]:
         #     writer.book.create_sheet(sheet_name)
-
+        startrow = 1
         try:
-            existing_dfs = pd.read_excel(pd.ExcelFile(path), sheet_name)
-            if existing_dfs.empty:
-                startrow = 1
-            else:
-                startrow = len(existing_dfs.index) + config.ROW_SPACE_BETWEEN_DFS
+            if not overwrite_sheet:
+                existing_dfs = pd.read_excel(pd.ExcelFile(path), sheet_name)
+                if not existing_dfs.empty:
+                    startrow = len(existing_dfs.index) + config.ROW_SPACE_BETWEEN_DFS
+
+            # else:
+            #     writer.book.remove(writer.book.get_sheet_by_name(sheet_name))
+
         except:
-            startrow = 1  # excel rows start at 1
+            pass
 
         if isinstance(df, str):
             worksheet_index = next(i for i, item in enumerate(writer.book.worksheets) if item.title == sheet_name)
@@ -63,7 +69,7 @@ def save_into_csv(path, df, sheet_name):
                                     fill_type='solid')
 
         else:
-            df.to_excel(writer, sheet_name=sheet_name, startrow=startrow-1)
+            df.to_excel(writer, sheet_name=sheet_name, startrow=startrow - 1)
         writer.book.save(path)
         writer.close()
 

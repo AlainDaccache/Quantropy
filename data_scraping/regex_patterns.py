@@ -100,9 +100,9 @@ financial_entries_regex_dict = {
             'Shareholders\' Equity': {
                 'Preferred Stock, Value, Issued': r'(?=.*Preferred stock)(?!.*treasury)',
                 'Common Stock and Additional Paid in Capital': {
-                    'Common Stock, Value, Issued': r'(?=.*Common stock)(?!.*treasury)(?!.*additional paid[- ]in capital)',
-                    'Additional Paid in Capital': r'(?!.*Common stock)(?=.*additional paid[- ]in capital)',
-                    'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock and additional paid[- ]in capital)',
+                    'Common Stock, Value, Issued': r'(?=.*Common stock(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))',
+                    'Additional Paid in Capital': r'(?=.*additional paid[- ]in capital(?!.*[_]))(?!.*Common stock(?!.*[_]))',
+                    'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock(?!.*[_]))(?=.*additional paid[- ]in capital(?!.*[_]))',
                 'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?!.*dilut(ed|ive))(?!.*earnings(?!.*[_]))',
                 'Weighted Average Number Diluted Shares Outstanding Adjustment': r'(?=.*dilutive)(?=.*effect(?!.*[_:]))',
                 'Weighted Average Number of Shares Outstanding, Diluted': r'(?=.*shares)(?=.*diluted)(?!.*earnings(?!.*[_]))',
