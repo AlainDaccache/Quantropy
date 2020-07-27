@@ -20,7 +20,7 @@ balance_sheet_regex = r'(balance ?sheet|condition)'
 cash_flow_statement_regex = r'(Consolidated(.*?)cash flow)|(cash( ?)flow(s?) statement(s?))'
 income_statement_regex = r'(Consolidated(.*?)statements of (income|earnings))|(income statement)|(CONSOLIDATED STATEMENTS OF OPERATIONS)'
 
-non_current = '(?=.*non[- ]?current)|(?=.*long-term)'
+non_current = '((?=.*non[- ]?current)|(?=.*long-term))'
 current = '(?!.*non[- ]?current)(?=.*(current|short-term))'
 
 financial_entries_regex_dict = {
@@ -100,7 +100,7 @@ financial_entries_regex_dict = {
             'Shareholders\' Equity': {
                 'Preferred Stock, Value, Issued': r'(?=.*Preferred stock)(?!.*treasury)',
                 'Common Stock and Additional Paid in Capital': {
-                    'Common Stock, Value, Issued': r'(?=.*Common stock(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))',
+                    'Common Stock, Value, Issued': r'(?=.*Common stock(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))(?!.*beginning)',
                     'Additional Paid in Capital': r'(?=.*additional paid[- ]in capital(?!.*[_]))(?!.*Common stock(?!.*[_]))',
                     'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock(?!.*[_]))(?=.*additional paid[- ]in capital(?!.*[_]))',
                 'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?!.*dilut(ed|ive))(?!.*earnings(?!.*[_]))',

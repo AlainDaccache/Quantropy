@@ -1,4 +1,5 @@
 import os
+import traceback
 from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
@@ -35,43 +36,62 @@ def get_date_index(date, dates_values, lookback_index=0):
         return 0
 
 
-def save_into_csv(path, df, sheet_name, overwrite_sheet=True):
-    if os.path.exists(path):
-        book = load_workbook(path)
+def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
+                  overwrite_sheet=False, concat=False,
+                  **to_excel_kwargs):
 
-    with pd.ExcelWriter(path, engine='openpyxl') as writer:
-        if os.path.exists(path):
-            writer.book = book
-            writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+    # ignore [engine] parameter if it was passed
+    if 'engine' in to_excel_kwargs:
+        to_excel_kwargs.pop('engine')
 
-        # if sheet_name not in [ws.title for ws in writer.book.worksheets]:
-        #     writer.book.create_sheet(sheet_name)
-        startrow = 1
-        try:
-            if not overwrite_sheet:
-                existing_dfs = pd.read_excel(pd.ExcelFile(path), sheet_name)
-                if not existing_dfs.empty:
-                    startrow = len(existing_dfs.index) + config.ROW_SPACE_BETWEEN_DFS
+    writer = pd.ExcelWriter(filename, engine='openpyxl')
 
-            # else:
-            #     writer.book.remove(writer.book.get_sheet_by_name(sheet_name))
+    try:
+        # try to open an existing workbook
+        writer.book = load_workbook(filename)
 
-        except:
-            pass
+        # get the last row in the existing Excel sheet
+        # if it was not specified explicitly
+        if startrow is None and sheet_name in writer.book.sheetnames:
+            startrow = writer.book[sheet_name].max_row
 
-        if isinstance(df, str):
-            worksheet_index = next(i for i, item in enumerate(writer.book.worksheets) if item.title == sheet_name)
-            cell = writer.book.worksheets[worksheet_index].cell(row=startrow, column=1)
-            cell.value = df.upper()
-            cell.font = Font(bold=True)
-            cell.fill = PatternFill(start_color='FFFF00',
-                                    end_color='ADFF2F',
-                                    fill_type='solid')
+        # TODO Not working yet
+        if concat and sheet_name in writer.book.sheetnames:
+            try:
+                sheet_df = pd.read_excel(filename, sheet_name, index_col=[0, 1, 2] if config.balance_sheet_name in sheet_name else [0, 1])
+                print(sheet_df.to_string())
+                idx = writer.book.sheetnames.index(sheet_name)
+                writer.book.remove(writer.book.worksheets[idx])
+                writer.book.create_sheet(sheet_name, idx)
+                df = pd.concat([df, sheet_df], axis=1)
+                df = df.reindex(sorted(df.columns, reverse=True), axis=1)
+            except:
+                traceback.print_exc()
 
-        else:
-            df.to_excel(writer, sheet_name=sheet_name, startrow=startrow - 1)
-        writer.book.save(path)
-        writer.close()
+        # truncate sheet
+        if overwrite_sheet and sheet_name in writer.book.sheetnames:
+            # index of [sheet_name] sheet
+            idx = writer.book.sheetnames.index(sheet_name)
+            # remove [sheet_name]
+            writer.book.remove(writer.book.worksheets[idx])
+            # create an empty sheet [sheet_name] using old index
+            writer.book.create_sheet(sheet_name, idx)
+
+        # copy existing sheets
+        writer.sheets = {ws.title:ws for ws in writer.book.worksheets}
+
+    except FileNotFoundError:
+        # file does not exist yet, we will create it
+        pass
+
+    if startrow is None:
+        startrow = 0
+
+    # write out the new sheet
+    df.to_excel(writer, sheet_name, startrow=startrow, **to_excel_kwargs)
+
+    # save the workbook
+    writer.save()
 
 
 def read_df_from_csv(path, sheet_name):
@@ -152,7 +172,13 @@ def read_dates_from_csv(path, sheet_name):
         with open(path, "r") as csv:
             xls = pd.ExcelFile(path)
             df = pd.read_excel(xls, '{}'.format(sheet_name), index_col=0)
-            return [datetime.strptime(x, '%Y-%m-%d') for x in df.columns]
+            ls = []
+            for col in df.columns:
+                try:
+                    ls.append(datetime.strptime(col, '%Y-%m-%d'))
+                except:
+                    continue
+            return ls
     else:
         return []
 
