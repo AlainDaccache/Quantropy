@@ -222,13 +222,8 @@ def operating_margin(stock, date=datetime.now(), lookback_period=timedelta(days=
 # Return on assets ratio = Net income / Total assets
 def return_on_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False,
                      average_assets=True):
-    if average_assets:
-        total_assets = (fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                        ttm=ttm) + fi.total_assets(stock,
-                                                                   date - timedelta(days=365),
-                                                                   annual, ttm)) / 2
-    else:
-        total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+
+    total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                        ttm=ttm)
     return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                          ttm=ttm) / total_assets

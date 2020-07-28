@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 import company_analysis.financial_statements_entries as fi
 import data_scraping.excel_helpers as excel
@@ -5,7 +6,8 @@ import config
 
 
 def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
-    output = excel.read_entry_from_csv(stock, config.stock_prices_sheet_name, date, 'Adj Close', lookback_period)
+    path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stock))
+    output = excel.read_entry_from_csv(path, config.stock_prices_sheet_name, 'Adj Close', date, lookback_period.days)
     print('Market Price for {} on the {} is: {}'.format(stock, date, output))
     return output
 
@@ -85,9 +87,15 @@ def enterprise_value(stock, date=datetime.now(), lookback_period=timedelta(days=
 def gross_national_product_price_index(date):
     return float(excel.read_entry_from_csv(config.MACRO_DATA_FILE_PATH, 'Yearly', 'GNP Price Index', date))
 
+def get_stock_location(stock):
+    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Location', stock)
 
 def get_stock_industry(stock):
     return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Industry', stock)
+
+
+def get_stock_sector(stock):
+    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Sector', stock)
 
 
 if __name__ == '__main__':

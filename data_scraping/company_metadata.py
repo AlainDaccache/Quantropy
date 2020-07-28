@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import re
 import requests
+import unicodedata
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
 from time import sleep
@@ -93,14 +94,29 @@ def save_gics():
 
 
 def save_nasdaq():
-    url = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt')
-    urllib.request.urlretrieve(url, path)
-    df = pd.read_csv(path, sep="|", index_col=0)
+    urls = ['ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt',
+            'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqtraded.txt']
+    main_df = pd.DataFrame()
+    for url in urls:
+        path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt')
+        urllib.request.urlretrieve(url, path)
+        if main_df.empty:
+            main_df = pd.read_csv(path, sep="|")[:-1]
+        else:
+            cur_df = pd.read_csv(path, sep="|")[:-1]
+            main_df = pd.concat([main_df, cur_df], axis=0, ignore_index=True)
+            main_df = main_df.drop_duplicates('Symbol').reset_index(drop=True)
+            # main_df['feedback_id'].fillna(main_df['Symbol'])
+            # main_df = main_df.drop_duplicates().reset_index(drop=True)
+            # main_df.set_index(list(main_df)[0], inplace=True)
+            main_df.set_index('Symbol', inplace=True)
+            main_df = main_df[['Security Name', 'Financial Status', 'ETF']]
+            main_df.sort_index(inplace=True)
     with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"),
               "wb") as f:
-        pickle.dump(df, f)
+        pickle.dump(main_df, f)
     os.remove(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt'))
+    print(main_df.head())
     return
 
 
@@ -160,7 +176,6 @@ def get_company_meta():
               "rb") as f:
         nasdaq_df = pickle.load(f)
 
-    nasdaq_df = nasdaq_df[:-1]
     nasdaq_tickers = nasdaq_df.index
     driver = webdriver.Chrome(ChromeDriverManager().install())
     comp_list = []
@@ -184,13 +199,21 @@ def get_company_meta():
                           (70, 89 + 1): 'Services',
                           (90, 99 + 1): 'Public Administration'}
 
-    for ticker in nasdaq_tickers[:500]:
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pickle"),
+              "rb") as f:
+        country_codes = pickle.load(f)
+
+    # for ticker in nasdaq_tickers[:200]:
+    for ticker in ['AAPL', 'TSLA', 'MSFT', 'BABA']:
 
         security_name = nasdaq_df['Security Name'].loc[ticker].split('-')[0].strip()
         security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() \
             if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else ''
-        financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
-        industry, sector, cik = '', '', ''
+        try:
+            financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
+        except:
+            financial_status = np.nan
+        industry, sector, cik, state_location = '', '', '', ''
         sic_code = 0
 
         try:
@@ -241,6 +264,11 @@ def get_company_meta():
                 ident_info = soup.find('p', class_="identInfo")
                 industry = ident_info.find('br').previousSibling.split('- ')[-1]
                 sic_code = re.search(r'(\d{4})', ident_info.text).group()
+                country_code = re.compile(r'.*State location: (..)').findall(soup.text)[0]
+                for type, code_dict in country_codes.items():
+                    if country_code in code_dict.keys():
+                        state_location = type + '/' + code_dict[country_code]
+                        break
 
                 for key, value in sic_codes_division.items():
                     if int(sic_code[0]) == 0:
@@ -264,25 +292,48 @@ def get_company_meta():
                               sector.title(),
                               sic_code,
                               cik,
+                              state_location,
                               security_type,
                               financial_status])
 
     comp_df = pd.DataFrame(comp_list,
-                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Security Type',
+                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Location', 'Security Type',
                                     'Financial Status'])
     comp_df = comp_df[comp_df['Security Type'] != 'Exchange-Traded Fund']  # remove ETFs for now
     comp_df.set_index('Ticker', inplace=True)
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         print(comp_df.to_string())
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Companies.xlsx')
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Nasdaq-Companies.xlsx')
     comp_df.to_excel(path, engine='xlsxwriter')
 
 
+def save_country_codes():
+    dictio = {}
+    url = 'https://www.sec.gov/edgar/searchedgar/edgarstatecodes.htm'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for table in soup.find_all('table', {'cellpadding':'3'}):
+        current_category = ''
+        for tr in table.find_all('tr')[1:]:
+            if len(tr.find_all('th')) > 0:
+                current_category = unicodedata.normalize("NFKD", tr.text).replace('\n', '')
+                if current_category == 'States':
+                    current_category = 'United States'
+                dictio[current_category] = {}
+            else:
+                code = unicodedata.normalize("NFKD", tr.find_all('td')[0].text).replace('\n', '')
+                state = unicodedata.normalize("NFKD", tr.find_all('td')[1].text).replace('\n', '')
+                dictio[current_category][code] = state
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pickle"),
+              "wb") as f:
+        pickle.dump(dictio, f)
+    pprint(dictio)
 if __name__ == '__main__':
     # save_gics()
     # save_dow_jones_tickers()
     # save_sp500_tickers()
     # save_russell_3000_tickers()
-    save_nasdaq()
+    # save_nasdaq()
     get_company_meta()
+    # save_country_codes()

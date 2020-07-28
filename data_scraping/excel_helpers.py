@@ -18,20 +18,21 @@ def get_date_index(date, dates_values, lookback_index=0):
         dates_values = [datetime.strptime(x, '%Y-%m-%d') for x in dates_values]
     elif isinstance(dates_values[0], np.datetime64):
         dates_values = [x.astype('M8[ms]').astype('O') for x in dates_values]
+
     if len(dates_values) > 1:
         if dates_values[0] > dates_values[1]:  # if dates decreasing rightwards or downwards
-            date_index, date_item = next(((index, item) for (index, item) in enumerate(dates_values) if item < date), 0)
+            date_index = next((index for (index, item) in enumerate(dates_values) if item < date), 0)
             # adjusted_lookback = date_item - lookback_period
             # lookback_index = next((
             #     index for (index, item) in enumerate(dates_values[date_index:]) if item <= adjusted_lookback), 0)
             return date_index + lookback_index
         else:  # if dates increasing rightwards or downwards
-            date_index, date_item = next(((index, item) for (index, item) in enumerate(dates_values) if item > date),
-                                         -1)
+            date_index = next((index for (index, item) in enumerate(dates_values) if item > date), 0) - 1
             # adjusted_lookback = date_item - lookback_period
             # lookback_index = next((
             #     index for (index, item) in enumerate(dates_values[date_index:]) if item > adjusted_lookback), -1)
-            return date_index - lookback_index
+            return date_index - lookback_index  # TODO Fix lookback index is a date here, convert before calling method
+
     else:
         return 0
 
@@ -108,61 +109,40 @@ def read_df_from_csv(path, sheet_name):
 
 def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_sheet=False):
     if os.path.exists(path):
-        # maybe the file exists, but the sheet is not in the file
-        stock = Path(path).stem
-        sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
-        if sheet_name not in sheets:
-            if sheet_name == config.stock_prices_sheet_name:
-                scraper.get_stock_prices(stock)
-            elif sheet_name in config.quarterly_statements:
-                # scraper.scrape_financial_statements(stock, '10-Q')
-                return Exception
-            elif sheet_name in config.yearly_statements:
-                scraper.scrape_financial_statements(stock, '10-K')
+        ticker = Path(path).stem
+        if config.balance_sheet_name in sheet_name:
+            index_col = [0, 1, 2]
+        elif config.income_statement_name in sheet_name or config.cash_flow_statement_name in sheet_name:
+            index_col = [0, 1]
+        else:
+            index_col = [0]
 
-    # if the file doesn't exist
+        df = pd.read_excel(pd.ExcelFile(path), sheet_name, index_col=index_col)
+
+        if isinstance(y, datetime):  # if the input is a date...
+            # if isinstance(df.index, pd.DatetimeIndex):
+            date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
+            print('The {} for {} on {}, lookback {}, is {}'.format(x, ticker, y, lookback_index, df[x].iloc[date_index]))
+            return df[x].iloc[date_index]
+
+        elif isinstance(x, datetime):
+            date_index = get_date_index(date=x, dates_values=df.columns, lookback_index=lookback_index)
+
+            reduced_df = df.iloc[:, date_index]
+            for el in list(y):
+                if el in reduced_df.index:
+                    reduced_df = reduced_df.loc[el]
+                else:
+                    print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, np.nan))
+                    return np.nan
+            print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, reduced_df))
+            return reduced_df
+        else:
+            print('The {}/{} for {} is {}'.format(x, y, ticker, df[x].loc[y]))
+            return df[x].loc[y]
     else:
-        if config.FINANCIAL_STATEMENTS_DIR_PATH in path:
-            stock = Path(path).stem
-            scraper.get_stock_prices(stock)
-            scraper.scrape_financial_statements(stock, '10-K')
-            # scraper.scrape_financial_statements(stock, '10-Q')
-        # elif path == config.beta_factors_file_path:
-        #     scraper.get_beta_factors()
-
-    xls = pd.ExcelFile(path)
-    if config.balance_sheet_name in sheet_name:
-        index_col = [0, 1, 2]
-    elif config.income_statement_name in sheet_name or config.cash_flow_statement_name in sheet_name:
-        index_col = [0, 1]
-    else:
-        index_col = [0]
-
-    df = pd.read_excel(xls, sheet_name, index_col=index_col)
-    nan_row = np.array(df.isnull().any(1)).nonzero()[0]
-    if not skip_first_sheet:
-        pass
-    else:
-        pass
-    if isinstance(y, datetime):  # if the input is a date...
-        # if isinstance(df.index, pd.DatetimeIndex):
-        date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
-        return df[x].iloc[date_index]
-
-    elif isinstance(x, datetime):
-        date_index = get_date_index(date=x, dates_values=df.columns, lookback_index=lookback_index)
-
-        reduced_df = df.iloc[:, date_index]
-        for el in list(y):
-            if el in reduced_df.index:
-                reduced_df = reduced_df.loc[el]
-            else:
-                print('{} for {} not found!'.format(y, x))
-                return np.nan
-        return reduced_df
-    else:
-        return df[x].loc[y]
-
+        print('The entry is {}'.format(np.nan))
+        return np.nan
 
 def read_dates_from_csv(path, sheet_name):
     if os.path.exists(path):

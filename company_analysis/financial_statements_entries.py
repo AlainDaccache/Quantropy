@@ -26,7 +26,7 @@ def read_balance_sheet_entry(stock, entry_name, date=datetime.now(), lookback_pe
                                                   lookback_index=math.floor(i + (lookback_period.days / 90)))
                         for i in range(4)])
 
-    return excel.read_entry_from_csv(path=path,
+    return excel.read_entry_from_csv(path=path,  # if not (annual or ttm) means both annual and ttm should be false
                                      sheet_name=config.balance_sheet_quarterly if not (
                                              annual or ttm) else config.balance_sheet_yearly,
                                      y=entry_name,
@@ -39,7 +39,7 @@ def read_balance_sheet_entry(stock, entry_name, date=datetime.now(), lookback_pe
 def read_income_statement_entry(stock, entry_name, date=datetime.now(), lookback_period=timedelta(days=0),
                                 annual=True, ttm=False):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    if ttm and annual:
+    if annual and ttm:
         return np.sum([excel.read_entry_from_csv(path=path,
                                                  sheet_name=config.income_statement_quarterly,
                                                  y=entry_name,
@@ -47,19 +47,17 @@ def read_income_statement_entry(stock, entry_name, date=datetime.now(), lookback
                                                  lookback_index=math.floor(i + (lookback_period.days / 90)))
                        for i in range(4)])
     return excel.read_entry_from_csv(path=path,
-                                     sheet_name=config.income_statement_quarterly if not (
-                                                 annual or ttm) else config.income_statement_yearly,
+                                     sheet_name=config.income_statement_quarterly if not annual else config.income_statement_yearly,
                                      y=entry_name,
                                      x=date,
-                                     lookback_index=math.floor(lookback_period.days / 90) if not (
-                                                 annual or ttm) else math.floor(
+                                     lookback_index=math.floor(lookback_period.days / 90) if not annual else math.floor(
                                          lookback_period.days / 365))
 
 
 def read_cash_flow_statement_entry(stock, entry_name, date=datetime.now(),
                                    lookback_period=timedelta(days=0), annual=True, ttm=False):
     path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH, stock + '.xlsx')
-    if ttm and annual:
+    if annual and ttm:
         return np.sum([excel.read_entry_from_csv(path=path,
                                                  sheet_name=config.cash_flow_statement_quarterly,
                                                  y=entry_name,
@@ -364,7 +362,7 @@ def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timede
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
-                                                'stock=stockholders\' Equity Attributable to Parent'],
+                                                'Stockholders\' Equity Attributable to Parent'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
@@ -463,16 +461,16 @@ def income_before_tax_minority_interest(stock, date=datetime.now(), lookback_per
 def income_tax_expense(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                        ttm=False):
     return read_income_statement_entry(stock=stock,
-                                       entry_name=['Income Tax Expense (Benefit)', ' '],
+                                       entry_name=['Income Tax Expense (Benefit)', 'Income Tax Expense (Benefit)'],
                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def net_income(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     for el in ['Net Income (Loss)',
-               'Net Income (Loss) Available to Common stock=stockholders, Basic',
+               'Net Income (Loss) Available to Common Stockholders, Basic',
                'Net Income Loss Attributable to Noncontrolling (Minority) Interest']:
         ans = read_income_statement_entry(stock=stock,
-                                          entry_name=[el, ' '],
+                                          entry_name=[el, el],
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
         if not np.isnan(ans):
