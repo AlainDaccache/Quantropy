@@ -4,75 +4,43 @@ import company_analysis.time_value_of_money as time_value
 Valuation Models
 '''
 
+"""
+Summary: Given an array of dividends, estimate the stock price using an n-period model.
+PARA discount_rate: The discount rate used to calculate the NPV & PV calculations
+PARA LT_growth_rate: The long-term growth rate used to calculate the last dividend in perpetuity.
+PARA dividends: A list of dividends where the last dividend is the one that is paid in perpetuity.
+"""
 
-def stock_valuation_n_period(discount_rate ,LT_growth_rate, dividends):
-    """
-    Summary: Given an array of dividends, estimate the stock price using an n-period model.
 
-    PARA discount_rate: The discount rate used to calculate the NPV & PV calculations
-    PARA type: float
-
-    PARA LT_growth_rate: The long-term growth rate used to calculate the last dividend in perpetuity.
-    PARA type: float
-
-    PARA dividends: A list of dividends where the last dividend is the one that is paid in perpetuity.
-    PARA type: float
-
-    """
-
-    # get the dividend array & the last dividend
-    div_array = dividends[:-1]
-    div_last = dividends[-1]
-
-    # define the number of periods.
-    num_pers = len(dividends) - 1
-
-    # calculate the present value of the dividends.
-    pres_val = time_value.net_present_value(discount_rate, div_array) * (1 + discount_rate)
+def stock_valuation_n_period(discount_rate: float ,long_term_growth_rate: float, dividends: []):
+    div_array, div_last = dividends[:-1], dividends[-1]  # get the dividend array & the last dividend
+    num_pers = len(dividends) - 1  # define the number of periods.
+    pres_val_dividends = time_value.net_present_value(discount_rate, div_array) * (1 + discount_rate)
 
     # calculate late the terminal value, which is a dividend in perpituity.
-    last_div_n = div_last / (discount_rate - LT_growth_rate)
+    last_div_n = div_last / (discount_rate - long_term_growth_rate)
 
     # calulate the the total value which is the pv of the dividends cashflow
     # and the present value of the dividend in perpituity.
-    total_val = pres_val + time_value.present_value(last_div_n, discount_rate, num_pers)
+    total_val = pres_val_dividends + time_value.present_value(last_div_n, discount_rate, num_pers)
 
     return total_val
 
 
-#EXAMPLE
-disc_rate = 0.12
-grow_rate = 0.03
-dividends = [1.8, 2.07, 2.277, 2.48193, 2.68, 2.7877]
-
-stock_valuation_n_period(disc_rate, grow_rate, dividends)
-
-
-def dividend_discount_model(discount_rate, dividends, growth_rate, stock_price, periods):
-    """
-    Summary: Given an array of dividends, estimate the stock price using an n-period model.
+'''
+Summary: Given an array of dividends, estimate the stock price using an n-period model.
 
     PARA discount_rate: The discount rate used to calculate the NPV & PV calculations.
-    PARA type: float
-
     PARA dividends: The period 0 dividend.
-    PARA type: float
-
     PARA growth_rate: The growth rate that will be applied to the dividend every period.
-    PARA type: float
-
     PARA stock_price: The stock price at period n
-    PARA type: float
-
     PARA periods: The number of periods.
-    PARA type: int
-    """
+'''
 
-    # initalize our total cashflows
-    total_cashflows = 0
 
-    # loop the number of periods and calculate the cash flows.
-    for period in range(1, periods + 1):
+def dividend_discount_model(discount_rate: float, dividends: float, growth_rate: float, stock_price: float, periods: int):
+    total_cashflows = 0  # initalize our total cashflows
+    for period in range(1, periods + 1):  # loop the number of periods and calculate the cash flows.
 
         # define the growth and discount factor
         growth_factor = (1 + growth_rate)

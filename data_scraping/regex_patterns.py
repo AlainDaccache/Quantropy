@@ -60,7 +60,7 @@ financial_entries_regex_dict = {
                 'Deferred Tax Assets Non Current': r'(?=.*deferred tax assets){}'.format(non_current),
                 'Intangible Assets': {
                     'Goodwill': r'(?!.*net)(?=.*Goodwill)(?!.*net)',
-                    'Intangible Assets, Net (Excluding Goodwill)': r'(?=.*(other|net))(?=.*intangible assets)',
+                    'Intangible Assets, Net (Excluding Goodwill)': r'(?=.*(other|net))(?=.*intangible assets(?!.*[_]))',
                     'Total Intangible Assets': r'(?!.*other)(?!.*goodwill)(?!.*net)(?=.*intangible assets)(?!.*goodwill)(?!.*other)(?!.*net)',
                 },
                 'Other Non Current Assets': r'(?=.*Other)(?=.*assets(?!.*[_])){}'.format(non_current),
@@ -154,10 +154,10 @@ financial_entries_regex_dict = {
 
             # hardcoded for Note 13.Interest and other income, net_Other
             # and Other income/(expense), net
-            'Other Nonoperating Income (Expense)': '$^',
+            'Other Nonoperating Income (Expense)': '(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
             # below is for Interest and other income, net
             # and Total other income/(expense), net
-            'Non-Operating Income (Expense)': r'(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
+            'Non-Operating Income (Expense)': r'(?=.*total(?!.*[_:]))(?=.*(other|non))(income(?!.*[_:]))(?=.*net(?!.*[_:]))',
         },
 
         'Income (Loss) before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before (?=.*Provision for)?(?=.*(income )?taxes)|Pre-tax earnings))',

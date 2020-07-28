@@ -1,4 +1,5 @@
 import collections
+import csv
 import math
 import os
 import re
@@ -485,7 +486,7 @@ def scrape_html_tables_from_url(url, filing_date):
 
                             if current_category not in all_in_one_dict[first_level][dates[index]][table_title].keys():
                                 all_in_one_dict[first_level][dates[index]][table_title][current_category] = float(
-                                    re.sub('^$', '0', reg_row[index + 1])) #  * table_multiplier
+                                    re.sub('^$', '0', reg_row[index + 1]))  # * table_multiplier
                             if only_year:
                                 break
                     except:
@@ -717,27 +718,27 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
     filings_dictio_quarterly = get_filings_urls_second_layer(doc_links_quarterly)
 
     filing_dictio = {}
-    # pprint(filing_dictio)
+
     for i in range(2):
         for title, links_list in (filings_dictio_yearly.items() if i == 0 else filings_dictio_quarterly.items()):
             if title not in filing_dictio.keys():
                 filing_dictio[title] = []
             filing_dictio[title].extend(links_list)
         missing_dates_links = []
-        existing_dates = excel.read_dates_from_csv(path, config.balance_sheet_yearly if i == 0 else config.balance_sheet_quarterly)
+        existing_dates = excel.read_dates_from_csv(path,
+                                                   config.balance_sheet_yearly if i == 0 else config.balance_sheet_quarterly)
         for x, y in (filings_dictio_yearly['HTML Links'] if i == 0 else filings_dictio_quarterly['HTML Links']):
             formatted_date = datetime.strptime(x, '%Y-%m-%d')
             if formatted_date not in existing_dates and formatted_date not in [x for x, y in missing_dates_links]:
                 missing_dates_links.append((formatted_date, y))
         missing_dates_links.sort(key=lambda tup: tup[0], reverse=True)
 
-        print(missing_dates_links)
+        pprint(missing_dates_links)
         for index, (filing_date, link) in enumerate(missing_dates_links):
             try:
-                if (index > how_many_years -1 and i == 0) or (index > how_many_quarters and i == 1) :
+                if (index > how_many_years - 1 and i == 0) or (index > how_many_quarters and i == 1):
                     break
-                # print(filing_date, link)
-                # scrape_tables_from_url(link)
+                print(filing_date, link)
                 output = scrape_tables_from_url(link, filing_date)
                 for sheet_period, sheet_dict in output.items():
                     if sheet_period not in dictio.keys():
@@ -758,10 +759,13 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
 
             except Exception:
                 traceback.print_exc()
-        # pprint(dictio)
+        pprint(dictio)
 
     log = open(os.path.join(company_log_path, 'scraped_dictio.txt'), "w")
-    print(dictio, file=log)
+    try:
+        print(dictio, file=log)
+    except:
+        pass
     financials_dictio = {}
 
     for sheet_period, sheet_dict in dictio.items():
@@ -892,12 +896,11 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
 
 
 def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
-
     df = web.DataReader(stock.replace('.', '-'), data_source='yahoo', start=start, end=end)
     df['Pct Change'] = df['Adj Close'].pct_change()
-    df.index = df.index + pd.offsets.Day() - timedelta(seconds=1)
+    df.index = df.index + timedelta(days=1) - timedelta(seconds=1)
     path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stock))
-    excel.save_into_csv(path, df, config.stock_prices_sheet_name, overwrite_sheet=True)
+    excel.save_into_csv(path, df, overwrite_sheet=True)
     return df
 
 
@@ -938,48 +941,98 @@ def save_gnp_price_index():
     os.remove('temp.csv')
 
 
-three_factors_url_daily = ''
-three_factors_url_weekly = ''
-three_factors_url_monthly_yearly = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-five_factors_url_daily = ''
-five_factors_url_weekly = ''
-five_factors_url_monthly_yearly = ''
-momentum_factor_url_daily = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'
-momentum_factor_url_monthly_yearly = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip'
-carhart_four_factor_url_monthly = 'https://breakingdownfinance.com/wp-content/uploads/2019/07/Carhart-4-factor-data.xlsx'
+def save_factors_data(url, factor, period, skiprows):
 
+    if len(url) == 0:  # that's for CAPM
+        ff3 = pd.read_excel('{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 3 Factor'),
+                            sheet_name=period, index_col=0)
+        capm = ff3[['Mkt-RF', 'RF']]
+        excel.save_into_csv('{}/{}.xlsx'.format(config.FACTORS_DIR_PATH,factor), capm, sheet_name=period)
+        return
 
-# TODO compile daily, weekly, monthly, yearly Fama French Factors (it also includes momentum)
-
-
-def save_factors_data(url):
     urllib.request.urlretrieve(url, 'fama_french.zip')
     zip_file = zipfile.ZipFile('fama_french.zip', 'r')
     zip_file.extractall()
     zip_file.close()
 
-    # TODO FIND MORE PYTHONIC WAY
-    file_name = ''
-    for f in [f for f in os.listdir('.') if os.path.isfile(f)]:
-        if re.search('F-F', f):
-            file_name = f
+    file_name = next(file for file in os.listdir('.') if re.search('F-F', file))
+    ff_factors = pd.read_csv(file_name, skiprows=skiprows, index_col=0)
+    # We want to find out the row with NULL value. We will skip these rows
+    ff_row = np.array(ff_factors.isnull().any(1)).nonzero()[0].tolist()
+    ff_row = np.insert(ff_row, 0, 0, axis=0)
+
+    # TODO waw hahaa worst hardcode
+    temp_ff_row = ff_row
+    for idx, val in enumerate(temp_ff_row):
+        if abs(val - ff_row[idx - 1]) <= 1:
+            ff_row = np.delete(ff_row, idx - 1)
             break
 
-    ff_factors = pd.read_csv(file_name, skiprows=3, index_col=0)
-    # We want to find out the row with NULL value. We will skip these rows
-    ff_row = np.array(ff_factors.isnull().any(1)).nonzero()
-    for nrow in ff_row[0]:
-        # Read the csv file again with skipped rows
-        ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows=3, nrows=nrow, index_col=0)
-        ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m')
-        ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
-        ff_factors = ff_factors.apply(lambda x: x / 100)
-        path = os.path.join(config.FACTORS_DIR_PATH, 'Factors.xlsx')
-        excel.save_into_csv(path, ff_factors, config.monthly_factors)
+    first_pass = True
+    formats = {'Daily': {'Format': '%Y%m%d',
+                         'Offset': timedelta(days=1) - timedelta(seconds=1)},
+               'Weekly': {'Format': '%Y%m%d',
+                          'Offset': timedelta(days=1) - timedelta(seconds=1)},
+               'Monthly': {'Format': '%Y%m',
+                           'Offset': pd.offsets.MonthEnd()},
+               'Yearly': {'Format': '%Y',
+                          'Offset': pd.offsets.YearEnd()}}
+    for idx, nrow in enumerate(ff_row[1:]):
 
+        # Read the csv file again with skipped rows
+        skiprows = skiprows + 3 if not first_pass else skiprows
+        ff_factors = pd.read_csv(file_name,
+                                 skiprows=ff_row[idx] + skiprows,
+                                 nrows=nrow - ff_row[idx],
+                                 index_col=0)
+
+        ff_factors.index = [str(x).strip() for x in ff_factors.index.to_list()]
+        cur_period = period.split('/')[0] if first_pass else period.split('/')[-1]
+        format = formats[cur_period]['Format']
+
+        try:
+            ff_factors.index = pd.to_datetime(ff_factors.index, format=format)
+        except:  # TODO hard fix, because of the 'copyright' row at bottom, filter later
+            ff_factors = ff_factors[:-1]
+            ff_factors.index = pd.to_datetime(ff_factors.index, format=format)
+
+        ff_factors.index = ff_factors.index + formats[cur_period]['Offset']
+        ff_factors = ff_factors.apply(lambda x: x / 100)
+        path = os.path.join(config.FACTORS_DIR_PATH, '{}.xlsx'.format(factor))
+
+        if 'Carhart' in factor:
+            ff3 = pd.read_excel('{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 3 Factor'), sheet_name=cur_period, index_col=0)
+            ff_factors = pd.merge(ff3, ff_factors, left_index=True, right_index=True)
+
+        excel.save_into_csv(filename=path, df=ff_factors, sheet_name=cur_period, overwrite_sheet=True)
+        first_pass = False
     os.remove(file_name)
     os.remove('fama_french.zip')
+
     return ff_factors
+
+
+three_factors_url_daily = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip'
+three_factors_url_weekly = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_weekly_CSV.zip'
+three_factors_url_monthly_yearly = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+five_factors_url_daily = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip'
+five_factors_url_weekly = ''
+five_factors_url_monthly_yearly = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip'
+momentum_factor_url_daily = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'
+momentum_factor_url_monthly_yearly = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip'
+carhart_four_factor_url_monthly = 'https://breakingdownfinance.com/wp-content/uploads/2019/07/Carhart-4-factor-data.xlsx'
+
+factors_inputs = [
+    (three_factors_url_daily, 'Fama-French 3 Factor', 'Daily', 3),
+    (three_factors_url_weekly, 'Fama-French 3 Factor', 'Weekly', 3),
+    (three_factors_url_monthly_yearly, 'Fama-French 3 Factor', 'Monthly/Yearly', 3),
+    (five_factors_url_daily, 'Fama-French 5 Factor', 'Daily', 3),
+    (five_factors_url_monthly_yearly, 'Fama-French 5 Factor', 'Monthly/Yearly', 3),
+    (momentum_factor_url_daily, 'Carhart 4 Factor', 'Daily', 13),
+    (momentum_factor_url_monthly_yearly, 'Carhart 4 Factor', 'Monthly/Yearly', 13),
+    ('', 'CAPM', 'Daily', 0), ('', 'CAPM', 'Weekly', 0),
+    ('', 'CAPM', 'Monthly', 0), ('', 'CAPM', 'Yearly', 0)
+]
 
 
 def testing():
@@ -1004,11 +1057,16 @@ if __name__ == '__main__':
     company_tickers = ['AMZN', 'AAPL', 'GOOG', 'FB', 'TSLA', 'NFLX',
                        'KO', 'PG', 'JNJ', 'PEP', 'VZ',
                        'GS', 'MS', 'JPM', 'WFC', 'C', 'BAC']
+
+    for url, file, sheet, skiprow in factors_inputs:
+        save_factors_data(url, file, sheet, skiprow)
+
+   
     # testing()
-    for ticker in ['AAPL']:
-        save_stock_prices(ticker)
-        # get_technical_indicators(ticker)
-        scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=0)
+    # for ticker in company_tickers[:2]:
+    #     save_stock_prices(ticker)
+    # get_technical_indicators(ticker)
+    # scrape_financial_statements(ticker, how_many_years=8, how_many_quarters=0)
     # scrape_financial_statements(ticker, '10-Q')
 
     # ff_factors = get_beta_factors()

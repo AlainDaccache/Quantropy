@@ -95,7 +95,7 @@ def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
     writer.save()
 
 
-def read_df_from_csv(path, sheet_name):
+def read_df_from_csv(path, sheet_name='Sheet1'):
     if os.path.exists(path):
         workbook = xlrd.open_workbook(path, on_demand=True)
         sheets = workbook.sheet_names()

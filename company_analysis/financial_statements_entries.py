@@ -494,6 +494,23 @@ def cash_flow_operating_activities(stock, date=datetime.now(), lookback_period=t
                                           ttm=ttm)
 
 
+def change_in_depreciation_and_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                                            annual=True, ttm=False):
+    from_income_statement = read_income_statement_entry(stock=stock,
+                                                        entry_name=['Costs and Expenses',
+                                                                    'Depreciation and Amortization'],
+                                                        date=date, lookback_period=lookback_period, annual=annual,
+                                                        ttm=ttm)
+    if not np.isnan(from_income_statement):
+        return from_income_statement
+    else:
+        return read_cash_flow_statement_entry(stock=stock,
+                                              entry_name=['Operating Activities',
+                                                          'Depreciation and Amortization'],
+                                              date=date, lookback_period=lookback_period, annual=annual,
+                                              ttm=ttm)
+
+
 def cash_flow_investing_activities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
                                    annual=True, ttm=False):
     return read_cash_flow_statement_entry(stock=stock,
@@ -510,3 +527,4 @@ def cash_flow_financing_activities(stock, date=datetime.now(), lookback_period=t
                                                       'Net Cash Provided by (Used in) Financing Activities'],
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
+

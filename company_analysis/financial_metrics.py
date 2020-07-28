@@ -42,11 +42,11 @@ def ebitda(stock, date=datetime.today(), lookback_period=timedelta(days=0), annu
     return output
 
 
-def capex(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False):
+def capital_expenditures(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False):
     ppe_delta = (fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                                  ttm=ttm)
-                 - fi.net_property_plant_equipment(stock, date - timedelta(days=365), annual, ttm))
-    return ppe_delta + fi.accumulated_depreciation_amortization(stock=stock, date=date, lookback_period=lookback_period,
+                 - fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=timedelta(days=365), annual=annual, ttm=ttm))
+    return ppe_delta + fi.change_in_depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period,
                                                                 annual=annual, ttm=ttm)
 
 
@@ -87,8 +87,16 @@ def enterprise_value(stock, date=datetime.now(), lookback_period=timedelta(days=
 def gross_national_product_price_index(date):
     return float(excel.read_entry_from_csv(config.MACRO_DATA_FILE_PATH, 'Yearly', 'GNP Price Index', date))
 
+
+def risk_free_rate(date, period):
+    # period is 'Yearly', 'Monthly', 'Daily'
+    return float(excel.read_entry_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Factors'),
+                                           sheet_name=period, x= 'RF', y=date))
+
+
 def get_stock_location(stock):
     return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Location', stock)
+
 
 def get_stock_industry(stock):
     return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Industry', stock)
