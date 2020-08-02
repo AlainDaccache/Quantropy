@@ -4,17 +4,12 @@ import pickle
 import types
 from datetime import datetime, timedelta
 from pprint import pprint
-import company_analysis.financial_statements_entries as financials
-import company_analysis.financial_metrics as metrics
-import company_analysis.accounting_ratios as ratios
+import financial_statement_analysis.financial_statements_entries as financials
+import financial_statement_analysis.financial_metrics as metrics
+import financial_statement_analysis.accounting_ratios as ratios
 import numpy as np
 import pandas as pd
-
 import config
-
-'''
-Default Prediction Models
-'''
 
 
 def piotroski_f_score(stock, date=datetime.now(),
@@ -127,7 +122,7 @@ def piotroski_f_score(stock, date=datetime.now(),
 def altman_z_score(stock, date=datetime.now()):
     A = metrics.working_capital(stock, date) / financials.total_assets(stock, date)
     B = financials.retained_earnings(stock, date) / financials.total_assets(stock, date)
-    C = metrics.ebit(stock, date) / financials.total_assets(stock, date)
+    C = metrics.earnings_before_interest_and_taxes(stock, date) / financials.total_assets(stock, date)
     D = financials.total_shareholders_equity(stock, date) / financials.total_liabilities(stock, date)
     E = financials.net_sales(stock, date) / financials.total_assets(stock, date)
 
@@ -156,21 +151,21 @@ def altman_z_score(stock, date=datetime.now()):
             z_plus_plus_score = 6.56 * A + 3.26 * B + 6.72 * C + 1.05 * D
 
         if z_plus_plus_score > 2.6:
-            return (z_plus_plus_score, 'safe zone')
+            return z_plus_plus_score, 'safe zone'
         elif z_plus_plus_score < 1.1:
-            return (z_plus_plus_score, 'distress zone')
+            return z_plus_plus_score, 'distress zone'
         else:
-            return (z_plus_plus_score, 'grey zone')
+            return z_plus_plus_score, 'grey zone'
 
     else:  # for public manufacturing firms, original score
         D = metrics.market_capitalization(stock, date) / financials.total_liabilities(stock, date)
         z_score = 1.2 * A + 1.4 * B + 3.3 * C + 0.6 * D + 1.0 * E
         if z_score > 2.99:
-            return (z_score, 'safe zone')
+            return z_score, 'safe zone'
         elif z_score < 1.81:
-            return (z_score, 'distress zone')
+            return z_score, 'distress zone'
         else:
-            return (z_score, 'grey zone')
+            return z_score, 'grey zone'
 
 
 def ohlson_o_score(stock, date=datetime.now()):
@@ -191,32 +186,3 @@ def ohlson_o_score(stock, date=datetime.now()):
 
 def probability_of_bankruptcy(score):
     return math.exp(score) / (1 + math.exp(score))
-
-
-'''
-Earnings Manipulation Models
-'''
-
-
-def beneish_m_score(stock, date):
-    pass
-
-
-def montier_c_score(stock, date):
-    pass
-
-
-if __name__ == '__main__':
-    date = datetime.now()
-    # piotroski_dictio = piotroski_f_score('AAPL', date)
-    # ohlson_score = ohlson_o_score('AAPL', date)
-    # print(ohlson_score)
-    # bankruptcy_prob =
-    # print(bankruptcy_prob)
-    print(altman_z_score('AAPL'))
-    # df = pd.DataFrame.from_dict({(i, j, k): l
-    #                              for i in piotroski_dictio.keys()
-    #                              for j in piotroski_dictio[i].keys()
-    #                              for k, l in piotroski_dictio[i][j].items()}, orient='index',
-    #                             columns=[date.strftime('%Y-%m-%d')])
-    # print(df.to_string())

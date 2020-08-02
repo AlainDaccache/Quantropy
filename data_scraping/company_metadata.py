@@ -127,7 +127,7 @@ def save_dow_jones_tickers():
     table = soup.find('table', {'class': 'wikitable sortable'})
     tickers = []
     for row in table.findAll('tr')[1:]:
-        ticker = row.findAll('td')[0].text
+        ticker = unicodedata.normalize("NFKD", row.findAll('td')[2].text).split(': ')[-1]
         ticker = ticker.strip()
         tickers.append(ticker)
 
@@ -204,11 +204,11 @@ def get_company_meta():
         country_codes = pickle.load(f)
 
     # for ticker in nasdaq_tickers[:200]:
-    for ticker in ['AAPL', 'TSLA', 'MSFT', 'BABA']:
+    for ticker in nasdaq_tickers[:200]:
 
         security_name = nasdaq_df['Security Name'].loc[ticker].split('-')[0].strip()
         security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() \
-            if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else ''
+            if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else 'Exchange-Traded Fund'
         try:
             financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
         except:
@@ -218,19 +218,21 @@ def get_company_meta():
 
         try:
             for i in range(2):  # just try again if didn't work first time, might be advertisement showed up
-                if i == 1:
+                try:
                     button = driver.find_element_by_xpath("//a[@class='acsCloseButton acsAbandonButton ']")
                     button.click()
                     sleep(1)
+                except:
+                    pass
                 if nasdaq_df['ETF'].loc[ticker] == 'Y':
                     driver.get('https://www.sec.gov/edgar/searchedgar/mutualsearch.html')
                     field = driver.find_element_by_xpath("//input[@id='gen_input']")
-                    field.send_keys(ticker)
+                    field.send_keys(ticker)  # TODO might split ticker from the '$' or '.' (classes)
                     sleep(1)
                     field.send_keys(Keys.ENTER)
                     sleep(1)
                     if 'No records matched your query' not in driver.page_source:
-                        for t in driver.find_elements_by_xpath("//b[@class='blue']"):
+                        for t in driver.find_elements_by_xpath("//b[@class='blue']"):  # TODO
                             if t.text == ticker:
                                 cik = driver.find_element_by_xpath('').text
                                 security_type = driver.find_element_by_xpath('').text
@@ -239,7 +241,7 @@ def get_company_meta():
                 base_url = 'https://www.sec.gov/cgi-bin/browse-edgar?CIK={}'.format(ticker)
                 resp = requests.get(base_url).text
 
-                if 'No matching Ticker Symbol' in resp:
+                if 'No matching Ticker Symbol' in resp or 'No records matched your query' in resp:
                     driver.get('https://www.sec.gov/edgar/searchedgar/companysearch.html')
                     # html = driver.page_source TODO for new 10-K forms maybe works?
                     input_box = driver.find_element_by_xpath("//input[@id='company']")
@@ -329,11 +331,13 @@ def save_country_codes():
               "wb") as f:
         pickle.dump(dictio, f)
     pprint(dictio)
+
+
 if __name__ == '__main__':
     # save_gics()
-    # save_dow_jones_tickers()
+    save_dow_jones_tickers()
     # save_sp500_tickers()
     # save_russell_3000_tickers()
     # save_nasdaq()
-    get_company_meta()
+    # get_company_meta()
     # save_country_codes()

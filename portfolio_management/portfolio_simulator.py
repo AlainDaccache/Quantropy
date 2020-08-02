@@ -7,7 +7,7 @@ import pandas as pd
 from abc import ABC, abstractmethod
 import data_scraping.excel_helpers as excel
 import config
-import company_analysis.accounting_ratios as fi
+import financial_statement_analysis.accounting_ratios as fi
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 

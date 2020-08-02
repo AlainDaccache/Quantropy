@@ -27,7 +27,7 @@ def get_date_index(date, dates_values, lookback_index=0):
             #     index for (index, item) in enumerate(dates_values[date_index:]) if item <= adjusted_lookback), 0)
             return date_index + lookback_index
         else:  # if dates increasing rightwards or downwards
-            date_index = next((index for (index, item) in enumerate(dates_values) if item > date), 0) - 1
+            date_index = next((index for (index, item) in enumerate(dates_values) if item > date), -1)
             # adjusted_lookback = date_item - lookback_period
             # lookback_index = next((
             #     index for (index, item) in enumerate(dates_values[date_index:]) if item > adjusted_lookback), -1)
@@ -35,6 +35,12 @@ def get_date_index(date, dates_values, lookback_index=0):
 
     else:
         return 0
+
+
+def slice_series_dates(series, from_date, to_date):
+    date_idx_from = get_date_index(from_date, series.index)
+    date_idx_to = get_date_index(to_date, series.index)
+    return series[date_idx_from:date_idx_to]
 
 
 def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
@@ -172,8 +178,11 @@ def get_stock_universe():
     return tickers
 
 
-def get_industry(stock: str):
-    pass
+def average_growth(list):
+    growths = []
+    for i in range(1, len(list)):
+        growths.append((list[i]-list[i-1])/list[i-1])
+    return np.mean(growths)
 
 
 def companies_in_industry(industry: str):

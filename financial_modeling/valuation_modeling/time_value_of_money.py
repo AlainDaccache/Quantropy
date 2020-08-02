@@ -1,6 +1,5 @@
-'''
-Time Value of Money
-'''
+def compounded_rate(current_pct, periods):
+    return (1 + current_pct) ** periods - 1
 
 
 def present_value(future_value, discount_rate, periods):

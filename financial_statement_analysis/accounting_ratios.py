@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import company_analysis.financial_statements_entries as fi
-import company_analysis.financial_metrics as me
+import financial_statement_analysis.financial_statements_entries as fi
+import financial_statement_analysis.financial_metrics as me
 import numpy as np
 
 '''

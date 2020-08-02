@@ -169,13 +169,41 @@ financial_entries_regex_dict = {
         'Net Income (Loss) Available to Common Stockholders, Basic': r'(?=.*Net (income|earnings) (attributable|applicable) to.*common (stockholders|shareholders))'
     },
     'Cash Flow Statement': {
-        'Operating Activities': {
+        'Operating Activities': {  # (?=.*_(?!.*[_:]))
+            'Net Income (Loss) Attributable to Parent': r'(?=.*Net income(?!.*[_:]))',
+            'Depreciation, Depletion and Amortization': r'(?=.*Operating activities(?!.*[_:]))(?=.*depreciation(?!.*[_:]))(?=.*amortization(?!.*[_:]))',
+            'Share-based Payment Arrangement, Noncash Expense': r'Share-based compensation expense',
+            'Deferred Income Tax Expense (Benefit)': r'Deferred income tax expense/(benefit)',
+            'Other Noncash Income (Expense)': r'Other',
+            'Increase (Decrease) in Accounts Receivable': r'Accounts receivable, net',
+            'Increase (Decrease) in Inventories': r'Inventories',
+            'Increase (Decrease) in Other Receivables': r'Vendor non-trade receivables',
+            'Increase (Decrease) in Other Operating Assets': r'Other current and non-current assets',
+            'Increase (Decrease) in Accounts Payable': r'Accounts payable',
+            'Increase (Decrease) in Contract with Customer, Liability': r'Deferred revenue',
+            'Increase (Decrease) in Other Operating Liabilities': 'Other current and non-current liabilities',
             'Net Cash Provided by (Used in) Operating Activities': r'(?=.*Operating activities(?!.*[_:]))(?=.*cash(?!.*[_:]))'
         },
         'Investing Activities': {
+            'Payments to Acquire Debt Securities, Available-for-sale': r'Purchases of marketable securities',
+            'Proceeds from Maturities, Prepayments and Calls of Debt Securities, Available-for-sale': r'Proceeds from maturities of marketable securities',
+            'Proceeds from Sale of Debt Securities, Available-for-sale': r'Proceeds from sales of marketable securities',
+            'Payments to Acquire Property, Plant, and Equipment': 'Payments for acquisition of property, plant and equipment',
+            'Payments to Acquire Businesses, Net of Cash Acquired': 'Payments made in connection with business acquisitions, net',
+            'Payments to Acquire Other Investments': 'Purchases of non-marketable securities',
+            'Proceeds from Sale and Maturity of Other Investments': 'Proceeds from non-marketable securities',
+            'Payments for (Proceeds from) Other Investing Activities': 'Other',
             'Net Cash Provided by (Used in) Investing Activities': r'(?=.*Investing activities(?!.*[_:]))(?=.*cash(?!.*[_:]))'
         },
         'Financing Activities': {
+            'Proceeds from Issuance of Common Stock': r'Proceeds from issuance of common stock',
+            'Payment, Tax Withholding, Share-based Payment Arrangement': 'Payments for taxes related to net share settlement of equity awards',
+            'Payments of Dividends': r'(?=.*Financing activities(?!.*[_:]))(?=.*dividends(?!.*[_:]))(?=.*payments(?!.*[_:]))',
+            'Payments for Repurchase of Common Stock': 'Repurchases of common stock',
+            'Proceeds from Issuance of Long-term Debt': 'Proceeds from issuance of term debt, net',
+            'Repayments of Long-term Debt': 'Repayments of term debt',
+            'Proceeds from (Repayments of) Commercial Paper': 'Proceeds from/(Repayments of) commercial paper, net',
+            'Proceeds from (Payments for) Other Financing Activities': 'Other',
             'Net Cash Provided by (Used in) Financing Activities': r'(?=.*Financing activities(?!.*[_:]))(?=.*(net )?cash(?!.*[_:]))'
         }
     }

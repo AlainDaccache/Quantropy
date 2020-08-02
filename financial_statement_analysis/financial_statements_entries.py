@@ -174,6 +174,14 @@ def non_current_marketable_securities(stock, date=datetime.now(), lookback_perio
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
+def accumulated_depreciation_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                                      annual=False, ttm=False):
+    return read_balance_sheet_entry(stock=stock,
+                                    entry_name=['Assets', 'Non Current Assets',
+                                                'Accumulated Depreciation and Amortization'],
+                                    date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+
+
 def net_property_plant_equipment(stock, date=datetime.now(), lookback_period=timedelta(days=0),
                                  annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
@@ -395,14 +403,6 @@ def selling_general_administrative(stock, date=datetime.now(), lookback_period=t
                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def accumulated_depreciation_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                          annual=True, ttm=False):
-    return read_income_statement_entry(stock=stock,
-                                       entry_name=['Costs and Expenses',
-                                                   'Depreciation, Depletion and Amortization, Nonproduction'],
-                                       date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-
-
 def total_operating_expenses(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                              ttm=False):
     return read_income_statement_entry(stock=stock,
@@ -449,15 +449,6 @@ def non_operating_income(stock, date=datetime.now(), lookback_period=timedelta(d
                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def income_before_tax_minority_interest(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                        annual=True, ttm=False):
-    return read_income_statement_entry(stock=stock,
-                                       entry_name=[
-                                           'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest',
-                                           ' '],
-                                       date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-
-
 def income_tax_expense(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                        ttm=False):
     return read_income_statement_entry(stock=stock,
@@ -481,7 +472,7 @@ def net_income(stock, date=datetime.now(), lookback_period=timedelta(days=0), an
 def preferred_dividends(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                         ttm=False):
     return read_income_statement_entry(stock=stock,
-                                       entry_name=['Preferred stock=stock Dividends', ' '],
+                                       entry_name=['Preferred Stock Dividends', ' '],
                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
@@ -496,6 +487,7 @@ def cash_flow_operating_activities(stock, date=datetime.now(), lookback_period=t
 
 def change_in_depreciation_and_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
                                             annual=True, ttm=False):
+
     from_income_statement = read_income_statement_entry(stock=stock,
                                                         entry_name=['Costs and Expenses',
                                                                     'Depreciation and Amortization'],
@@ -528,3 +520,9 @@ def cash_flow_financing_activities(stock, date=datetime.now(), lookback_period=t
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
 
+def payments_for_dividends(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                           annual=True, ttm=False):
+    return read_cash_flow_statement_entry(stock=stock,
+                                          entry_name=['Financing Activities', 'Payments of Dividends'],
+                                          date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm)
