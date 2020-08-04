@@ -184,5 +184,10 @@ def ohlson_o_score(stock, date=datetime.now()):
            - 2.37 * (NI / TA) - 1.83 * (FFO / TL) + 0.285 * Y - 0.521 * ((NI - NI_prev) / (abs(NI) + abs(NI_prev)))
 
 
+# https://scholar.harvard.edu/files/campbell/files/campbellhilscherszilagyi_jf2008.pdf
+def campbell_hilscher_szilagyi_model():
+    pass
+
+
 def probability_of_bankruptcy(score):
     return math.exp(score) / (1 + math.exp(score))

@@ -7,6 +7,7 @@ import data_scraping.excel_helpers as excel
 def gross_national_product_price_index(date):
     return float(excel.read_entry_from_csv(config.MACRO_DATA_FILE_PATH, 'Yearly', 'GNP Price Index', date))
 
+
 def cumulative_factors_helper(df, from_date, to_date):
     frm = excel.get_date_index(date=from_date, dates_values=df.index)
     to = excel.get_date_index(date=to_date, dates_values=df.index)

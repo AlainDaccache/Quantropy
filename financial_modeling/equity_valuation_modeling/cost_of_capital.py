@@ -8,6 +8,23 @@ import financial_statement_analysis.macro_data as macro
 import numpy as np
 
 
+def dividend_growth_rate(stock, periods: int = 5, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
+                         ttm=False, diluted_shares=True):
+    return excel.average_growth(reversed([me.dividend_per_share(stock=stock, date=date,
+                                                                lookback_period=i * lookback_period,
+                                                                annual=annual, ttm=ttm,
+                                                                diluted_shares=diluted_shares) for i in
+                                          range(1, periods)]))
+
+
+def cash_flow_growth_rate(stock, periods: int = 5, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
+                          ttm=False):
+    return excel.average_growth(reversed([me.free_cash_flow(stock=stock, date=date,
+                                                            lookback_period=i * lookback_period,
+                                                            annual=annual, ttm=ttm) for i in
+                                          range(1, periods)]))
+
+
 def cost_of_preferred_stock(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                             ttm=False):
     preferred_dividends = fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
@@ -49,12 +66,8 @@ def cost_of_equity_ddm(stock, date=datetime.now(), lookback_period=timedelta(day
 
     this_period_dividend = me.dividend_per_share(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                                  ttm=ttm, diluted_shares=diluted_shares)
-    periods = 6  # TODO make into arg
-    growth_rate = excel.average_growth(reversed([me.dividend_per_share(stock=stock, date=date,
-                                                                       lookback_period=i * lookback_period,
-                                                                       annual=annual, ttm=ttm,
-                                                                       diluted_shares=diluted_shares) for i in
-                                                 range(1, periods)]))
+    growth_rate = dividend_growth_rate(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                       ttm=ttm, diluted_shares=diluted_shares)
     next_period_dividend = this_period_dividend * (1 + growth_rate)
     return (next_period_dividend / stock_price) + growth_rate
 
