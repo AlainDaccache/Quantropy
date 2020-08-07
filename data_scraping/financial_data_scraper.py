@@ -558,8 +558,11 @@ def normalization_iteration(iteration_count, input_dict, master_dict, visited_da
                                 visited_data_names[year] = []
                             pattern_matched = False
                             for el in visited_data_names[year]:  # if I already found it for this year, then skip
+
                                 if re.search(el['Pattern String'], scraped_name, re.IGNORECASE):
-                                    pattern_matched = True
+                                    # TODO: check following bug fix: you should find it this year, but the pattern should match same table title
+                                    if re.search(el['Table Title'], title, re.IGNORECASE):
+                                        pattern_matched = True
                                     break
                             if not pattern_matched:
                                 master_dict[normalized_category] = scraped_value
@@ -1061,7 +1064,7 @@ if __name__ == '__main__':
     for ticker in ['AAPL']:
         # save_stock_prices(ticker)
         # get_technical_indicators(ticker)
-        scrape_financial_statements(ticker, how_many_years=1, how_many_quarters=0)
+        scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
     # scrape_financial_statements(ticker, '10-Q')
 
     # ff_factors = get_beta_factors()

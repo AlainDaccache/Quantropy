@@ -128,7 +128,7 @@ def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_she
         if isinstance(y, datetime):  # if the input is a date...
             # if isinstance(df.index, pd.DatetimeIndex):
             date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
-            print('The {} for {} on {}, lookback {}, is {}'.format(x, ticker, y, lookback_index, df[x].iloc[date_index]))
+            # print('The {} for {} on {}, lookback {}, is {}'.format(x, ticker, y, lookback_index, df[x].iloc[date_index]))
             return df[x].iloc[date_index]
 
         elif isinstance(x, datetime):
@@ -139,15 +139,15 @@ def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_she
                 if el in reduced_df.index:
                     reduced_df = reduced_df.loc[el]
                 else:
-                    print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, np.nan))
+                    # print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, np.nan))
                     return np.nan
-            print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, reduced_df))
+            # print('The {} for {} on {}, lookback {}, is {}'.format(y, ticker, x, lookback_index, reduced_df))
             return reduced_df
         else:
-            print('The {}/{} for {} is {}'.format(x, y, ticker, df[x].loc[y]))
+            # print('The {}/{} for {} is {}'.format(x, y, ticker, df[x].loc[y]))
             return df[x].loc[y]
     else:
-        print('The entry is {}'.format(np.nan))
+        # print('The entry is {}'.format(np.nan))
         return np.nan
 
 def read_dates_from_csv(path, sheet_name):
@@ -178,11 +178,14 @@ def get_stock_universe():
     return tickers
 
 
-def average_growth(list):
+def average_growth(list, weighted=False):
     growths = []
     for i in range(1, len(list)):
         growths.append((list[i]-list[i-1])/list[i-1])
-    return np.mean(growths)
+    if not weighted:
+        return np.mean(growths)
+    else:
+        return np.average(growths, weights=[])  # TODO
 
 
 def companies_in_industry(industry: str):

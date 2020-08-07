@@ -10,6 +10,7 @@ import financial_statement_analysis.accounting_ratios as ratios
 import numpy as np
 import pandas as pd
 import config
+from financial_statement_analysis import macro_data
 
 
 def piotroski_f_score(stock, date=datetime.now(),
@@ -170,7 +171,7 @@ def altman_z_score(stock, date=datetime.now()):
 
 def ohlson_o_score(stock, date=datetime.now()):
     TA = financials.total_assets(stock, date)
-    GNP = metrics.gross_national_product_price_index(date)
+    GNP = macro_data.gross_national_product_price_index(date)
     TL = financials.total_liabilities(stock, date)
     WC = metrics.working_capital(stock, date)
     CL = financials.current_total_liabilities(stock, date)

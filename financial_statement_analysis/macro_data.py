@@ -16,9 +16,21 @@ def cumulative_factors_helper(df, from_date, to_date):
     return cum_prod[-1]
 
 
+def risk_free_rate(date, freq: str = 'Yearly'):
+    df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=freq)['RF']
+    date_index = excel.get_date_index(date, df.index)
+    return df.iloc[date_index]
+
+
 def cumulative_risk_free_rate(from_date, to_date):
     df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name='Daily')['RF']
     return cumulative_factors_helper(df=df, from_date=from_date, to_date=to_date)
+
+
+def market_premium(date, freq: str = 'Yearly'):
+    df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=freq)['Mkt-RF']
+    date_index = excel.get_date_index(date, df.index)
+    return df.iloc[date_index]
 
 
 def cumulative_market_premium(from_date, to_date):

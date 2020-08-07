@@ -84,6 +84,13 @@ def debt_to_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0)
                 long_term_debt=long_term_debt) / denominator
 
 
+def asset_to_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
+    total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+    total_equity = fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                                ttm=ttm)
+    return total_assets / total_equity
+
+
 # The debt to equity ratio calculates the weight of total debt and financial liabilities against shareholders’ equity
 # Debt to equity ratio = Total liabilities / Shareholder’s equity
 def debt_to_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
@@ -123,9 +130,11 @@ def interest_coverage(stock, date=datetime.now(), lookback_period=timedelta(days
 # amount of operating income available for debt repayment.
 def debt_service_coverage(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
                           with_capex=False):
-    numerator = me.ebitda(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-    numerator -= me.capex(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                          ttm=ttm) if with_capex else 0
+    numerator = me.earnings_before_interest_and_taxes_and_depreciation_and_amortization(stock=stock, date=date,
+                                                                                        lookback_period=lookback_period,
+                                                                                        annual=annual, ttm=ttm)
+    numerator -= abs(me.capital_expenditures(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                             ttm=ttm)) if with_capex else 0
     return numerator / me.debt_service(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
@@ -140,9 +149,9 @@ def asset_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(d
                          average_assets=True):
     if average_assets:
         total_assets = (fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                        ttm=ttm) + fi.total_assets(stock,
-                                                                   date - timedelta(days=365),
-                                                                   annual, ttm)) / 2
+                                        ttm=ttm)
+                        + fi.total_assets(stock=stock, date=date - timedelta(days=365 if annual else 90),
+                                          lookback_period=lookback_period, annual=annual, ttm=ttm)) / 2
     else:
         total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
     revenues = fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
@@ -155,9 +164,9 @@ def inventory_turnover(stock, date=datetime.now(), lookback_period=timedelta(day
                        average_inventory=True):
     if average_inventory:
         inventory = (fi.net_inventory(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                      ttm=ttm) + fi.net_inventory(stock,
-                                                                  date - timedelta(days=365),
-                                                                  annual, ttm)) / 2
+                                      ttm=ttm)
+                     + fi.net_inventory(stock=stock, date=date - timedelta(days=365 if annual else 90),
+                                        lookback_period=lookback_period, annual=annual, ttm=ttm)) / 2
     else:
         inventory = fi.net_inventory(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
     return fi.cost_of_goods_services(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
@@ -170,8 +179,11 @@ def receivables_turnover(stock, date=datetime.now(), lookback_period=timedelta(d
                          average_receivables=True):
     if average_receivables:
         accounts_receivable = (fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period,
-                                                          annual=annual, ttm=ttm) + fi.net_accounts_receivable(
-            stock, date - timedelta(days=365), annual, ttm)) / 2
+                                                          annual=annual, ttm=ttm)
+                               + fi.net_accounts_receivable(stock=stock,
+                                                            date=date - timedelta(days=365 if annual else 90),
+                                                            lookback_period=lookback_period, annual=annual,
+                                                            ttm=ttm)) / 2
     else:
         accounts_receivable = fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period,
                                                          annual=annual, ttm=ttm)
@@ -192,14 +204,27 @@ def return_on_capital(stock, date=datetime.now(), lookback_period=timedelta(days
                                                    annual=annual,
                                                    ttm=ttm) - fi.accumulated_depreciation_amortization(
         stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-    return me.ebit(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) / (
-            net_fixed_assets + me.working_capital(stock=stock, date=date, lookback_period=lookback_period,
-                                                  annual=annual, ttm=ttm))
+    return me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                                 ttm=ttm) / (
+                   net_fixed_assets + me.working_capital(stock=stock, date=date, lookback_period=lookback_period,
+                                                         annual=annual, ttm=ttm))
+
+
+def retention_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
+    net_income = fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+    dividends = fi.payments_for_dividends(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm)
+    return (net_income - abs(dividends)) / net_income
 
 
 '''
 Profitability ratios measure a company’s ability to generate income relative to revenue, balance sheet assets, operating costs, and equity. 
 '''
+
+def profit_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+    return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                           ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
+                                                   annual=annual, ttm=ttm)
 
 
 # The gross margin ratio compares the gross profit of a company to its net sales to show how much profit a company makes after paying its cost of goods sold
@@ -207,7 +232,7 @@ Profitability ratios measure a company’s ability to generate income relative t
 def gross_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return me.gross_profit(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                            ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
-                                                   annual=annual, ttm=ttm)
+                                    annual=annual, ttm=ttm)
 
 
 # The operating margin ratio compares the operating income of a company to its net sales to determine operating efficiency
@@ -222,9 +247,8 @@ def operating_margin(stock, date=datetime.now(), lookback_period=timedelta(days=
 # Return on assets ratio = Net income / Total assets
 def return_on_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False,
                      average_assets=True):
-
     total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                       ttm=ttm)
+                                   ttm=ttm)
     return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                          ttm=ttm) / total_assets
 
@@ -289,7 +313,8 @@ def price_to_earnings_to_growth(stock, date=datetime.now(), lookback_period=time
                                 ttm=True, diluted=True,
                                 deduct_operating_income=False, deduct_preferred_dividends=True):
     eps_last_5_years = [
-        earnings_per_share(stock, date, lookback_period=timedelta(days=365), annual=annual, ttm=ttm, diluted=diluted,
+        earnings_per_share(stock, date - timedelta(days=365 * i if annual else 90 * i),
+                           lookback_period=timedelta(days=365), annual=annual, ttm=ttm, diluted=diluted,
                            deduct_operating_income=deduct_operating_income,
                            deduct_preferred_dividends=deduct_preferred_dividends) for i in range(5)]
     return price_to_earnings(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
@@ -303,27 +328,30 @@ def earnings_yield(stock, date=datetime.now(), lookback_period=timedelta(days=0)
                    diluted=True,
                    deduct_operating_income=False,
                    deduct_preferred_dividends=True):
-    return earnings_per_share(stock=stock, date=date, ttm=ttm, diluted=diluted,
-                              deduct_operating_income=deduct_operating_income,
+    return earnings_per_share(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
+                              diluted=diluted, deduct_operating_income=deduct_operating_income,
                               deduct_preferred_dividends=deduct_preferred_dividends) / me.market_price(stock, date)
 
 
 # there is an adjusted version of the formula that accounts for differences in the capital structure and tax rates
 # between companies.
 def adjusted_earnings_yield(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
-    return (me.ebit(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+    return (me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period,
+                                                  annual=annual, ttm=ttm)
             + fi.accumulated_depreciation_amortization(stock=stock, date=date, lookback_period=lookback_period,
                                                        annual=annual, ttm=ttm)
-            - me.capex(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                       ttm=ttm)) / me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period,
-                                                       annual=annual, ttm=ttm)
+            - abs(me.capital_expenditures(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm))) / me.enterprise_value(stock=stock, date=date,
+                                                                           lookback_period=lookback_period,
+                                                                           annual=annual, ttm=ttm)
 
 
 def greenblatt_earnings_yield(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                               ttm=False):
-    return me.ebit(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                   ttm=ttm) / me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period,
-                                                  annual=annual, ttm=ttm)
+    return me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                                 ttm=ttm) / me.enterprise_value(stock=stock, date=date,
+                                                                                lookback_period=lookback_period,
+                                                                                annual=annual, ttm=ttm)
 
 
 '''

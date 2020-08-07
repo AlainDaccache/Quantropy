@@ -14,6 +14,7 @@ We can read an entry
 during a year --> annual = True, ttm = True
 '''
 
+
 # By default, we read the most recent position for balance sheets
 def read_balance_sheet_entry(stock, entry_name, date=datetime.now(), lookback_period=timedelta(days=0),
                              annual=False, ttm=False):
@@ -66,11 +67,11 @@ def read_cash_flow_statement_entry(stock, entry_name, date=datetime.now(),
                        for i in range(4)])
     return excel.read_entry_from_csv(path=path,
                                      sheet_name=config.cash_flow_statement_quarterly if not (
-                                                 annual or ttm) else config.cash_flow_statement_yearly,
+                                             annual or ttm) else config.cash_flow_statement_yearly,
                                      x=date,
                                      y=entry_name,
                                      lookback_index=math.floor(lookback_period.days / 90) if not (
-                                                 annual or ttm) else math.floor(
+                                             annual or ttm) else math.floor(
                                          lookback_period.days / 365))
 
 
@@ -175,7 +176,7 @@ def non_current_marketable_securities(stock, date=datetime.now(), lookback_perio
 
 
 def accumulated_depreciation_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                      annual=False, ttm=False):
+                                          annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Non Current Assets',
                                                 'Accumulated Depreciation and Amortization'],
@@ -362,7 +363,7 @@ def total_shares_outstanding(stock, date=datetime.now(), lookback_period=timedel
         else ['Liabilities and Shareholders\' Equity', 'Shareholders\' Equity',
               'Weighted Average Number of Shares Outstanding, Basic']
     return read_balance_sheet_entry(stock=stock, entry_name=entry, date=date,
-                                    lookback_period=lookback_period, annual=annual, ttm=ttm)
+                                    lookback_period=lookback_period, annual=annual, ttm=ttm) / 1000 # TODO Hard Fix
 
 
 def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
@@ -476,6 +477,11 @@ def preferred_dividends(stock, date=datetime.now(), lookback_period=timedelta(da
                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
+'''Operating cash flow is a measure of cash generated/consumed by a business from its operating activities
+Computed as Net Income + Depreciation & Amortization + Non-Cash Items (i.e. stock-based compensation, unrealized gains/losses...) - Changes in Net Working Capital
+Unlike EBITDA, cash from operations is adjusted all non-cash items and changes in net working capital. However, it excludes capital expenditures.'''
+
+
 def cash_flow_operating_activities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
                                    annual=True, ttm=False):
     return read_cash_flow_statement_entry(stock=stock,
@@ -485,9 +491,8 @@ def cash_flow_operating_activities(stock, date=datetime.now(), lookback_period=t
                                           ttm=ttm)
 
 
-def change_in_depreciation_and_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                            annual=True, ttm=False):
-
+def depreciation_and_amortization(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                                  annual=True, ttm=False):
     from_income_statement = read_income_statement_entry(stock=stock,
                                                         entry_name=['Costs and Expenses',
                                                                     'Depreciation and Amortization'],
@@ -498,9 +503,18 @@ def change_in_depreciation_and_amortization(stock, date=datetime.now(), lookback
     else:
         return read_cash_flow_statement_entry(stock=stock,
                                               entry_name=['Operating Activities',
-                                                          'Depreciation and Amortization'],
+                                                          'Depreciation, Depletion and Amortization'],
                                               date=date, lookback_period=lookback_period, annual=annual,
                                               ttm=ttm)
+
+
+def acquisition_property_plant_equipment(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                                         annual=True, ttm=False):
+    return read_cash_flow_statement_entry(stock=stock,
+                                          entry_name=['Investing Activities',
+                                                      'Payments to Acquire Property, Plant, and Equipment'],
+                                          date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm)
 
 
 def cash_flow_investing_activities(stock, date=datetime.now(), lookback_period=timedelta(days=0),
@@ -520,9 +534,26 @@ def cash_flow_financing_activities(stock, date=datetime.now(), lookback_period=t
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
 
+
 def payments_for_dividends(stock, date=datetime.now(), lookback_period=timedelta(days=0),
                            annual=True, ttm=False):
     return read_cash_flow_statement_entry(stock=stock,
                                           entry_name=['Financing Activities', 'Payments of Dividends'],
                                           date=date, lookback_period=lookback_period, annual=annual,
                                           ttm=ttm)
+
+
+def net_debt_issued(stock, date=datetime.now(), lookback_period=timedelta(days=0),
+                    annual=True, ttm=False):
+    proceeds_from_issuance_of_debt = read_cash_flow_statement_entry(stock=stock,
+                                                                    entry_name=['Financing Activities',
+                                                                                'Proceeds from Issuance of Long-term Debt'],
+                                                                    date=date, lookback_period=lookback_period,
+                                                                    annual=annual,
+                                                                    ttm=ttm)
+    repayment_of_debt = abs(read_cash_flow_statement_entry(stock=stock,
+                                                           entry_name=['Financing Activities',
+                                                                       'Repayments of Long-term Debt'],
+                                                           date=date, lookback_period=lookback_period, annual=annual,
+                                                           ttm=ttm))
+    return proceeds_from_issuance_of_debt - repayment_of_debt

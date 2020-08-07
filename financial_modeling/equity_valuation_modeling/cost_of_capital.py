@@ -6,23 +6,15 @@ import financial_modeling.asset_pricing_models as required_rr
 import config
 import financial_statement_analysis.macro_data as macro
 import numpy as np
+from functools import partial
 
 
-def dividend_growth_rate(stock, periods: int = 5, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
-                         ttm=False, diluted_shares=True):
-    return excel.average_growth(reversed([me.dividend_per_share(stock=stock, date=date,
-                                                                lookback_period=i * lookback_period,
-                                                                annual=annual, ttm=ttm,
-                                                                diluted_shares=diluted_shares) for i in
-                                          range(1, periods)]))
-
-
-def cash_flow_growth_rate(stock, periods: int = 5, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
+def cash_flow_growth_rate(cash_flow_type: partial, stock, periods: int = 5, date=datetime.now(),
+                          lookback_period=timedelta(days=0), annual=True,
                           ttm=False):
-    return excel.average_growth(reversed([me.free_cash_flow(stock=stock, date=date,
-                                                            lookback_period=i * lookback_period,
-                                                            annual=annual, ttm=ttm) for i in
-                                          range(1, periods)]))
+    ls = [cash_flow_type(stock=stock, date=date - timedelta(days=365 * i if annual else 90 * i), lookback_period=lookback_period, annual=annual, ttm=ttm)
+          for i in range(0, periods)]
+    return excel.average_growth(ls[::-1])  # reverse
 
 
 def cost_of_preferred_stock(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
@@ -55,8 +47,8 @@ def cost_of_equity_capm(stock: str, from_date: datetime = datetime.now() - timed
                         benchmark: str = '^GSPC'):
     beta = required_rr.asset_pricing_wrapper(model='CAPM', portfolio=stock, benchmark=benchmark, period=beta_period,
                                              from_date=from_date, to_date=to_date).params[1]
-    risk_free_rate = macro.cumulative_risk_free_rate(from_date=from_date, to_date=to_date)
-    risk_premium = macro.cumulative_market_premium(from_date=from_date, to_date=to_date)
+    risk_free_rate = macro.cumulative_risk_free_rate(from_date = to_date - timedelta(days=365), to_date=to_date)
+    risk_premium = macro.cumulative_market_premium(from_date= to_date - timedelta(days=365),to_date=to_date)
     return risk_free_rate + beta * risk_premium
 
 
