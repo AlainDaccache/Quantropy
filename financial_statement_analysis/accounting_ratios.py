@@ -45,6 +45,7 @@ def operating_cash_flow_ratio(stock, date=datetime.now(), lookback_period=timede
                                                                                      annual=annual, ttm=ttm)
 
 
+
 '''
 Leverage ratios measure the amount of capital that comes from debt. In other words, leverage financial ratios are used to evaluate a company’s debt levels.
 '''
@@ -160,8 +161,8 @@ def asset_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(d
 
 # The inventory turnover ratio measures how many times a company’s inventory is sold and replaced over a given period
 # Inventory turnover ratio = Cost of goods sold / Average inventory
-def inventory_turnover(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
-                       average_inventory=True):
+def inventory_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                             average_inventory=True):
     if average_inventory:
         inventory = (fi.net_inventory(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                       ttm=ttm)
@@ -175,8 +176,8 @@ def inventory_turnover(stock, date=datetime.now(), lookback_period=timedelta(day
 
 # The accounts receivable turnover ratio measures how many times a company can turn receivables into cash over a given period
 # Receivables turnover ratio = Net credit sales / Average accounts receivable
-def receivables_turnover(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
-                         average_receivables=True):
+def receivables_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                               average_receivables=True):
     if average_receivables:
         accounts_receivable = (fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period,
                                                           annual=annual, ttm=ttm)
@@ -193,10 +194,19 @@ def receivables_turnover(stock, date=datetime.now(), lookback_period=timedelta(d
 
 # The days sales in inventory ratio measures the average number of days that a company holds on to inventory before selling it to customers
 # Days sales in inventory ratio = 365 days / Inventory turnover ratio
-def days_sales_in_inventory(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
-                            average_inventory=True):
-    return 365 / inventory_turnover(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
-                                    average_inventory=average_inventory)
+def days_sales_in_inventory_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                                  average_inventory=True):
+    return 365 / inventory_turnover_ratio(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm,
+                                          average_inventory=average_inventory)
+
+
+def days_sales_outstanding(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                           ):
+    accounts_receivable = 0
+    total_credit_sales = 0
+    number_of_days = 0
+    return accounts_receivable * number_of_days / total_credit_sales
 
 
 def return_on_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
@@ -221,23 +231,24 @@ def retention_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0
 Profitability ratios measure a company’s ability to generate income relative to revenue, balance sheet assets, operating costs, and equity. 
 '''
 
+
 def profit_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                           ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
-                                                   annual=annual, ttm=ttm)
+                         ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
+                                                 annual=annual, ttm=ttm)
 
 
 # The gross margin ratio compares the gross profit of a company to its net sales to show how much profit a company makes after paying its cost of goods sold
 # Gross margin ratio = Gross profit / Net sales
-def gross_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+def gross_profit_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return me.gross_profit(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                            ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
-                                    annual=annual, ttm=ttm)
+                                                   annual=annual, ttm=ttm)
 
 
 # The operating margin ratio compares the operating income of a company to its net sales to determine operating efficiency
 # Operating margin ratio = Operating income / Net sales
-def operating_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
+def operating_profit_margin(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return fi.operating_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                ttm=ttm) / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period,
                                                        annual=annual, ttm=ttm)
@@ -366,6 +377,4 @@ def average_growth(list):  # the list starts at most recent (so growth is backwa
         growths.append((list[i] - list[i + 1]) / list[i + 1])
     return np.mean(growths)
 
-
-if __name__ == '__main__':
-    print(current_ratio('GOOG', ttm=False))
+# TODO Industry averages here

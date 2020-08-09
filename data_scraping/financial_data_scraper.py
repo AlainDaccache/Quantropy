@@ -1061,10 +1061,10 @@ if __name__ == '__main__':
     # for url, file, sheet, skiprow in factors_inputs:
     #     save_factors_data(url, file, sheet, skiprow)
 
-    for ticker in ['AAPL']:
-        # save_stock_prices(ticker)
+    for ticker in ['AMZN']:
+        save_stock_prices(ticker)
         # get_technical_indicators(ticker)
-        scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
+        # scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
     # scrape_financial_statements(ticker, '10-Q')
 
     # ff_factors = get_beta_factors()

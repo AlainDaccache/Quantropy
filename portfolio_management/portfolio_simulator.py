@@ -1,14 +1,15 @@
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
 import typing
 from functools import partial
-
 import pandas as pd
+import numpy as np
 from abc import ABC, abstractmethod
 import data_scraping.excel_helpers as excel
 import config
-import financial_statement_analysis.accounting_ratios as fi
+import financial_statement_analysis.accounting_ratios as ratios
 import matplotlib.pyplot as plt
+
 plt.style.use('fivethirtyeight')
 
 
@@ -18,20 +19,12 @@ plt.style.use('fivethirtyeight')
 # TODO: implement technical indicators in corresponding files
 
 
-def rsi(df, date):
-    return df['momentum_rsi'].loc[date]
-
-
-def cci(df, date):
-    return df['trend_cci'].loc[date]
-
-
 class Stock:
 
     def __init__(self, ticker: str):
         self.ticker = ticker
-        self.price_data = excel.read_df_from_csv(self.ticker, config.stock_prices_sheet_name)
-        self.technical_indicators = excel.read_df_from_csv(self.ticker, config.technical_indicators_name)
+        self.price_data = excel.read_df_from_csv('{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, self.ticker))
+        self.current_price = 0
 
 
 class Trade:
@@ -47,191 +40,40 @@ class Trade:
 
 
 class Portfolio:
-    def __init__(self, balance: float, trades: list):
+    def __init__(self, balance: float, trades: list, date: datetime):
         self.balance = balance
         self.trades = trades
         self.float = float(balance)
-        self.date = 0
-        self.last_rebalancing_day = datetime
+        self.date = date
+        self.last_rebalancing_day = date
 
 
-class Strategy(ABC):
-
-    def __init__(self, rebalancing_period, portfolio_stock_count):
-        self.rebalancing_period = rebalancing_period
-        self.portfolio_stock_count = portfolio_stock_count
-        super().__init__()
-
-    @abstractmethod
-    def long_entry_condition(self):
-        pass
-
-    @abstractmethod
-    def long_exit_condition(self):
-        pass
-
-    @abstractmethod
-    def short_entry_condition(self):
-        pass
-
-    @abstractmethod
-    def short_exit_condition(self):
-        pass
-
-    @abstractmethod
-    def weight_of_portfolio_for_trade(self):
-        pass
-
-
+# making a position should only affect the balance, not the float
 def make_position(portfolio: Portfolio, trade: Trade, entry: bool):
-    current_price = trade.stock.price_data['Adj Close'].loc[portfolio.date]
-    # if entering a long position or exiting a short position, then subtract from account
+    # if entering a long position or exiting a short position
     if (trade.direction and entry) or (not trade.direction and not entry):
-        portfolio.balance -= (current_price * trade.shares + trade.commission)
-        portfolio.float -= (current_price * trade.shares + trade.commission)
+        portfolio.balance -= (trade.stock.current_price * trade.shares + trade.commission)
+    # if exiting a long position or entering a short position
+    elif (trade.direction and not entry) or (not trade.direction and entry):
+        portfolio.balance += (trade.stock.current_price * trade.shares + trade.commission)
     else:
-        if trade.direction and not entry:  # if exiting a long position, add to account
-            portfolio.balance += (current_price * trade.shares + trade.commission)
-            portfolio.float += (current_price * trade.shares + trade.commission)
-        else:  # if entering a short position, nothing to balance
-            pass
+        return
 
 
-class Simulation:
-    def __init__(self, balance, trading_strategy: Strategy,
-                 start_date: datetime = datetime(2000, 1, 1),
-                 end_date: datetime = datetime.now(), commission: float = 5):
-        self.trading_strategy = trading_strategy
-        self.start_date = start_date
-        self.end_date = end_date
-        self.commission = commission
-        self.portfolio = Portfolio(balance, [])
-        self.stock_universe = pd.Series(dtype='float64')
+# example use: helper_condition(rsi, '>', 70)
+def helper_condition(indicator: partial, comparator: str, otherside):
+    def compare(x, comparator, y):
+        if comparator == '>':
+            return x > y
+        elif comparator == '<':
+            return x < y
+        elif comparator == '=':
+            return x == y
 
-    def simulate(self):
-        results = []
-        self.portfolio.last_rebalancing_day = self.start_date
-        # populate stock universe
-        for ticker in excel.get_stock_universe()[:2]:
-            stock_obj = Stock(ticker)
-            self.stock_universe[stock_obj.ticker] = stock_obj
-
-        for date in pd.date_range(start=self.start_date, end=self.end_date):
-
-            if (date - self.portfolio.last_rebalancing_day).days < self.trading_strategy.rebalancing_period:
-                continue
-
-            self.portfolio.date = date
-            self.portfolio.last_rebalancing_day = date
-
-            # get stocks from portfolio
-            stocks_in_portfolio = list(set([x.stock for x in self.portfolio.trades]))
-
-            for stock in self.stock_universe:
-                if date not in stock.price_data['Adj Close'].index:
-                    continue
-                else:  # get current (date simulated) price from csv file which contains all prices
-                    stock.current_price = stock.price_data['Adj Close'].loc[date]
-
-            # update portfolio float
-            for trade in self.portfolio.trades:
-                if date not in trade.stock.price_data['Adj Close'].index:
-                    continue
-                else:
-                    daily_pct_return = trade.stock.price_data['pct_change'].loc[date]
-                    daily_doll_return = daily_pct_return * trade.stock.price_data['Adj Close'].loc[date] * trade.shares
-                    if trade.direction:  # if going long
-                        self.portfolio.float += daily_doll_return
-                    else:
-                        self.portfolio.float -= daily_doll_return
-
-            # print('Portfolio float on {} is ${:.2f}'.format(date.strftime("%Y-%m-%d"),
-            #                                                 self.portfolio.float))
-            for stock in self.stock_universe:
-
-                if date not in stock.price_data['Adj Close'].index:
-                    continue
-
-                if (self.trading_strategy.long_entry_condition()(stock.technical_indicators, date)
-                    or self.trading_strategy.short_entry_condition()(stock.technical_indicators, date))  \
-                        and stock not in stocks_in_portfolio:
-                    trade = Trade(stock=stock,
-                                  direction=True if self.trading_strategy.long_entry_condition()(stock.technical_indicators, date) else False,
-                                  shares=math.floor(self.trading_strategy.weight_of_portfolio_for_trade() * self.portfolio.balance / stock.price_data['Adj Close'].loc[date]),
-                                  date=date)
-                    if self.portfolio.balance > trade.commission + (trade.shares * trade.stock.price_data['Adj Close'].loc[date]):
-                        self.portfolio.trades.append(trade)
-                        make_position(self.portfolio, trade, entry=True)
-                        # print('Went {} for {} shares of {} at ${:.2f}. Balance is now ${:.2f}'.format('Long' if trade.direction else 'Short',
-                        #                                                                               trade.shares,
-                        #                                                                               trade.stock.ticker,
-                        #                                                                               trade.stock.price_data['Adj Close'].loc[date],
-                        #                                                                               self.portfolio.balance))
-
-            for trade in self.portfolio.trades:
-                if date not in trade.stock.price_data['Adj Close'].index:
-                    continue
-                if (self.trading_strategy.long_exit_condition()(trade.stock.technical_indicators, date) and trade.direction) \
-                        or (self.trading_strategy.short_exit_condition()(trade.stock.technical_indicators, date) and not trade.direction):
-                    self.portfolio.trades.pop(self.portfolio.trades.index(trade))
-                    make_position(self.portfolio, trade, entry=False)
-                    # print('Close {} Position of {} for {} shares at ${:.2f}. Balance is now ${:.2f}'.format('Long' if self.trading_strategy.long_exit_condition()(trade.stock.technical_indicators, date) else 'Short',
-                    #                                                                                     trade.stock.ticker,
-                    #                                                                                     trade.shares,
-                    #                                                                                     trade.stock.price_data['Adj Close'].loc[date],
-                    #                                                                                     self.portfolio.balance))
-
-            results.append([date.strftime("%Y-%m-%d"),
-                            [(x.stock.ticker, x.shares) for x in self.portfolio.trades],
-                            round(self.portfolio.balance, 2),
-                            round(self.portfolio.float, 2)])
-
-        evolution_df = pd.DataFrame(results, columns=['Date', 'Holdings', 'Balance', 'Float'])
-        evolution_df.set_index('Date', inplace=True)
-        evolution_df['Daily ($) Return'] = evolution_df['Float'] - evolution_df['Float'].shift(-1)
-        evolution_df['Cumulative (%) Return'] = evolution_df['Float'].pct_change().cumsum()
-
-        evolution_df['Cumulative (%) Return'].plot(grid=True, figsize=(10, 6))
-        plt.show()
-        with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-            print(evolution_df.to_string())
-        return evolution_df
-
-
-def compare(x, comparator, y):
-    if comparator == '>':
-        return x > y
-    elif comparator == '<':
-        return x < y
-    elif comparator == '=':
-        return x == y
-
-
-def helper_condition(indicator, comparator, otherside):
     if callable(otherside):
-        return lambda x, date: compare(indicator(x, date), comparator, otherside(x, date))
+        return lambda ticker, date: compare(indicator(ticker, date), comparator, otherside(ticker, date))
     else:
-        return lambda x, date: compare(indicator(x, date), comparator, otherside)
-
-
-class UserStrategy(Strategy):
-    def __init__(self):
-        super().__init__(rebalancing_period=1, portfolio_stock_count=12)
-
-    def long_entry_condition(self):
-        return helper_condition(rsi, '>', 70)
-
-    def long_exit_condition(self):
-        return helper_condition(rsi, '<', 30)
-
-    def short_entry_condition(self):
-        return helper_condition(rsi, '<', 30)
-
-    def short_exit_condition(self):
-        return helper_condition(rsi, '>', 70)
-
-    def weight_of_portfolio_for_trade(self):
-        return 0.1
+        return lambda ticker, date: compare(indicator(ticker, date), comparator, otherside)
 
 
 class PortfolioAllocation:
@@ -252,15 +94,17 @@ class PortfolioAllocation:
     def long_short_net_exposure(self, minimum_exposure: int, maximum_exposure: int, percent_tolerance: int):
         pass
 
+
 class RebalancingFrequency:
     def daily(self):
-        return 1
+        return timedelta(days=1)
 
     def monthly(self):
-        return 21
+        return timedelta(days=30)
 
     def yearly(self):
-        return 252
+        return timedelta(days=365)
+
 
 class Optimization:
     def maximize_treynor(self):
@@ -290,29 +134,108 @@ class Optimization:
     def maximize_jensens_alpha(self):
         pass
 
-if __name__ == '__main__':
-    Simulation(10000, UserStrategy()).simulate()
 
-
-def simulate(starting_capital: float,
+def simulate(starting_date: datetime,
+             ending_date: datetime,
+             starting_capital: float,
              securities_universe: typing.List[str],
              portfolio_rebalancing_frequency: typing.Callable,
              pre_filter: typing.List,
-             metrics: pd.Series(dtype=typing.List[typing.Callable]),
-             stocks_in_portfolio: int,
+             metrics: pd.Series(),  # pd.Series(dtype=typing.List[typing.Callable]),
+             max_stocks_count_in_portfolio: int,
              portfolio_allocation: typing.Callable,
              portfolio_optimization: typing.Callable,
              maximum_leverage: float = 1.0):
-    pass
+    results = []
+    portfolio = Portfolio(balance=starting_capital, trades=[], date=starting_date)
+    securities_universe_objects = pd.Series()
+    for ticker in securities_universe:  # populate stock universe
+        securities_universe_objects[ticker] = Stock(ticker)
+
+    for date in pd.date_range(start=starting_date, end=ending_date):
+
+        portfolio.date = date
+        stocks_in_portfolio = list(set([x.stock for x in portfolio.trades]))  # get stocks currently in portfolio
+
+        for stock in securities_universe_objects:  # update current prices according to date
+            date_index = excel.get_date_index(date, stock.price_data['Adj Close'].index)
+            stock.current_price = stock.price_data['Adj Close'].iloc[date_index]
+
+        for trade in portfolio.trades:  # update portfolio float
+            date_index = excel.get_date_index(date, trade.stock.price_data['Adj Close'].index)
+            daily_pct_return = trade.stock.price_data['Pct Change'].iloc[date_index]
+            daily_doll_return = daily_pct_return * trade.stock.current_price * trade.shares
+            portfolio.float = portfolio.float + daily_doll_return if trade.direction else portfolio.float - daily_doll_return
+
+        if date != starting_date and (
+                date - portfolio.last_rebalancing_day).days < portfolio_rebalancing_frequency().days:
+            continue
+        portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
+
+        stock_screener_dict = {}
+        for stock in securities_universe_objects:  # first step, pre filter stocks
+            meets_all_conditions = True
+            for (metric, comparator, otherside) in pre_filter:
+                if not helper_condition(metric, comparator, otherside)(stock.ticker, date):
+                    meets_all_conditions = False
+            if meets_all_conditions:
+                for (metric, comparator, otherside) in pre_filter:
+                    stock_screener_dict[stock.ticker] = {} if stock.ticker not in stock_screener_dict.keys() else \
+                        stock_screener_dict[stock.ticker]
+                    stock_screener_dict[stock.ticker][metric.func.__name__] = metric(stock.ticker, date)
+
+        stock_screener_df = pd.DataFrame.from_dict(stock_screener_dict, orient='index')
+        print('For {}'.format(date))
+        print(stock_screener_df.to_string())
+
+        for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
+            if trade.stock.ticker not in stock_screener_df.index:
+                portfolio.trades.pop(portfolio.trades.index(trade))
+                make_position(portfolio, trade, entry=False)
+        for stock in securities_universe_objects:
+            if stock.ticker in stock_screener_df.index:  # place trades for stocks that meet condition
+                shares_to_buy = math.floor(0.1 * portfolio.balance / stock.current_price)  # TODO
+                commission = 2  # TODO
+                if shares_to_buy > 0 and portfolio.balance > commission + (shares_to_buy * stock.current_price):
+                    trade = Trade(stock=stock, direction=True, shares=shares_to_buy, date=date)
+                    portfolio.trades.append(trade)
+                    make_position(portfolio, trade, entry=True)
+
+        # that's to aggregate trades for better formatting in the dataframe
+        dictionary = dict()
+        for trade in portfolio.trades:
+            dictionary[trade.stock.ticker] = dictionary.get(trade.stock.ticker, 0) + trade.shares
+
+        aggregated_trades = [(key, val) for (key, val) in dictionary.items()]
+        results.append([date.strftime("%Y-%m-%d"),
+                        aggregated_trades,
+                        round(portfolio.balance, 2),
+                        round(portfolio.float, 2)])
+
+    evolution_df = pd.DataFrame(results, columns=['Date', 'Holdings', 'Balance', 'Float'])
+    evolution_df.set_index('Date', inplace=True)
+    evolution_df['Cumulative (%) Return'] = evolution_df.filter(['Float']).pct_change().apply(lambda x: x + 1).cumprod()
+    evolution_df['Cumulative (%) Return'].plot(grid=True, figsize=(10, 6))
+    plt.show()
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(evolution_df.to_string())
+    return evolution_df
 
 
-simulate(starting_capital=10000,
+simulate(starting_date=datetime(2019, 1, 1),
+         ending_date=datetime.now(),
+         starting_capital=10000,
          maximum_leverage=1.0,
-         securities_universe=['AAPL', 'GOOGL'],
-         pre_filter=[helper_condition(rsi, '>', 70)],
-         metrics=pd.Series([partial(fi.price_to_earnings), partial(fi.return_on_capital)]),
-         stocks_in_portfolio=12,
-         portfolio_allocation=PortfolioAllocation.long_only,
-         portfolio_optimization=Optimization.maximize_jensens_alpha,
-         portfolio_rebalancing_frequency=RebalancingFrequency.monthly
+         securities_universe=excel.get_stock_universe(),
+         pre_filter=[(partial(ratios.current_ratio, annual=True, ttm=False), '>', 1)],
+         metrics=pd.Series([partial(ratios.price_to_earnings), partial(ratios.return_on_capital)]),
+         max_stocks_count_in_portfolio=12,
+         portfolio_allocation=PortfolioAllocation().long_only,
+         portfolio_optimization=Optimization().maximize_jensens_alpha,
+         portfolio_rebalancing_frequency=RebalancingFrequency().monthly
          )
+
+# TODO add functionaliy for
+# - fractional shares (optional)
+# - commision (as percent of trade or fix cost)
+# - slippage (as function of daily volume?)

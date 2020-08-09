@@ -413,7 +413,7 @@ def total_operating_expenses(stock, date=datetime.now(), lookback_period=timedel
 
 def operating_income(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return read_income_statement_entry(stock=stock,
-                                       entry_name=['Operating Income (Loss) / EBIT', ' '], date=date,
+                                       entry_name=['Operating Income (Loss) / EBIT', 'Operating Income (Loss) / EBIT'], date=date,
                                        lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
