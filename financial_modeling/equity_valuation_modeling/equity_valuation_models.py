@@ -26,7 +26,7 @@ Growth Measures
 
 # Also known as the Sustainable Growth Rate (SGR) Model
 def growth_rate_PRAT_model(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False):
-    profit_margin = ratios.profit_margin(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+    profit_margin = ratios.net_profit_margin(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                                ttm=ttm)
     retention_ratio = ratios.retention_ratio(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                              ttm=ttm)

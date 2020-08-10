@@ -111,11 +111,20 @@ def allowances_for_doubtful_accounts(stock, date=datetime.now(), lookback_period
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def net_accounts_receivable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                            ttm=False):
+def net_accounts_receivable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Assets', 'Current Assets', 'Net Accounts Receivable'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+
+
+# TODO
+def credit_sales(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
+    pass
+
+
+# TODO
+def credit_purchases(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False, ttm=False):
+    pass
 
 
 def current_prepaid_expenses(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
@@ -256,8 +265,8 @@ def long_term_debt_current_maturities(stock, date=datetime.now(), lookback_perio
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-def current_accounts_payable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
-                             ttm=False):
+def accounts_payable(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
+                     ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
                                                 'Accounts Payable, Current'],
@@ -363,7 +372,7 @@ def total_shares_outstanding(stock, date=datetime.now(), lookback_period=timedel
         else ['Liabilities and Shareholders\' Equity', 'Shareholders\' Equity',
               'Weighted Average Number of Shares Outstanding, Basic']
     return read_balance_sheet_entry(stock=stock, entry_name=entry, date=date,
-                                    lookback_period=lookback_period, annual=annual, ttm=ttm) / 1000 # TODO Hard Fix
+                                    lookback_period=lookback_period, annual=annual, ttm=ttm) / 1000  # TODO Hard Fix
 
 
 def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
@@ -413,7 +422,8 @@ def total_operating_expenses(stock, date=datetime.now(), lookback_period=timedel
 
 def operating_income(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return read_income_statement_entry(stock=stock,
-                                       entry_name=['Operating Income (Loss) / EBIT', 'Operating Income (Loss) / EBIT'], date=date,
+                                       entry_name=['Operating Income (Loss) / EBIT', 'Operating Income (Loss) / EBIT'],
+                                       date=date,
                                        lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 

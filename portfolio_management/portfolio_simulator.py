@@ -135,17 +135,32 @@ class Optimization:
         pass
 
 
-def simulate(starting_date: datetime,
-             ending_date: datetime,
-             starting_capital: float,
-             securities_universe: typing.List[str],
-             portfolio_rebalancing_frequency: typing.Callable,
-             pre_filter: typing.List,
-             metrics: pd.Series(),  # pd.Series(dtype=typing.List[typing.Callable]),
-             max_stocks_count_in_portfolio: int,
-             portfolio_allocation: typing.Callable,
-             portfolio_optimization: typing.Callable,
-             maximum_leverage: float = 1.0):
+def systematic_investing_simulator(starting_date: datetime,
+                                   ending_date: datetime,
+                                   starting_capital: float,
+                                   securities_universe: typing.List[str],
+                                   portfolio_rebalancing_frequency: typing.Callable,
+                                   metrics,
+                                   max_stocks_count_in_portfolio: int,
+                                   portfolio_allocation: typing.Callable,
+                                   portfolio_optimization: typing.Callable,
+                                   maximum_leverage: float = 1.0):
+    pass
+
+if __name__ == '__main__':
+    systematic_investing_simulator(metrics=pd.Series([partial(ratios.price_to_earnings), partial(ratios.return_on_capital)]))
+
+
+def stock_screening_simulator(starting_date: datetime,
+                              ending_date: datetime,
+                              starting_capital: float,
+                              securities_universe: typing.List[str],
+                              portfolio_rebalancing_frequency: typing.Callable,
+                              pre_filter: typing.List,
+                              max_stocks_count_in_portfolio: int,
+                              portfolio_allocation: typing.Callable,
+                              portfolio_optimization: typing.Callable,
+                              maximum_leverage: float = 1.0):
     results = []
     portfolio = Portfolio(balance=starting_capital, trades=[], date=starting_date)
     securities_universe_objects = pd.Series()
@@ -153,64 +168,64 @@ def simulate(starting_date: datetime,
         securities_universe_objects[ticker] = Stock(ticker)
 
     for date in pd.date_range(start=starting_date, end=ending_date):
+        try:
+            portfolio.date = date
+            stocks_in_portfolio = list(set([x.stock for x in portfolio.trades]))  # get stocks currently in portfolio
 
-        portfolio.date = date
-        stocks_in_portfolio = list(set([x.stock for x in portfolio.trades]))  # get stocks currently in portfolio
+            for stock in securities_universe_objects:  # update current prices according to date
+                date_index = excel.get_date_index(date, stock.price_data['Adj Close'].index)
+                stock.current_price = stock.price_data['Adj Close'].iloc[date_index]
 
-        for stock in securities_universe_objects:  # update current prices according to date
-            date_index = excel.get_date_index(date, stock.price_data['Adj Close'].index)
-            stock.current_price = stock.price_data['Adj Close'].iloc[date_index]
+            for trade in portfolio.trades:  # update portfolio float
+                date_index = excel.get_date_index(date, trade.stock.price_data['Adj Close'].index)
+                daily_pct_return = trade.stock.price_data['Pct Change'].iloc[date_index]
+                daily_doll_return = daily_pct_return * trade.stock.current_price * trade.shares
+                portfolio.float = portfolio.float + daily_doll_return if trade.direction else portfolio.float - daily_doll_return
 
-        for trade in portfolio.trades:  # update portfolio float
-            date_index = excel.get_date_index(date, trade.stock.price_data['Adj Close'].index)
-            daily_pct_return = trade.stock.price_data['Pct Change'].iloc[date_index]
-            daily_doll_return = daily_pct_return * trade.stock.current_price * trade.shares
-            portfolio.float = portfolio.float + daily_doll_return if trade.direction else portfolio.float - daily_doll_return
+            if date != starting_date and (
+                    date - portfolio.last_rebalancing_day).days < portfolio_rebalancing_frequency().days:
+                continue
+            portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
 
-        if date != starting_date and (
-                date - portfolio.last_rebalancing_day).days < portfolio_rebalancing_frequency().days:
-            continue
-        portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
-
-        stock_screener_dict = {}
-        for stock in securities_universe_objects:  # first step, pre filter stocks
-            meets_all_conditions = True
-            for (metric, comparator, otherside) in pre_filter:
-                if not helper_condition(metric, comparator, otherside)(stock.ticker, date):
-                    meets_all_conditions = False
-            if meets_all_conditions:
+            stock_screener_dict = {}
+            for stock in securities_universe_objects:  # first step, pre filter stocks
+                meets_all_conditions = True
                 for (metric, comparator, otherside) in pre_filter:
-                    stock_screener_dict[stock.ticker] = {} if stock.ticker not in stock_screener_dict.keys() else \
-                        stock_screener_dict[stock.ticker]
-                    stock_screener_dict[stock.ticker][metric.func.__name__] = metric(stock.ticker, date)
+                    if not helper_condition(metric, comparator, otherside)(stock.ticker, date):
+                        meets_all_conditions = False
+                if meets_all_conditions:
+                    for (metric, comparator, otherside) in pre_filter:
+                        stock_screener_dict[stock.ticker] = {} if stock.ticker not in stock_screener_dict.keys() else \
+                            stock_screener_dict[stock.ticker]
+                        stock_screener_dict[stock.ticker][metric.func.__name__] = metric(stock.ticker, date)
 
-        stock_screener_df = pd.DataFrame.from_dict(stock_screener_dict, orient='index')
-        print('For {}'.format(date))
-        print(stock_screener_df.to_string())
+            stock_screener_df = pd.DataFrame.from_dict(stock_screener_dict, orient='index')
+            print('For {}'.format(date))
+            print(stock_screener_df.to_string())
 
-        for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
-            if trade.stock.ticker not in stock_screener_df.index:
-                portfolio.trades.pop(portfolio.trades.index(trade))
-                make_position(portfolio, trade, entry=False)
-        for stock in securities_universe_objects:
-            if stock.ticker in stock_screener_df.index:  # place trades for stocks that meet condition
-                shares_to_buy = math.floor(0.1 * portfolio.balance / stock.current_price)  # TODO
-                commission = 2  # TODO
-                if shares_to_buy > 0 and portfolio.balance > commission + (shares_to_buy * stock.current_price):
-                    trade = Trade(stock=stock, direction=True, shares=shares_to_buy, date=date)
-                    portfolio.trades.append(trade)
-                    make_position(portfolio, trade, entry=True)
+            for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
+                if trade.stock.ticker not in stock_screener_df.index:
+                    portfolio.trades.pop(portfolio.trades.index(trade))
+                    make_position(portfolio, trade, entry=False)
+            for stock in securities_universe_objects:
+                if stock.ticker in stock_screener_df.index:  # place trades for stocks that meet condition
+                    shares_to_buy = math.floor(0.1 * portfolio.balance / stock.current_price)  # TODO
+                    commission = 2  # TODO
+                    if shares_to_buy > 0 and portfolio.balance > commission + (shares_to_buy * stock.current_price):
+                        trade = Trade(stock=stock, direction=True, shares=shares_to_buy, date=date)
+                        portfolio.trades.append(trade)
+                        make_position(portfolio, trade, entry=True)
+        finally:
+            # that's to aggregate trades for better formatting in the dataframe
+            dictionary = dict()
+            for trade in portfolio.trades:
+                dictionary[trade.stock.ticker] = dictionary.get(trade.stock.ticker, 0) + trade.shares
 
-        # that's to aggregate trades for better formatting in the dataframe
-        dictionary = dict()
-        for trade in portfolio.trades:
-            dictionary[trade.stock.ticker] = dictionary.get(trade.stock.ticker, 0) + trade.shares
-
-        aggregated_trades = [(key, val) for (key, val) in dictionary.items()]
-        results.append([date.strftime("%Y-%m-%d"),
-                        aggregated_trades,
-                        round(portfolio.balance, 2),
-                        round(portfolio.float, 2)])
+            aggregated_trades = [(key, val) for (key, val) in dictionary.items()]
+            results.append([date.strftime("%Y-%m-%d"),
+                            aggregated_trades,
+                            round(portfolio.balance, 2),
+                            round(portfolio.float, 2)])
 
     evolution_df = pd.DataFrame(results, columns=['Date', 'Holdings', 'Balance', 'Float'])
     evolution_df.set_index('Date', inplace=True)
@@ -222,13 +237,12 @@ def simulate(starting_date: datetime,
     return evolution_df
 
 
-simulate(starting_date=datetime(2019, 1, 1),
+stock_screening_simulator(starting_date=datetime(2019, 1, 1),
          ending_date=datetime.now(),
          starting_capital=10000,
          maximum_leverage=1.0,
          securities_universe=excel.get_stock_universe(),
          pre_filter=[(partial(ratios.current_ratio, annual=True, ttm=False), '>', 1)],
-         metrics=pd.Series([partial(ratios.price_to_earnings), partial(ratios.return_on_capital)]),
          max_stocks_count_in_portfolio=12,
          portfolio_allocation=PortfolioAllocation().long_only,
          portfolio_optimization=Optimization().maximize_jensens_alpha,
@@ -236,6 +250,7 @@ simulate(starting_date=datetime(2019, 1, 1),
          )
 
 # TODO add functionaliy for
+# - reinvesting dividends (optional)
 # - fractional shares (optional)
 # - commision (as percent of trade or fix cost)
 # - slippage (as function of daily volume?)

@@ -272,4 +272,4 @@ def security_market_line_wrapper(index: str):
 
 
 if __name__ == '__main__':
-    security_market_line_wrapper('DJIA')
+    security_market_line_wrapper(index='DJIA')

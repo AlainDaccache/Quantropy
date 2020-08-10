@@ -139,45 +139,92 @@ def capital_expenditures(stock, date, lookback_period=timedelta(days=0), annual=
 
 
 # NOPAT
-def net_profit_after_tax(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
-    pass
+def net_operating_profit_after_tax(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
+                                   ttm=True):
+    return earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                              ttm=ttm) \
+           * (1 - effective_tax_rate(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm))
 
 
-def working_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True):
-    return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                   ttm=ttm) - fi.current_total_liabilities(stock=stock, date=date,
-                                                                           lookback_period=lookback_period,
-                                                                           annual=annual, ttm=ttm)
+def net_working_capital(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                        exclude_current_portion_cash_and_debt=False,
+                        only_include_payables_receivables_inventory=False):
+    # broadest (as it includes all accounts)
+    if not (exclude_current_portion_cash_and_debt or only_include_payables_receivables_inventory):
+        return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+               - fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                              ttm=ttm)
+
+    if exclude_current_portion_cash_and_debt:  # more narrow
+        return (fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                        ttm=ttm) -
+                fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                             ttm=ttm)) \
+               - (fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                               ttm=ttm)
+                  - fi.long_term_debt_current_maturities(stock=stock, date=date, lookback_period=lookback_period,
+                                                         annual=annual, ttm=ttm))
+
+    if only_include_payables_receivables_inventory:  # most narrow
+        return fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm) \
+               + fi.net_inventory(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+               - fi.accounts_payable(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-'''Free Cash Flow is the amount of cash flow available for discretionary spending by the company after the necessary capital invesment. 
-            It builds on CFO but takes into account (deducts) Capital Expenditures. Unlike FCFE and FCFF, it is a generic measure of cash flow.'''
+def invested_capital(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False,
+                     operating_approach=True):
+    if operating_approach:
+        return net_working_capital(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
+                                   exclude_current_portion_cash_and_debt=True) \
+               + fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                                 ttm=ttm) \
+               + fi.total_intangible_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                            ttm=ttm)
+    else:  # investing approach
+        return fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                            ttm=ttm) \
+               + fi.long_term_debt_excluding_current_portion(stock, date, lookback_period=timedelta(days=0),
+                                                             annual=True, ttm=False) \
+               + fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                              ttm=ttm) \
+               + fi.cash_flow_financing_activities(stock=stock, date=date, lookback_period=lookback_period,
+                                                   annual=annual, ttm=ttm) \
+               + fi.cash_flow_investing_activities(stock=stock, date=date, lookback_period=lookback_period,
+                                                   annual=annual, ttm=ttm)
 
 
+def capital_employed(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False):
+    return fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+           - fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                          ttm=ttm)
+
+
+def liquid_assets(stock, date, lookback_period=timedelta(days=0), annual=True, ttm=False):
+    return fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+           + fi.current_marketable_securities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                              ttm=ttm) \
+           + fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+
+
+# Free Cash Flow is the amount of cash flow available for discretionary spending by the company after the necessary capital invesment.
+# It builds on CFO but takes into account (deducts) Capital Expenditures. Unlike FCFE and FCFF, it is a generic measure of cash flow.
 def free_cash_flow(stock: str, date: datetime, lookback_period: timedelta, annual: bool, ttm: bool):
     return fi.cash_flow_operating_activities(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                             ttm=ttm) - abs(capital_expenditures(stock=stock, date=date,
-                                                                                 lookback_period=lookback_period,
-                                                                                 annual=annual,
-                                                                                 ttm=ttm))
+                                             ttm=ttm) \
+           - abs(capital_expenditures(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm))
 
 
-'''FCFE is the amount of cash flow available to equity investors after paying interest to debt holders, considering net debt issued (or repaid) and reinvesting capital in the business.
-It is the Operating Cash Flow - Capital Expenditures + Net Debt Issued'''
-
-
+# FCFE is the amount of cash flow available to equity investors after paying interest to debt holders, considering net debt issued (or repaid) and reinvesting capital in the business.
+# It is the Operating Cash Flow - Capital Expenditures + Net Debt Issued
 def free_cash_flow_to_equity(stock: str, date: datetime, lookback_period: timedelta, annual: bool, ttm: bool):
-    return free_cash_flow(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                          ttm=ttm) + fi.net_debt_issued(stock=stock, date=date, lookback_period=lookback_period,
-                                                        annual=annual, ttm=ttm)
+    return free_cash_flow(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm) \
+           + fi.net_debt_issued(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
-'''FCFF equires multi-step calculation and is used in DCF analysis to arrive at the enterprise value. 
-It is a hypothetical figure to estimate the firm value if it has no debt (i.e. if it was completely equity financed).
-It is the EBIT * (1 - Tax Rate) + Depreciation & Amortization - Increase in Non-Cash Working Capital - Capital Expenditures
-'''
-
-
+# FCFF equires multi-step calculation and is used in DCF analysis to arrive at the enterprise value.
+# It is a hypothetical figure to estimate the firm value if it has no debt (i.e. if it was completely equity financed).
+# It is the EBIT * (1 - Tax Rate) + Depreciation & Amortization - Increase in Non-Cash Working Capital - Capital Expenditures
 def free_cash_flow_to_firm(stock: str, date: datetime, lookback_period: timedelta, annual: bool, ttm: bool):
     return earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                               ttm=ttm) \

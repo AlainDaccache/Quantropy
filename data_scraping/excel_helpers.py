@@ -178,7 +178,7 @@ def get_stock_universe():
     return tickers
 
 
-def average_growth(list, weighted=False):
+def average_growth(list, weighted=False):  # assumes order from left to right chronological
     growths = []
     for i in range(1, len(list)):
         growths.append((list[i]-list[i-1])/list[i-1])

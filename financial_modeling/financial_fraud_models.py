@@ -101,10 +101,6 @@ def beneish_m_score(stock, date=datetime.now(), lookback_period=timedelta(days=0
 
         }}
 
-
-score = beneish_m_score('AAPL', annual=True, ttm=False)
-print(score)
-
-
-def montier_c_score(stock, date):
-    pass
+if __name__ == '__main__':
+    score = beneish_m_score('AAPL', annual=True, ttm=False)
+    print(score)
