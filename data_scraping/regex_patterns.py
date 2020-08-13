@@ -28,19 +28,18 @@ financial_entries_regex_dict = {
         'Assets': {
             'Current Assets': {
                 'Cash and Short Term Investments': {
-                    'Cash and Cash Equivalents': r'(?!.*marketable securities)(?=.*cash and cash equivalents)(?!.*marketable securities)',
-                    'Marketable Securities Current': r'(?!.*non[- ]?current)(?=.*(current|short-term))(?=.*(marketable securities|investments)|(Available-for-sale investment securities))',
-                    # (?!.*cash.*_)
+                    'Cash and Cash Equivalents': r'(?!.*marketable securities)(?=.*cash and cash equivalents(?!.*[_:]))(?!.*marketable securities)',
+                    'Marketable Securities Current': r'(?!.*non[- ]?current)(?=.*(current|short-term))(?=.*(marketable securities|investment)|(Available-for-sale investment securities))(?!.*cash and cash equivalents)',
                     'Cash and Short Term Investments': r'(?=.*cash)(?=.*(marketable securities|short-term investments))'
                 },
                 'Accounts Receivable': {
                     # 'Gross Accounts Receivable': r'$^', # TODO
                     # 'Allowances for Doubtful Accounts': r'(?=.*Receivable)(?=.*allowances.*\$(\d+))',
                     # bug in this one (?=.*Receivable.*allowances).*(\$(\d+))*,
-                    'Net Accounts Receivable': r'(?=.*Receivable)(?=.*(allowances|net))',
+                    'Net Accounts Receivable': r'(?=.*Receivable)(?=.*(allowances|net|less))',
                 },
-                'Prepaid Expense, Current': r'(?=.*Prepaid expenses)',
-                'Inventory, Net': r'(?=.*Inventor(y|ies))',
+                'Prepaid Expense, Current': r'(?=.*Prepaid expenses)|(?=.*Prepaids)',
+                'Inventory, Net': r'(?=.*Inventor(y|ies)(?!.*[_:]))',
                 'Income Taxes Receivable, Current': r'(?=.*Income taxes receivable)',
                 'Assets Held-for-sale': r'Assets Held[- ]for[- ]sale',
                 # taxes that have been already paid despite not yet having been incurred
@@ -54,11 +53,11 @@ financial_entries_regex_dict = {
                 'Marketable Securities Non Current': r'(?=.*marketable securities|investments){}'.format(non_current),
                 'Restricted Cash Non Current': r'(?=.*Restricted cash){}'.format(non_current),
                 'Property, Plant and Equipment': {
-                    'Gross Property, Plant and Equipment': r'(?=.*Property)(?=.*(Plant|Land))(?=.*Equipment)(?=.*Gross)',
-                    'Accumulated Depreciation and Amortization': r'(?=.*(Property|Equipment).*_)(?=.*accumulated depreciation(?!.*[_]))',
-                    'Property, Plant and Equipment, Net': r'(?=.*Property)(?=.*(Plant|Land))?(?=.*Equipment)(?=.*Net)',
+                    'Gross Property, Plant and Equipment': r'(?=.*(Property|Premise(s?)))(?=.*(Plant|Land))(?=.*Equipment)(?=.*Gross)',
+                    'Accumulated Depreciation and Amortization': r'(?=.*((Property|Premise(s?))|Equipment).*_)(?=.*accumulated depreciation(?!.*[_]))',
+                    'Property, Plant and Equipment, Net': r'(?=.*(Property|Premise(s?)))(?=.*(Plant|Land))?(?=.*Equipment)(?=.*(Net|Less))',
                 },
-                'Operating Lease Right-of-use Assets': r'Operating lease right-of-use assets',
+                'Operating Lease Right-of-use Assets': r'Operating lease right-?of-?use assets',
                 'Deferred Tax Assets Non Current': r'(?=.*deferred tax assets){}'.format(non_current),
                 'Intangible Assets': {
                     'Goodwill': r'(?!.*net)(?=.*Goodwill)(?!.*net)',
@@ -70,13 +69,13 @@ financial_entries_regex_dict = {
             },
             'Total Assets': r'(?=.*Total Assets(?!.*[_:]))'
         },
-        'Liabilities and Shareholders\' Equity': {
+        "Liabilities and Shareholders\' Equity": {
             'Liabilities': {
                 'Current Liabilities': {
                     # this is the short-term debt, i.e. the amount of a loan that is payable to the lender within one year.
                     'Long-term Debt, Current Maturities': r'(?=.*(Long-)?Term Debt|Loans and notes payable){}'.format(
                         current),
-                    'Accounts Payable, Current': r'(?=.*Payable){}'.format(current),
+                    'Accounts Payable': r'(?=.*(Accounts)?Payable)',
                     'Operating Lease, Liability, Current': r'(?=.*Operating lease liabilities){}'.format(current),
                     'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue)){}'.format(
                         current),
@@ -91,6 +90,7 @@ financial_entries_regex_dict = {
                     'Deferred Tax Liabilities': r'(Deferred(?=.*Income)(?=.*Taxes))|(Deferred tax liabilities)',
                     # this debt is due after one year in contrast to current maturities which are due within this year
                     'Long-term Debt, Noncurrent Maturities': r'(?=.*term debt)(?!.*within){}'.format(non_current),
+
                     'Operating Lease, Liability, Noncurrent': r'(?=.*Operating lease (liabilities|liability))((?!.*current.*[_])|(?=.*non[- ]?current))',
                     'Liability, Defined Benefit Plan, Noncurrent': r'Employee related obligations',
                     'Accrued Income Taxes, Noncurrent': r'(Long-term ((income taxes)|(taxes payable)))',
@@ -102,10 +102,10 @@ financial_entries_regex_dict = {
                 'Total Liabilities': r'(?=.*Total Liabilities)(?!.*Equity(?!.*[_]))(?!.*Other(?!.*[_]))'
                 # sometimes at the bottom there are two tabs, our code can't catch it i.e. Other non-current liabilities then tab Total non-current liabilities then tab Total liabilities
             },
-            'Shareholders\' Equity': {
-                'Preferred Stock, Value, Issued': r'(?=.*Preferred stock)(?!.*treasury)',
+            "Shareholders' Equity": {
+                'Preferred Stock, Value, Issued': r'(?=.*Preferred (stock|shares))(?!.*treasury)',
                 'Common Stock and Additional Paid in Capital': {
-                    'Common Stock, Value, Issued': r'(?=.*Common stock(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))(?!.*beginning)',
+                    'Common Stock, Value, Issued': r'(?=.*Common (stock|shares)(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))(?!.*beginning)',
                     'Additional Paid in Capital': r'(?=.*additional paid[- ]in capital(?!.*[_]))(?!.*Common stock(?!.*[_]))',
                     'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock(?!.*[_]))(?=.*additional paid[- ]in capital(?!.*[_]))',
                     'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?!.*dilut(ed|ive))(?!.*earnings(?!.*[_]))',
@@ -113,12 +113,13 @@ financial_entries_regex_dict = {
                     'Weighted Average Number of Shares Outstanding, Diluted': r'(?=.*shares)(?=.*diluted)(?!.*earnings(?!.*[_]))',
                 },
 
-                'Treasury Stock, Value': r'Treasury stock',
+                'Treasury Stock, Value': r'(?=.*Treasury stock)',
                 'Retained Earnings (Accumulated Deficit)': r'(?=.*Accumulated deficit)|(Retained earnings)(?!.*Beginning)',
-                'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss))(?!.*Beginning)',
+                'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss)(?!.*[_]))(?!.*Beginning)',
                 'Deferred Stock Compensation': r'(?=.*Deferred stock compensation)',
-                'Minority Interest': r'(?=.*Noncontrolling interests)',
-                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total (shareholders|stockholders)[’\'] equity)',
+                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total.*(shareholders|stockholders)[’\'] equity)',
+                'Minority Interest': r'(?=.*Noncontrolling interest)',
+                'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest': '(?=.*Noncontrolling interest)(?=.*Equity(?!.*[_]))(?!.*Liabilities(?!.*[_]))'
             },
             'Total Liabilities and Shareholders\' Equity': r'(?=.*Total Liabilities(?!.*[_:]))(?=.*Equity(?!.*[_:]))'
         },
@@ -131,34 +132,28 @@ financial_entries_regex_dict = {
             'Noninterest Income': r'(?=.*Non[- ]?interest (revenue|income))',
         },
 
-        'Costs and Expenses': {
-            'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales|goods|services)(?!.*[_:]))',
-            'Provision for Loan, Lease, and Other Losses': r'(?=.*Provision for credit losses)',
-            'Operating Expenses': {
-                'Research and Development Expense': r'(?=.*(Research|Technology) and development)',
-                'Selling, General and Administrative': {
-                    'Marketing Expense': r'(?!.*(Sales|selling))(?=.*Marketing)',
-                    'Selling and Marketing Expense': r'(?=.*(Sales|Selling))(?=.*Marketing)',
-                    'General and Administrative Expense': r'(?=.*General)(?=.*Administrative)(?!.*Selling)',
-                    'Selling, General and Administrative': r'(?=.*Selling, general and administrative)'
-                },
-                'Other Operating Expenses': r'$^',  # TODO
-                'EBITDA': r'$^',
-                'Depreciation, Depletion and Amortization, Nonproduction': r'(?!.*accumulated)(?=.*Depreciation(?!.*[_:]))(?=.*amortization(?!.*[_:]))',
-                'Total Operating Expenses': r'(?=.*Total operating expenses)'
+        'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales|goods|services)(?!.*[_:]))',
+        'Provision for Loan, Lease, and Other Losses': r'(?=.*Provision for credit losses)',
+        'Operating Expenses': {
+            'Research and Development Expense': r'(?=.*(Research|Technology) and development)',
+            'Selling, General and Administrative': {
+                'Marketing Expense': r'(?!.*(Sales|selling))(?=.*Marketing)',
+                'Selling and Marketing Expense': r'(?=.*(Sales|Selling))(?=.*Marketing)',
+                'General and Administrative Expense': r'(?=.*General)(?=.*Administrative)(?!.*Selling)',
+                'Selling, General and Administrative': r'(?=.*Selling, general and administrative)'
             },
-            'Costs and Expenses': r'(?=.*Total costs and expenses)'
+            'Other Operating Expenses': r'$^',  # TODO
+            'EBITDA': r'$^',
+            'Depreciation, Depletion and Amortization, Nonproduction': r'(?!.*accumulated)(?=.*Depreciation(?!.*[_:]))(?=.*amortization(?!.*[_:]))',
+            'Total Operating Expenses': r'(?=.*Total operating expenses)'
         },
-
         'Operating Income (Loss) / EBIT': r'(?=.*income(?!.*[_]))(?=.*operati(ng|ons)(?!.*[_]))',
-        'Non-Operating Income (Expense)': {
+        'Other (Non-Operating) Income (Expense)': {
             'Interest Income': r'(?=.*Interest(?!.*[_:]))(?!.*dividend(?!.*[_:]))(?=.*income(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest and Dividend Income': r'(?=.*Interest(?!.*[_:]))(?=.*dividend(?!.*[_:]))(?=.*income(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest Income (Expense), Net': r'(?=.*Interest income(?!.*[_:]))(?=.*net(?!.*[_:]))',
-
-            # hardcoded for Note 13.Interest and other income, net_Other
-            # and Other income/(expense), net
+            # TODO We Will compute this one in the end
             'Other Nonoperating Income (Expense)': '(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
             # below is for Interest and other income, net
             # and Total other income/(expense), net
@@ -167,11 +162,12 @@ financial_entries_regex_dict = {
 
         'Income (Loss) before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before (?=.*Provision for)?(?=.*(income )?taxes)|Pre-tax earnings))',
         'Income Tax Expense (Benefit)': r'(?=.*Provision for)(?=.*(income )?taxes)',
+        'Net Income (Loss), Including Portion Attributable to Noncontrolling Interest': r'(?=.*Net income including noncontrolling interest)',
+        'Net Income (Loss) Attributable to Noncontrolling (Minority) Interest': r'(?=.*Net (income|earnings) (attributable|applicable) to Noncontrolling Interest)',
         'Net Income (Loss)': r'(?=.*Net (income|earnings|loss)$)',
         'Undistributed Earnings (Loss) Allocated to Participating Securities, Basic': r'(?=.*Net income attributable to participating securities)',
-        'Net Income Loss Attributable to Noncontrolling (Minority) Interest': r'(?=.*Net Income Attributable to Noncontrolling Interest)',
         'Preferred Stock Dividends': r'(?=.*Preferred stock dividends)',
-        'Net Income (Loss) Available to Common Stockholders, Basic': r'(?=.*Net (income|earnings) (attributable|applicable) to.*common (stockholders|shareholders))'
+        'Net Income (Loss) Available to Common Stockholders, Basic': r'(?=.*Net (income|earnings) (attributable|applicable) to (?!.*Noncontrolling Interest))'
     },
     'Cash Flow Statement': {
         'Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Beginning Balance': '(?=.*Cash, cash equivalents and restricted cash, beginning(?!.*[_:]))',
@@ -185,7 +181,7 @@ financial_entries_regex_dict = {
                 'Increase (Decrease) in Accounts Receivable': r'(?=.*Operating activities)(?=.*Accounts receivable(?!.*[_:]))',
                 'Increase (Decrease) in Inventories': r'(?=.*Operating activities)(?=.*Inventories(?!.*[_:]))',
                 'Increase (Decrease) in Other Receivables': r'(?=.*Operating activities)(?=.*Vendor non-trade receivables(?!.*[_:]))',
-                'Increase (Decrease) in Prepaid Expense and Other Assets':  r'(?=.*Operating activities)(?=.*Prepaid expenses and other current assets(?!.*[_:]))',
+                'Increase (Decrease) in Prepaid Expense and Other Assets': r'(?=.*Operating activities)(?=.*Prepaid expenses and other current assets(?!.*[_:]))',
                 'Increase (Decrease) in Other Operating Assets': r'(?=.*Operating activities)(?=.*Other assets(?!.*[_:]))',
                 'Increase (Decrease) in Accounts Payable': r'(?=.*Operating activities)(?=.*Accounts payable(?!.*[_:]))',
                 'Increase (Decrease) in Other Accounts Payable': r'(?=.*Operating activities)(?=.*Partners payable(?!.*[_:]))',
@@ -209,7 +205,7 @@ financial_entries_regex_dict = {
         'Financing Activities': {
             'Proceeds from Issuance of Common Stock': r'(?=.*Financing activities)(?=.*Proceeds from issuance of common stock(?!.*[_:]))',
             'Payment, Tax Withholding, Share-based Payment Arrangement': '(?=.*Financing activities)(?=.*taxes(?!.*[_:]))(?=.*(paid|payment)(?!.*[_:]))(?=.*equity award(?!.*[_:]))',
-            'Payments of Dividends': r'(?=.*Financing activities)(?=.*dividends(?!.*[_:]))(?=.*payments(?!.*[_:]))',
+            'Payments of Dividends': r'(?=.*Financing activities)(?=.*dividends(?!.*[_:]))(?=.*(payments|paid)(?!.*[_:]))',
             'Payments for Repurchase of Common Stock': '(?=.*Financing activities)(?=.*Repurchases(?!.*[_:]))(?=.*common stock(?!.*[_:]))',
             'Proceeds from Issuance of Long-term Debt': '(?=.*Financing activities)(?=.*Proceeds(?!.*[_:]))(?=.*issuance of (long[- ])?term debt(?!.*[_:]))',
             'Repayments of Long-term Debt': '(?=.*Financing activities)(?=.*Repayments of(?!.*[_:]))(?=.*(long[- ])?term debt(?!.*[_:]))',

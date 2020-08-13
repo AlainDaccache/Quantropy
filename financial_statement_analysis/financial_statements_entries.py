@@ -269,7 +269,7 @@ def accounts_payable(stock, date=datetime.now(), lookback_period=timedelta(days=
                      ttm=False):
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity', 'Liabilities',
-                                                'Accounts Payable, Current'],
+                                                'Accounts Payable'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
@@ -334,7 +334,7 @@ def preferred_stock_value(stock, date=datetime.now(), lookback_period=timedelta(
     return read_balance_sheet_entry(stock=stock,
                                     entry_name=['Liabilities and Shareholders\' Equity',
                                                 'Shareholders\' Equity',
-                                                'Preferred stock=stock, Value, Issued'],
+                                                'Preferred Stock, Value, Issued'],
                                     date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
@@ -377,12 +377,20 @@ def total_shares_outstanding(stock, date=datetime.now(), lookback_period=timedel
 
 def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
                               ttm=False):
-    return read_balance_sheet_entry(stock=stock,
-                                    entry_name=['Liabilities and Shareholders\' Equity',
-                                                'Shareholders\' Equity',
-                                                'Stockholders\' Equity Attributable to Parent'],
-                                    date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-
+    including_noncontrolling = read_balance_sheet_entry(stock=stock,
+                                                        entry_name=['Liabilities and Shareholders\' Equity',
+                                                                    'Shareholders\' Equity',
+                                                                    'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest'],
+                                                        date=date, lookback_period=lookback_period, annual=annual,
+                                                        ttm=ttm)
+    if np.isnan(including_noncontrolling):
+        return read_balance_sheet_entry(stock=stock,
+                                        entry_name=['Liabilities and Shareholders\' Equity',
+                                                    'Shareholders\' Equity',
+                                                    'Stockholders\' Equity Attributable to Parent'],
+                                        date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+    else:
+        return including_noncontrolling
 
 def net_sales(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=False):
     return read_income_statement_entry(stock=stock,

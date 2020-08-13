@@ -40,7 +40,7 @@ def piotroski_f_score(stock, date=datetime.now(),
     # 0 otherwise)
     return_on_assets_previous_year = ratios.return_on_assets(stock=stock, date=date,
                                                              lookback_period=timedelta(days=365), annual=annual,
-                                                             ttm=ttm, average_assets=average_assets)
+                                                             ttm=ttm)
     piotroski_dictio['Profitability']['Change in Return of Assets'] = {
         'Return on Assets Current Year': '{:.4f}'.format(return_on_assets_current_year),
         'Return on Assets Previous Year': '{:.4f}'.format(return_on_assets_previous_year),
@@ -58,8 +58,8 @@ def piotroski_f_score(stock, date=datetime.now(),
 
     # Change in Leverage (long-term) ratio (1 point if the ratio is lower this year compared to the previous one,
     # 0 otherwise)
-    debt_to_assets_current_year = ratios.debt_to_assets(stock=stock, date=date, annual=annual, ttm=ttm)
-    debt_to_assets_previous_year = ratios.debt_to_assets(stock=stock, date=date, lookback_period=timedelta(days=365),
+    debt_to_assets_current_year = ratios.debt_ratio(stock=stock, date=date, annual=annual, ttm=ttm)
+    debt_to_assets_previous_year = ratios.debt_ratio(stock=stock, date=date, lookback_period=timedelta(days=365),
                                                          annual=annual, ttm=ttm)
     piotroski_dictio['Financial Leverage, Liquidity, and Source of Funds'][
         'Change in Leverage Ratio'] = {'Debt to Assets Current Year': '{:.4f}'.format(debt_to_assets_current_year),
@@ -87,8 +87,8 @@ def piotroski_f_score(stock, date=datetime.now(),
                                          'No New Shares Issued ?': shares_current_year <= shares_previous_year}
 
     # Change in Gross Margin (1 point if it is higher in the current year compared to the previous one, 0 otherwise)
-    gross_margin_current_year = ratios.gross_margin(stock=stock, date=date, annual=annual, ttm=ttm)
-    gross_margin_previous_year = ratios.gross_margin(stock=stock, date=date, lookback_period=timedelta(days=365),
+    gross_margin_current_year = ratios.gross_profit_margin(stock=stock, date=date, annual=annual, ttm=ttm)
+    gross_margin_previous_year = ratios.gross_profit_margin(stock=stock, date=date, lookback_period=timedelta(days=365),
                                                      annual=annual, ttm=ttm)
 
     piotroski_dictio['Operating Efficiency']['Gross Margin'] = {
@@ -98,11 +98,10 @@ def piotroski_f_score(stock, date=datetime.now(),
 
     # Change in Asset Turnover ratio (1 point if it is higher in the current year compared to the previous one,
     # 0 otherwise)
-    asset_turnover_current_year = ratios.asset_turnover_ratio(stock=stock, date=date, annual=annual, ttm=ttm,
-                                                              average_assets=average_assets)
+    asset_turnover_current_year = ratios.asset_turnover_ratio(stock=stock, date=date, annual=annual, ttm=ttm)
     asset_turnover_previous_year = ratios.asset_turnover_ratio(stock=stock, date=date,
                                                                lookback_period=timedelta(days=365), annual=annual,
-                                                               ttm=ttm, average_assets=average_assets)
+                                                               ttm=ttm)
     piotroski_dictio['Operating Efficiency']['Asset Turnover Ratio'] = {
         'Asset Turnover Ratio Current Year': '{:.4f}'.format(asset_turnover_current_year),
         'Asset Turnover Ratio Previous Year': '{:.4f}'.format(asset_turnover_previous_year),
@@ -121,7 +120,7 @@ def piotroski_f_score(stock, date=datetime.now(),
 
 
 def altman_z_score(stock, date=datetime.now()):
-    A = metrics.working_capital(stock, date) / financials.total_assets(stock, date)
+    A = metrics.net_working_capital(stock, date) / financials.total_assets(stock, date)
     B = financials.retained_earnings(stock, date) / financials.total_assets(stock, date)
     C = metrics.earnings_before_interest_and_taxes(stock, date) / financials.total_assets(stock, date)
     D = financials.total_shareholders_equity(stock, date) / financials.total_liabilities(stock, date)
@@ -173,7 +172,7 @@ def ohlson_o_score(stock, date=datetime.now()):
     TA = financials.total_assets(stock, date)
     GNP = macro_data.gross_national_product_price_index(date)
     TL = financials.total_liabilities(stock, date)
-    WC = metrics.working_capital(stock, date)
+    WC = metrics.net_working_capital(stock, date)
     CL = financials.current_total_liabilities(stock, date)
     CA = financials.current_total_assets(stock, date)
     X = 1 if TL > TA else 0
