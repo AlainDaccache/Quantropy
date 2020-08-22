@@ -41,12 +41,15 @@ rows = table.findAll(lambda tag: tag.name=='tr')
 '''
 
 
+# TODO When creating new patterns in final normalization, remove what's inside parenthesis (better matching for other reports)
+# TODO Make a check for the following:
+#  - if COGS nan, and Cost of Products and Cost of Sales scraped, then add both to COGS
+#  -
 # TODO: Sometimes only year format is available, current implementation skips
 # TODO: What if both quarterly and yearly are in same table? first_level is wrong
 # TODO: Save filings urls in txt files
 # TODO: Check if normalization round three can take shares outstanding from income statements
 # TODO: Make this into an interface
-# TODO: Add ?!.*_ trick in regexes
 
 # class ParserInterface:
 #     def load_financial_statements_links(self, ticker: str) -> Dict[str, List[(str, str)]]:
@@ -228,8 +231,10 @@ def find_table_title(table):
     try:
 
         # this is a check in case we moved to another table, it should exit
-        while (table.text == current_element.text and current_element.name == 'table') \
-                or current_element.name != 'table':
+        while (isinstance(current_element, NavigableString) or
+               (not isinstance(current_element, NavigableString) and (
+                       table.text == current_element.text and current_element.name == 'table')
+                or current_element.name != 'table')):
 
             # current element is the table, just move to previous element
             current_element = current_element.previous_element
@@ -272,15 +277,16 @@ def find_table_title(table):
                         or (current_element.name == 'font' and re.search('^div$|^p$', current_element.parent.name)) \
                         or re.search('(Form 10-K|\d{2})', current_element.text.strip(), re.IGNORECASE):
                     continue
-                else:
-                    return unicodedata.normalize("NFKD", current_element.text).strip().replace('\n', '')
+                else: # TODO add space between words (separated by capital letter)
+                    return unicodedata.normalize("NFKD", current_element.text).strip()\
+                        .replace('\n', ' ').strip(). replace('(', '').replace(')', '')
 
             elif re.search('The following table', current_element.text, re.IGNORECASE):
                 emergency_title = current_element.text
 
         # if we reached here, then we haven't found bold/centered/italic
         if len(emergency_title) > 0:
-            return emergency_title
+            return emergency_title.replace('(', '').replace(')', '')
         else:
             return 'No Table Title'
     except:
@@ -305,18 +311,25 @@ def scrape_pdf():
     pprint(table.to_string() for table in tables)
 
 
-def scrape_txt_tables_from_url(url):
+def scrape_txt_tables_from_url(url, filing_date, filing_type):
     pass
 
 
-def scrape_xbrl_tables_from_url(url):
+def scrape_xbrl_tables_from_url(url, filing_date, filing_type):
+    # First, get all the us-gaap xbrl tags
+
+    # Then, ensure it is for the current year
+    # Then, split it, only leaving the second part of the tag text and spacing the words
+    # (i.e. us-gaap:AccountsReceivable become Accounts Receivable)
+
+
     pass
 
 
-def scrape_html_tables_from_url(url, filing_date):
+def scrape_html_tables_from_url(url, filing_date, filing_type):
     response = requests.get(url)
     import data_scraping.unit_tests as tests
-    table = tests.table_cash_flow_statement_2
+    table = tests.amzn_balance_sheet
     soup = BeautifulSoup(response.text, 'html.parser')
     all_in_one_dict = {'Yearly': {}, 'Quarterly': {}, '6 Months': {}, '9 Months': {}}
 
@@ -435,7 +448,7 @@ def scrape_html_tables_from_url(url, filing_date):
                                     format_match = True
                                     break
                                 except:
-                                    continue
+                                    traceback.print_exc()
 
                     # relevant_indexes = [i for i, x in enumerate(columns) if not re.search(r'Six|Nine|Change', x, re.IGNORECASE)]
                     # if only_year:
@@ -480,15 +493,24 @@ def scrape_html_tables_from_url(url, filing_date):
                     indented_list.pop()  # pop (because the most recent category is the element itself so we want to replace it)
 
                 try:
-                    # if re.search(r'Total', reg_row[0], re.IGNORECASE):
-                    #     indented_list.pop()
+                   # This is an edge case. Typically, companies would add an extra unnecessary tab at the end of
+                   # a category. For example, in balance sheets, it will have
+                   # Current Assets
+                   #        Cash and Cash Equivalents
+                   #        ...
+                   #        Other Current Assets
+                   #            Total Current Assets
+                   # So Total Current Assets shouldn't be under Other Current Assets category, so we pop
                     for i in range(len(indented_list)):
-                        if re.search(r'^{}$'.format(reg_row[0].split('Total ')[-1]),  # current entry
-                                     indented_list[-i][1],  # last category
+                        if re.search(r'^{}$'.format(reg_row[0]
+                                                            .split('Total ')[-1]
+                                                            .replace('\(', '').replace('\)', '')),  # current entry
+                                     indented_list[-i][1].replace('\(', '').replace('\)', ''),  # last category
                                      re.IGNORECASE):
                             indented_list.pop()
                 except Exception:
                     traceback.print_exc()
+                    print(reg_row)
 
                 indented_list.append((current_left_margin, reg_row[0], is_bold(row, alltext=True)))
                 current_category = '_'.join([x[1] for x in indented_list])
@@ -506,7 +528,10 @@ def scrape_html_tables_from_url(url, filing_date):
                             elif re.search(r'Change', table_title + col, re.IGNORECASE):
                                 continue
                             else:
-                                first_level = 'Yearly'
+                                if filing_type == '10-K':
+                                    first_level = 'Yearly'
+                                else:
+                                    first_level = 'Quarterly'
 
                             for date in dates:
                                 if date not in all_in_one_dict[first_level].keys():
@@ -524,24 +549,45 @@ def scrape_html_tables_from_url(url, filing_date):
                                 break
                     except:
                         # print('EXCEPTION INDEX! for title {} and row {}, with col {}'.format(table_title, reg_row, col))
-                        pass
+                        traceback.print_exc()
 
     return all_in_one_dict
 
 
-def scrape_tables_from_url(url, filing_date):
+def scrape_tables_from_url(url, filing_date, filing_type):
     extension = url.split('.')[-1]
 
     if extension == 'xml':
-        return scrape_xbrl_tables_from_url(url)
+        return scrape_xbrl_tables_from_url(url, filing_date, filing_type)
     elif extension == 'htm':
-        return scrape_html_tables_from_url(url, filing_date)
+        return scrape_html_tables_from_url(url, filing_date, filing_type)
     elif extension == 'txt':
-        return scrape_txt_tables_from_url(url)
+        return scrape_txt_tables_from_url(url, filing_date, filing_type)
 
 
 def normalization_iteration(iteration_count, input_dict, master_dict, visited_data_names, year,
                             flexible_sheet=False, flexible_entry=False):
+
+    # make normalized category into a regex
+    categories = [
+        # Balance Sheet
+        re.compile(r'((.*?_?)Current Assets)', re.IGNORECASE),
+        re.compile('((.*?_?)Current Liabilities)', re.IGNORECASE),
+        re.compile(r'((.*?_?)Non-? ?Current Assets)', re.IGNORECASE),
+        re.compile('((.*?_?)Non-? ?Current Liabilities)', re.IGNORECASE),
+        re.compile('((.*?)(?!.*Liabilities)Shareholders[’\'] Equity)', re.IGNORECASE),
+        re.compile(r'((.*?_?)Assets)', re.IGNORECASE),
+        re.compile('((.*?)Liabilities(?!.*Shareholders[’\'] Equity))', re.IGNORECASE),
+        # Income Statement
+        re.compile('((.*?)Revenues)', re.IGNORECASE),
+        re.compile('((.*?)Operating Expenses)', re.IGNORECASE),
+        re.compile('((.*?)Other (\(Non-Operating\) Income )?Expense)', re.IGNORECASE),
+        # Cash Flow Statement
+        re.compile('((.*?)Operating Activities(?!.*Net.*_))', re.IGNORECASE),
+        re.compile('((.*?)Investing Activities(?!.*Net.*_))', re.IGNORECASE),
+        re.compile('((.*?)Financing Activities(?!.*Net.*_))', re.IGNORECASE)
+    ]
+
     for title, table in input_dict.items():
 
         for scraped_name, scraped_value in flatten_dict(table).items():
@@ -595,43 +641,26 @@ def normalization_iteration(iteration_count, input_dict, master_dict, visited_da
 
                                 if re.search(el['Pattern String'], scraped_name, re.IGNORECASE):
                                     # TODO: check following bug fix: you should find it this year, but the pattern should match same table title
-                                    if re.search(el['Table Title'], title, re.IGNORECASE):
-                                        pattern_matched = True
+                                    try:
+                                        if re.search(el['Table Title'], title, re.IGNORECASE):
+                                            pattern_matched = True
+                                    except:
+                                        traceback.print_exc()
+                                        print('Unmatched Parenthesis:{}'.format(title))
+                                        print('Unmatched Parenthesis:{}'.format(el['Table Title']))
                                     break
                             if not pattern_matched:
                                 master_dict[normalized_category] = scraped_value
                                 visited_data_names[year].append(data_name)  # that table takes ownership for the data
                             break
 
-                    # otherwise it is flexible if it should just match the category
-                    # (i.e. current assets, operating expenses...)
-                    # TODO since the outer loop is over each name, and we just need to go once for each category,
-                    # we need to do something about it (inefficient)
+                    # otherwise it is flexible if it should just match the category (i.e. assets, other expenses...)
 
                     if flexible_entry:
                         if found_and_done:
                             break
-                        # make normalized category into a regex
-                        categories_balance_sheet = [
-                            # Balance Sheet
-                            re.compile(r'((.*?_?)Current Assets)', re.IGNORECASE),
-                            re.compile('((.*?_?)Current Liabilities)', re.IGNORECASE),
-                            re.compile(r'((.*?_?)Non-? ?Current Assets)', re.IGNORECASE),
-                            re.compile('((.*?_?)Non-? ?Current Liabilities)', re.IGNORECASE),
-                            re.compile('((.*?)(?!.*Liabilities)Shareholders[’\'] Equity)', re.IGNORECASE),
-                            re.compile(r'((.*?_?)Assets)', re.IGNORECASE),
-                            re.compile('((.*?)Liabilities(?!.*Shareholders[’\'] Equity))', re.IGNORECASE),
-                            # Income Statement
-                            re.compile('((.*?)Revenues)', re.IGNORECASE),
-                            re.compile('((.*?)Operating Expenses)', re.IGNORECASE),
-                            # re.compile('((.*?)Other Expenses)', re.IGNORECASE),
-                            # Cash Flow Statement
-                            re.compile('((.*?)Operating Activities(?!.*Net.*_))', re.IGNORECASE),
-                            re.compile('((.*?)Investing Activities(?!.*Net.*_))', re.IGNORECASE),
-                            re.compile('((.*?)Financing Activities(?!.*Net.*_))', re.IGNORECASE)
-                        ]
 
-                        for cat in categories_balance_sheet:
+                        for cat in categories:
                             if found_and_done:
                                 break
                             match = re.search(cat, normalized_category)
@@ -696,6 +725,12 @@ def normalize_tables(input_dict, visited_data_names, year):
                                                               flexible_entry=True)
     pprint(master_dict)
     # TODO Final Standardization, Fill in Differences!
+
+    if np.isnan(master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Liabilities_Total Liabilities"]):
+        shareholders_equity_incl_minority = master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest"]
+        shareholders_equity = master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity Attributable to Parent"]
+        master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Liabilities_Total Liabilities"] = \
+            master_dict['Balance Sheet_Assets_Total Assets'] - (shareholders_equity_incl_minority if not np.isnan(shareholders_equity_incl_minority) else shareholders_equity)
     # If Interest Income/Expense in revenues, then readjust Net Sales (add back)
     # total noncurrent = total - total current  for assets, liabilities
     # if total noncurrent nan, else total = total current + total noncurrent
@@ -709,7 +744,6 @@ def normalize_tables(input_dict, visited_data_names, year):
     #     'Balance Sheet_Liabilities and Shareholders\' Equity_Liabilities_Non Current Liabilities_Total Non Current Liabilities'] = \
     #     master_dict['Balance Sheet_Liabilities and Shareholders\' Equity_Liabilities_Total Liabilities'] - master_dict[
     #         'Balance Sheet_Liabilities and Shareholders\' Equity_Liabilities_Current Liabilities_Total Current Liabilities']
-
     return visited_data_names, flatten_dict(unflatten(master_dict))
 
 
@@ -719,10 +753,16 @@ def unflatten(dictionary):
         parts = key.split("_")
         d = resultDict
         for part in parts[:-1]:
-            if part not in d:
-                d[part] = dict()
-            d = d[part]
-        d[parts[-1]] = value
+            try:
+                if part not in d:
+                    d[part] = dict()
+                d = d[part]
+            except:
+                continue
+        try:
+            d[parts[-1]] = value
+        except:
+            continue
     return resultDict
 
 
@@ -735,10 +775,10 @@ def quarterlize_statements(smaller_period_df, bigger_period_df, existing_quarter
                 closest_smaller_period_index = next(
                     index for (index, item) in enumerate(smaller_period_df.columns) if item < bigger_period_date)
             except:
-                continue
+                traceback.print_exc()
             # print(closest_smaller_period_index)
-            df_output[bigger_period_date] = bigger_period_df[bigger_period_date] - smaller_period_df.iloc[:,
-                                                                                   closest_smaller_period_index]
+            df_output[bigger_period_date] = bigger_period_df[bigger_period_date] \
+                                            - smaller_period_df.iloc[:,closest_smaller_period_index]
     # print(smaller_period_df.to_string())
     return df_output
 
@@ -787,7 +827,7 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
                 if (index > how_many_years - 1 and i == 0) or (index > how_many_quarters - 1 and i == 1):
                     break
                 print(filing_date, link)
-                output = scrape_tables_from_url(link, filing_date)
+                output = scrape_tables_from_url(link, filing_date, filing_type='10-K' if i == 0 else '10-Q')
                 pprint(output)
                 for sheet_period, sheet_dict in output.items():
                     if sheet_period not in dictio.keys():
@@ -811,10 +851,8 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
         # pprint(dictio)
 
     log = open(os.path.join(company_log_path, 'scraped_dictio.txt'), "w")
-    # try:
-    #     # print(dictio, file=log)
-    # except:
-    #     pass
+    print(dictio, file=log)
+
     financials_dictio = {}
 
     for sheet_period, sheet_dict in dictio.items():
@@ -885,29 +923,31 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
                     # dfs_dictio[sheet_name][sheet_period] = df
                     excel.save_into_csv(path, df, '{} ({})'.format(sheet_name, sheet_period))
 
-    #  this is to standardize cumulated 3 6 9 12 months (only for cash flow statement for now)
+    #  this is to standardize cumulated 3 6 9 12 months
     for quarterly_statement in [config.cash_flow_statement_quarterly, config.income_statement_quarterly]:
 
         try:
             quarterly_df = pd.read_excel(path, quarterly_statement, index_col=[0, 1])
             # quarterly_df = dfs_dictio[]
         except:
-            continue
+            pass
         temp_statements = config.income_statements if quarterly_statement == config.income_statement_quarterly else config.cash_flow_statements
         for i, item in enumerate(temp_statements):
             try:
                 smaller_period_df = pd.read_excel(path, item, index_col=[0, 1])
                 bigger_period_df = pd.read_excel(path, temp_statements[i + 1], index_col=[0, 1])
-            except:
-                continue
-
-            quarterly_df = pd.concat([quarterly_df,
+                quarterly_df = pd.concat([quarterly_df,
                                       quarterlize_statements(smaller_period_df, bigger_period_df,
                                                              quarterly_df.columns)],
                                      axis=1)
-        quarterly_df = quarterly_df.reindex(sorted(quarterly_df.columns, reverse=True), axis=1)
-        print(quarterly_df.to_string())
-        excel.save_into_csv(path, quarterly_df, quarterly_statement, overwrite_sheet=True)
+            except:
+                pass
+        try:
+            quarterly_df = quarterly_df.reindex(sorted(quarterly_df.columns, reverse=True), axis=1)
+            print(quarterly_df.to_string())
+            excel.save_into_csv(path, quarterly_df, quarterly_statement, overwrite_sheet=True)
+        except:
+            pass
 
     #  then you can remove the 6 and 9 months sheets
     book = load_workbook(path)
@@ -1113,16 +1153,14 @@ if __name__ == '__main__':
 
     # for url, file, sheet, skiprow in factors_inputs:
     #     save_factors_data(url, file, sheet, skiprow)
-    with open("{}/djia30_tickers.pickle".format(config.MARKET_TICKERS_DIR_PATH), "rb") as f:
-        tickers = pickle.load(f)
-        for ticker in tickers[1:5]:
-            try:
-                scrape_financial_statements(ticker, how_many_years=1, how_many_quarters=0)
-            except:
-                continue
-        # save_stock_prices(ticker)
-        # get_technical_indicators(ticker)
-        # scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
+    # with open("{}/djia30_tickers.pickle".format(config.MARKET_TICKERS_DIR_PATH), "rb") as f:
+    #     tickers = pickle.load(f)
+    #     for ticker in ['GOOG', 'MSFT', 'FB']:
+    #         scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
+
+    save_stock_prices('GOOG')
+    # get_technical_indicators(ticker)
+    # scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
     # scrape_financial_statements(ticker, '10-Q')
 
     # ff_factors = get_beta_factors()

@@ -1,7 +1,7 @@
 import pickle
 import traceback
 from datetime import timedelta, datetime
-
+from nptyping import NDArray, Float64
 import pandas_datareader.data as web
 import pandas as pd
 import statsmodels.formula.api as sm  # module for stats models
@@ -23,7 +23,7 @@ def initialize_factors_dataframe(model: str, portfolio_returns: pd.Series,
                                  benchmark_returns: pd.Series) -> pd.DataFrame:
     time_delta = portfolio_returns.index[1] - portfolio_returns.index[0]
     if time_delta.days == 1:
-        period = 'Monthly'
+        period = 'Daily'
     elif time_delta.days == 7:
         period = 'Weekly'
     elif time_delta.days == 30 or time_delta.days == 31:
@@ -32,16 +32,16 @@ def initialize_factors_dataframe(model: str, portfolio_returns: pd.Series,
         period = 'Yearly'
     else:
         raise Exception
-
     df_factors = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, model),
                                         sheet_name=period)
     date_idx = excel.get_date_index(portfolio_returns.index[0], df_factors.index)
     df_factors = df_factors[date_idx:]
-    df_factors['Mkt-RF'] = benchmark_returns - df_factors['RF']  # excess portfolio returns
+
+    df_factors['Mkt-RF'] = benchmark_returns - df_factors['RF']  # excess market returns
     df_factors.rename(columns={'Mkt-RF': 'MKT'}, inplace=True)
     portfolio_returns.rename('Returns', inplace=True)
     df_stock_factor = pd.merge(portfolio_returns, df_factors, left_index=True, right_index=True)
-    df_stock_factor['XsRet'] = df_stock_factor['Returns'] - df_stock_factor['RF']  # excess asset returns
+    df_stock_factor['XsRet'] = df_stock_factor['Returns'] - df_stock_factor['RF']  # excess portfolio returns
     return df_stock_factor
 
 
@@ -69,16 +69,11 @@ def capital_asset_pricing_model(portfolio_returns, benchmark_returns):
     df_stock_factor = initialize_factors_dataframe(model='CAPM',
                                                    portfolio_returns=portfolio_returns,
                                                    benchmark_returns=benchmark_returns)
-    try:
-        CAPM = sm.ols(formula='XsRet ~ MKT', data=df_stock_factor).fit(cov_type='HAC', cov_kwds={'maxlags': 1})
-        print(CAPM.summary())
-        return CAPM
-    except:
-        traceback.print_exc()
-        print(portfolio_returns.name)
-        return
+    CAPM = sm.ols(formula='XsRet ~ MKT', data=df_stock_factor).fit(cov_type='HAC', cov_kwds={'maxlags': 1})
+    print(CAPM.summary())
+    return CAPM
 
-    # plot(df_stock_factor=df_stock_factor, regression_model=CAPM)
+# plot(df_stock_factor=df_stock_factor, regression_model=CAPM)
 
 
 def fama_french_3_factor_model(portfolio_returns, benchmark_returns):
@@ -148,51 +143,11 @@ Benchmark is by default for Fama French (all NASDAQ, AMEX etc.), otherwise '^GSP
 '''
 
 
-def slice_resample_merge_returns(portfolio, benchmark=None,
-                                 from_date=datetime.now() - timedelta(days=5 * 365), to_date=datetime.now(),
-                                 period='Monthly'):
-    if isinstance(portfolio, str):
-        path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
-        portfolio_returns = excel.read_df_from_csv(path)['Adj Close'].pct_change()
-    elif isinstance(portfolio, pd.Series):
-        portfolio_returns = portfolio
-    else:
-        raise Exception
-    # Slice and resample portfolio (or asset) returns
-    date_idx_from = excel.get_date_index(from_date, portfolio_returns.index)
-    date_idx_to = excel.get_date_index(to_date, portfolio_returns.index)
-    portfolio_returns = portfolio_returns[date_idx_from:date_idx_to]
-    portfolio_returns = portfolio_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
-    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
-    portfolio_returns.index = portfolio_returns.index + timedelta(days=1) - timedelta(seconds=1)
-
-    if benchmark == None:
-        df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=period)
-        benchmark_returns = df['Mkt-RF'] + df['RF']
-
-    elif isinstance(benchmark, str):
-        df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, benchmark))
-        benchmark_returns = df['Adj Close'].pct_change()
-    elif isinstance(benchmark, pd.Series):
-        benchmark_returns = benchmark
-    else:
-        raise Exception
-    benchmark_returns = benchmark_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
-    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
-    benchmark_returns.index = benchmark_returns.index + timedelta(days=1) - timedelta(seconds=1)
-
-    benchmark_returns.rename('Benchmark', inplace=True)
-    portfolio_returns.rename('Portfolio', inplace=True)
-    merged_df = pd.concat([benchmark_returns, portfolio_returns], axis=1).dropna()
-    benchmark_returns, portfolio_returns = merged_df['Benchmark'], merged_df['Portfolio']
-    return benchmark_returns, portfolio_returns
-
-
-def asset_pricing_wrapper(model, portfolio, benchmark=None,
-                          from_date=datetime.now() - timedelta(days=5 * 365), to_date=datetime.now(), period='Monthly'):
-    benchmark_returns, portfolio_returns = slice_resample_merge_returns(portfolio=portfolio, benchmark=benchmark,
-                                                                        from_date=from_date, to_date=to_date,
-                                                                        period=period)
+def asset_pricing_wrapper(model, portfolio, benchmark=None, period='Monthly',
+                          from_date=None, to_date=None):
+    benchmark_returns, portfolio_returns = excel.slice_resample_merge_returns(portfolio=portfolio, benchmark=benchmark,
+                                                                              from_date=from_date, to_date=to_date,
+                                                                              period=period)
     if model == 'CAPM':
         return capital_asset_pricing_model(portfolio_returns=portfolio_returns, benchmark_returns=benchmark_returns)
     elif model == 'Fama-French 3 Factor':
@@ -219,9 +174,9 @@ def security_market_line(assets_tickers, from_date=datetime.now() - timedelta(da
                          period='Monthly', benchmark='^DJI'):
     merged_returns = pd.DataFrame()
     for ticker in assets_tickers:
-        benchmark_returns, portfolio_returns = slice_resample_merge_returns(portfolio=ticker, benchmark=benchmark,
-                                                                            from_date=from_date, to_date=to_date,
-                                                                            period=period)
+        benchmark_returns, portfolio_returns = excel.slice_resample_merge_returns(portfolio=ticker, benchmark=benchmark,
+                                                                                  from_date=from_date, to_date=to_date,
+                                                                                  period=period)
         portfolio_returns.rename(ticker, inplace=True)
         if merged_returns.empty:
             merged_returns = pd.concat([benchmark_returns, portfolio_returns], axis=1, join='outer')

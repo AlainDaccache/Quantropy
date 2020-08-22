@@ -46,7 +46,6 @@ def slice_series_dates(series, from_date, to_date):
 def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
                   overwrite_sheet=False, concat=False,
                   **to_excel_kwargs):
-
     # ignore [engine] parameter if it was passed
     if 'engine' in to_excel_kwargs:
         to_excel_kwargs.pop('engine')
@@ -65,7 +64,8 @@ def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
         # TODO Not working yet
         if concat and sheet_name in writer.book.sheetnames:
             try:
-                sheet_df = pd.read_excel(filename, sheet_name, index_col=[0, 1, 2] if config.balance_sheet_name in sheet_name else [0, 1])
+                sheet_df = pd.read_excel(filename, sheet_name,
+                                         index_col=[0, 1, 2] if config.balance_sheet_name in sheet_name else [0, 1])
                 print(sheet_df.to_string())
                 idx = writer.book.sheetnames.index(sheet_name)
                 writer.book.remove(writer.book.worksheets[idx])
@@ -85,7 +85,7 @@ def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
             writer.book.create_sheet(sheet_name, idx)
 
         # copy existing sheets
-        writer.sheets = {ws.title:ws for ws in writer.book.worksheets}
+        writer.sheets = {ws.title: ws for ws in writer.book.worksheets}
 
     except FileNotFoundError:
         # file does not exist yet, we will create it
@@ -113,7 +113,7 @@ def read_df_from_csv(path, sheet_name='Sheet1'):
     return pd.DataFrame()
 
 
-def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_sheet=False):
+def read_entry_from_csv(path, x, y, sheet_name='Sheet1', lookback_index=0, skip_first_sheet=False):
     if os.path.exists(path):
         ticker = Path(path).stem
         if config.balance_sheet_name in sheet_name:
@@ -150,6 +150,7 @@ def read_entry_from_csv(path, sheet_name, x, y, lookback_index=0, skip_first_she
         # print('The entry is {}'.format(np.nan))
         return np.nan
 
+
 def read_dates_from_csv(path, sheet_name):
     if os.path.exists(path):
         sheets = xlrd.open_workbook(path, on_demand=True).sheet_names()
@@ -178,10 +179,61 @@ def get_stock_universe():
     return tickers
 
 
+def slice_resample_merge_returns(portfolio, benchmark=None,
+                                 from_date=None, to_date=None,
+                                 period='Monthly'):
+
+    if isinstance(portfolio, str):
+        path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
+        portfolio_returns = read_df_from_csv(path)['Adj Close'].pct_change()
+    elif isinstance(portfolio, pd.Series):
+        portfolio_returns = portfolio
+    else:
+        raise Exception
+    # Slice and resample portfolio (or asset) returns
+
+    if to_date is None:
+        to_date = portfolio_returns.index[-1]
+    if from_date is None:
+        from_date = to_date - timedelta(days= 5 * 365)
+
+    date_idx_from = get_date_index(from_date, portfolio_returns.index)
+    date_idx_to = get_date_index(to_date, portfolio_returns.index)
+    portfolio_returns = portfolio_returns[date_idx_from:date_idx_to]
+    portfolio_returns = portfolio_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+    portfolio_returns = portfolio_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
+    portfolio_returns.index = portfolio_returns.index + timedelta(days=1) - timedelta(seconds=1)
+
+    if benchmark is None:
+        df = read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=period)
+        benchmark_returns = df['Mkt-RF'] + df['RF']
+
+    elif isinstance(benchmark, str):
+        df = read_df_from_csv(path='{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, benchmark))
+        benchmark_returns = df['Adj Close'].pct_change()
+    elif isinstance(benchmark, pd.Series):
+        benchmark_returns = benchmark
+    else:
+        raise Exception
+    benchmark_returns = benchmark_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+    benchmark_returns = benchmark_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
+    benchmark_returns.index = benchmark_returns.index + timedelta(days=1) - timedelta(seconds=1)
+
+    benchmark_returns.rename('Benchmark', inplace=True)
+    portfolio_returns.rename('Portfolio', inplace=True)
+    merged_df = pd.concat([benchmark_returns, portfolio_returns], axis=1).dropna()
+    benchmark_returns, portfolio_returns = merged_df['Benchmark'], merged_df['Portfolio']
+    benchmark_returns = benchmark_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+    portfolio_returns = portfolio_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+    return benchmark_returns, portfolio_returns
+
+
 def average_growth(list, weighted=False):  # assumes order from left to right chronological
     growths = []
     for i in range(1, len(list)):
-        growths.append((list[i]-list[i-1])/list[i-1])
+        growths.append((list[i] - list[i - 1]) / list[i - 1])
     if not weighted:
         return np.mean(growths)
     else:

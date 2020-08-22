@@ -22,6 +22,14 @@ def risk_free_rate(date, freq: str = 'Yearly'):
     return df.iloc[date_index]
 
 
+def risk_free_rates(from_date, to_date, freq: str = 'Yearly'):
+    df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=freq)['RF']
+    frm = excel.get_date_index(date=from_date, dates_values=df.index)
+    to = excel.get_date_index(date=to_date, dates_values=df.index)
+    sliced_df = df[to:] if frm == -1 else df[frm:to]
+    return sliced_df
+
+
 def cumulative_risk_free_rate(from_date, to_date):
     df = excel.read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name='Daily')['RF']
     return cumulative_factors_helper(df=df, from_date=from_date, to_date=to_date)

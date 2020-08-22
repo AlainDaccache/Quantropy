@@ -4,6 +4,7 @@ import financial_statement_analysis.financial_statements_entries as fi
 import data_scraping.excel_helpers as excel
 import config
 import numpy as np
+from options_scraper.scraper import NASDAQOptionsScraper
 
 '''
 Data outside financial statements for the company
@@ -12,9 +13,15 @@ Data outside financial statements for the company
 
 def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
     path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stock))
-    output = excel.read_entry_from_csv(path, config.stock_prices_sheet_name, 'Adj Close', date, lookback_period.days)
+    output = excel.read_entry_from_csv(path=path, x='Adj Close', y=date, lookback_index=lookback_period.days)
     print('Market Price for {} on the {} is: {}'.format(stock, date, output))
     return output
+
+
+def options_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
+    scraper = NASDAQOptionsScraper()
+    kwargs = { "money": 'all', "expir": 'week', "excode": None, "callput": None }
+    records_generator = scraper(ticker=stock, **kwargs)
 
 
 def get_stock_location(stock):
@@ -137,6 +144,12 @@ def capital_expenditures(stock, date, lookback_period=timedelta(days=0), annual=
                + fi.depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period,
                                                   annual=annual, ttm=ttm)
 
+
+def funds_from_operations():
+    pass
+
+def adjusted_funds_from_operations():
+    pass
 
 # NOPAT
 def net_operating_profit_after_tax(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,

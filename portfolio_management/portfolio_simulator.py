@@ -5,10 +5,13 @@ from functools import partial
 import pandas as pd
 import numpy as np
 from abc import ABC, abstractmethod
+from scipy import stats
 import data_scraping.excel_helpers as excel
 import config
 import financial_statement_analysis.accounting_ratios as ratios
 import matplotlib.pyplot as plt
+import portfolio_management.risk_quantification as risk_measures
+from portfolio_management.portfolio_optimization import optimal_portfolio
 
 plt.style.use('fivethirtyeight')
 
@@ -16,8 +19,10 @@ plt.style.use('fivethirtyeight')
 # TODO: Add statistics i.e. average drawdown, alpha, beta/sharpe/sortino...
 # TODO: Functionality for reinvesting dividends
 # TODO: Functionality for stock screening
-# TODO: implement technical indicators in corresponding files
-
+# TODO: Functionality for technical indicators
+# TODO: Functionality for commission (as percent of trade or fix cost)
+# TODO: Functionality for slippage (do one day slippage)
+# TODO: Functionality for fractional shares (optional)
 
 class Stock:
 
@@ -76,7 +81,7 @@ def helper_condition(indicator: partial, comparator: str, otherside):
         return lambda ticker, date: compare(indicator(ticker, date), comparator, otherside)
 
 
-class PortfolioAllocation:
+class PortfolioDirection:
 
     def long_only(self):
         pass
@@ -107,60 +112,84 @@ class RebalancingFrequency:
 
 
 class Optimization:
-    def maximize_treynor(self):
-        pass
+    def maximize_treynor_ratio(self, portfolio_returns, benchmark_returns='^GSPC'):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.treynor_ratio,
+                                                                        benchmark_returns=benchmark_returns),
+                                                   portfolio_returns=portfolio_returns)
 
-    def maximize_sharpe(self):
-        pass
+    def maximize_sharpe_ratio(self, portfolio_returns):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.sharpe_ratio),
+                                                   portfolio_returns=portfolio_returns)
 
-    def maximize_sortino(self):
-        pass
+    def maximize_information_ratio(self, portfolio_returns, benchmark_returns='^GPSC'):
+        return risk_measures.risk_measures_wrapper(
+            risk_measure=partial(risk_measures.information_ratio,
+                                 benchmark_returns=benchmark_returns),
+            portfolio_returns=portfolio_returns)
 
-    def maximize_modigliani(self):
-        pass
+    def maximize_modigliani_ratio(self, portfolio_returns, benchmark_returns='^GPSC'):
+        return risk_measures.risk_measures_wrapper(
+            risk_measure=partial(risk_measures.modigliani_ratio, benchmark_returns=benchmark_returns),
+            portfolio_returns=portfolio_returns)
 
-    def maximize_information(self):
-        pass
+    def maximize_roys_safety_first_criterion(self, portfolio_returns, minimum_threshold=0.02):
+        return risk_measures.risk_measures_wrapper(
+            risk_measure=partial(risk_measures.roys_safety_first_criterion, minimum_threshold=minimum_threshold),
+            portfolio_returns=portfolio_returns)
 
-    def maximize_kelly_criterion(self):
-        pass
+    def maximize_excess_return_value_at_risk(self, portfolio_returns, benchmark_returns='^GSPC', confidence_level=0.05):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.excess_return_value_at_risk,
+                                                                        benchmark_returns=benchmark_returns,
+                                                                        confidence_level=confidence_level),
+                                                   portfolio_returns=portfolio_returns)
 
-    def maximize_roys_safety_first_criterion(self):
-        pass
+    def maximize_conditional_sharpe_ratio(self, portfolio_returns, confidence_level=0.05):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.conditional_sharpe_ratio,
+                                                                        confidence_level=confidence_level),
+                                                   portfolio_returns=portfolio_returns)
 
-    def maximize_upside_potential(self):
-        pass
+    def maximize_jensens_alpha(self, benchmark_returns='^GSPC'):
+        return partial(risk_measures.jensens_alpha,
+                       benchmark_returns=benchmark_returns)
 
-    def maximize_jensens_alpha(self):
-        pass
+    def maximize_omega_ratio(self, portfolio_returns, target=0):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.omega_ratio, target=target),
+                                                   portfolio_returns=portfolio_returns)
+
+    def maximize_sortino_ratio(self, portfolio_returns, target=0):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.sortino_ratio, target=target),
+                                                   portfolio_returns=portfolio_returns)
+
+    def kappa_three_ratio(self, portfolio_returns, target=0):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.kappa_three_ratio, target=target),
+                                                   portfolio_returns=portfolio_returns)
+
+    def gain_loss_ratio(self, portfolio_returns, target=0):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.gain_loss_ratio, target=target),
+                                                   portfolio_returns=portfolio_returns)
+
+    def maximize_upside_potential_ratio(self, portfolio_returns, target=0):
+        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.kappa_three_ratio, target=target),
+                                                   portfolio_returns=portfolio_returns)
 
 
-def systematic_investing_simulator(starting_date: datetime,
-                                   ending_date: datetime,
-                                   starting_capital: float,
-                                   securities_universe: typing.List[str],
-                                   portfolio_rebalancing_frequency: typing.Callable,
-                                   metrics,
-                                   max_stocks_count_in_portfolio: int,
-                                   portfolio_allocation: typing.Callable,
-                                   portfolio_optimization: typing.Callable,
-                                   maximum_leverage: float = 1.0):
-    pass
-
-if __name__ == '__main__':
-    systematic_investing_simulator(metrics=pd.Series([partial(ratios.price_to_earnings), partial(ratios.return_on_capital)]))
-
-
-def stock_screening_simulator(starting_date: datetime,
-                              ending_date: datetime,
-                              starting_capital: float,
-                              securities_universe: typing.List[str],
-                              portfolio_rebalancing_frequency: typing.Callable,
-                              pre_filter: typing.List,
-                              max_stocks_count_in_portfolio: int,
-                              portfolio_allocation: typing.Callable,
-                              portfolio_optimization: typing.Callable,
-                              maximum_leverage: float = 1.0):
+def portfolio_simulator(starting_date: datetime,
+                        ending_date: datetime,
+                        starting_capital: float,
+                        securities_universe: typing.List[str],
+                        portfolio_rebalancing_frequency: typing.Callable,
+                        pre_filter: typing.List,
+                        factors: dict,
+                        max_stocks_count_in_portfolio: int,
+                        portfolio_direction: typing.Callable,
+                        portfolio_optimization: typing.Callable,
+                        maximum_leverage: float = 1.0,
+                        reinvest_dividends: bool = False,
+                        fractional_shares: bool = False,
+                        include_slippage: bool = False,
+                        include_capital_gains_tax: bool = False,
+                        commission: int = 2
+                        ):
     results = []
     portfolio = Portfolio(balance=starting_capital, trades=[], date=starting_date)
     securities_universe_objects = pd.Series()
@@ -207,14 +236,67 @@ def stock_screening_simulator(starting_date: datetime,
                 if trade.stock.ticker not in stock_screener_df.index:
                     portfolio.trades.pop(portfolio.trades.index(trade))
                     make_position(portfolio, trade, entry=False)
+
+            # Next step, compute factors for each factor category for each stock
+            factors_dict = {
+                (factor_type, factor.func.__name__): stock_screener_df.index.map(lambda stock: factor(stock, date))
+                for factor_type, factor_list in factors.items()
+                for factor in factor_list
+            }
+
+            factors_df = pd.DataFrame(data=list(factors_dict.values()),
+                                      index=pd.MultiIndex.from_tuples(factors_dict.keys()),
+                                      columns=stock_screener_df.index)
+            print(factors_df.to_string())
+
+            # Then, normalize each factor (compute Z-score i.e. (x - mu) / sigma)
+            factors_df = factors_df.apply(stats.zscore, axis=1)
+            factors_df = pd.DataFrame(factors_df.values.tolist(), index=factors_df.index,
+                                      columns=stock_screener_df.index)
+
+            # Then, add factors for each factor category for each company to make score for that company
+            factors_df = factors_df.groupby(level=0, axis=0).agg(np.sum)
+            print(factors_df.to_string())
+
+            # Then, normalize again and sum across factor categories, and rank
+            factors_df = factors_df.apply(stats.zscore, axis=1)
+            factors_df = pd.DataFrame(factors_df.values.tolist(), index=factors_df.index,
+                                      columns=stock_screener_df.index)
+            factors_df = factors_df.apply(np.sum, axis=0)
+            factors_df.sort_values(axis=0, ascending=False, inplace=True)
+            print(factors_df.to_string())
+
+            # Stocks to go long and/or short on
+            if portfolio_direction.__name__ == 'long_only':
+                long_stocks, short_stocks = stock_screener_df.index[:max_stocks_count_in_portfolio], []
+            elif portfolio_direction.__name__ == 'short_only':
+                long_stocks, short_stocks = [], stock_screener_df.index[-max_stocks_count_in_portfolio:]
+            else:  # long and short
+                long_stocks, short_stocks = stock_screener_df.index[:math.floor(max_stocks_count_in_portfolio / 2)], \
+                                            stock_screener_df.index[-math.floor(max_stocks_count_in_portfolio / 2):]
+
+            # Get portfolio returns of selected stocks up to current date
+            portfolio_returns = pd.Series()
+            stocks_to_trade = list(long_stocks) + list(short_stocks)
             for stock in securities_universe_objects:
-                if stock.ticker in stock_screener_df.index:  # place trades for stocks that meet condition
-                    shares_to_buy = math.floor(0.1 * portfolio.balance / stock.current_price)  # TODO
-                    commission = 2  # TODO
-                    if shares_to_buy > 0 and portfolio.balance > commission + (shares_to_buy * stock.current_price):
-                        trade = Trade(stock=stock, direction=True, shares=shares_to_buy, date=date)
+                if stock.ticker in stocks_to_trade:
+                    to_date = excel.get_date_index(date, stock.price_data.index)
+                    portfolio_returns[stock.ticker] = stock.price_data['Adj Close'].iloc[:to_date].pct_change()
+
+            # Optimize Portfolio Allocation
+            weights = optimal_portfolio(returns=portfolio_returns, longs=long_stocks, shorts=short_stocks,
+                                        risk_measure=portfolio_optimization)
+
+            # Place Positions
+            for stock in securities_universe_objects:
+                if stock.ticker in stocks_to_trade:
+                    shares_to_trade = weights[stock.ticker] * portfolio.balance / stock.current_price
+                    if shares_to_trade > 0 and portfolio.balance > commission + (shares_to_trade * stock.current_price):
+                        trade = Trade(direction=True if stock.ticker in long_stocks else False,
+                                      stock=stock, shares=shares_to_trade, date=date)
                         portfolio.trades.append(trade)
                         make_position(portfolio, trade, entry=True)
+
         finally:
             # that's to aggregate trades for better formatting in the dataframe
             dictionary = dict()
@@ -237,20 +319,23 @@ def stock_screening_simulator(starting_date: datetime,
     return evolution_df
 
 
-stock_screening_simulator(starting_date=datetime(2019, 1, 1),
-         ending_date=datetime.now(),
-         starting_capital=10000,
-         maximum_leverage=1.0,
-         securities_universe=excel.get_stock_universe(),
-         pre_filter=[(partial(ratios.current_ratio, annual=True, ttm=False), '>', 1)],
-         max_stocks_count_in_portfolio=12,
-         portfolio_allocation=PortfolioAllocation().long_only,
-         portfolio_optimization=Optimization().maximize_jensens_alpha,
-         portfolio_rebalancing_frequency=RebalancingFrequency().monthly
-         )
-
-# TODO add functionaliy for
-# - reinvesting dividends (optional)
-# - fractional shares (optional)
-# - commision (as percent of trade or fix cost)
-# - slippage (as function of daily volume?)
+if __name__ == '__main__':
+    portfolio_simulator(starting_date=datetime(2019, 1, 1),
+                        ending_date=datetime.now(),
+                        starting_capital=10000,
+                        maximum_leverage=1.0,
+                        securities_universe=excel.get_stock_universe(),
+                        pre_filter=[(partial(ratios.current_ratio, annual=True, ttm=False), '>', 1)],
+                        factors={'Value': pd.Series([partial(ratios.price_to_earnings_ratio, ttm=False, annual=True),
+                                                     partial(ratios.price_to_book_value_ratio, ttm=False,
+                                                             annual=True)]),
+                                 'Quality': pd.Series([partial(ratios.return_on_equity, ttm=False, annual=True)]),
+                                 'Growth': pd.Series(),
+                                 'Momentum': pd.Series(),
+                                 'Volatility': pd.Series(),
+                                 'Dividend': pd.Series()},
+                        max_stocks_count_in_portfolio=2,
+                        portfolio_direction=PortfolioDirection().long_only,
+                        portfolio_optimization=Optimization().maximize_jensens_alpha(),
+                        portfolio_rebalancing_frequency=RebalancingFrequency().monthly
+                        )

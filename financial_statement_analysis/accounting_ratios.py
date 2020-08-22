@@ -321,9 +321,9 @@ def book_value_per_share(stock, date=datetime.now(), lookback_period=timedelta(d
 def earnings_per_share(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
                        diluted=True, deduct_operating_income=False, deduct_preferred_dividends=True):
     numerator = fi.net_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
-    numerator -= fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                        ttm=ttm) if deduct_preferred_dividends else 0
-    numerator -= fi.non_operating_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+    numerator -= abs(fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
+                                        ttm=ttm)) if deduct_preferred_dividends else 0
+    numerator += fi.non_operating_income(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
                                          ttm=ttm) if deduct_operating_income else 0
     return numerator / fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
                                                    annual=annual, ttm=ttm, diluted=diluted)
@@ -366,6 +366,10 @@ def price_to_book_value_ratio(stock, date=datetime.now(), lookback_period=timede
            / book_value_per_share(stock=stock, date=date, lookback_period=lookback_period, annual=annual, ttm=ttm,
                                   diluted=diluted)
 
+
+def justified_price_to_book_value_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
+                                        diluted=True):
+    pass
 
 def price_to_sales_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True, ttm=True,
                          diluted=True):

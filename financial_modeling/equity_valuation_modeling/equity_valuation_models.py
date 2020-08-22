@@ -47,6 +47,10 @@ def growth_rate_implied_by_ggm(stock, date=datetime.today(), lookback_period=tim
     return (current_price * required_rate_of_return - dividend_per_share) / (current_price + dividend_per_share)
 
 
+def growth_rate_implied_by_price_book(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False,
+                                      diluted_shares=False):
+    pass
+
 '''
 Absolute Valuation Models
 '''

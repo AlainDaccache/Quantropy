@@ -372,7 +372,7 @@ def total_shares_outstanding(stock, date=datetime.now(), lookback_period=timedel
         else ['Liabilities and Shareholders\' Equity', 'Shareholders\' Equity',
               'Weighted Average Number of Shares Outstanding, Basic']
     return read_balance_sheet_entry(stock=stock, entry_name=entry, date=date,
-                                    lookback_period=lookback_period, annual=annual, ttm=ttm) / 1000  # TODO Hard Fix
+                                    lookback_period=lookback_period, annual=annual, ttm=ttm)
 
 
 def total_shareholders_equity(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=False,
@@ -490,9 +490,9 @@ def net_income(stock, date=datetime.now(), lookback_period=timedelta(days=0), an
 
 def preferred_dividends(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                         ttm=False):
-    return read_income_statement_entry(stock=stock,
+    return np.nan_to_num(read_income_statement_entry(stock=stock,
                                        entry_name=['Preferred Stock Dividends', ' '],
-                                       date=date, lookback_period=lookback_period, annual=annual, ttm=ttm)
+                                       date=date, lookback_period=lookback_period, annual=annual, ttm=ttm))
 
 
 '''Operating cash flow is a measure of cash generated/consumed by a business from its operating activities

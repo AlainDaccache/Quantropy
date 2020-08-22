@@ -117,7 +117,7 @@ financial_entries_regex_dict = {
                 'Retained Earnings (Accumulated Deficit)': r'(?=.*Accumulated deficit)|(Retained earnings)(?!.*Beginning)',
                 'Accumulated Other Comprehensive Income (Loss)': r'(?=.*Accumulated other comprehensive (income|loss)(?!.*[_]))(?!.*Beginning)',
                 'Deferred Stock Compensation': r'(?=.*Deferred stock compensation)',
-                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total.*(shareholders|stockholders)[’\'] equity)',
+                'Stockholders\' Equity Attributable to Parent': r'(?=.*Total.*(shareholders|stockholders)[’\'] equity)(?!.*Liabilities(?!.*[_]))',
                 'Minority Interest': r'(?=.*Noncontrolling interest)',
                 'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest': '(?=.*Noncontrolling interest)(?=.*Equity(?!.*[_]))(?!.*Liabilities(?!.*[_]))'
             },
@@ -126,13 +126,14 @@ financial_entries_regex_dict = {
     },
     'Income Statement': {
         'Revenues': {
-            # 'Service Sales': '(?=.*Sales)(?=.*Service(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
-            # 'Product Sales': '(?=.*Sales)(?=.*Product(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
+            'Service Sales': '(?=.*Sales)(?=.*Service(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
+            'Product Sales': '(?=.*Sales)(?=.*Product(?!.*[_:]))(?!.*Cost)(?!.*Other(?!.*[_:]))',
             'Net Sales': r'(?=.*(Net sales|Revenue)(?!.*[_:]))(?!.*Cost)',
             'Noninterest Income': r'(?=.*Non[- ]?interest (revenue|income))',
         },
-
-        'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales|goods|services)(?!.*[_:]))',
+        'Cost of Products': r'(?=.*Cost of Products)',
+        'Cost of Services': r'(?=.*Cost of Services)',
+        'Cost of Goods and Services Sold': r'(?=.*Cost of (revenue|sales)(?!.*[_:]))',
         'Provision for Loan, Lease, and Other Losses': r'(?=.*Provision for credit losses)',
         'Operating Expenses': {
             'Research and Development Expense': r'(?=.*(Research|Technology) and development)',
@@ -147,17 +148,17 @@ financial_entries_regex_dict = {
             'Depreciation, Depletion and Amortization, Nonproduction': r'(?!.*accumulated)(?=.*Depreciation(?!.*[_:]))(?=.*amortization(?!.*[_:]))',
             'Total Operating Expenses': r'(?=.*Total operating expenses)'
         },
-        'Operating Income (Loss) / EBIT': r'(?=.*income(?!.*[_]))(?=.*operati(ng|ons)(?!.*[_]))',
+        'Operating Income (Loss) / EBIT': r'(?=.*income(?!.*[_]))(?=.*operati(ng|ons)(?!.*[_]))(?!.*investments)',
         'Other (Non-Operating) Income (Expense)': {
             'Interest Income': r'(?=.*Interest(?!.*[_:]))(?!.*dividend(?!.*[_:]))(?=.*income(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest and Dividend Income': r'(?=.*Interest(?!.*[_:]))(?=.*dividend(?!.*[_:]))(?=.*income(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest Expense': r'(?=.*Interest expense(?!.*[_:]))(?!.*net(?!.*[_:]))',
             'Interest Income (Expense), Net': r'(?=.*Interest income(?!.*[_:]))(?=.*net(?!.*[_:]))',
             # TODO We Will compute this one in the end
-            'Other Nonoperating Income (Expense)': '(?=.*other income(?!.*[_:]))(?=.*net(?!.*[_:]))',
+            'Other Nonoperating Income (Expense)': '(?=.*Other income(?!.*[_]))(?=.*net(?!.*[_]))(?!.*Total(?!.*[_]))',
             # below is for Interest and other income, net
             # and Total other income/(expense), net
-            'Non-Operating Income (Expense)': r'(?=.*total(?!.*[_:]))(?=.*(other|non))(income(?!.*[_:]))(?=.*net(?!.*[_:]))',
+            'Non-Operating Income (Expense)': r'(?=.*(other|non))(?=.*income(?!.*[_:]))',
         },
 
         'Income (Loss) before Income Taxes, Noncontrolling Interest': r'(?=.*(Income before (?=.*Provision for)?(?=.*(income )?taxes)|Pre-tax earnings))',
