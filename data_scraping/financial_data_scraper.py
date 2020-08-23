@@ -8,6 +8,7 @@ import sys
 import traceback
 import urllib.request
 import zipfile
+from io import StringIO
 from datetime import datetime, timedelta
 import typing
 from time import sleep
@@ -16,9 +17,9 @@ import pandas as pd
 import requests
 import unicodedata
 from bs4 import BeautifulSoup, NavigableString
+from lxml import etree
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
-
 import data_scraping.regex_patterns as fin_reg
 import pandas_datareader.data as web
 import data_scraping.excel_helpers as excel
@@ -30,6 +31,7 @@ from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from typing import Dict, List, Union
+import xml.etree.ElementTree as ET
 
 '''
 Beautiful BeautifulSoup Usage
@@ -127,7 +129,6 @@ def get_filings_urls_second_layer(doc_links):
 
         # if no XML document found, try finding html documents
         no_html_link = True
-        no_xml_link = True  # this is to include XML links as HTMLs to test HTML scraping, so remove when done with xml
         if no_xml_link:
             table_tag = soup.find('table', class_='tableFile', summary='Document Format Files')
             rows = table_tag.find_all('tr')
@@ -277,9 +278,9 @@ def find_table_title(table):
                         or (current_element.name == 'font' and re.search('^div$|^p$', current_element.parent.name)) \
                         or re.search('(Form 10-K|\d{2})', current_element.text.strip(), re.IGNORECASE):
                     continue
-                else: # TODO add space between words (separated by capital letter)
-                    return unicodedata.normalize("NFKD", current_element.text).strip()\
-                        .replace('\n', ' ').strip(). replace('(', '').replace(')', '')
+                else:  # TODO add space between words (separated by capital letter)
+                    return unicodedata.normalize("NFKD", current_element.text).strip() \
+                        .replace('\n', ' ').strip().replace('(', '').replace(')', '')
 
             elif re.search('The following table', current_element.text, re.IGNORECASE):
                 emergency_title = current_element.text
@@ -316,14 +317,24 @@ def scrape_txt_tables_from_url(url, filing_date, filing_type):
 
 
 def scrape_xbrl_tables_from_url(url, filing_date, filing_type):
-    # First, get all the us-gaap xbrl tags
+    response = requests.get(url).text
+    elements = ET.fromstring(response)
+    all_in_one_dict = {'Yearly': {filing_date: {'Other': {}}}, 'Quarterly': {filing_date: {'Other': {}}}}
 
-    # Then, ensure it is for the current year
-    # Then, split it, only leaving the second part of the tag text and spacing the words
-    # (i.e. us-gaap:AccountsReceivable become Accounts Receivable)
+    # First, get all the us-gaap xbrl tags (that correspond to the current year or quarter)
+    first_level = 'Yearly' if filing_type == '10-K' else 'Quarterly'
+    for element in elements.iter():
+        if 'contextRef' in element.attrib.keys():
+            tag_name = re.sub(r"(\w)([A-Z])", r"\1 \2", element.tag.split('}')[1])
+            try:
+                tag_value = int(element.text)
+            except:
+                continue
+            if str(filing_date.year) in element.attrib['contextRef'] \
+                    and 'Axis' not in element.attrib['contextRef']:
+                all_in_one_dict[first_level][filing_date]['Other'][tag_name] = tag_value
 
-
-    pass
+    return all_in_one_dict
 
 
 def scrape_html_tables_from_url(url, filing_date, filing_type):
@@ -493,14 +504,14 @@ def scrape_html_tables_from_url(url, filing_date, filing_type):
                     indented_list.pop()  # pop (because the most recent category is the element itself so we want to replace it)
 
                 try:
-                   # This is an edge case. Typically, companies would add an extra unnecessary tab at the end of
-                   # a category. For example, in balance sheets, it will have
-                   # Current Assets
-                   #        Cash and Cash Equivalents
-                   #        ...
-                   #        Other Current Assets
-                   #            Total Current Assets
-                   # So Total Current Assets shouldn't be under Other Current Assets category, so we pop
+                    # This is an edge case. Typically, companies would add an extra unnecessary tab at the end of
+                    # a category. For example, in balance sheets, it will have
+                    # Current Assets
+                    #        Cash and Cash Equivalents
+                    #        ...
+                    #        Other Current Assets
+                    #            Total Current Assets
+                    # So Total Current Assets shouldn't be under Other Current Assets category, so we pop
                     for i in range(len(indented_list)):
                         if re.search(r'^{}$'.format(reg_row[0]
                                                             .split('Total ')[-1]
@@ -567,7 +578,6 @@ def scrape_tables_from_url(url, filing_date, filing_type):
 
 def normalization_iteration(iteration_count, input_dict, master_dict, visited_data_names, year,
                             flexible_sheet=False, flexible_entry=False):
-
     # make normalized category into a regex
     categories = [
         # Balance Sheet
@@ -622,6 +632,10 @@ def normalization_iteration(iteration_count, input_dict, master_dict, visited_da
 
                     # an entry is not flexible if it should match a hardcoded pattern
                     pattern_string = '^' + pattern_string
+                    try:
+                        re.search(pattern_string, title + '_' + scraped_name, re.IGNORECASE)
+                    except:
+                        pass
                     if ((not flexible_entry) and re.search(
                             pattern_string, title + '_' + scraped_name, re.IGNORECASE)):
                         # print('Found pattern match {} for scraped name {}'.format(pattern_string, scraped_name))
@@ -727,10 +741,13 @@ def normalize_tables(input_dict, visited_data_names, year):
     # TODO Final Standardization, Fill in Differences!
 
     if np.isnan(master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Liabilities_Total Liabilities"]):
-        shareholders_equity_incl_minority = master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest"]
-        shareholders_equity = master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity Attributable to Parent"]
+        shareholders_equity_incl_minority = master_dict[
+            "Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest"]
+        shareholders_equity = master_dict[
+            "Balance Sheet_Liabilities and Shareholders' Equity_Shareholders' Equity_Stockholders' Equity Attributable to Parent"]
         master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Liabilities_Total Liabilities"] = \
-            master_dict['Balance Sheet_Assets_Total Assets'] - (shareholders_equity_incl_minority if not np.isnan(shareholders_equity_incl_minority) else shareholders_equity)
+            master_dict['Balance Sheet_Assets_Total Assets'] - (shareholders_equity_incl_minority if not np.isnan(
+                shareholders_equity_incl_minority) else shareholders_equity)
     # If Interest Income/Expense in revenues, then readjust Net Sales (add back)
     # total noncurrent = total - total current  for assets, liabilities
     # if total noncurrent nan, else total = total current + total noncurrent
@@ -778,7 +795,7 @@ def quarterlize_statements(smaller_period_df, bigger_period_df, existing_quarter
                 traceback.print_exc()
             # print(closest_smaller_period_index)
             df_output[bigger_period_date] = bigger_period_df[bigger_period_date] \
-                                            - smaller_period_df.iloc[:,closest_smaller_period_index]
+                                            - smaller_period_df.iloc[:, closest_smaller_period_index]
     # print(smaller_period_df.to_string())
     return df_output
 
@@ -815,10 +832,12 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
         missing_dates_links = []
         existing_dates = excel.read_dates_from_csv(path,
                                                    config.balance_sheet_yearly if i == 0 else config.balance_sheet_quarterly)
-        for x, y in (filings_dictio_yearly['HTML Links'] if i == 0 else filings_dictio_quarterly['HTML Links']):
-            formatted_date = datetime.strptime(x, '%Y-%m-%d')
-            if formatted_date not in existing_dates and formatted_date not in [x for x, y in missing_dates_links]:
-                missing_dates_links.append((formatted_date, y))
+        for link_type, date_link_tuple in (
+                filings_dictio_yearly.items() if i == 0 else filings_dictio_quarterly.items()):
+            for x, y in date_link_tuple:
+                formatted_date = datetime.strptime(x, '%Y-%m-%d')
+                if formatted_date not in existing_dates and formatted_date not in [x for x, y in missing_dates_links]:
+                    missing_dates_links.append((formatted_date, y))
         missing_dates_links.sort(key=lambda tup: tup[0], reverse=True)
 
         # pprint(missing_dates_links)
@@ -937,9 +956,9 @@ def scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=8):
                 smaller_period_df = pd.read_excel(path, item, index_col=[0, 1])
                 bigger_period_df = pd.read_excel(path, temp_statements[i + 1], index_col=[0, 1])
                 quarterly_df = pd.concat([quarterly_df,
-                                      quarterlize_statements(smaller_period_df, bigger_period_df,
-                                                             quarterly_df.columns)],
-                                     axis=1)
+                                          quarterlize_statements(smaller_period_df, bigger_period_df,
+                                                                 quarterly_df.columns)],
+                                         axis=1)
             except:
                 pass
         try:
@@ -1155,10 +1174,10 @@ if __name__ == '__main__':
     #     save_factors_data(url, file, sheet, skiprow)
     # with open("{}/djia30_tickers.pickle".format(config.MARKET_TICKERS_DIR_PATH), "rb") as f:
     #     tickers = pickle.load(f)
-    #     for ticker in ['GOOG', 'MSFT', 'FB']:
-    #         scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
+    for ticker in ['FB']:
+        scrape_financial_statements(ticker, how_many_years=2, how_many_quarters=0)
 
-    save_stock_prices('GOOG')
+    # save_stock_prices('GOOG')
     # get_technical_indicators(ticker)
     # scrape_financial_statements(ticker, how_many_years=5, how_many_quarters=0)
     # scrape_financial_statements(ticker, '10-Q')

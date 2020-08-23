@@ -52,17 +52,35 @@ class Portfolio:
         self.date = date
         self.last_rebalancing_day = date
 
+    def make_position(self, trade: Trade, entry: bool):
 
-# making a position should only affect the balance, not the float
-def make_position(portfolio: Portfolio, trade: Trade, entry: bool):
-    # if entering a long position or exiting a short position
-    if (trade.direction and entry) or (not trade.direction and not entry):
-        portfolio.balance -= (trade.stock.current_price * trade.shares + trade.commission)
-    # if exiting a long position or entering a short position
-    elif (trade.direction and not entry) or (not trade.direction and entry):
-        portfolio.balance += (trade.stock.current_price * trade.shares + trade.commission)
-    else:
-        return
+        if not entry:  # if I am exiting a position
+
+            shares_left = trade.shares
+            for portfolio_trade in self.trades:
+                if portfolio_trade.stock.ticker == trade.stock.ticker and trade.direction == portfolio_trade.direction:
+                    # If the number of shares to exit is greater than the trade in the portfolio
+                    # (total exit or simply partial exit with more shares than trade placed at such date)
+                    if shares_left > portfolio_trade.shares:
+                        self.trades.pop(self.trades.index(portfolio_trade))
+                        shares_left -= portfolio_trade.shares
+                    else:  # partial exit
+                        portfolio_trade.shares -= shares_left
+                        break
+        else:
+            if self.balance > trade.stock.current_price * trade.shares + trade.commission:
+                self.trades.append(trade)
+        # Now Adjust Balance: making a position should only affect the balance, not the float
+
+        # if entering a long position or exiting a short position
+        if (trade.direction and entry) or (not trade.direction and not entry):
+            if self.balance > trade.stock.current_price * trade.shares + trade.commission:
+                self.balance = self.balance - (trade.stock.current_price * trade.shares + trade.commission)
+        # if exiting a long position or entering a short position
+        elif (trade.direction and not entry) or (not trade.direction and entry):
+            self.balance = self.balance + (trade.stock.current_price * trade.shares - trade.commission)
+        else:
+            return
 
 
 # example use: helper_condition(rsi, '>', 70)
@@ -173,23 +191,13 @@ class Optimization:
                                                    portfolio_returns=portfolio_returns)
 
 
-def portfolio_simulator(starting_date: datetime,
-                        ending_date: datetime,
-                        starting_capital: float,
-                        securities_universe: typing.List[str],
-                        portfolio_rebalancing_frequency: typing.Callable,
-                        pre_filter: typing.List,
-                        factors: dict,
-                        max_stocks_count_in_portfolio: int,
-                        portfolio_direction: typing.Callable,
-                        portfolio_optimization: typing.Callable,
-                        maximum_leverage: float = 1.0,
-                        reinvest_dividends: bool = False,
-                        fractional_shares: bool = False,
-                        include_slippage: bool = False,
-                        include_capital_gains_tax: bool = False,
-                        commission: int = 2
-                        ):
+def portfolio_simulator(starting_date: datetime, ending_date: datetime,
+                        starting_capital: float, securities_universe: typing.List[str],
+                        portfolio_rebalancing_frequency: typing.Callable, pre_filter: typing.List, factors: dict,
+                        max_stocks_count_in_portfolio: int, portfolio_direction: typing.Callable,
+                        portfolio_optimization: typing.Callable, maximum_leverage: float = 1.0,
+                        reinvest_dividends: bool = False, fractional_shares: bool = False,
+                        include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
     results = []
     portfolio = Portfolio(balance=starting_capital, trades=[], date=starting_date)
     securities_universe_objects = pd.Series()
@@ -199,8 +207,7 @@ def portfolio_simulator(starting_date: datetime,
     for date in pd.date_range(start=starting_date, end=ending_date):
         try:
             portfolio.date = date
-            stocks_in_portfolio = list(set([x.stock for x in portfolio.trades]))  # get stocks currently in portfolio
-
+            # stocks in portfolio: list(set([x.stock for x in portfolio.trades]))
             for stock in securities_universe_objects:  # update current prices according to date
                 date_index = excel.get_date_index(date, stock.price_data['Adj Close'].index)
                 stock.current_price = stock.price_data['Adj Close'].iloc[date_index]
@@ -234,8 +241,7 @@ def portfolio_simulator(starting_date: datetime,
 
             for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
                 if trade.stock.ticker not in stock_screener_df.index:
-                    portfolio.trades.pop(portfolio.trades.index(trade))
-                    make_position(portfolio, trade, entry=False)
+                    portfolio.make_position(trade, entry=False)
 
             # Next step, compute factors for each factor category for each stock
             factors_dict = {
@@ -275,27 +281,86 @@ def portfolio_simulator(starting_date: datetime,
                 long_stocks, short_stocks = stock_screener_df.index[:math.floor(max_stocks_count_in_portfolio / 2)], \
                                             stock_screener_df.index[-math.floor(max_stocks_count_in_portfolio / 2):]
 
-            # Get portfolio returns of selected stocks up to current date
-            portfolio_returns = pd.Series()
             stocks_to_trade = list(long_stocks) + list(short_stocks)
-            for stock in securities_universe_objects:
-                if stock.ticker in stocks_to_trade:
-                    to_date = excel.get_date_index(date, stock.price_data.index)
-                    portfolio_returns[stock.ticker] = stock.price_data['Adj Close'].iloc[:to_date].pct_change()
 
-            # Optimize Portfolio Allocation
+            # Close positions for stocks that are in neither long and short:
+            for trade in portfolio.trades:
+                if trade.stock.ticker not in stocks_to_trade:
+                    portfolio.make_position(trade, entry=False)
+
+            # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation
+            portfolio_returns = pd.Series()
+            for stock_ticker in stocks_to_trade:
+                stock = securities_universe_objects[stock_ticker]
+                to_date = excel.get_date_index(date, stock.price_data.index)
+                portfolio_returns[stock.ticker] = stock.price_data['Adj Close'].iloc[:to_date].pct_change()
+
             weights = optimal_portfolio(returns=portfolio_returns, longs=long_stocks, shorts=short_stocks,
                                         risk_measure=portfolio_optimization)
 
-            # Place Positions
-            for stock in securities_universe_objects:
-                if stock.ticker in stocks_to_trade:
-                    shares_to_trade = weights[stock.ticker] * portfolio.balance / stock.current_price
-                    if shares_to_trade > 0 and portfolio.balance > commission + (shares_to_trade * stock.current_price):
-                        trade = Trade(direction=True if stock.ticker in long_stocks else False,
-                                      stock=stock, shares=shares_to_trade, date=date)
-                        portfolio.trades.append(trade)
-                        make_position(portfolio, trade, entry=True)
+            # Place Positions (Rebalance Portfolio)
+            # First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
+            # (gives us capital to invest for the others). Second sweep is for buying
+
+            for i in range(2):
+
+                for stock_ticker in stocks_to_trade:
+                    stock_is_in_portfolio = False
+                    stock = securities_universe_objects[stock_ticker]
+                    for trade in portfolio.trades:
+
+                        # If the stock computed is already part of our portfolio, then:
+                        if stock.ticker == trade.stock.ticker \
+                                and ((stock.ticker in long_stocks and trade.stock.ticker in long_stocks)
+                                     or (stock.ticker in short_stocks and trade.stock.ticker in short_stocks)):
+
+                            stock_is_in_portfolio = True
+
+                            # Aggregate total weight of asset in portfolio
+                            current_weight_in_portfolio = 0
+                            for trade in portfolio.trades:
+                                if stock.ticker == trade.stock.ticker:
+                                    current_weight_in_portfolio += trade.shares * trade.stock.current_price \
+                                                                  / portfolio.float
+
+                            # The weight we need to rebalance for
+                            delta_weights = weights[stock.ticker] - current_weight_in_portfolio
+                            delta_shares = (abs(delta_weights) * portfolio.float - commission) \
+                                           / stock.current_price
+
+                            # for first sweep, target weight should less than current weight and original position is long
+                            #  or vice versa for short (means we're selling)
+                            # for second sweep, target weight should be more than current weight and original position is long
+                            # or vice versa for short (means we're buying)
+
+                            if delta_shares > 0 and \
+                                    (i == 0 and ((delta_weights < 0 and trade.direction)
+                                                 or (delta_weights > 0 and not trade.direction))
+                                     or (i == 1 and ((delta_weights > 0 and trade.direction)
+                                                     or (delta_weights < 0 and not trade.direction)))):
+                                if not fractional_shares:
+                                    delta_shares = math.floor(delta_shares)
+                                if delta_shares > 0:
+
+                                    trade = Trade(direction=True if stock.ticker in long_stocks else False,
+                                                  stock=stock, shares=delta_shares, date=date)
+                                    # we're exiting longs and entering shorts
+                                    portfolio.make_position(trade, entry=False if stock.ticker in long_stocks else True)
+                                    break
+
+                    # If the stock computed is not already part of our portfolio
+                    if not stock_is_in_portfolio:
+                        shares_to_trade = (weights[stock.ticker] * portfolio.float - commission) \
+                                          / stock.current_price
+                        if not fractional_shares:
+                            shares_to_trade = math.floor(shares_to_trade)
+                        if shares_to_trade > 0:
+                            if i == 0 and stock_ticker in short_stocks:  # entering shorts
+                                trade = Trade(direction=False, stock=stock, shares=shares_to_trade, date=date)
+                                portfolio.make_position(trade, entry=True)
+                            if i == 1 and stock_ticker in long_stocks: # entering longs
+                                trade = Trade(direction=True, stock=stock, shares=shares_to_trade, date=date)
+                                portfolio.make_position(trade, entry=True)
 
         finally:
             # that's to aggregate trades for better formatting in the dataframe
