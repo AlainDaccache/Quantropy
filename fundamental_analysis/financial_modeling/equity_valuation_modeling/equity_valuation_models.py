@@ -1,12 +1,12 @@
-import financial_statement_analysis.financial_metrics as me
+import fundamental_analysis.financial_metrics as me
 from datetime import datetime, timedelta
-from financial_modeling.equity_valuation_modeling.cost_of_capital import cash_flow_growth_rate, \
+from fundamental_analysis.financial_modeling.equity_valuation_modeling.cost_of_capital import cash_flow_growth_rate, \
     weighted_average_cost_of_capital
 import numpy as np
-import financial_statement_analysis.financial_statements_entries as fi
+import fundamental_analysis.financial_statements_entries as fi
 from functools import partial
 from typing import Callable
-import financial_statement_analysis.accounting_ratios as ratios
+import fundamental_analysis.accounting_ratios as ratios
 
 '''
 Equity valuation models fall into two major categories: absolute or intrinsic valuation methods and relative valuation 
@@ -25,29 +25,26 @@ Growth Measures
 
 
 # Also known as the Sustainable Growth Rate (SGR) Model
-def growth_rate_PRAT_model(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False):
-    profit_margin = ratios.net_profit_margin(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                               ttm=ttm)
-    retention_ratio = ratios.retention_ratio(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                             ttm=ttm)
-    asset_turnover = ratios.asset_turnover_ratio(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                                 ttm=ttm)
-    financial_leverage = ratios.asset_to_equity(stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                                ttm=ttm)
+def growth_rate_PRAT_model(stock: str, date: datetime = datetime.today(), lookback_period: timedelta = timedelta(days=0), period: str = 'FY'):
+    profit_margin = ratios.net_profit_margin(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    retention_ratio = ratios.retention_ratio(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    asset_turnover = ratios.asset_turnover_ratio(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    financial_leverage = ratios.asset_to_equity(stock=stock, date=date, lookback_period=lookback_period, period=period)
     return profit_margin * retention_ratio * asset_turnover * financial_leverage
 
 
-def growth_rate_implied_by_ggm(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False,
+def growth_rate_implied_by_ggm(stock: str, date: datetime = datetime.today(),
+                               lookback_period: timedelta = timedelta(days=0), period: str = 'FY',
                                diluted_shares=False):
     current_price = me.market_price(stock=stock, date=date, lookback_period=lookback_period)
     required_rate_of_return = weighted_average_cost_of_capital(stock=stock, date=date, lookback_period=lookback_period,
-                                                               annual=annual, ttm=ttm)
+                                                               period=period)
     dividend_per_share = me.dividend_per_share(stock=stock, date=date, lookback_period=lookback_period,
-                                               annual=annual, ttm=ttm, diluted_shares=diluted_shares)
+                                               period=period, diluted_shares=diluted_shares)
     return (current_price * required_rate_of_return - dividend_per_share) / (current_price + dividend_per_share)
 
 
-def growth_rate_implied_by_price_book(stock, date=datetime.today(), lookback_period=timedelta(days=0), annual=True, ttm=False,
+def growth_rate_implied_by_price_book(stock: str, date: datetime = datetime.today(), lookback_period: timedelta = timedelta(days=0), period: str = 'FY',
                                       diluted_shares=False):
     pass
 
@@ -131,28 +128,26 @@ def valuation_wrapper(model_type: partial,  # Gordon Growth, Two Stage, H Model,
                       model_metric: Callable,  # Dividend, EBITDA, OCF...
                       stock: str, date: datetime = datetime.now(),
                       lookback_period: timedelta = timedelta(days=0),
-                      annual=True, ttm=False, diluted_shares=False):
+                      period: str = 'FY', diluted_shares: bool =False):
     shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
-                                                     annual=annual, ttm=ttm, diluted=diluted_shares)
+                                                     period=period, diluted_shares=diluted_shares)
 
     discount_rate = weighted_average_cost_of_capital(stock=stock, date=date, lookback_period=lookback_period,
-                                                     annual=annual, ttm=ttm)
+                                                     period=period)
     print('WACC is {}'.format(discount_rate))
     if model_metric == me.dividend_per_share:
         current_cash_flow = me.dividend_per_share(stock=stock, date=date, lookback_period=lookback_period,
-                                                  annual=annual, ttm=ttm, diluted_shares=diluted_shares)
+                                                  period=period, diluted_shares=diluted_shares)
     else:
         current_cash_flow = me.cash_flow_per_share(cash_flow_metric=model_metric,
                                                    stock=stock, date=date, lookback_period=lookback_period,
-                                                   annual=annual, ttm=ttm, diluted_shares=diluted_shares)
+                                                   period=period, diluted_shares=diluted_shares)
 
     initial_growth_rate = cash_flow_growth_rate(cash_flow_type=partial(me.cash_flow_per_share, model_metric),
-                                                stock=stock, date=date, lookback_period=lookback_period, annual=annual,
-                                                ttm=ttm)
+                                                stock=stock, date=date, lookback_period=lookback_period, period=period)
     print('Initial Growth Rate is {}'.format(initial_growth_rate))
     terminal_growth_rate = growth_rate_PRAT_model(stock, date=datetime.now(), lookback_period=timedelta(days=0),
-                                                  annual=annual,
-                                                  ttm=ttm)
+                                                  period=period)
     print('PRAT Terminal Growth Rate is {}'.format(terminal_growth_rate))
     #  The perpetuity growth rate is typically between the historical inflation rate of 2-3% and the historical GDP growth rate of 4-5%.
     #  If you assume a perpetuity growth rate in excess of 5%, you are basically saying that you expect the company's growth to outpace the economy's growth forever.
@@ -186,4 +181,4 @@ How to use:
 if __name__ == '__main__':
     print(valuation_wrapper(model_type=partial(absolute_valuation_two_stage_model),
                             model_metric=me.dividend_per_share,
-                            stock='AAPL', ttm=False, annual=True))
+                            stock='AAPL', period='FY'))

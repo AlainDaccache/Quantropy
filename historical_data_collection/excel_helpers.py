@@ -1,12 +1,10 @@
+import collections
 import os
 import traceback
 from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
-from openpyxl.styles import PatternFill, Font
-
 import config
-import data_scraping.financial_data_scraper as scraper
 from openpyxl import load_workbook
 import numpy as np
 import xlrd
@@ -182,7 +180,6 @@ def get_stock_universe():
 def slice_resample_merge_returns(portfolio, benchmark=None,
                                  from_date=None, to_date=None,
                                  period='Monthly'):
-
     if isinstance(portfolio, str):
         path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
         portfolio_returns = read_df_from_csv(path)['Adj Close'].pct_change()
@@ -195,7 +192,7 @@ def slice_resample_merge_returns(portfolio, benchmark=None,
     if to_date is None:
         to_date = portfolio_returns.index[-1]
     if from_date is None:
-        from_date = to_date - timedelta(days= 5 * 365)
+        from_date = to_date - timedelta(days=5 * 365)
 
     date_idx_from = get_date_index(from_date, portfolio_returns.index)
     date_idx_to = get_date_index(to_date, portfolio_returns.index)
@@ -266,6 +263,35 @@ def companies_comparative_metrics(metrics_series: pd.Series(dtype='float64'), pe
         output = [ticker for ticker, metric_value in metrics_series.iteritems() if metric_value < quantile]
     return output
 
+
+def unflatten(dictionary):
+    resultDict = dict()
+    for key, value in dictionary.items():
+        parts = key.split("_")
+        d = resultDict
+        for part in parts[:-1]:
+            try:
+                if part not in d:
+                    d[part] = dict()
+                d = d[part]
+            except:
+                continue
+        try:
+            d[parts[-1]] = value
+        except:
+            continue
+    return resultDict
+
+
+def flatten_dict(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, collections.abc.MutableMapping):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
 
 if __name__ == '__main__':
     # metrics_series = metric_in_industry(partial(fi.earnings_per_share, ttm=False), 'SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.')

@@ -6,9 +6,9 @@ import pandas as pd
 import numpy as np
 from abc import ABC, abstractmethod
 from scipy import stats
-import data_scraping.excel_helpers as excel
+import historical_data_collection.excel_helpers as excel
 import config
-import financial_statement_analysis.accounting_ratios as ratios
+import fundamental_analysis.accounting_ratios as ratios
 import matplotlib.pyplot as plt
 import portfolio_management.risk_quantification as risk_measures
 from portfolio_management.portfolio_optimization import optimal_portfolio
@@ -130,6 +130,13 @@ class RebalancingFrequency:
 
 
 class Optimization:
+
+    def equally_weighted_allocation(self):
+        return 0
+
+    def market_cap_weighted_allocation(self):
+        return 0
+
     def maximize_treynor_ratio(self, portfolio_returns, benchmark_returns='^GSPC'):
         return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.treynor_ratio,
                                                                         benchmark_returns=benchmark_returns),
@@ -195,7 +202,7 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                         starting_capital: float, securities_universe: typing.List[str],
                         portfolio_rebalancing_frequency: typing.Callable, pre_filter: typing.List, factors: dict,
                         max_stocks_count_in_portfolio: int, portfolio_direction: typing.Callable,
-                        portfolio_optimization: typing.Callable, maximum_leverage: float = 1.0,
+                        portfolio_allocation: typing.Callable, maximum_leverage: float = 1.0,
                         reinvest_dividends: bool = False, fractional_shares: bool = False,
                         include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
     results = []
@@ -296,7 +303,7 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                 portfolio_returns[stock.ticker] = stock.price_data['Adj Close'].iloc[:to_date].pct_change()
 
             weights = optimal_portfolio(returns=portfolio_returns, longs=long_stocks, shorts=short_stocks,
-                                        risk_measure=portfolio_optimization)
+                                        risk_measure=portfolio_allocation)
 
             # Place Positions (Rebalance Portfolio)
             # First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
@@ -321,7 +328,7 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                             for trade in portfolio.trades:
                                 if stock.ticker == trade.stock.ticker:
                                     current_weight_in_portfolio += trade.shares * trade.stock.current_price \
-                                                                  / portfolio.float
+                                                                   / portfolio.float
 
                             # The weight we need to rebalance for
                             delta_weights = weights[stock.ticker] - current_weight_in_portfolio
@@ -341,7 +348,6 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                                 if not fractional_shares:
                                     delta_shares = math.floor(delta_shares)
                                 if delta_shares > 0:
-
                                     trade = Trade(direction=True if stock.ticker in long_stocks else False,
                                                   stock=stock, shares=delta_shares, date=date)
                                     # we're exiting longs and entering shorts
@@ -358,7 +364,7 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                             if i == 0 and stock_ticker in short_stocks:  # entering shorts
                                 trade = Trade(direction=False, stock=stock, shares=shares_to_trade, date=date)
                                 portfolio.make_position(trade, entry=True)
-                            if i == 1 and stock_ticker in long_stocks: # entering longs
+                            if i == 1 and stock_ticker in long_stocks:  # entering longs
                                 trade = Trade(direction=True, stock=stock, shares=shares_to_trade, date=date)
                                 portfolio.make_position(trade, entry=True)
 
@@ -401,6 +407,6 @@ if __name__ == '__main__':
                                  'Dividend': pd.Series()},
                         max_stocks_count_in_portfolio=2,
                         portfolio_direction=PortfolioDirection().long_only,
-                        portfolio_optimization=Optimization().maximize_jensens_alpha(),
+                        portfolio_allocation=Optimization().maximize_jensens_alpha(),
                         portfolio_rebalancing_frequency=RebalancingFrequency().monthly
                         )

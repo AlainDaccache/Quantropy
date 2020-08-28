@@ -2,19 +2,17 @@ import inspect
 import math
 from datetime import datetime, timedelta
 from functools import partial
-from pprint import pprint
 
 import numpy as np
-import typing
 from scipy import stats
 import matplotlib.pyplot as plt
-import data_scraping.excel_helpers as excel
+import historical_data_collection.excel_helpers as excel
 import config
-import financial_modeling.asset_pricing_models as asset_pricing_models
+import fundamental_analysis.financial_modeling.asset_pricing_models as asset_pricing_models
 from scipy.stats import norm
 import numpy.random as nrand
 
-from financial_statement_analysis import macro_data
+from fundamental_analysis import macroeconomic_factors
 
 '''
 The main point here is that we want to construct a portfolio, i.e. assign weights to selected assets,
@@ -260,9 +258,9 @@ def risk_measures_wrapper(risk_measure: partial, portfolio_returns, from_date=No
 
     if 'risk_free_rates' in inspect.signature(risk_measure.func).parameters.keys():
         risk_free_rates, portfolio_returns = excel.slice_resample_merge_returns(
-            benchmark=macro_data.risk_free_rates(from_date=from_date,
-                                                 to_date=to_date,
-                                                 freq='Daily'), portfolio=portfolio_returns,
+            benchmark=macroeconomic_factors.risk_free_rates(from_date=from_date,
+                                                            to_date=to_date,
+                                                            freq='Daily'), portfolio=portfolio_returns,
             from_date=from_date, to_date=to_date, period='Daily')
         risk_measure = partial(risk_measure, risk_free_rates=risk_free_rates)
 

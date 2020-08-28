@@ -7,7 +7,7 @@ from functools import partial
 import flask
 from flask import request, jsonify
 
-import financial_statement_analysis.accounting_ratios as ratios
+import fundamental_analysis.accounting_ratios as ratios
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True

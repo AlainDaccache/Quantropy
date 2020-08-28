@@ -6,9 +6,9 @@
 from datetime import datetime, timedelta
 import numpy as np
 import scipy.stats as si
-from financial_statement_analysis import financial_statements_entries as fi
-from financial_statement_analysis import financial_metrics as me
-from financial_statement_analysis import macro_data as macro
+from fundamental_analysis import financial_statements_entries as fi
+from fundamental_analysis import financial_metrics as me
+from fundamental_analysis import macroeconomic_factors as macro
 from options_scraper.scraper import NASDAQOptionsScraper
 from options_scraper.utils import batched
 

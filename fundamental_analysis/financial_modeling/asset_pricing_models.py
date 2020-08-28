@@ -1,22 +1,21 @@
 import pickle
-import traceback
 from datetime import timedelta, datetime
-from nptyping import NDArray, Float64
-import pandas_datareader.data as web
 import pandas as pd
-import statsmodels.formula.api as sm  # module for stats models
+import statsmodels.formula.api as sm
 from statsmodels.iolib.summary2 import summary_col
 import matplotlib.pyplot as plt
 import numpy as np
-import data_scraping.excel_helpers as excel
-# https://alphaarchitect.com/2011/08/01/how-to-use-the-fama-french-model/
-# https://www.sciencedirect.com/topics/economics-econometrics-and-finance/capm
-# https://hackernoon.com/using-capital-asset-pricing-model-capm-versus-black-scholes-model-to-value-stocks-a-how-to-guide-r53032tc
-# http://content.moneyinstructor.com/948/capm.html
+import historical_data_collection.excel_helpers as excel
 import config
-from data_scraping.financial_data_scraper import save_stock_prices
 import exceptions_library as exception
-import financial_statement_analysis.macro_data as macro
+import fundamental_analysis.macroeconomic_factors as macro
+
+'''
+https://alphaarchitect.com/2011/08/01/how-to-use-the-fama-french-model/
+https://www.sciencedirect.com/topics/economics-econometrics-and-finance/capm
+https://hackernoon.com/using-capital-asset-pricing-model-capm-versus-black-scholes-model-to-value-stocks-a-how-to-guide-r53032tc
+http://content.moneyinstructor.com/948/capm.html
+'''
 
 
 def initialize_factors_dataframe(model: str, portfolio_returns: pd.Series,
@@ -72,6 +71,7 @@ def capital_asset_pricing_model(portfolio_returns, benchmark_returns):
     CAPM = sm.ols(formula='XsRet ~ MKT', data=df_stock_factor).fit(cov_type='HAC', cov_kwds={'maxlags': 1})
     print(CAPM.summary())
     return CAPM
+
 
 # plot(df_stock_factor=df_stock_factor, regression_model=CAPM)
 
@@ -161,12 +161,12 @@ def asset_pricing_wrapper(model, portfolio, benchmark=None, period='Monthly',
 
 
 '''
-    The Security Market Line (SML) graphically represents the relationship between the asset's return (on y-axis) and systematic risk (or beta, on x-axis).
-    With E(R_i) = R_f + B_i * (E(R_m) - R_f), the y-intercept of the SML is equal to the risk-free interest rate, while the slope is equal to the market risk premium
-    Plotting the SML for a market index (i.e. DJIA), individual assets that are correctly priced are plotted on the SML (in the ideal 'Efficient Market Hypothesis' world). 
-    In real market scenarios, we are able to use the SML graph to determine if an asset being considered for a portfolio offers a reasonable expected return for the risk. 
-    - If an asset is priced at a point above the SML, it is undervalued, since for a given amount of risk, it yields a higher return. 
-    - Conversely, an asset priced below the SML is overvalued, since for a given amount of risk, it yields a lower return.
+The Security Market Line (SML) graphically represents the relationship between the asset's return (on y-axis) and systematic risk (or beta, on x-axis).
+With E(R_i) = R_f + B_i * (E(R_m) - R_f), the y-intercept of the SML is equal to the risk-free interest rate, while the slope is equal to the market risk premium
+Plotting the SML for a market index (i.e. DJIA), individual assets that are correctly priced are plotted on the SML (in the ideal 'Efficient Market Hypothesis' world). 
+In real market scenarios, we are able to use the SML graph to determine if an asset being considered for a portfolio offers a reasonable expected return for the risk. 
+- If an asset is priced at a point above the SML, it is undervalued, since for a given amount of risk, it yields a higher return. 
+- Conversely, an asset priced below the SML is overvalued, since for a given amount of risk, it yields a lower return.
 '''
 
 
