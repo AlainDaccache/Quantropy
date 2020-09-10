@@ -8,7 +8,7 @@ import numpy as np
 import historical_data_collection.excel_helpers as excel
 import config
 import exceptions_library as exception
-import fundamental_analysis.macroeconomic_factors as macro
+import fundamental_analysis.macroeconomic_analysis as macro
 
 '''
 https://alphaarchitect.com/2011/08/01/how-to-use-the-fama-french-model/

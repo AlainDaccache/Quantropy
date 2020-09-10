@@ -1,7 +1,6 @@
-import fundamental_analysis.financial_metrics as me
+import fundamental_analysis.supporting_metrics as me
 from datetime import datetime, timedelta
-from fundamental_analysis.financial_modeling.equity_valuation_modeling.cost_of_capital import cash_flow_growth_rate, \
-    weighted_average_cost_of_capital
+from fundamental_analysis.financial_modeling.equity_valuation_modeling.cost_of_capital import weighted_average_cost_of_capital
 import numpy as np
 import fundamental_analysis.financial_statements_entries as fi
 from functools import partial

@@ -26,3 +26,6 @@ def get_technical_indicators(stock):
         return df
     else:
         return df
+
+if __name__ == '__main__':
+    save_stock_prices(stock='FB')

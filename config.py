@@ -10,7 +10,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR_NAME = 'data'
 DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
 
-MARKET_TICKERS_DIR_NAME = 'market_tickers'
+MARKET_TICKERS_DIR_NAME = 'historical_indices_constituents'
 MARKET_TICKERS_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_TICKERS_DIR_NAME)
 
 FACTORS_DIR_NAME = 'factors_data'

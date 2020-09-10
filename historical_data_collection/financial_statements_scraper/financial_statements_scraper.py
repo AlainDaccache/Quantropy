@@ -9,7 +9,10 @@ from openpyxl.styles import PatternFill
 import historical_data_collection.excel_helpers as excel
 from pprint import pprint
 import config
-from historical_data_collection.financial_statements_scraper import xbrl_scraper_sec_edgar
+import historical_data_collection.financial_statements_scraper.html_scraper_sec_edgar as html_scraper
+# import historical_data_collection.financial_statements_scraper.xbrl_scraper_sec_edgar as xbrl_scraper
+
+
 from zope.interface import Interface
 
 
@@ -121,8 +124,10 @@ def scrape_financial_statements(scraper_interface_implementation, ticker: str, h
                 traceback.print_exc()
         # pprint(dictio)
 
-    log = open(os.path.join(company_log_path, 'scraped_dictio.txt'), "w")
-    print(dictio_period_year_table, file=log)
+    import io
+    import json
+    with io.open(os.path.join(company_log_path, 'scraped_dictio.txt'), "w", encoding="utf-8") as f:
+        f.write(json.dumps(str(dictio_period_year_table)))
 
     financials_dictio = {}
 
@@ -138,8 +143,8 @@ def scrape_financial_statements(scraper_interface_implementation, ticker: str, h
                     regex_patterns=scraper_interface_implementation().regex_patterns, filing_date=year,
                     input_dict=title_dict, visited_data_names=visited_data_names)
 
-        log = open(os.path.join(company_log_path, '{}_normalized_dictio.txt'.format(sheet_period)), "w")
-        print(visited_data_names, file=log)
+        # log = open(os.path.join(company_log_path, '{}_normalized_dictio.txt'.format(sheet_period)), "w")
+        # print(visited_data_names, file=log)
 
     sheet_names = [config.balance_sheet_name, config.income_statement_name, config.cash_flow_statement_name]
     dfs_dictio = {}
@@ -259,5 +264,7 @@ def scrape_financial_statements(scraper_interface_implementation, ticker: str, h
 
 
 if __name__ == '__main__':
-    scrape_financial_statements(scraper_interface_implementation=xbrl_scraper_sec_edgar.XbrlParser,
-                                ticker='FB', how_many_years=1, how_many_quarters=0)
+    tickers = excel.get_stock_universe('DJIA')
+    for ticker in ['AAPL', 'FB']:
+        scrape_financial_statements(scraper_interface_implementation=html_scraper.HtmlParser,
+                                    ticker=ticker, how_many_years=3, how_many_quarters=0)

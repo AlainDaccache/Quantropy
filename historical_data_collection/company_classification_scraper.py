@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium import webdriver
+from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,6 +16,7 @@ from pprint import pprint
 import numpy as np
 import os
 import config
+import historical_data_collection.excel_helpers as excel
 
 
 def save_gics():
@@ -92,21 +94,10 @@ def save_gics():
 
 
 def get_company_meta():
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, "nasdaq_df.pickle"),
-              "rb") as f:
-        nasdaq_df = pickle.load(f)
-
-    nasdaq_tickers = nasdaq_df.index
+    df = pd.read_excel(os.path.join(config.MARKET_TICKERS_DIR_PATH, "Nasdaq-Stocks-Tickers.xlsx"), index_col=0)
+    nasdaq_tickers = df.iloc[0].tolist()
     driver = webdriver.Chrome(ChromeDriverManager().install())
     comp_list = []
-    financial_status_codes = {'D': 'Deficient',
-                              'E': 'Delinquent',
-                              'Q': 'Bankrupt',
-                              'N': 'Normal',
-                              'G': 'Deficient and Bankrupt',
-                              'H': 'Deficient and Delinquent',
-                              'J': 'Delinquent and Bankrupt',
-                              'K': 'Deficient, Delinquent, and Bankrupt'}
 
     sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',
                           (10, 14 + 1): 'Mining',
@@ -123,17 +114,9 @@ def get_company_meta():
               "rb") as f:
         country_codes = pickle.load(f)
 
-    # for ticker in nasdaq_tickers[:200]:
-    for ticker in nasdaq_tickers[:200]:
-
-        security_name = nasdaq_df['Security Name'].loc[ticker].split('-')[0].strip()
-        security_type = nasdaq_df['Security Name'].loc[ticker].split('-')[1].strip() \
-            if len(nasdaq_df['Security Name'].loc[ticker].split('-')) > 1 else 'Exchange-Traded Fund'
-        try:
-            financial_status = financial_status_codes[nasdaq_df['Financial Status'].loc[ticker]]
-        except:
-            financial_status = np.nan
-        industry, sector, cik, state_location = '', '', '', ''
+    tickers = excel.get_stock_universe(index='DJIA')
+    for ticker in tickers:
+        security_name, industry, sector, cik, state_location = '', '', '', '', ''
         sic_code = 0
 
         try:
@@ -144,19 +127,19 @@ def get_company_meta():
                     sleep(1)
                 except:
                     pass
-                if nasdaq_df['ETF'].loc[ticker] == 'Y':
-                    driver.get('https://www.sec.gov/edgar/searchedgar/mutualsearch.html')
-                    field = driver.find_element_by_xpath("//input[@id='gen_input']")
-                    field.send_keys(ticker)  # TODO might split ticker from the '$' or '.' (classes)
-                    sleep(1)
-                    field.send_keys(Keys.ENTER)
-                    sleep(1)
-                    if 'No records matched your query' not in driver.page_source:
-                        for t in driver.find_elements_by_xpath("//b[@class='blue']"):  # TODO
-                            if t.text == ticker:
-                                cik = driver.find_element_by_xpath('').text
-                                security_type = driver.find_element_by_xpath('').text
-                    break  # still should go to the 'finally' block
+                # if nasdaq_df['ETF'].loc[ticker] == 'Y':
+                #     driver.get('https://www.sec.gov/edgar/searchedgar/mutualsearch.html')
+                #     field = driver.find_element_by_xpath("//input[@id='gen_input']")
+                #     field.send_keys(ticker)  # TODO might split ticker from the '$' or '.' (classes)
+                #     sleep(1)
+                #     field.send_keys(Keys.ENTER)
+                #     sleep(1)
+                #     if 'No records matched your query' not in driver.page_source:
+                #         for t in driver.find_elements_by_xpath("//b[@class='blue']"):  # TODO
+                #             if t.text == ticker:
+                #                 cik = driver.find_element_by_xpath('').text
+                #                 security_type = driver.find_element_by_xpath('').text
+                #     break  # still should go to the 'finally' block
 
                 base_url = 'https://www.sec.gov/cgi-bin/browse-edgar?CIK={}'.format(ticker)
                 resp = requests.get(base_url).text
@@ -182,6 +165,7 @@ def get_company_meta():
 
                 soup = BeautifulSoup(resp, 'html.parser')
                 # name = soup.find('span', class_='companyName').text.split(' CIK')[0]
+                security_name = titlecase(re.compile(r'(.*) CIK#').findall(soup.text)[0])
                 cik = re.compile(r'.*CIK#: (\d{10}).*').findall(soup.text)[0]
                 ident_info = soup.find('p', class_="identInfo")
                 industry = ident_info.find('br').previousSibling.split('- ')[-1]
@@ -214,18 +198,12 @@ def get_company_meta():
                               sector.title(),
                               sic_code,
                               cik,
-                              state_location,
-                              security_type,
-                              financial_status])
+                              state_location])
+            print(comp_list[-1])
 
     comp_df = pd.DataFrame(comp_list,
-                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Location', 'Security Type',
-                                    'Financial Status'])
-    comp_df = comp_df[comp_df['Security Type'] != 'Exchange-Traded Fund']  # remove ETFs for now
+                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Location'])
     comp_df.set_index('Ticker', inplace=True)
-
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print(comp_df.to_string())
     path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Nasdaq-Companies.xlsx')
     comp_df.to_excel(path, engine='xlsxwriter')
 
@@ -235,7 +213,7 @@ def save_country_codes():
     url = 'https://www.sec.gov/edgar/searchedgar/edgarstatecodes.htm'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    for table in soup.find_all('table', {'cellpadding':'3'}):
+    for table in soup.find_all('table', {'cellpadding': '3'}):
         current_category = ''
         for tr in table.find_all('tr')[1:]:
             if len(tr.find_all('th')) > 0:
@@ -251,3 +229,7 @@ def save_country_codes():
               "wb") as f:
         pickle.dump(dictio, f)
     pprint(dictio)
+
+
+if __name__ == '__main__':
+    get_company_meta()

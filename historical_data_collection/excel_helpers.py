@@ -168,13 +168,26 @@ def read_dates_from_csv(path, sheet_name):
         return []
 
 
-def get_stock_universe():
-    tickers = []
-    directory = config.FINANCIAL_STATEMENTS_DIR_PATH
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            tickers.append(os.path.splitext(file)[0])
-    return tickers
+def get_stock_universe(index='in_directory', date=datetime.now()):
+    '''
+
+    :param index: NASDAQ, DJIA, S&P1500, S&P500, S&P100, RUSSELL3000, RUSSELL2000, FTSE100
+    :return:
+    '''
+
+    if index == 'in_directory':
+        return [os.path.splitext(file)[0]
+                for root, dirs, files in os.walk(config.FINANCIAL_STATEMENTS_DIR_PATH)
+                for file in files]
+
+    index_file_name = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx' if index == 'DJIA'
+    else 'Russell-3000-Stock-Tickers.xlsx' if index == 'RUSSELL3000'
+    else Exception)
+
+    excel_df = pd.read_excel(index_file_name, index_col=0)
+    date_index = get_date_index(date=date, dates_values=excel_df.index)
+    tickers = excel_df.iloc[date_index]
+    return tickers.to_list()
 
 
 def slice_resample_merge_returns(portfolio, benchmark=None,
@@ -227,43 +240,6 @@ def slice_resample_merge_returns(portfolio, benchmark=None,
     return benchmark_returns, portfolio_returns
 
 
-def average_growth(list, weighted=False):  # assumes order from left to right chronological
-    growths = []
-    for i in range(1, len(list)):
-        growths.append((list[i] - list[i - 1]) / list[i - 1])
-    if not weighted:
-        return np.mean(growths)
-    else:
-        return np.average(growths, weights=[])  # TODO
-
-
-def companies_in_industry(industry: str):
-    df = pd.read_csv('companies_overview.csv', index_col='Ticker')
-    ind = df['Industry'] == industry
-    tickers_in_industry = [ticker for ticker, boolean in ind.iteritems() if boolean]
-    return tickers_in_industry
-
-
-def metric_in_industry(metric: Callable, industry: str) -> pd.Series(dtype="float64"):
-    output = pd.Series(dtype='float64')
-    tickers_in_industry = companies_in_industry(industry)
-    for ticker in tickers_in_industry:
-        output[ticker] = metric(ticker)
-    return output
-
-
-# get companies greater or lower than a certain percentile regarding metrics
-# for Q1, percentile is 25, for Q2, percentile is 50, for Q3, percentile is 75
-# comparator: '>', '<'
-def companies_comparative_metrics(metrics_series: pd.Series(dtype='float64'), percentile: int, comparator: str):
-    quantile = np.percentile(metrics_series, percentile)
-    if comparator == '>':
-        output = [ticker for ticker, metric_value in metrics_series.iteritems() if metric_value > quantile]
-    else:
-        output = [ticker for ticker, metric_value in metrics_series.iteritems() if metric_value < quantile]
-    return output
-
-
 def unflatten(dictionary):
     resultDict = dict()
     for key, value in dictionary.items():
@@ -293,11 +269,6 @@ def flatten_dict(d, parent_key='', sep='_'):
             items.append((new_key, v))
     return dict(items)
 
+
 if __name__ == '__main__':
-    # metrics_series = metric_in_industry(partial(fi.earnings_per_share, ttm=False), 'SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.')
-    # companies = companies_comparative_metrics(metrics_series, percentile=25, comparator='>')
-    # print(companies)
-    financial_path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_NAME, 'TSLA')
-    # print(read_entry_from_csv(financial_path, config.stock_prices_sheet_name, datetime.now(), 'Adj Close'))
-    # print(read_entry_from_csv(financial_path, config.balance_sheet_yearly, datetime(2018, 4, 4), 'Restricted Cash Non Current'))
-    print(read_entry_from_csv(config.FACTORS_DIR_PATH, config.yearly_factors, datetime(2001, 1, 1), 'RF'))
+    print(get_stock_universe('DJIA'))

@@ -1,7 +1,7 @@
 import math
 import re
 import traceback
-from datetime import datetime
+import datetime
 from time import sleep
 import numpy as np
 import requests
@@ -12,7 +12,7 @@ from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from historical_data_collection import excel_helpers
-from historical_data_collection.financial_statements_scraper import financial_statements_scraper
+import historical_data_collection.financial_statements_scraper.financial_statements_scraper as main_scraper
 from zope.interface import implementer
 
 
@@ -29,7 +29,7 @@ def get_filings_urls_first_layer(cik, filing_type):
     base_url = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={}&type={}".format(cik, filing_type)
     edgar_resp = requests.get(base_url).text
     print(base_url)
-    soup = BeautifulSoup(edgar_resp, 'html.parser')
+    soup = BeautifulSoup(edgar_resp, 'lxml')
     table_tag = soup.find('table', class_='tableFile2')
     rows = table_tag.find_all('tr')
     doc_links = []
@@ -43,7 +43,7 @@ def get_filings_urls_second_layer(doc_links):
     dates_and_links = []
     for doc_link in doc_links:
         doc_resp = requests.get(doc_link).text  # Obtain HTML for document page
-        soup = BeautifulSoup(doc_resp, 'html.parser')  # Find the XBRL link
+        soup = BeautifulSoup(doc_resp, 'lxml')  # Find the XBRL link
         head_divs = soup.find_all('div', class_='infoHead')  # first, find period of report
         cell_index = next((index for (index, item) in enumerate(head_divs) if item.text == 'Period of Report'), -1)
         period_of_report = ''
@@ -70,7 +70,7 @@ def get_filings_urls_second_layer(doc_links):
 
 
 def is_bold(row, alltext=False):
-    soup = BeautifulSoup(str(row), features='html.parser')
+    soup = BeautifulSoup(str(row), features='lxml')
     bolded_row_text = soup.find_all(
         lambda tag: tag.name == 'b' or (
                 tag.has_attr('style') and (re.search('bold|font-weight:700', str(tag['style']), re.IGNORECASE))))
@@ -82,14 +82,19 @@ def is_bold(row, alltext=False):
         return len(bolded_row_text) > 0
 
 
+def is_colored(row):
+    # TODO implement
+    return False
+
+
 def is_italic(row):
-    soup = BeautifulSoup(str(row), features='html.parser')
+    soup = BeautifulSoup(str(row), features='lxml')
     italic = soup.find_all(lambda tag: tag.name == 'i')
     return len(italic) > 0
 
 
 def is_centered(row):
-    soup = BeautifulSoup(str(row), features='html.parser')
+    soup = BeautifulSoup(str(row), features='lxml')
     return len(soup.find_all(lambda tag: tag.name != 'table' and (
             (tag.has_attr('align') and 'center' in str(tag['align'])) or tag.has_attr(
         'style') and 'text-align:center' in str(tag['style'])))) > 0
@@ -114,102 +119,60 @@ def find_left_margin(reg_row, td):
     return 0
 
 
-# TODO MERGE FIND META TABLE INFO AND TABLE TITLE METHODS
+def find_table_meta(table):
+    """
+    Table title, multipler
 
-
-def find_meta_table_info(table):
-    table_multiplier, table_currency = '', ''
-    multiplier_pattern = re.compile('(thousands|millions|billions|percentage)', re.IGNORECASE)
+    :param table:
+    :return:
+    """
+    multiplier_pattern = re.compile('(thousands|millions|billions|percentage|millions.*thousands)', re.IGNORECASE)
     currency_pattern = re.compile('([$€¥£])', re.IGNORECASE)
-    current_element = table
-    try:
-        while current_element.previous_element is not None:
+    table_multiplier, emergency_title, found_another_table = '', 'No Table Title', False
+    current_element, total_text = table.previous_element, ''
 
-            if isinstance(current_element, NavigableString):
-                current_element = current_element.previous_element
-                continue
+    while current_element is not None and not found_another_table:
+        current_text = ''
 
-            # stop at first
-            if re.search(multiplier_pattern, current_element.text) and len(table_multiplier) == 0:
-                table_multiplier = re.search(multiplier_pattern, current_element.text).groups()[-1]
+        if len(table_multiplier) == 0:  # try getting the multiplier in the current element if we haven't found it yet
+            pattern = re.search(multiplier_pattern,
+                                current_element.text if not isinstance(current_element,
+                                                                       NavigableString) else current_element)
+            if pattern:
+                table_multiplier = pattern.groups()[-1]
 
-            if re.search(currency_pattern, current_element.text) and len(table_currency) == 0:
-                table_currency = re.search(currency_pattern, current_element.text).groups()[-1]
+        if len(emergency_title) == 0 and re.search('The following table',
+                     current_element.text if not isinstance(current_element, NavigableString) else current_element,
+                     re.IGNORECASE):
+            emergency_title = current_element.text
 
+        if isinstance(current_element, NavigableString):  # need to get styling of that element (to see if bold etc.)
             current_element = current_element.previous_element
-    except:
-        traceback.print_exc()
+            continue
 
-    return table_multiplier, table_currency
+        elif current_element.name in ['tr', 'td']:  # since we start at previous
+            break
 
-
-def find_table_title(table):
-    priority_title, emergency_title = '', ''
-    current_element = table
-    try:
-
-        # this is a check in case we moved to another table, it should exit
-        while (isinstance(current_element, NavigableString) or
-               (not isinstance(current_element, NavigableString) and (
-                       table.text == current_element.text and current_element.name == 'table')
-                or current_element.name != 'table')):
-
-            # current element is the table, just move to previous element
+        elif (current_element.name in ['div', 'body', 'html'] and current_element.find('table')):
             current_element = current_element.previous_element
+            continue
 
-            while (  # sometimes the previous element is a new line metacharacter (&nbsp or encoded as '\n') so skip
-                    ((isinstance(current_element, NavigableString) and len(
-                        current_element.replace('\n', '').strip()) == 0)
-                     or ((not isinstance(current_element, NavigableString) and
-                          # if previous element is a div, then it is enclosing what was in current element in previous iteration
-                          # so just take the new element
-                          ((len(current_element.contents) > 0
+        elif (current_element.name in ['table', 'tbody'] and current_element.text in table.text):
+            current_element = current_element.previous_element
+            continue
 
-                            and (  # if the element is another tag, get text
-                                    (not isinstance(current_element.contents[0], NavigableString) and
-                                     len(current_element.contents[0].text.replace('\n', '').strip()) == 0)
-                                    # if directly a string, no need to get text attribute first
-                                    or (isinstance(current_element.contents[0], NavigableString) and
-                                        len(current_element.contents[0].replace('\n', '').strip()) == 0)))
-                           # sometimes it is another element that has no text (edge case)
-                           or current_element.text == ''))))):
-                current_element = current_element.previous_element
+        elif is_bold(current_element) or is_centered(current_element) or is_italic(
+                current_element) or is_colored(current_element):
 
-            # Sometimes the title will just be the Navigable String, so go to parent to capture the tag (which includes style):
-            if isinstance(current_element, NavigableString):
-                current_element = current_element.parent
+                current_text = current_element.text.strip()
+                total_text = '{} {}'.format(current_text, total_text) if current_text not in total_text else total_text
 
-            # TODO Current fix for the following (it takes the 't' only)
-            '''<p style="font-family:'Times New Roman';font-size:10pt;margin:0pt;"><b style="font-weight:bold;">Consolidated Balance Shee</b><b style="font-weight:bold;">t</b></p>'''
-            if len(current_element.text) == 1:
-                while isinstance(current_element.previous_element, NavigableString):
-                    current_element = current_element.previous_element.previous_element
-                continue
+        current_element = current_element.previous_element
 
-            # TODO Also add is_colored function
-            if is_bold(current_element) or is_centered(current_element) or is_italic(current_element):
-                # sometimes the previous element is a detail of the title (i.e. (in thousands)), usually bracketed
-                if re.search('^\((.*?)\)\*?$', current_element.text.strip()) \
-                        or current_element.text.strip().replace('\u200b', '') == '' \
-                        or re.search(financial_statements_scraper.date_regex, current_element.text.strip()) \
-                        or (current_element.name == 'font' and re.search('^div$|^p$', current_element.parent.name)) \
-                        or re.search('(Form 10-K|\d{2})', current_element.text.strip(), re.IGNORECASE):
-                    continue
-                else:  # TODO add space between words (separated by capital letter)
-                    return unicodedata.normalize("NFKD", current_element.text).strip() \
-                        .replace('\n', ' ').strip().replace('(', '').replace(')', '')
+    total_text = unicodedata.normalize("NFKD", total_text) \
+        .replace('\u200b', '').replace('(', '').replace(')', '').replace('\n', ' ').strip()
 
-            elif re.search('The following table', current_element.text, re.IGNORECASE):
-                emergency_title = current_element.text
-
-        # if we reached here, then we haven't found bold/centered/italic
-        if len(emergency_title) > 0:
-            return emergency_title.replace('(', '').replace(')', '')
-        else:
-            return 'No Table Title'
-    except:
-        traceback.print_exc()
-        return 'No Table Title'
+    return (emergency_title, table_multiplier) if len(total_text) == 0 else (total_text, table_multiplier)
 
 
 def normalization_iteration(regexes_dict,
@@ -313,6 +276,8 @@ def normalization_iteration(regexes_dict,
                     # otherwise it is flexible if it should just match the category (i.e. assets, other expenses...)
 
                     if flexible_entry:
+                        if re.search('Operating Activities', scraped_name):
+                            print('')
                         if found_and_done:
                             break
 
@@ -321,6 +286,7 @@ def normalization_iteration(regexes_dict,
                                 break
                             match = re.search(cat, normalized_category)
                             if match and re.search(cat, scraped_name):
+
                                 # print(match.groups())
                                 category = match.groups()[0]
                                 already_have_it = False
@@ -357,12 +323,12 @@ def normalization_iteration(regexes_dict,
     return visited_data_names, master_dict
 
 
-@implementer(financial_statements_scraper.FinancialStatementsParserInterface)
+@implementer(main_scraper.FinancialStatementsParserInterface)
 class HtmlParser:
     non_current, current = '((?=.*non[- ]?current)|(?=.*long-term))', '(?!.*non[- ]?current)(?=.*(current|short-term))'
     non_cash_flow, cash_flow = '(?!.*(Increase|Decrease|Change))', '(?=.*(Increase|Decrease|Change))'
     payments, proceeds = '(?=.*(Payments to Acquire|Purchases of|Payment)(?!.*[_:]))', '(?=.*(Proceeds from|Sales of)(?!.*[_:]))'
-    operating_activities, financing_activities, investing_activities = '(?=.*Operating Activities)', '(?=.*Financing Activities)', '(?=.*Investing Activities)'
+    operating_activities, financing_activities, investing_activities = '(?=.*(Operating|Operations))', '(?=.*Financing)', '(?=.*Investing)'
 
     financial_entries_regexes = {
         'Balance Sheet': {
@@ -438,15 +404,14 @@ class HtmlParser:
                         'Other Accounts Payable': r'(?=.*(Accounts|Partners) Payable){}'.format(non_cash_flow),
                         'Operating Lease, Liability, Current': r'(?=.*Liabilit(y|ies)(?!.*[_:]))(?=.*Operating lease){}{}'.format(
                             current, non_cash_flow),
-                        'Current Deferred Revenues': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue)){}{}'.format(
-                            current, non_cash_flow),
+
                         'Employee-related Liabilities, Current': r'(?=.*Accrued Compensation){}{}'.format(current,
                                                                                                           non_cash_flow),
                         'Accrued Income Taxes': r'(?=.*Accrued)(?=.*Income)(?=.*Taxes){}{}'.format(current,
                                                                                                    non_cash_flow),
                         'Accrued Liabilities, Current': r'(?=.*Accrued)(?=.*(Expense|Liabilities)){}{}'.format(current,
                                                                                                                non_cash_flow),
-                        'Deferred Revenue, Current': r'((?=.*Deferred revenue and deposits)|(?=.*Contract With Customer Liability)){}{}'.format(
+                        'Deferred Revenue, Current': r'(?=.*(Deferred Revenue)|(Short-term unearned revenue)){}{}'.format(
                             current, non_cash_flow),
                         'Income Taxes Payable': r'((?=.*Income taxes payable)|(?=.*Short-term Income taxes)){}{}'.format(
                             current, non_cash_flow),
@@ -486,7 +451,7 @@ class HtmlParser:
                         'Common Stock, Value, Issued': r'(?=.*Common (stock|shares)(?!.*[_]))(?!.*treasury)(?!.*additional paid[- ]in capital(?!.*[_]))(?!.*(beginning|change))',
                         'Additional Paid in Capital': r'(?=.*additional paid[- ]in capital(?!.*[_]))(?!.*Common stock(?!.*[_]))',
                         'Common Stocks, Including Additional Paid in Capital': r'(?=.*Common stock(?!.*[_]))(?=.*additional paid[- ]in capital(?!.*[_]))',
-                        'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?!.*dilut(ed|ive))(?!.*earnings(?!.*[_]))',
+                        'Weighted Average Number of Shares Outstanding, Basic': r'(?=.*shares)(?=.*basic)(?!.*earnings(?!.*[_]))',
                         'Weighted Average Number Diluted Shares Outstanding Adjustment': r'(?=.*dilutive)(?=.*effect(?!.*[_:]))',
                         'Weighted Average Number of Shares Outstanding, Diluted': r'(?=.*shares)(?=.*diluted)(?!.*earnings(?!.*[_]))',
                     },
@@ -519,7 +484,7 @@ class HtmlParser:
                     'Marketing Expense': r'(?!.*(Sales|selling))(?=.*Marketing)',
                     'Selling and Marketing Expense': r'(?=.*(Sales|Selling))(?=.*Marketing)',
                     'General and Administrative Expense': r'(?=.*General)(?=.*Administrative)(?!.*Selling)',
-                    'Selling, General and Administrative': r'(?=.*Selling, general and administrative)'
+                    'Selling, General and Administrative Expense': r'(?=.*Selling, general and administrative)'
                 },
                 'Other Operating Expenses': r'$^',  # TODO
                 'EBITDA': r'$^',
@@ -540,14 +505,14 @@ class HtmlParser:
 
             'Income (Loss) before Income Taxes, Noncontrolling Interest': r'(((?=.*Income)(?=.*Before)(?=.*Provision for)?(?=.*(income )?taxes))|Pre-tax earnings)(?!.*(Domestic|Extraordinary|Foreign))',
             'Income Tax Expense (Benefit)': r'(((?=.*Provision for)(?=.*(income )?taxes))|(?=.*Income Tax Expense))(?!.*Before)',
-            'Net Income (Loss), Including Portion Attributable to Noncontrolling Interest': r'(?=.*(Net income|earnings))(?=.*(including|before))(?=.*(attributable|allocated|applicable|available))(?=.*non-?controlling interest)',
+            'Net Income (Loss), Including Portion Attributable to Noncontrolling Interest': r'(?=.*(Net income|earnings))(?=.*(including|before))(?=.*non-?controlling interest)',
             'Net Income (Loss) Attributable to Noncontrolling (Minority) Interest': r'(?=.*(Net income|earnings))(?=.*(attributable|allocated|applicable|available))(?=.*non-?controlling interest)',
             'Net Income (Loss) Attributable to Parent': r'(?=.*Net (income|earnings|loss)$)|(^_Net Income Loss$)',
             'Undistributed Earnings (Loss) Allocated to Participating Securities, Basic': r'(?=.*(Net income|earnings))(?=.*(attributable|allocated|applicable|available))(?=.*participating securities)',
             'Preferred Stock Dividends': r'(?=.*Preferred stock dividends)',
-            'Net Income (Loss) Available to Common Stockholders, Basic': r'(?=.*(Net income|earnings))(?=.*(attributable|allocated|applicable|available))(?=.*common stockholders)',
-            'Other Comprehensive Income (Loss)': r'$^',
-            'Comprehensive Income (Loss), Net of Tax, Attributable to Parent': r'(?=.*Comprehensive Income)(?!.*Other)'
+            'Net Income (Loss)': r'(?=.*(Net income|earnings))(?=.*(attributable|allocated|applicable|available))(?=.*common stockholders)?(?!.*non-?controlling interest)',
+            'Earnings Per Share, Basic': '(?=.*Earnings per share)(?=.*basic)',
+            'Earnings Per Share, Diluted': '(?=.*Earnings per share)(?=.*diluted)',
 
         },
         'Cash Flow Statement': {
@@ -651,10 +616,11 @@ class HtmlParser:
         filings_dictio_quarterly = get_filings_urls_second_layer(doc_links_quarterly)
         return {'Yearly': filings_dictio_yearly, 'Quarterly': filings_dictio_quarterly}
 
-    def scrape_tables(self, url: str, filing_date: datetime, filing_type: str) -> dict:
+    def scrape_tables(self, url: str, filing_date: datetime.datetime, filing_type: str) -> dict:
         global only_year
         response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        html = response.text
+        soup = BeautifulSoup(html, 'lxml')
         '''BeautifulSoup Usage
         html = urllib2.urlopen(url).read()
         bs = BeautifulSoup(html)
@@ -681,7 +647,8 @@ class HtmlParser:
             driver.get(url)
             sleep(2)
             html = driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
+
+            soup = BeautifulSoup(html, 'lxml')
 
         for table in soup.findAll('table'):
             columns = []
@@ -689,7 +656,12 @@ class HtmlParser:
             header_found = False
             indented_list = []
             rows = table.find_all('tr')
-            table_title, table_currency, table_multiplier = '', '', ''
+            table_title, table_multiplier = find_table_meta(table=table)
+            if table_multiplier == 'percentage':
+                continue
+            elif table_title == 'No Table Title':
+                table_multiplier = 1
+
             first_level = ''  # that's for whether the table is yearly of quarterly
             for index, row in enumerate(rows):
 
@@ -710,9 +682,20 @@ class HtmlParser:
                     max_date_index = 0
                     # if 'th' tag found or table data with bold, then found a potential header for the table
                     if len(row.find_all('th')) != 0 or is_bold(row):
+
+                        # here, as a first step, we're crossing the elements of first rows (i.e.
+                        # if there is June 30 in one row then 2018 and 2019 in other row, the columns
+                        # become June 30 2018 and June 30 2019
                         if len(columns) == 0:
                             columns = reg_row
                         else:
+                            # example: the same row has June 30     2018    2019
+                            if len(reg_row) > 2 and not re.search(year_regex_four, reg_row[0]) \
+                                    and not re.search(month_abc_regex, reg_row[1]):
+                                for i in range(1, len(reg_row)):
+                                    reg_row[i] = reg_row[0] + reg_row[i]
+                                reg_row = reg_row[1:]
+
                             if len(columns) < len(reg_row):
                                 ratio = int(len(reg_row) / len(columns))
                                 col_len = len(columns)
@@ -729,55 +712,41 @@ class HtmlParser:
                                     for col in range(len(columns)):
                                         columns[col] = columns[col] + ' ' + r
 
-                        # sometimes same title (i.e. if table is split in two pages, they repeat page title twice
-                        table_multiplier, table_currency = find_meta_table_info(table)
-                        table_title = find_table_title(table=table)
-                        # TODO if table title includes 'parent company', skip
-                        if table_multiplier == 'percentage':  # TODO ?
-                            break
-                            # normalizing to units in 1000s
-                        elif re.search('million', table_multiplier, re.IGNORECASE):
-                            table_multiplier = 1000
-                        elif re.search('billion', table_multiplier, re.IGNORECASE):
-                            table_multiplier = 1000000
-                        elif re.search('thousand', table_multiplier, re.IGNORECASE):
-                            table_multiplier = 1
-                        else:
-                            table_multiplier = 0.001
-
                         format_match = False
                         dates = []
                         only_year = False
+
+                        # title can hold things like 'Years ended December 31', so extract date and add to columns
+                        match_in_title = re.search(r'({}).*?({})'.format(month_abc_regex, day_no_regex), table_title)
+
                         for col in columns:
                             # Filing for June 30, 2019:
                             # Fiscal year 2019  September   December    March   June --> september and december are 2018
-                            if only_year:
-                                break
+
+                            if match_in_title:
+                                col = ' '.join(match_in_title.groups()) + ' ' + col
+
                             match = re.search(flexible_month_day_year_regex, col) or re.search(
                                 month_slash_day_slash_year_regex, col) or re.search(only_year_regex, col)
                             if match:
-                                for dts in ['%b %d %Y', '%m/%d/%y', '%Y']:
+                                for dts in ['%b %d %Y', '%m/%d/%y']:
                                     try:
-                                        if re.search(only_year_regex,
-                                                     col):  # when only year, need to make exception because we'll only keep the data from that year (we won't do the other since we don't have filing dates yet)
-                                            dates.append(filing_date)
-                                            format_match = True
-                                            only_year = True
-                                            break
                                         # print(match.groups())
-                                        col_formatted_date = datetime.strptime(' '.join(match.groups()), dts).date()
-                                        col_formatted_date = datetime(col_formatted_date.year, col_formatted_date.month,
-                                                                      col_formatted_date.day)
+                                        col_formatted_date = datetime.datetime.strptime(' '.join(match.groups()),
+                                                                                        dts).date()
+                                        col_formatted_date = datetime.datetime(col_formatted_date.year,
+                                                                               col_formatted_date.month,
+                                                                               col_formatted_date.day)
                                         # ascending = True if dates[0] < dates[1] else False
                                         if col_formatted_date > filing_date:
-                                            col_formatted_date = datetime(col_formatted_date.year - 1,
-                                                                          col_formatted_date.month,
-                                                                          col_formatted_date.day)
+                                            col_formatted_date = datetime.datetime(col_formatted_date.year - 1,
+                                                                                   col_formatted_date.month,
+                                                                                   col_formatted_date.day)
                                         dates.append(col_formatted_date)
                                         format_match = True
                                         break
                                     except:
-                                        traceback.print_exc()
+                                        pass
 
                         # relevant_indexes = [i for i, x in enumerate(columns) if not re.search(r'Six|Nine|Change', x, re.IGNORECASE)]
                         # if only_year:
@@ -790,8 +759,6 @@ class HtmlParser:
                             header_found = True
                             header_index = index
                             # first_bolded_index = next(i for i, v in enumerate(indented_list) if v[2])
-
-
                     else:
                         continue
 
@@ -812,11 +779,11 @@ class HtmlParser:
                     while len(indented_list) > 0 and current_left_margin <= indented_list[-1][0]:
 
                         if current_left_margin == indented_list[-1][0]:
-
-                            if indented_list[-1][2] or indented_list[-1][
-                                1].isupper():  # if last element of list is bold
+                            # if last element of list is bold
+                            if indented_list[-1][2] or indented_list[-1][1].isupper():
                                 if is_bold(row, alltext=True) or row.text.isupper():  # if current row is bold
-                                    indented_list.pop()  # remove that last element of list (new bold overrides old bold)
+                                    # remove that last element of list (new bold overrides old bold)
+                                    indented_list.pop()
                                     break  # and stop popping
                                 else:
                                     break  # otherwise, just subentry so don't pop
@@ -912,7 +879,7 @@ class HtmlParser:
                                                                   visited_data_names=visited_data_names,
                                                                   year=filing_date, flexible_sheet=False,
                                                                   flexible_entry=True)
-        pprint(master_dict)
+        # pprint(master_dict)
         # TODO Final Standardization, Fill in Differences!
 
         if np.isnan(master_dict["Balance Sheet_Liabilities and Shareholders' Equity_Liabilities_Total Liabilities"]):
@@ -925,3 +892,21 @@ class HtmlParser:
                     shareholders_equity_incl_minority) else shareholders_equity)
 
         return visited_data_names, excel_helpers.flatten_dict(excel_helpers.unflatten(master_dict))
+
+
+if __name__ == '__main__':
+    testing = {}
+    htmlParser = HtmlParser()
+    financials_dictio = {}
+    for sheet_period, sheet_dict in testing.items():
+        visited_data_names = {}
+        if sheet_period not in financials_dictio.keys():
+            financials_dictio[sheet_period] = {}
+        for year, title_dict in sheet_dict.items():
+            if year not in financials_dictio[sheet_period].keys():
+                financials_dictio[sheet_period][year] = {}
+            visited_data_names, financials_dictio[sheet_period][year] = \
+                htmlParser.normalize_tables(regex_patterns=HtmlParser.regex_patterns, filing_date=year,
+                                            input_dict=title_dict, visited_data_names=visited_data_names)
+        pprint(visited_data_names)
+    pprint(financials_dictio)

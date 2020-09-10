@@ -1,7 +1,7 @@
 from functools import partial
 import portfolio_management.portfolio_simulator as simulator
 import fundamental_analysis.accounting_ratios as ratios
-import fundamental_analysis.financial_metrics as metrics
+import fundamental_analysis.supporting_metrics as metrics
 import fundamental_analysis.financial_statements_entries as entries
 
 
@@ -88,8 +88,11 @@ def Graham_Defensive_Investor_Strategy():
 
 
 def Graham_Enterprising_Investor_Strategy():
-    '''Benjamin Graham - The Intelligent Investor
+    '''
+    Benjamin Graham - The Intelligent Investor
+
     Style: Value Investing
+
     Investment Goal: Maximization of Investment Returns
     '''
     pass
@@ -97,13 +100,16 @@ def Graham_Enterprising_Investor_Strategy():
 
 def Graham_Net_Net_Strategy():
     '''Benjamin Graham - The Intelligent Investor
+
     Style: Value Investing
     '''
     pass
 
 
 def Magic_Formula_Investing():
-    '''Joel Greenblatt - The Little Book That Beats the Market
+    '''
+    Joel Greenblatt - The Little Book That Beats the Market
+
     - Establish a minimum market capitalization (usually greater than $50 million).
     - Exclude utility and financial stocks.
     - Exclude foreign companies (American Depositary Receipts).
@@ -120,6 +126,7 @@ def Magic_Formula_Investing():
 def Cornerstone_Growth_Approach():
     '''
     James O'Shaughnessy - What Works on Wall Street
+
     Style: Growth Investing
     :return:
     '''
@@ -127,9 +134,11 @@ def Cornerstone_Growth_Approach():
 
 
 def Traditional_Defensive_Investing():
-    '''A defensive investment strategy entails
+    '''
+    A defensive investment strategy entails
      - regular portfolio rebalancing to maintain one's intended asset allocation;
      - buying high-quality, short-maturity bonds and blue-chip stocks;
      - diversifying across both sectors and countries;
-     - placing stop loss orders; and holding cash and cash equivalents in down markets'''
+     - placing stop loss orders; and holding cash and cash equivalents in down markets
+     '''
     pass

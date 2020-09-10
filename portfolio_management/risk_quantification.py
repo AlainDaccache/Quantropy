@@ -12,7 +12,7 @@ import fundamental_analysis.financial_modeling.asset_pricing_models as asset_pri
 from scipy.stats import norm
 import numpy.random as nrand
 
-from fundamental_analysis import macroeconomic_factors
+from fundamental_analysis import macroeconomic_analysis
 
 '''
 The main point here is that we want to construct a portfolio, i.e. assign weights to selected assets,
@@ -258,9 +258,9 @@ def risk_measures_wrapper(risk_measure: partial, portfolio_returns, from_date=No
 
     if 'risk_free_rates' in inspect.signature(risk_measure.func).parameters.keys():
         risk_free_rates, portfolio_returns = excel.slice_resample_merge_returns(
-            benchmark=macroeconomic_factors.risk_free_rates(from_date=from_date,
-                                                            to_date=to_date,
-                                                            freq='Daily'), portfolio=portfolio_returns,
+            benchmark=macroeconomic_analysis.risk_free_rates(from_date=from_date,
+                                                             to_date=to_date,
+                                                             freq='Daily'), portfolio=portfolio_returns,
             from_date=from_date, to_date=to_date, period='Daily')
         risk_measure = partial(risk_measure, risk_free_rates=risk_free_rates)
 

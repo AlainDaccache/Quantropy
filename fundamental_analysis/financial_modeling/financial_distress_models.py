@@ -3,11 +3,11 @@ import os
 import pickle
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as financials
-import fundamental_analysis.financial_metrics as metrics
+import fundamental_analysis.supporting_metrics as metrics
 import fundamental_analysis.accounting_ratios as ratios
 import numpy as np
 import config
-from fundamental_analysis import macroeconomic_factors
+from fundamental_analysis import macroeconomic_analysis
 
 
 def piotroski_f_score(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
@@ -182,7 +182,7 @@ def altman_z_score(stock: str, date: datetime = datetime.now(), lookback_period:
 def ohlson_o_score(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                    period: str = 'TTM'):
     TA = financials.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
-    GNP = macroeconomic_factors.gross_national_product_price_index(date)
+    GNP = macroeconomic_analysis.gross_national_product_price_index(date)
     TL = financials.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
     WC = metrics.net_working_capital(stock=stock, date=date, lookback_period=lookback_period, period=period)
     CL = financials.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)

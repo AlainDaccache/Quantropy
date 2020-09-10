@@ -1,19 +1,11 @@
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
-import fundamental_analysis.financial_metrics as me
+import fundamental_analysis.supporting_metrics as me
 import historical_data_collection.excel_helpers as excel
 import fundamental_analysis.financial_modeling.asset_pricing_models as required_rr
-import fundamental_analysis.macroeconomic_factors as macro
+import fundamental_analysis.macroeconomic_analysis as macro
 import numpy as np
 from functools import partial
-
-
-def cash_flow_growth_rate(cash_flow_type: partial, stock, periods: int = 5, date=datetime.now(),
-                          lookback_period=timedelta(days=0), period: str = 'FY'):
-    ls = [cash_flow_type(stock=stock, date=date - timedelta(days=365 * i if period == 'FY' else 90 * i),
-                         lookback_period=lookback_period, period=period)
-          for i in range(0, periods)]
-    return excel.average_growth(ls[::-1])  # reverse
 
 
 def cost_of_preferred_stock(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = 'FY'):
@@ -51,7 +43,7 @@ def cost_of_equity_ddm(stock, date=datetime.now(), lookback_period=timedelta(day
 
     this_period_dividend = me.dividend_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                                  diluted_shares=diluted_shares)
-    growth_rate = cash_flow_growth_rate(cash_flow_type=partial(me.dividend_per_share), stock=stock, date=date,
+    growth_rate = metric_growth_rate(metric=partial(me.dividend_per_share), stock=stock, date=date,
                                         lookback_period=lookback_period, period=period)
     next_period_dividend = this_period_dividend * (1 + growth_rate)
     return (next_period_dividend / stock_price) + growth_rate

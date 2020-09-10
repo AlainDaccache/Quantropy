@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
-import fundamental_analysis.financial_metrics as me
+import fundamental_analysis.supporting_metrics as me
 import historical_data_collection.excel_helpers as excel
 from fundamental_analysis.financial_modeling.equity_valuation_modeling.cost_of_capital import \
     weighted_average_cost_of_capital
-from fundamental_analysis.financial_modeling.equity_valuation_modeling.equity_valuation_models import \
-    growth_rate_PRAT_model
+import fundamental_analysis.financial_modeling.equity_valuation_modeling.equity_valuation_models as valuation
 
 '''
 Liquidity ratios are financial ratios that measure a company’s ability to repay both short- and long-term obligations.
@@ -13,43 +12,70 @@ Liquidity ratios are financial ratios that measure a company’s ability to repa
 
 
 def current_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                  period: str = '') -> float:
+                  period: str = 'Q') -> float:
     """
     The current ratio measures a company’s ability to pay off short-term liabilities with current assets.
-    Current Ratio = Current Assets / Current Liabilities
 
-    :param stock:
-    :param date:
-    :param lookback_period:
-    :param period:
-    :return:
+    Category: Liquidity Ratio
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: Current Assets / Current Liabilities
     """
     return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# The acid-test ratio (or Quick ratio) measures a company’s ability to pay off short-term liabilities with quick assets
-# Acid-test ratio = Liquid Assets / Current liabilities
 def acid_test_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                    period: str = ''):
+                    period: str = 'Q'):
+    """
+    The acid-test ratio (or quick ratio) measures a company’s ability to pay off short-term liabilities with quick assets
+
+    Category: Liquidity Ratio
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: Liquid Assets / Current liabilities
+    """
     return me.liquid_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# The cash ratio measures a company’s ability to pay off short-term liabilities with cash and cash equivalents
-# Cash ratio = (Cash and Cash equivalents + Current Marketable Securities) / Current Liabilities
 def cash_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-               period: str = ''):
+               period: str = 'Q'):
+    """
+    The cash ratio measures a company’s ability to pay off short-term liabilities with cash and cash equivalents
+
+    Category: Liquidity Ratio
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: (Cash and Cash equivalents + Current Marketable Securities) / Current Liabilities
+    """
     return (fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period)
             + fi.current_marketable_securities(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# The operating cash flow ratio is a measure of the number of times a company can pay off current liabilities with the cash generated in a given period
-# Operating cash flow ratio = Operating cash flow / Current liabilities
 def operating_cash_flow_ratio(stock: str, date: datetime = datetime.now(),
-                              lookback_period: timedelta = timedelta(days=0),
-                              period: str = ''):
+                              lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+    """
+    The operating cash flow ratio is a measure of the number of times a company can pay off current liabilities with the cash generated in a given period
+
+    Category: Liquidity Ratio
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: Operating Cash Flow / Current liabilities
+    """
     return fi.cash_flow_operating_activities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
@@ -59,70 +85,102 @@ Leverage ratios measure the amount of capital that comes from debt. In other wor
 '''
 
 
-def debt(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-         period: str = '',
-         only_interest_expense=False,  # any interest-bearing liability to qualify
-         all_liabilities=False,  # including accounts payable and deferred income
-         long_term_debt=True,  # and its associated currently due portion (measures capital structure)
-         exclude_current_portion_long_term_debt=False  # if true then also above should be true
-         ):
-    if long_term_debt:
-        if not exclude_current_portion_long_term_debt:
-            return fi.total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period)
-        else:
-            return fi.long_term_debt_excluding_current_portion(stock=stock, date=date, lookback_period=lookback_period,
-                                                               period=period)
+def debt_ratio(stock: str, date: datetime = datetime.now(),
+               lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+    """
+    The debt ratio measures the relative amount of a company’s assets that are provided from debt
 
-    if all_liabilities:
-        return fi.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    Category: Leverage Ratios
 
-    if only_interest_expense:
-        return fi.interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
-
-
-# The debt ratio measures the relative amount of a company’s assets that are provided from debt
-# Debt ratio = Total liabilities / Total assets
-def debt_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-               period: str = ''):
-    return debt(stock=stock, date=date, lookback_period=lookback_period, period=period, all_liabilities=True) \
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: Total liabilities / Total assets
+    """
+    return fi.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def asset_to_equity(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                    period: str = ''):
+                    period: str = 'Q'):
+    '''
+    The asset/equity ratio indicates the relationship of the total assets of the firm to the part owned by shareholders (aka, owner's equity)
+
+    Category: Leverage Ratios
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return:
+    '''
     total_assets = fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
     total_equity = fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period)
     return total_assets / total_equity
 
 
-# The debt to equity ratio calculates the weight of total debt and financial liabilities against shareholders’ equity
-# Debt to equity ratio = Total liabilities / Shareholder’s equity
 def debt_to_equity(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                   period: str = '',
+                   period: str = 'Q',
                    only_interest_expense=False, all_liabilities=False, only_long_term_debt=True,
                    exclude_current_portion_long_term_debt=False):
-    return debt(stock=stock, date=date, lookback_period=lookback_period, period=period,
-                only_interest_expense=only_interest_expense, all_liabilities=all_liabilities,
-                long_term_debt=only_long_term_debt,
-                exclude_current_portion_long_term_debt=exclude_current_portion_long_term_debt) \
+    '''
+    The debt to equity ratio calculates the weight of total debt and financial liabilities against shareholders’ equity
+
+    Category: Leverage Ratios
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :param only_interest_expense:
+    :param all_liabilities:
+    :param only_long_term_debt:
+    :param exclude_current_portion_long_term_debt:
+    :return: Debt to equity ratio = Total liabilities / Shareholder’s equity
+    '''
+    return me.debt(stock=stock, date=date, lookback_period=lookback_period, period=period,
+                   only_interest_expense=only_interest_expense, all_liabilities=all_liabilities,
+                   long_term_debt=only_long_term_debt,
+                   exclude_current_portion_long_term_debt=exclude_current_portion_long_term_debt) \
            / fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def debt_to_capital(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                    period: str = '',
-                    interest_expense=False, all_liabilities=False, long_term_debt=True):
-    total_debt = debt(stock=stock, date=date, lookback_period=lookback_period, period=period,
-                      only_interest_expense=interest_expense, all_liabilities=all_liabilities,
-                      long_term_debt=long_term_debt)
+                    period: str = 'Q', interest_expense=False, all_liabilities=False, long_term_debt=True):
+    '''
+    A company's debt-to-capital ratio or D/C ratio is the ratio of its total debt to its total capital, its debt and equity combined. The ratio measures a company's capital structure, financial solvency, and degree of leverage, at a particular point in time.
+
+    Category: Leverage Ratios
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :param interest_expense:
+    :param all_liabilities:
+    :param long_term_debt:
+    :return:
+    '''
+    total_debt = me.debt(stock=stock, date=date, lookback_period=lookback_period, period=period,
+                         only_interest_expense=interest_expense, all_liabilities=all_liabilities,
+                         long_term_debt=long_term_debt)
 
     return total_debt / (total_debt + fi.total_shareholders_equity(stock=stock, date=date,
                                                                    lookback_period=lookback_period, period=period))
 
 
-# The interest coverage ratio shows how easily a company can pay its interest expenses
-# Interest coverage ratio = Operating income / Interest expenses
 def interest_coverage_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                             period: str = ''):
+    '''
+    The interest coverage ratio shows how easily a company can pay its interest expenses
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :return: Operating income / Interest expenses
+    '''
     return me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
@@ -134,9 +192,7 @@ def interest_coverage_ratio(stock: str, date: datetime = datetime.now(), lookbac
 # amount of operating income available for debt repayment.
 # TODO Review
 def debt_service_coverage_ratio(stock: str, date: datetime = datetime.now(),
-                                lookback_period: timedelta = timedelta(days=0),
-                                period: str = '',
-                                with_capex=False):
+                                lookback_period: timedelta = timedelta(days=0), period: str = '', with_capex=False):
     numerator = fi.operating_income(stock=stock, date=date, lookback_period=lookback_period, period=period)
     numerator -= abs(me.capital_expenditures(stock=stock, date=date, lookback_period=lookback_period,
                                              period=period)) if with_capex else 0
@@ -218,6 +274,17 @@ def receivables_turnover_ratio(stock: str, date: datetime = datetime.now(),
 
 def days_sales_outstanding(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                            period: str = ''):
+    """
+    Days sales outstanding is a calculation used by a company to estimate the size of their outstanding
+    accounts receivable. It measures this size not in units of currency, but in average sales days.
+    Typically, days sales outstanding is calculated monthly
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return: Net Accounts Receivables / Net Sales
+    """
     return fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / (fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) / 365)
 
@@ -267,9 +334,17 @@ def operating_profit_margin(stock, date=datetime.now(), lookback_period=timedelt
            / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# The return on assets ratio measures how efficiently a company is using its assets to generate profit
-# Return on assets ratio = Net income / Total assets
+
 def return_on_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = ''):
+    """
+    The return on assets ratio measures how efficiently a company is using its assets to generate profit
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return: Net income / Total assets
+    """
     return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
@@ -321,22 +396,53 @@ Market value ratios are used to evaluate the share price of a company’s stock.
 '''
 
 
-# The book value per share ratio calculates the per-share value of a company based on equity available to shareholders
-# Book value per share ratio = Shareholder’s equity / Total shares outstanding
 def book_value_per_share(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = '',
                          diluted_shares: bool = False):
+    '''
+    The book value per share ratio calculates the per-share value of a company based on equity available to shareholders
+
+    Subcategory: Equity Value Ratios
+
+    Category: Market Value Ratios
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :param diluted_shares:
+    :return: Shareholder’s equity / Total shares outstanding
+    '''
     return fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                          diluted_shares=diluted_shares)
 
 
-# The earnings per share ratio measures the amount of net income earned for each share outstanding:
-# Earnings per share ratio = Net earnings / Total shares outstanding
-# Compared with Earnings per share, a company's cash flow is better indicator of the company's earnings power.
-# If a company's earnings per share is less than cash flow per share over long term, investors need to be cautious and find out why.
+def tangible_book_value_per_share(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = '',
+                                  diluted_shares: bool = False):
+    return (fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+            - fi.total_intangible_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
+           / fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period, period=period,
+                                         diluted_shares=diluted_shares)
+
+
 def earnings_per_share(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                       period: str = '', diluted_shares: bool = False,
+                       period: str = 'TTM', diluted_shares: bool = False,
                        deduct_operating_income: bool = False, deduct_preferred_dividends: bool = True):
+    '''
+    The earnings per share ratio measures the amount of net income earned for each share outstanding
+
+    Analysis: Compared with Earnings per share, a company's cash flow is better indicator of the company's earnings power.
+    If a company's earnings per share is less than cash flow per share over long term, investors need to be cautious and find out why.
+
+    :param stock: ticker in question i.e. 'AAPL'
+    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
+    :param diluted_shares:
+    :param deduct_operating_income:
+    :param deduct_preferred_dividends:
+    :return: Net Income / Total shares outstanding
+    '''
     numerator = fi.net_income(stock=stock, date=date, lookback_period=lookback_period, period=period)
     numerator -= abs(fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period,
                                             period=period)) if deduct_preferred_dividends else 0
@@ -388,6 +494,14 @@ def price_to_book_value_ratio(stock: str, date: datetime = datetime.now(),
                                   diluted_shares=diluted_shares)
 
 
+def price_to_tangible_book_value_ratio(stock: str, date: datetime = datetime.now(),
+                                       lookback_period: timedelta = timedelta(days=0),
+                                       period: str = '', diluted_shares: bool = False):
+    return me.market_price(stock=stock, date=date, lookback_period=lookback_period) \
+           / tangible_book_value_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
+                                           diluted_shares=diluted_shares)
+
+
 def justified_price_to_book_value_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), annual=True,
                                         ttm=True,
                                         diluted=True):
@@ -404,7 +518,7 @@ def price_to_sales_ratio(stock: str, date: datetime = datetime.now(), lookback_p
 def justified_price_to_sales_ratio(stock: str, date: datetime = datetime.now(),
                                    lookback_period: timedelta = timedelta(days=0),
                                    period: str = '', diluted_shares: bool = False):
-    g = growth_rate_PRAT_model(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    g = valuation.growth_rate_PRAT_model(stock=stock, date=date, lookback_period=lookback_period, period=period)
     r = weighted_average_cost_of_capital(stock=stock, date=date, lookback_period=lookback_period, period=period)
     return net_profit_margin(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            * dividend_payout_ratio(stock=stock, date=date, lookback_period=lookback_period, period=period) \
@@ -462,16 +576,50 @@ def price_to_earnings_to_growth(stock, date=datetime.now(), lookback_period=time
                                    deduct_preferred_dividends=deduct_preferred_dividends) \
            / excel.average_growth(eps_last_5_periods[::-1])
 
+def price_to_cash_flow_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
+                             period: str = '', diluted_shares: bool = False):
+    return
 
-def ev_to_ebitda(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                 period: str = ''):
+'''Enterprise Value Ratios'''
+
+
+def enterprise_value_to_revenue(stock: str, date: datetime = datetime.now(),
+                                lookback_period: timedelta = timedelta(days=0),
+                                period: str = ''):
+    return me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period)
+
+
+def enterprise_value_to_ebitda(stock: str, date: datetime = datetime.now(),
+                               lookback_period: timedelta = timedelta(days=0),
+                               period: str = ''):
     return me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / me.earnings_before_interest_and_taxes_and_depreciation_and_amortization(stock=stock, date=date,
                                                                                      lookback_period=lookback_period,
                                                                                      period=period)
 
 
-def ev_to_sales(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                period: str = ''):
+def enterprise_value_to_ebit(stock: str, date: datetime = datetime.now(),
+                             lookback_period: timedelta = timedelta(days=0),
+                             period: str = ''):
     return me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period)
+           / me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period,
+                                                   period=period)
+
+
+def enterprise_value_to_invested_capital(stock: str, date: datetime = datetime.now(),
+                                         lookback_period: timedelta = timedelta(days=0),
+                                         period: str = ''):
+    return me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           / me.invested_capital(stock=stock, date=date, lookback_period=lookback_period, period=period)
+
+
+def enterprise_value_to_free_cash_flow(stock: str, date: datetime = datetime.now(),
+                                       lookback_period: timedelta = timedelta(days=0),
+                                       period: str = ''):
+    return me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           / me.free_cash_flow(stock=stock, date=date, lookback_period=lookback_period, period=period)
+
+
+if __name__ == '__main__':
+    print(price_to_earnings_ratio('FB', period='FY'))

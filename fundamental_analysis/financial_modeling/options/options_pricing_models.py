@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 import numpy as np
 import scipy.stats as si
 from fundamental_analysis import financial_statements_entries as fi
-from fundamental_analysis import financial_metrics as me
-from fundamental_analysis import macroeconomic_factors as macro
+from fundamental_analysis import supporting_metrics as me
+from fundamental_analysis import macroeconomic_analysis as macro
 from options_scraper.scraper import NASDAQOptionsScraper
 from options_scraper.utils import batched
 

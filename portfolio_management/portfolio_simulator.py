@@ -11,7 +11,7 @@ import config
 import fundamental_analysis.accounting_ratios as ratios
 import matplotlib.pyplot as plt
 import portfolio_management.risk_quantification as risk_measures
-from portfolio_management.portfolio_optimization import optimal_portfolio
+from portfolio_management.portfolio_optimization import optimal_portfolio_allocation
 
 plt.style.use('fivethirtyeight')
 
@@ -99,7 +99,36 @@ def helper_condition(indicator: partial, comparator: str, otherside):
         return lambda ticker, date: compare(indicator(ticker, date), comparator, otherside)
 
 
-class PortfolioDirection:
+class StockMarketIndices:
+    def sp500_index(self, date, top=500):
+        '''
+
+        :param top: Top by default 500, but other indices exist such as S&P 100 (so top=100)
+        :param date:
+        :return:
+        '''
+        pass
+
+    def russell3000_index(self, date, top=3000):
+        pass
+
+    def djia30_index(self, date, top=30):
+        pass
+
+
+"""
+def sort_df(df, column_idx, key):
+    '''Takes dataframe, column index and custom function for sorting,
+    returns dataframe sorted by this column using this function'''
+    
+    col = df.iloc[:,column_idx]
+    temp = np.array(col.values.tolist())
+    order = sorted(range(len(temp)), key=lambda j: key(temp[j]))
+    return df.iloc[order]
+"""
+
+
+class PortfolioExposure:
 
     def long_only(self):
         pass
@@ -129,79 +158,109 @@ class RebalancingFrequency:
         return timedelta(days=365)
 
 
-class Optimization:
+class PortfolioAllocation:
 
-    def equally_weighted_allocation(self):
+    def Equally_Weighted_Allocation(self, portfolio_returns):
+        output = pd.Series()
+        for ticker, stock_return in portfolio_returns.iteritems():
+            output[ticker] = 1 / len(portfolio_returns)
+        return output
+
+    def Market_Cap_Weighted_Allocation(self):
         return 0
 
-    def market_cap_weighted_allocation(self):
-        return 0
 
-    def maximize_treynor_ratio(self, portfolio_returns, benchmark_returns='^GSPC'):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.treynor_ratio,
-                                                                        benchmark_returns=benchmark_returns),
-                                                   portfolio_returns=portfolio_returns)
+class MomentsBasedOptimization(PortfolioAllocation):
+    def maximize_returns(self):
+        pass
 
-    def maximize_sharpe_ratio(self, portfolio_returns):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.sharpe_ratio),
-                                                   portfolio_returns=portfolio_returns)
+    def minimize_volatility(self):
+        pass
 
-    def maximize_information_ratio(self, portfolio_returns, benchmark_returns='^GPSC'):
-        return risk_measures.risk_measures_wrapper(
-            risk_measure=partial(risk_measures.information_ratio,
-                                 benchmark_returns=benchmark_returns),
-            portfolio_returns=portfolio_returns)
+    def maximize_kurtosis(self):
+        pass
 
-    def maximize_modigliani_ratio(self, portfolio_returns, benchmark_returns='^GPSC'):
-        return risk_measures.risk_measures_wrapper(
-            risk_measure=partial(risk_measures.modigliani_ratio, benchmark_returns=benchmark_returns),
-            portfolio_returns=portfolio_returns)
+    def minimize_skewness(self):
+        pass
 
-    def maximize_roys_safety_first_criterion(self, portfolio_returns, minimum_threshold=0.02):
-        return risk_measures.risk_measures_wrapper(
+
+class RiskAdjustedReturnsOptimization(PortfolioAllocation):
+
+    def maximize_treynor_ratio(self, portfolio_returns, benchmark_returns='^GSPC', longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(risk_measure=partial(risk_measures.treynor_ratio,
+                                                                 benchmark_returns=benchmark_returns),
+                                            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
+
+    def maximize_sharpe_ratio(self, portfolio_returns, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(risk_measure=partial(risk_measures.sharpe_ratio),
+                                            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
+
+    def maximize_information_ratio(self, portfolio_returns, benchmark_returns='^GPSC', longs: [] = None,
+                                   shorts: [] = None):
+        return optimal_portfolio_allocation(risk_measure=partial(risk_measures.information_ratio,
+                                                                 benchmark_returns=benchmark_returns),
+                                            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
+
+    def maximize_modigliani_ratio(self, portfolio_returns, benchmark_returns='^GPSC', longs: [] = None,
+                                  shorts: [] = None):
+        return optimal_portfolio_allocation(risk_measure=partial(risk_measures.modigliani_ratio,
+                                                                 benchmark_returns=benchmark_returns),
+                                            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
+
+    def maximize_roys_safety_first_criterion(self, portfolio_returns, minimum_threshold=0.02, longs: [] = None,
+                                             shorts: [] = None):
+        return optimal_portfolio_allocation(
             risk_measure=partial(risk_measures.roys_safety_first_criterion, minimum_threshold=minimum_threshold),
-            portfolio_returns=portfolio_returns)
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_excess_return_value_at_risk(self, portfolio_returns, benchmark_returns='^GSPC', confidence_level=0.05):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.excess_return_value_at_risk,
-                                                                        benchmark_returns=benchmark_returns,
-                                                                        confidence_level=confidence_level),
-                                                   portfolio_returns=portfolio_returns)
+    def maximize_excess_return_value_at_risk(self, portfolio_returns, benchmark_returns='^GSPC', confidence_level=0.05,
+                                             longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.excess_return_value_at_risk, benchmark_returns=benchmark_returns,
+                                 confidence_level=confidence_level),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_conditional_sharpe_ratio(self, portfolio_returns, confidence_level=0.05):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.conditional_sharpe_ratio,
-                                                                        confidence_level=confidence_level),
-                                                   portfolio_returns=portfolio_returns)
+    def maximize_conditional_sharpe_ratio(self, portfolio_returns, confidence_level=0.05, longs: [] = None,
+                                          shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.conditional_value_at_risk, confidence_level=confidence_level),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_jensens_alpha(self, benchmark_returns='^GSPC'):
-        return partial(risk_measures.jensens_alpha,
-                       benchmark_returns=benchmark_returns)
+    def maximize_jensens_alpha(self, portfolio_returns, benchmark_returns='^GSPC', longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.jensens_alpha, benchmark_returns=benchmark_returns),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_omega_ratio(self, portfolio_returns, target=0):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.omega_ratio, target=target),
-                                                   portfolio_returns=portfolio_returns)
+    def maximize_omega_ratio(self, portfolio_returns, target=0, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.omega_ratio, target=target),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_sortino_ratio(self, portfolio_returns, target=0):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.sortino_ratio, target=target),
-                                                   portfolio_returns=portfolio_returns)
+    def maximize_sortino_ratio(self, portfolio_returns, target=0, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.sortino_ratio, target=target),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def kappa_three_ratio(self, portfolio_returns, target=0):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.kappa_three_ratio, target=target),
-                                                   portfolio_returns=portfolio_returns)
+    def kappa_three_ratio(self, portfolio_returns, target=0, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.kappa_three_ratio, target=target),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def gain_loss_ratio(self, portfolio_returns, target=0):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.gain_loss_ratio, target=target),
-                                                   portfolio_returns=portfolio_returns)
+    def gain_loss_ratio(self, portfolio_returns, target=0, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.gain_loss_ratio, target=target),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
-    def maximize_upside_potential_ratio(self, portfolio_returns, target=0):
-        return risk_measures.risk_measures_wrapper(risk_measure=partial(risk_measures.kappa_three_ratio, target=target),
-                                                   portfolio_returns=portfolio_returns)
+    def maximize_upside_potential_ratio(self, portfolio_returns, target=0, longs: [] = None, shorts: [] = None):
+        return optimal_portfolio_allocation(
+            risk_measure=partial(risk_measures.upside_potential_ratio, target=target),
+            portfolio_returns=portfolio_returns, longs=longs, shorts=shorts)
 
 
 def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                         starting_capital: float, securities_universe: typing.List[str],
                         portfolio_rebalancing_frequency: typing.Callable, pre_filter: typing.List, factors: dict,
-                        max_stocks_count_in_portfolio: int, portfolio_direction: typing.Callable,
+                        max_stocks_count_in_portfolio: int, portfolio_exposure: typing.Callable,
                         portfolio_allocation: typing.Callable, maximum_leverage: float = 1.0,
                         reinvest_dividends: bool = False, fractional_shares: bool = False,
                         include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
@@ -280,9 +339,9 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
             print(factors_df.to_string())
 
             # Stocks to go long and/or short on
-            if portfolio_direction.__name__ == 'long_only':
+            if portfolio_exposure.__name__ == 'long_only':
                 long_stocks, short_stocks = stock_screener_df.index[:max_stocks_count_in_portfolio], []
-            elif portfolio_direction.__name__ == 'short_only':
+            elif portfolio_exposure.__name__ == 'short_only':
                 long_stocks, short_stocks = [], stock_screener_df.index[-max_stocks_count_in_portfolio:]
             else:  # long and short
                 long_stocks, short_stocks = stock_screener_df.index[:math.floor(max_stocks_count_in_portfolio / 2)], \
@@ -302,8 +361,7 @@ def portfolio_simulator(starting_date: datetime, ending_date: datetime,
                 to_date = excel.get_date_index(date, stock.price_data.index)
                 portfolio_returns[stock.ticker] = stock.price_data['Adj Close'].iloc[:to_date].pct_change()
 
-            weights = optimal_portfolio(returns=portfolio_returns, longs=long_stocks, shorts=short_stocks,
-                                        risk_measure=portfolio_allocation)
+            weights = portfolio_allocation(portfolio_returns=portfolio_returns, longs=long_stocks, shorts=short_stocks)
 
             # Place Positions (Rebalance Portfolio)
             # First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
@@ -406,7 +464,7 @@ if __name__ == '__main__':
                                  'Volatility': pd.Series(),
                                  'Dividend': pd.Series()},
                         max_stocks_count_in_portfolio=2,
-                        portfolio_direction=PortfolioDirection().long_only,
-                        portfolio_allocation=Optimization().maximize_jensens_alpha(),
+                        portfolio_exposure=PortfolioExposure().long_only,
+                        portfolio_allocation=RiskAdjustedReturnsOptimization().maximize_jensens_alpha,
                         portfolio_rebalancing_frequency=RebalancingFrequency().monthly
                         )
