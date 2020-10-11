@@ -190,18 +190,18 @@ def get_stock_universe(index='in_directory', date=datetime.now()):
     return tickers.to_list()
 
 
-def slice_resample_merge_returns(portfolio, benchmark=None,
-                                 from_date=None, to_date=None,
+def slice_resample_merge_returns(returns: list, from_date=None, to_date=None,
                                  period='Monthly'):
-    if isinstance(portfolio, str):
-        path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
-        portfolio_returns = read_df_from_csv(path)['Adj Close'].pct_change()
-    elif isinstance(portfolio, pd.Series):
-        portfolio_returns = portfolio
-    else:
-        raise Exception
-    # Slice and resample portfolio (or asset) returns
+    for retrn in returns:
+        if isinstance(returns[0], str):
+            path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
+            portfolio_returns = read_df_from_csv(path)['Adj Close'].pct_change()
+        elif isinstance(returns[0], pd.Series):
+            portfolio_returns = portfolio
+        else:
+            raise Exception
 
+    # Slice and resample returns
     if to_date is None:
         to_date = portfolio_returns.index[-1]
     if from_date is None:

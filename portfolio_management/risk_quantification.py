@@ -114,9 +114,9 @@ def hpm(returns, threshold, order):
 
 
 # example usage
-r = nrand.uniform(-1, 1, 50)
-print('hpm(0.0)_1 = ', hpm(r, 0.0, 1))
-print('lpm(0.0)_1 = ', lpm(r, 0.0, 1))
+# r = nrand.uniform(-1, 1, 50)
+# print('hpm(0.0)_1 = ', hpm(r, 0.0, 1))
+# print('lpm(0.0)_1 = ', lpm(r, 0.0, 1))
 
 '''
 Drawdown risk is the maximum (or average) historical 'drawdown' of the portfolio. 
@@ -272,12 +272,12 @@ def risk_measures_wrapper(risk_measure: partial, portfolio_returns, from_date=No
 - The window (from which date to which date)
 For example, some services calculate 'during the last 3 years, the 30 days X is Y'''
 
-if __name__ == '__main__':
-    path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, 'AAPL')
-    portfolio_returns = excel.read_df_from_csv(path)['Adj Close'].pct_change()
-
-    risk = risk_measures_wrapper(risk_measure=partial(sharpe_ratio),
-                                 portfolio_returns=portfolio_returns,
-                                 from_date=datetime.now() - timedelta(days=3 * 365),
-                                 to_date=datetime.now())
-    print(risk)
+# if __name__ == '__main__':
+#     path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, 'AAPL')
+#     portfolio_returns = excel.read_df_from_csv(path)['Adj Close'].pct_change()
+#
+#     risk = risk_measures_wrapper(risk_measure=partial(sharpe_ratio),
+#                                  portfolio_returns=portfolio_returns,
+#                                  from_date=datetime.now() - timedelta(days=3 * 365),
+#                                  to_date=datetime.now())
+#     print(risk)
