@@ -1,12 +1,9 @@
 from datetime import timedelta, datetime
 from functools import partial
-from typing import Callable
 import numpy as np
-from fundamental_analysis import accounting_ratios, macroeconomic_analysis, supporting_metrics
-from historical_data_collection import excel_helpers as excel
-import pandas as pd
+from fundamental_analysis import accounting_ratios
+from fundamental_analysis import macroeconomic_analysis
 from scipy import stats
-import fundamental_analysis.financial_statements_entries as fi
 
 
 # def metric_per_share(metric: Callable, diluted_shares=False):

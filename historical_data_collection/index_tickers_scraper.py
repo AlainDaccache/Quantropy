@@ -8,15 +8,16 @@ from bs4 import BeautifulSoup
 import os
 
 
-def store_to_excel(file_path, tickers):
+def store_to_csv(file_path, tickers):
     current_date = datetime.now().strftime('%Y-%m-%d')
     if not os.path.exists(file_path):
-        df = pd.DataFrame.from_dict({current_date: tickers}, orient='index')
-        df.to_excel(file_path)
+        df = pd.DataFrame.from_dict({current_date: tickers})
+        df.to_csv(file_path)
     else:
-        df = pd.read_excel(file_path, index_col=0)
+        df = pd.read_csv(file_path, index_col=0)
         df[current_date] = tickers
-        df.to_excel(file_path)
+        df = df.T
+        df.to_csv(file_path)
 
 
 def save_current_nasdaq():
@@ -24,7 +25,7 @@ def save_current_nasdaq():
             'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqtraded.txt']
     main_df = pd.DataFrame()
     for url in urls:
-        path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, config.MARKET_TICKERS_DIR_NAME, 'NASDAQ_Listed.txt')
+        path = os.path.join(config.MARKET_EXCHANGES_DIR_PATH, 'NASDAQ_Listed.txt')
         urllib.request.urlretrieve(url, path)
         if main_df.empty:
             main_df = pd.read_csv(path, sep="|")[:-1]
@@ -37,8 +38,8 @@ def save_current_nasdaq():
             main_df.sort_index(inplace=True)
             main_df = main_df[~main_df.index.str.contains('\$')]  # this is to remove derived asset classes
         os.remove(path)
-    store_to_excel(file_path=os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Nasdaq-Stocks-Tickers.xlsx'),
-                   tickers=main_df.index)
+    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'Nasdaq-Stocks-Tickers.xlsx'),
+                 tickers=main_df.index)
 
     return main_df.index
 
@@ -54,8 +55,8 @@ def save_current_dow_jones_tickers():
         ticker = ticker.strip()
         tickers.append(ticker)
 
-    store_to_excel(file_path=os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx'),
-                   tickers=tickers)
+    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'Dow-Jones-Stock-Tickers.csv'),
+                 tickers=tickers)
 
     return tickers
 
@@ -70,27 +71,27 @@ def save_current_sp500_tickers():
         ticker = row.findAll('td')[0].text
         ticker = ticker.strip()
         tickers.append(ticker)
-    store_to_excel(file_path=os.path.join(config.MARKET_TICKERS_DIR_PATH, 'S&P-500-Stock-Tickers.xlsx'),
-                   tickers=tickers)
+    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Stock-Tickers.csv'),
+                 tickers=tickers)
     return tickers
 
 
 def url_to_excel_clean_to_df(url: str, output_name: str, skiprows: int = 0):
-    path = os.path.join(config.MARKET_TICKERS_DIR_PATH, output_name)
+    path = os.path.join(config.MARKET_INDICES_DIR_PATH, output_name)
     urllib.request.urlretrieve(url, path)
     df = pd.read_excel(pd.ExcelFile(path), index_col=0, skiprows=skiprows, warn_bad_lines=False, error_bad_lines=False)
     os.remove(path)
     print(df.to_string())
     tickers = list(df.index)
-    file_path = os.path.join(config.MARKET_TICKERS_DIR_PATH, output_name)
-    store_to_excel(file_path=file_path, tickers=tickers)
+    file_path = os.path.join(config.MARKET_INDICES_DIR_PATH, output_name)
+    store_to_csv(file_path=file_path, tickers=tickers)
     return tickers
 
 
 def save_current_russell_3000_tickers():
     return url_to_excel_clean_to_df(
         url="http://www.beatthemarketanalyzer.com/blog/wp-content/uploads/2016/10/Russell-3000-Stock-Tickers-List.xlsx",
-        output_name='Russell-3000-Stock-Tickers.xlsx',
+        output_name='Russell-3000-Stock-Tickers.csv',
         skiprows=3)
 
 
@@ -106,8 +107,9 @@ def historical_sp500_ticker():
 
 
 if __name__ == '__main__':
-    # save_current_sp500_tickers()
+    save_current_sp500_tickers()
     save_current_dow_jones_tickers()
     # save_current_nasdaq()
-    # save_current_russell_3000_tickers()
+    save_current_russell_3000_tickers()
     # save_total_us_stock_market_tickers()
+    # save_current_amex()

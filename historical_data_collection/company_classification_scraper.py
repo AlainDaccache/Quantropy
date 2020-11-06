@@ -17,6 +17,7 @@ import numpy as np
 import os
 import config
 import historical_data_collection.excel_helpers as excel
+from fundamental_analysis.macroeconomic_analysis import companies_in_exchange
 
 
 def save_gics():
@@ -94,10 +95,15 @@ def save_gics():
 
 
 def get_company_meta():
-    df = pd.read_excel(os.path.join(config.MARKET_TICKERS_DIR_PATH, "Nasdaq-Stocks-Tickers.xlsx"), index_col=0)
-    nasdaq_tickers = df.iloc[0].tolist()
+    '''
+    TODO: Need to do this for all companies ever listed, not only current.
+    :return:
+    '''
+
+    init_df = pd.read_excel(os.path.join(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET),
+                            skiprows=7, index_col=0)
+    tickers = init_df.index.tolist()
     driver = webdriver.Chrome(ChromeDriverManager().install())
-    comp_list = []
 
     sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',
                           (10, 14 + 1): 'Mining',
@@ -110,15 +116,16 @@ def get_company_meta():
                           (70, 89 + 1): 'Services',
                           (90, 99 + 1): 'Public Administration'}
 
+    exchanges_dict = {'AMEX': companies_in_exchange('AMEX'),
+                      'NYSE': companies_in_exchange('NYSE'),
+                      'NASDAQ': companies_in_exchange('NASDAQ')}
+
     with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pickle"),
               "rb") as f:
         country_codes = pickle.load(f)
-
-    tickers = excel.get_stock_universe(index='DJIA')
-    for ticker in tickers:
-        security_name, industry, sector, cik, state_location = '', '', '', '', ''
-        sic_code = 0
-
+    edgar_dict = {}
+    for ticker in tickers[:100]:
+        edgar_dict[ticker] = {}
         try:
             for i in range(2):  # just try again if didn't work first time, might be advertisement showed up
                 try:
@@ -165,24 +172,32 @@ def get_company_meta():
 
                 soup = BeautifulSoup(resp, 'html.parser')
                 # name = soup.find('span', class_='companyName').text.split(' CIK')[0]
-                security_name = titlecase(re.compile(r'(.*) CIK#').findall(soup.text)[0])
-                cik = re.compile(r'.*CIK#: (\d{10}).*').findall(soup.text)[0]
+                edgar_dict[ticker]['Company Name'] = titlecase(re.compile(r'(.*) CIK#').findall(soup.text)[0])
+                edgar_dict[ticker]['CIK'] = re.compile(r'.*CIK#: (\d{10}).*').findall(soup.text)[0]
+
                 ident_info = soup.find('p', class_="identInfo")
-                industry = ident_info.find('br').previousSibling.split('- ')[-1]
+                edgar_dict[ticker]['SIC Industry'] = str(ident_info.find('br').previousSibling.split('- ')[-1]).title()
                 sic_code = re.search(r'(\d{4})', ident_info.text).group()
                 country_code = re.compile(r'.*State location: (..)').findall(soup.text)[0]
                 for type, code_dict in country_codes.items():
                     if country_code in code_dict.keys():
-                        state_location = type + '/' + code_dict[country_code]
+                        edgar_dict[ticker]['Location'] = type + '/' + code_dict[country_code]
                         break
+
+                for exchange, tickers in exchanges_dict.items():
+                    if ticker in tickers:
+                        if 'Exchange' in edgar_dict[ticker].keys():
+                            edgar_dict[ticker]['Exchange'] += '|' + exchange
+                        else:
+                            edgar_dict[ticker]['Exchange'] = exchange
 
                 for key, value in sic_codes_division.items():
                     if int(sic_code[0]) == 0:
                         if int(sic_code[1]) in range(key[0], key[1]):
-                            sector = value
+                            edgar_dict[ticker]['SIC Sector'] = value
                             break
                     elif int(sic_code[:2]) in range(key[0], key[1]):
-                        sector = value
+                        edgar_dict[ticker]['SIC Sector'] = value
                         break
 
                 break
@@ -191,21 +206,14 @@ def get_company_meta():
         except:
             driver.get('https://www.sec.gov/edgar/searchedgar/companysearch.html')
 
-        finally:
-            comp_list.append([ticker,
-                              security_name,
-                              industry.title(),
-                              sector.title(),
-                              sic_code,
-                              cik,
-                              state_location])
-            print(comp_list[-1])
-
-    comp_df = pd.DataFrame(comp_list,
-                           columns=['Ticker', 'Company Name', 'Industry', 'Sector', 'SIC Code', 'CIK', 'Location'])
-    comp_df.set_index('Ticker', inplace=True)
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Nasdaq-Companies.xlsx')
-    comp_df.to_excel(path, engine='xlsxwriter')
+    edgar_df = pd.DataFrame.from_dict(edgar_dict, orient='index')
+    init_df.rename(columns={'Sector': 'GICS Sector'}, inplace=True)
+    init_df = init_df[['GICS Sector', 'Asset Class']]
+    df = edgar_df.join(init_df)
+    df = df[['Company Name', 'SIC Industry', 'SIC Sector', 'GICS Sector', 'Location', 'CIK', 'Exchange', 'Asset Class']]
+    # df = pd.concat([edgar_df, init_df], axis=1)
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Stock-Market.xlsx')
+    df.to_excel(path, engine='xlsxwriter')
 
 
 def save_country_codes():

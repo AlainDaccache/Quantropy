@@ -2,6 +2,7 @@ import traceback
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pprint import pprint
+from historical_data_collection.financial_statements_scraper.ScraXBRL.DataViewer import *
 
 import requests
 import re
@@ -361,17 +362,23 @@ class XbrlParser:
                         all_in_one_dict[period][filing_date][''][tag_name] = tag_value
         return all_in_one_dict
 
-    def normalize_tables(self, regex_patterns, filing_date, input_dict, visited_data_names) -> (dict, dict):
+    def normalize_tables(self, filing_date, input_dict, visited_data_names) -> (dict, dict):
         """Standardize tables to match across years and companies"""
         master_dict = {}
-        for normalized_category, pattern_string in excel_helpers.flatten_dict(regex_patterns).items():
+        for normalized_category, pattern_string in excel_helpers.flatten_dict(self.regex_patterns).items():
             master_dict[normalized_category] = np.nan
 
         for title, table in input_dict.items():
             for scraped_name, scraped_value in excel_helpers.flatten_dict(table).items():
-                for normalized_category, pattern_string in excel_helpers.flatten_dict(regex_patterns).items():
+                for normalized_category, pattern_string in excel_helpers.flatten_dict(self.regex_patterns).items():
                     if re.search(pattern_string, scraped_name, re.IGNORECASE):
                         master_dict[normalized_category] = scraped_value
                         break
         pprint(master_dict)
         return {}, master_dict
+
+
+
+if __name__ == '__main__':
+    facebook = DataView('FB', '2019-12-31', '10-K')
+    facebook.traverse_tree('StatementOfFinancialPositionClassified')

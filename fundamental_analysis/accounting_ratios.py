@@ -2,9 +2,8 @@ from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
 import fundamental_analysis.supporting_metrics as me
 import historical_data_collection.excel_helpers as excel
-from fundamental_analysis.financial_modeling.equity_valuation_modeling.cost_of_capital import \
-    weighted_average_cost_of_capital
-import fundamental_analysis.financial_modeling.equity_valuation_modeling.equity_valuation_models as valuation
+from fundamental_analysis.equity_valuation_modeling.cost_of_capital import weighted_average_cost_of_capital
+import fundamental_analysis.equity_valuation_modeling.equity_valuation_models as valuation
 
 '''
 Liquidity ratios are financial ratios that measure a company’s ability to repay both short- and long-term obligations.
@@ -431,7 +430,7 @@ def earnings_per_share(stock: str, date: datetime = datetime.now(), lookback_per
     '''
     The earnings per share ratio measures the amount of net income earned for each share outstanding
 
-    Analysis: Compared with Earnings per share, a company's cash flow is better indicator of the company's earnings power.
+    research_tools: Compared with Earnings per share, a company's cash flow is better indicator of the company's earnings power.
     If a company's earnings per share is less than cash flow per share over long term, investors need to be cautious and find out why.
 
     :param stock: ticker in question i.e. 'AAPL'
@@ -493,6 +492,12 @@ def price_to_book_value_ratio(stock: str, date: datetime = datetime.now(),
            / book_value_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                   diluted_shares=diluted_shares)
 
+
+def book_value_to_price_ratio(stock: str, date: datetime = datetime.now(),
+                              lookback_period: timedelta = timedelta(days=0),
+                              period: str = '', diluted_shares: bool = False):
+    return 1 / price_to_book_value_ratio(stock=stock, date=date, lookback_period=lookback_period,
+                                         period=period, diluted_shares=diluted_shares)
 
 def price_to_tangible_book_value_ratio(stock: str, date: datetime = datetime.now(),
                                        lookback_period: timedelta = timedelta(days=0),
@@ -576,6 +581,7 @@ def price_to_earnings_to_growth(stock, date=datetime.now(), lookback_period=time
                                    deduct_preferred_dividends=deduct_preferred_dividends) \
            / excel.average_growth(eps_last_5_periods[::-1])
 
+
 def price_to_cash_flow_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                              period: str = '', diluted_shares: bool = False):
     return
@@ -622,4 +628,4 @@ def enterprise_value_to_free_cash_flow(stock: str, date: datetime = datetime.now
 
 
 if __name__ == '__main__':
-    print(price_to_earnings_ratio('FB', period='FY'))
+    print(price_to_earnings_ratio('AAPL', period='FY'))

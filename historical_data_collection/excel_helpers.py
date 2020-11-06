@@ -4,11 +4,15 @@ import traceback
 from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
+import typing
+from openpyxl.styles import PatternFill
 import config
 from openpyxl import load_workbook
 import numpy as np
 import xlrd
 from typing import Callable
+
+from historical_data_collection.financial_statements_scraper.financial_statements_scraper import quarterlize_statements
 
 
 def get_date_index(date, dates_values, lookback_index=0):
@@ -70,7 +74,7 @@ def save_into_csv(filename, df, sheet_name='Sheet1', startrow=None,
                 writer.book.create_sheet(sheet_name, idx)
                 df = pd.concat([df, sheet_df], axis=1)
                 df = df.reindex(sorted(df.columns, reverse=True), axis=1)
-            except:
+            except Exception:
                 traceback.print_exc()
 
         # truncate sheet
@@ -190,54 +194,86 @@ def get_stock_universe(index='in_directory', date=datetime.now()):
     return tickers.to_list()
 
 
-def slice_resample_merge_returns(returns: list, from_date=None, to_date=None,
-                                 period='Monthly'):
+def find_series_from_string(str):
+    if str == 'MKT':
+        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM')
+        df = read_df_from_csv(path, sheet_name='Daily')
+        series = pd.Series(df['Mkt-RF'] + df['RF'], name='MKT')
+
+    elif str in ['RF', 'HML', 'SMB']:
+        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 3 Factor')
+        series = pd.Series(read_df_from_csv(path, sheet_name='Daily')[str], name=str)
+
+    elif str in ['CMA', 'RMW']:
+        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 5 Factor')
+        series = pd.Series(read_df_from_csv(path)[str], name=str)
+    else:
+        path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, str)
+        series = pd.Series(read_df_from_csv(path)['Adj Close'].pct_change(), name=str)
+    return series
+
+
+# def load_stocks_returns(stocks: typing.List):
+#     portfolio_returns = pd.DataFrame()
+#     for stock in stocks:
+#         path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, stock)
+#         series = read_df_from_csv(path)['Adj Close'].pct_change().rename(stock)
+#         portfolio_returns = portfolio_returns.join(series.to_frame(), how='outer')
+#     return portfolio_returns
+
+
+def slice_resample_merge_returns(returns: list, from_date=None, to_date=None, lookback: timedelta = timedelta(days=0)):
+    '''
+
+    :param returns:
+    :param from_date:
+    :param to_date:
+    :param lookback:
+    :return:
+    '''
+    maximum_frequency = 'D'
+
+    # Load each asset returns and merge
+    idx = 0
     for retrn in returns:
-        if isinstance(returns[0], str):
-            path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, portfolio)
-            portfolio_returns = read_df_from_csv(path)['Adj Close'].pct_change()
-        elif isinstance(returns[0], pd.Series):
-            portfolio_returns = portfolio
+        if isinstance(retrn, str):
+            returns[idx] = find_series_from_string(retrn)
+            idx += 1
+        elif isinstance(retrn, pd.Series):
+            pass
+        elif isinstance(retrn, pd.DataFrame):
+            for col in retrn.columns:
+                returns[idx] = retrn.loc[col]
+                idx += 1
         else:
             raise Exception
 
-    # Slice and resample returns
-    if to_date is None:
-        to_date = portfolio_returns.index[-1]
-    if from_date is None:
-        from_date = to_date - timedelta(days=5 * 365)
+        # Find maximum frequency (we'll use that one to resample the rest of the series)
+        # freq_ordered = ['D', 'W', 'M', 'Y']
+        # print(pd.infer_freq(index=returns[idx].index))
+        # if freq_ordered.index(returns[idx].index.inferred_freq) > freq_ordered.index(maximum_frequency):
+        #     maximum_frequency = freq_ordered
 
-    date_idx_from = get_date_index(from_date, portfolio_returns.index)
-    date_idx_to = get_date_index(to_date, portfolio_returns.index)
-    portfolio_returns = portfolio_returns[date_idx_from:date_idx_to]
-    portfolio_returns = portfolio_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
-    portfolio_returns = portfolio_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+    # Resample based on maximum frequency and merge
+    merged_returns = pd.DataFrame()
+    for retrn in returns:
+        resampled_returns = retrn.resample(maximum_frequency).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+        merged_returns = merged_returns.join(resampled_returns.to_frame(), how='outer')
+
+    # Cutoff based on from_date and to_date
+    to_date = min([series.index[-1] for series in returns]) if to_date is None else to_date
+    to_date_idx = get_date_index(date=to_date, dates_values=merged_returns.index)
+    from_date = to_date - lookback if from_date is None else from_date
+    from_date_idx = get_date_index(date=from_date, dates_values=merged_returns.index)
+    merged_returns = merged_returns.iloc[from_date_idx:to_date_idx]
+
+    for col in merged_returns.columns:
+        merged_returns[col] = merged_returns[col].apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
+
     # Resample usually resets date to beginning of day, so we re-do the end of day trick:
-    portfolio_returns.index = portfolio_returns.index + timedelta(days=1) - timedelta(seconds=1)
+    merged_returns.index = merged_returns.index + timedelta(days=1) - timedelta(seconds=1)
 
-    if benchmark is None:
-        df = read_df_from_csv(path='{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM'), sheet_name=period)
-        benchmark_returns = df['Mkt-RF'] + df['RF']
-
-    elif isinstance(benchmark, str):
-        df = read_df_from_csv(path='{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, benchmark))
-        benchmark_returns = df['Adj Close'].pct_change()
-    elif isinstance(benchmark, pd.Series):
-        benchmark_returns = benchmark
-    else:
-        raise Exception
-    benchmark_returns = benchmark_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
-    benchmark_returns = benchmark_returns.resample(period[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
-    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
-    benchmark_returns.index = benchmark_returns.index + timedelta(days=1) - timedelta(seconds=1)
-
-    benchmark_returns.rename('Benchmark', inplace=True)
-    portfolio_returns.rename('Portfolio', inplace=True)
-    merged_df = pd.concat([benchmark_returns, portfolio_returns], axis=1).dropna()
-    benchmark_returns, portfolio_returns = merged_df['Benchmark'], merged_df['Portfolio']
-    benchmark_returns = benchmark_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
-    portfolio_returns = portfolio_returns.apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
-    return benchmark_returns, portfolio_returns
+    return merged_returns
 
 
 def unflatten(dictionary):
@@ -268,6 +304,119 @@ def flatten_dict(d, parent_key='', sep='_'):
         else:
             items.append((new_key, v))
     return dict(items)
+
+
+def save_pretty_excel(path, financials_dictio):
+    for sheet_name in [config.income_statement_name, config.cash_flow_statement_name]:
+        for sheet_period, sheet_dict in financials_dictio.items():
+
+            # keep 2 levels for the Income Statement and Cash Flow i.e.
+            #   Operating Expenses -> Research and Development Expense -> Value
+            #   Cash Flow from Financing Activities -> Dividend Payments -> Value
+
+            diction = collections.OrderedDict({i: collections.OrderedDict({
+                (j.split('_')[1], j.split('_')[-1]): sheet_dict[i][j]
+                for j in sheet_dict[i].keys() if j.split('_')[0] in sheet_name  # sheet name
+            }) for i in sheet_dict.keys()})  # )  # date
+
+            df = pd.DataFrame.from_dict(diction)
+            df = df.reindex(sorted(df.columns, reverse=True), axis=1)
+            df.dropna(axis=0, how='all', inplace=True)
+            df = df.loc[:, df.any()]
+            if not df.empty:
+                save_into_csv(path, df, '{} ({})'.format(sheet_name, sheet_period))
+
+    #  this is to standardize cumulated 3 6 9 12 months
+    # for quarterly_statement in [config.cash_flow_statement_quarterly, config.income_statement_quarterly]:
+    #
+    #     try:
+    #         quarterly_df = pd.read_excel(path, quarterly_statement, index_col=[0, 1])
+    #     except:
+    #         pass
+    #     temp_statements = config.income_statements if quarterly_statement == config.income_statement_quarterly else config.cash_flow_statements
+    #     for i, item in enumerate(temp_statements):
+    #         try:
+    #             smaller_period_df = pd.read_excel(path, item, index_col=[0, 1])
+    #             bigger_period_df = pd.read_excel(path, temp_statements[i + 1], index_col=[0, 1])
+    #             quarterly_df = pd.concat([quarterly_df,
+    #                                       quarterlize_statements(smaller_period_df, bigger_period_df,
+    #                                                              quarterly_df.columns)],
+    #                                      axis=1)
+    #         except:
+    #             pass
+    # try:
+    #     quarterly_df = quarterly_df.reindex(sorted(quarterly_df.columns, reverse=True), axis=1)
+    #     print(quarterly_df.to_string())
+    #     save_into_csv(path, quarterly_df, quarterly_statement, overwrite_sheet=True)
+    # except:
+    #     pass
+
+    #  then you can remove the 6 and 9 months sheets
+    book = load_workbook(path)
+    with pd.ExcelWriter(path, engine='openpyxl') as writer:
+        writer.book = book
+        writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+        for sheet_name in writer.book.sheetnames:
+            if config.six_months in sheet_name or config.nine_months in sheet_name:
+                writer.book.remove(writer.book[sheet_name])
+        writer.book.save(path)
+        writer.close()
+
+    # special case for balance sheet (no cumulative so can skip the whole 6/9 months standardization)
+    balance_sheet_df = pd.DataFrame()
+    for sheet_name in [config.balance_sheet_name]:
+        for sheet_period in [config.yearly, config.quarterly]:
+            # only keep 3 levels of dictionary for Balance Sheet i.e.
+            #   Assets -> Current Assets -> Cash Equivalents -> Value
+            #   Liabilities & Shareholders' Equity -> Liabilities -> Accounts Payable -> Value
+
+            diction = collections.OrderedDict(
+                {i: collections.OrderedDict({(entry_name.split('_')[1],
+                                              entry_name.split('_')[2] if (len(entry_name.split('_')) > 2) else ' ',
+                                              entry_name.split('_')[-1]): financials_dictio[sheet_period][i][entry_name]
+                                             for entry_name in financials_dictio[sheet_period][i].keys() if
+                                             entry_name.split('_')[0] in sheet_name
+                                             }) for i in financials_dictio[sheet_period].keys()})  # date
+
+            # Because Balance Sheet is a statement of position, the quarterly statement that has the same
+            # date as the yearly statement, will have the same information. Sometimes reports avoid explicitly
+            # specifying a balance sheet for a certain quarter for that reason, so we need to consider the case.
+            balance_sheet_df = pd.concat([balance_sheet_df, pd.DataFrame.from_dict(diction)], axis=1, join='outer')
+
+        # since we might have duplicate columns after concatenating, we drop the duplicated ones
+        balance_sheet_df = balance_sheet_df.loc[:, ~balance_sheet_df.columns.duplicated()]
+        # keep the yearly balance sheets as a separate df
+        balance_sheet_yearly = balance_sheet_df[financials_dictio['Yearly'].keys()]  # now can extract the yearly
+
+        for datafrme, period in zip([balance_sheet_yearly, balance_sheet_df], [config.yearly, config.quarterly]):
+            datafrme = datafrme.reindex(sorted(datafrme.columns, reverse=True), axis=1)
+            datafrme.dropna(axis=0, how='all', inplace=True)
+            datafrme = datafrme.loc[:, datafrme.any()]
+            if not datafrme.empty:
+                save_into_csv(path, datafrme, '{} ({})'.format(sheet_name, period))
+
+    #  finally, paint alternate rows to excel file
+    book = load_workbook(path)
+    with pd.ExcelWriter(path, engine='openpyxl') as writer:
+        if os.path.exists(path):
+            writer.book = book
+            writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+    for sheet_name in writer.book.sheetnames:
+        sheet = writer.book[sheet_name]
+        df = pd.read_excel(path, sheet_name)
+
+        start_column_space_for_index = 3 if config.balance_sheet_name in sheet_name else 2
+        end_column_space_for_index = len(df.columns) + start_column_space_for_index - 1 \
+            if config.balance_sheet_name not in sheet_name else len(df.columns) + start_column_space_for_index - 2
+        row_space_for_index = 2
+        for i in range(start_column_space_for_index, end_column_space_for_index):  # x-axis
+            for j in range(row_space_for_index, len(df) + row_space_for_index):  # y-axis
+                color = 'EEEEEE' if j % 2 == 0 else 'FFFFFF'  # integer odd-even alternation
+                sheet.cell(row=j, column=i).fill = PatternFill(start_color=color,
+                                                               fill_type='solid')
+
+    writer.book.save(path)
+    writer.close()
 
 
 if __name__ == '__main__':

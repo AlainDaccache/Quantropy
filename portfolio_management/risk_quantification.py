@@ -1,23 +1,19 @@
-import inspect
 import math
-from datetime import datetime, timedelta
-from functools import partial
 
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
-import historical_data_collection.excel_helpers as excel
-import config
-import fundamental_analysis.financial_modeling.asset_pricing_models as asset_pricing_models
+import portfolio_management.asset_pricing_models as asset_pricing_models
 from scipy.stats import norm
-import numpy.random as nrand
-
-from fundamental_analysis import macroeconomic_analysis
 
 '''
+The methods in this field serve as utility functions for our portfolio optimization
+
+
 The main point here is that we want to construct a portfolio, i.e. assign weights to selected assets,
 in a way that maximizes returns for the level of risk we are taking. While returns of a portfolio of assets
 is easy to compute (weighted average of individual asset returns), quantifying risk is more intricate.
+It is not simply a linear combination of individual risks. 
 Traditional measures included measuring the standard deviation (or variance) as a proxy for risk, and then used to 
 discount the returns. However, many problems arise with this assumption, as we will see below.
 '''
@@ -242,29 +238,6 @@ def roys_safety_first_criterion(portfolio_returns, minimum_threshold=0.02, perio
 
 # Regarding time horizon. If you have a mean for a horizon of 10 days, and a volatility over a year, then
 # you can convert that volatility to be over the horizon as VOL * np.sqrt(10/252)
-
-def risk_measures_wrapper(risk_measure: partial, portfolio_returns, from_date=None, to_date=None):
-    if from_date is None:
-        from_date = portfolio_returns.index[0]
-
-    if to_date is None:
-        to_date = portfolio_returns.index[-1]
-
-    if 'benchmark_returns' in risk_measure.keywords.keys():
-        benchmark_returns, portfolio_returns = excel.slice_resample_merge_returns(
-            benchmark=risk_measure.keywords['benchmark_returns'], portfolio=portfolio_returns,
-            from_date=from_date, to_date=to_date, period='Daily')
-        risk_measure = partial(risk_measure, benchmark_returns=benchmark_returns)
-
-    if 'risk_free_rates' in inspect.signature(risk_measure.func).parameters.keys():
-        risk_free_rates, portfolio_returns = excel.slice_resample_merge_returns(
-            benchmark=macroeconomic_analysis.risk_free_rates(from_date=from_date,
-                                                             to_date=to_date,
-                                                             freq='Daily'), portfolio=portfolio_returns,
-            from_date=from_date, to_date=to_date, period='Daily')
-        risk_measure = partial(risk_measure, risk_free_rates=risk_free_rates)
-
-    return risk_measure(portfolio_returns=portfolio_returns)
 
 
 '''Two main variables that will cause differing results:

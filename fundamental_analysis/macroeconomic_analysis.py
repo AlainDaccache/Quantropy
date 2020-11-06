@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import config
 import historical_data_collection.excel_helpers as excel
 import pandas as pd
@@ -46,29 +48,55 @@ def cumulative_market_premium(from_date, to_date):
     return cumulative_factors_helper(df=df, from_date=from_date, to_date=to_date)
 
 
-def companies_in_industry(industry: str):
-    df = pd.read_excel(os.path.join(config.DATA_DIR_PATH, 'Nasdaq-Companies.xlsx'), index_col='Ticker')
+
+
+def companies_in_industry(industry: str, date=datetime.now()):
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
     return df[df['Industry'] == industry].index
 
 
-def companies_in_sector(sector: str):
-    df = pd.read_excel(os.path.join(config.DATA_DIR_PATH, 'Nasdaq-Companies.xlsx'), index_col='Ticker')
+def companies_in_sector(sector: str, date=datetime.now()):
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
     return df[df['Sector'] == sector].index
 
 
-# TODO Make a class for Stock
+def companies_in_location(location: str, date=datetime.now()):
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
+    return df[df['Location'].str.contains(location)].index
+
+
+def companies_in_exchange(exchange: str, date=datetime.now()):
+    path = os.path.join(config.MARKET_EXCHANGES_DIR_PATH, '{}.txt'.format(exchange))
+    df = pd.read_csv(filepath_or_buffer=path, sep='\t', header=0)
+    return list(df['Symbol'])
+
+
+def companies_in_index(market_index: str, date=datetime.now()):
+    path = os.path.join(config.MARKET_INDICES_DIR_PATH, '{}-Stock-Tickers.csv'.format(market_index))
+    df = pd.read_csv(path, parse_dates=True, index_col=0)
+    idx = excel.get_date_index(date, df.columns)
+    return list(df.iloc[:, idx])
 
 
 def company_cik(ticker: str):
-    df = pd.read_excel(os.path.join(config.DATA_DIR_PATH, 'Nasdaq-Companies.xlsx'), index_col='Ticker')
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
     return df['CIK'].loc[ticker]
 
 
 def company_industry(ticker: str):
-    df = pd.read_excel(os.path.join(config.DATA_DIR_PATH, 'Nasdaq-Companies.xlsx'), index_col='Ticker')
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
     return df['Industry'].loc[ticker]
 
 
-def company_sector(ticker: str):
-    df = pd.read_excel(os.path.join(config.DATA_DIR_PATH, 'Nasdaq-Companies.xlsx'), index_col='Ticker')
-    return df['Sector'].loc[ticker]
+def company_sector(ticker: str, type: str = 'GICS'):
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
+    return df['{} Sector'.format(type)].loc[ticker]
+
+
+def company_location(ticker: str):
+    df = pd.read_excel(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET, index_col=0)
+    return df['Location'].loc[ticker]
+
+
+if __name__ == '__main__':
+    print(companies_in_index('S&P-500'))

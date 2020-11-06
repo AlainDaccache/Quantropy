@@ -10,9 +10,13 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR_NAME = 'data'
 DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
 
-MARKET_TICKERS_DIR_NAME = 'historical_indices_constituents'
-MARKET_TICKERS_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_TICKERS_DIR_NAME)
+MARKET_INDICES_DIR_NAME = 'historical_indices_constituents'
+MARKET_INDICES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_INDICES_DIR_NAME)
+MARKET_INDICES_TOTAL_US_STOCK_MARKET = os.path.join(MARKET_INDICES_DIR_PATH, 'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.xlsx')
 
+
+MARKET_EXCHANGES_DIR_NAME = 'historical_exchanges_constituents'
+MARKET_EXCHANGES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_EXCHANGES_DIR_NAME)
 FACTORS_DIR_NAME = 'factors_data'
 FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, FACTORS_DIR_NAME)
 
@@ -25,7 +29,7 @@ STOCK_PRICES_DIR_PATH = os.path.join(DATA_DIR_PATH, STOCK_PRICES_DIR_NAME)
 MACRO_DATA_FILE_NAME = 'Macro-Data.xlsx'
 MACRO_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, MACRO_DATA_FILE_NAME)
 
-COMPANY_META_DATA_FILE_NAME = 'Nasdaq-Companies.xlsx'
+COMPANY_META_DATA_FILE_NAME = 'Companies_Metadata.xlsx'
 COMPANY_META_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, COMPANY_META_DATA_FILE_NAME)
 
 stock_prices_sheet_name = 'Stock Prices'
