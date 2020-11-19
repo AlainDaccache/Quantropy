@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import config
-from historical_data_collection import excel_helpers
+from historical_data_collection import data_preparation_helpers
 
 
 class MomentumFactors:
@@ -55,7 +55,7 @@ class MomentumFactors:
 
 if __name__ == '__main__':
     stock = 'AAPL'
-    prices = excel_helpers.read_df_from_csv('{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, stock))['Adj Close']
+    prices = data_preparation_helpers.read_df_from_csv('{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, stock))['Adj Close']
     # One year percentage price change
     momo_1_a = MomentumFactors(prices=prices, frequency='Years', window_size=1).traditional()
     # Six months percentage price change

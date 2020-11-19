@@ -16,7 +16,7 @@ from pprint import pprint
 import numpy as np
 import os
 import config
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 from fundamental_analysis.macroeconomic_analysis import companies_in_exchange
 
 

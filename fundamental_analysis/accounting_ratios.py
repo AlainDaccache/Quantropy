@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
 import fundamental_analysis.supporting_metrics as me
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 from fundamental_analysis.equity_valuation_modeling.cost_of_capital import weighted_average_cost_of_capital
 import fundamental_analysis.equity_valuation_modeling.equity_valuation_models as valuation
 
@@ -333,7 +333,6 @@ def operating_profit_margin(stock, date=datetime.now(), lookback_period=timedelt
            / fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-
 def return_on_assets(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = ''):
     """
     The return on assets ratio measures how efficiently a company is using its assets to generate profit
@@ -395,7 +394,7 @@ Market value ratios are used to evaluate the share price of a company’s stock.
 '''
 
 
-def book_value_per_share(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = '',
+def book_value_per_share(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = 'Q',
                          diluted_shares: bool = False):
     '''
     The book value per share ratio calculates the per-share value of a company based on equity available to shareholders
@@ -487,7 +486,7 @@ def price_to_cash_flow_ratio(stock: str, date: datetime = datetime.now(),
 
 def price_to_book_value_ratio(stock: str, date: datetime = datetime.now(),
                               lookback_period: timedelta = timedelta(days=0),
-                              period: str = '', diluted_shares: bool = False):
+                              period: str = 'Q', diluted_shares: bool = False):
     return me.market_price(stock=stock, date=date, lookback_period=lookback_period) \
            / book_value_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                   diluted_shares=diluted_shares)
@@ -498,6 +497,7 @@ def book_value_to_price_ratio(stock: str, date: datetime = datetime.now(),
                               period: str = '', diluted_shares: bool = False):
     return 1 / price_to_book_value_ratio(stock=stock, date=date, lookback_period=lookback_period,
                                          period=period, diluted_shares=diluted_shares)
+
 
 def price_to_tangible_book_value_ratio(stock: str, date: datetime = datetime.now(),
                                        lookback_period: timedelta = timedelta(days=0),
@@ -532,8 +532,8 @@ def justified_price_to_sales_ratio(stock: str, date: datetime = datetime.now(),
 
 # The price-earnings ratio compares a company’s share price to its earnings per share:
 # Price-earnings ratio = Share price / Earnings per share
-def price_to_earnings_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                            period: str = '', diluted_shares: bool = False,
+def price_to_earnings_ratio(stock, date=datetime.now(), lookback_period: timedelta = timedelta(days=0),
+                            period: str = 'Q', diluted_shares: bool = False,
                             deduct_operating_income=False, deduct_preferred_dividends=True):
     return me.market_price(stock=stock, date=date, lookback_period=lookback_period) \
            / earnings_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
@@ -582,9 +582,11 @@ def price_to_earnings_to_growth(stock, date=datetime.now(), lookback_period=time
            / excel.average_growth(eps_last_5_periods[::-1])
 
 
-def price_to_cash_flow_ratio(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
+def price_to_cash_flow_ratio(stock: str, date: datetime = datetime.now(),
+                             lookback_period: timedelta = timedelta(days=0),
                              period: str = '', diluted_shares: bool = False):
     return
+
 
 '''Enterprise Value Ratios'''
 

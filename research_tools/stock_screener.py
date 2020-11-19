@@ -1,18 +1,12 @@
 import typing
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from functools import partial
-
-from flask import Flask, request, render_template, session, redirect
-import numpy as np
 import pandas as pd
-import os
-
 import fundamental_analysis.macroeconomic_analysis as macro
 import fundamental_analysis.accounting_ratios as ratios
-from historical_data_collection import excel_helpers
-import research_tools.factor_research as factor_models
-import portfolio_management.asset_pricing_models as pricing_model
+from config import MarketIndices, Exchanges, GICS_Sectors, Industries, Regions, SIC_Sectors
+import FactorBox.asset_pricing_models as pricing_model
 
 '''
 I. Market:
@@ -48,90 +42,12 @@ Once Filtered, user selects template for columns (inspired from TradingView)
 '''
 
 
-# Some enumerations...
-
-class Regions(Enum):
-    USA = 'United States'
-
-
-class Exchanges(Enum):
-    NASDAQ = 'NASDAQ'
-    AMEX = 'AMEX'
-    NYSE = 'NYSE'
-
-
-class MarketIndices(Enum):
-    DOW_JONES = 'Dow-Jones'
-    SP_500 = 'S&P-500'
-    RUSSELL_3000 = 'Russell-3000'
-
-
-class SIC_Sectors(Enum):
-    AGRICULTURE_FORESTRY_FISHING = 'Agriculture, Forestry, and Fishing'
-    MINING = 'Mining'
-    CONSTRUCTION = 'Construction'
-    MANUFACTURING = 'Manufacturing'
-    TRANSPORTATION_COMMUNICATIONS_ELECTRIC_GAS_SANITARY_SERVICES = 'Transportation, Communications, Electric, Gas, And Sanitary Services'
-    WHOLESALE_TRADE = 'Wholesale Trade'
-    RETAIL_TRADE = 'Retail Trade'
-    FINANCE_INSURANCE_REAL_ESTATE = 'Finance, Insurance, and Real Estate'
-    SERVICES = 'Services'
-    PUBLIC_ADMINISTRATION = 'Public Administration'
-
-
-class GICS_Sectors(Enum):
-    ENERGY = 'Energy'
-    MATERIALS = 'Materials'
-    INDUSTRIALS = 'Industrials'
-    CONSUMER_DISCRETIONARY = 'Consumer Discretionary'
-    CONSUMER_STAPLES = 'Consumer Staples'
-    HEALTHCARE = 'Health Care'
-    FINANCIALS = 'Financials'
-    INFORMATION_TECHNOLOGY = 'Information Technology'
-    TELECOMMUNICATION_SERVICES = 'Telecommunication Services'
-    UTILITIES = 'Utilities'
-    REAL_ESTATE = 'Real Estate'
-
-
-class Industries(Enum):
-    pass
-
-
-class PriceAction(Enum):
-    OPEN = 'Open'
-    HIGH = 'High'
-    LOW = 'Low'
-    CLOSE = 'Close'
-    ADJ_CLOSE = 'Adj Close'
-    VOLUME = 'Volume'
-
-
-class TimeFrame(Enum):
-    ONE_MINUTE = '1m'
-    FIVE_MINUTES = '5m'
-    FIFTEEN_MINUTES = '15m'
-    THIRTY_MINUTES = '30m'
-    ONE_HOUR = '1h'
-    FOUR_HOUR = '4h'
-    DAILY = '1D'
-    WEEKLY = 'W'
-    YEARLY = 'Y'
-
-
-class Factors(Enum):
-    MARKET = 0
-    VALUE = 0
-    SIZE = 0
-    MOMENTUM = 0
-    PROFITABILITY = 0
-    INVESTMENT = 0
-
-
 class FactorModels(Enum):
-    CAPM = partial(pricing_model.capital_asset_pricing_model)
-    FAMA_FRENCH_3 = partial(pricing_model.fama_french_3_factor_model)
-    CARHART_4 = partial(pricing_model.carhart_4_factor_model)
-    FAMA_FRENCH_5 = partial(pricing_model.fama_french_5_factor_model)
+    pass
+    # CAPM = partial(pricing_model.capital_asset_pricing_model)
+    # FAMA_FRENCH_3 = partial(pricing_model.fama_french_3_factor_model)
+    # CARHART_4 = partial(pricing_model.carhart_4_factor_model)
+    # FAMA_FRENCH_5 = partial(pricing_model.fama_french_5_factor_model)
 
 
 def helper_condition(metric, comparator, otherside):
@@ -233,23 +149,20 @@ class StockScreener:
         self.conditions.append((self.filter_by_metric_comparison, metric, comparator, otherside))
         return self.stocks
 
-    def filter_by_exposure_from_factor_model(self, factor_model: FactorModels, factor: Factors, lower_bound: int,
-                                             upper_bound: int, regression_period: int, benchmark: str = 'MKT'):
-        '''
-
-        :param factor_model:
-        :param factor:
-        :param lower_bound:
-        :param upper_bound:
-        :param regression_period:
-        :param benchmark:
-        :return:
-        '''
+    def filter_by_exposure_from_factor_model(self, factor_model: FactorModels,
+                                             lower_bound: int, upper_bound: int, regression_period: int = 36,
+                                             frequency: str = 'Monthly', factors: typing.List = None):
 
         for stock in self.stocks:
-            regression = factor_model.value(portfolio_returns=stock, benchmark_returns=benchmark,
-                                            regression_period=regression_period)
+            regression = factor_model.value(portfolio_returns=stock, regression_period=regression_period,
+                                            frequency=frequency)
             print(regression)
+
+    def filter_by_institutional_ownership_percentage(self, cutoff):
+        pass
+
+    def filter_by_institutional_holdings(self, institutions):
+        pass
 
     def undo_condition(self, condition: typing.Callable, args):
         self.conditions.remove((condition, args))
@@ -270,7 +183,7 @@ class StockScreener:
 if __name__ == '__main__':
     stock_screener = StockScreener(stocks=['AAPL', 'AMGN'])
     stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.FAMA_FRENCH_3,
-                                                        factor=Factors.VALUE,
+                                                        factors=[''],
                                                         lower_bound=20, upper_bound=40, regression_period=36)
     print(stock_screener.render_dataframe())
     # stock_screener.filter_by_metric_comparison(partial(ratios.price_to_earnings_ratio, period='Q'), '>', 2)

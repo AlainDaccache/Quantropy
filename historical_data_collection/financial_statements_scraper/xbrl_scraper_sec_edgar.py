@@ -9,7 +9,7 @@ import re
 from bs4 import BeautifulSoup, NavigableString
 from zope.interface import implementer
 import numpy as np
-from historical_data_collection import excel_helpers
+from historical_data_collection import data_preparation_helpers
 from historical_data_collection.financial_statements_scraper import financial_statements_scraper
 
 
@@ -365,12 +365,12 @@ class XbrlParser:
     def normalize_tables(self, filing_date, input_dict, visited_data_names) -> (dict, dict):
         """Standardize tables to match across years and companies"""
         master_dict = {}
-        for normalized_category, pattern_string in excel_helpers.flatten_dict(self.regex_patterns).items():
+        for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(self.regex_patterns).items():
             master_dict[normalized_category] = np.nan
 
         for title, table in input_dict.items():
-            for scraped_name, scraped_value in excel_helpers.flatten_dict(table).items():
-                for normalized_category, pattern_string in excel_helpers.flatten_dict(self.regex_patterns).items():
+            for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
+                for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(self.regex_patterns).items():
                     if re.search(pattern_string, scraped_name, re.IGNORECASE):
                         master_dict[normalized_category] = scraped_value
                         break

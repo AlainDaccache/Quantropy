@@ -194,35 +194,8 @@ def get_stock_universe(index='in_directory', date=datetime.now()):
     return tickers.to_list()
 
 
-def find_series_from_string(str):
-    if str == 'MKT':
-        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'CAPM')
-        df = read_df_from_csv(path, sheet_name='Daily')
-        series = pd.Series(df['Mkt-RF'] + df['RF'], name='MKT')
-
-    elif str in ['RF', 'HML', 'SMB']:
-        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 3 Factor')
-        series = pd.Series(read_df_from_csv(path, sheet_name='Daily')[str], name=str)
-
-    elif str in ['CMA', 'RMW']:
-        path = '{}/{}.xlsx'.format(config.FACTORS_DIR_PATH, 'Fama-French 5 Factor')
-        series = pd.Series(read_df_from_csv(path)[str], name=str)
-    else:
-        path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, str)
-        series = pd.Series(read_df_from_csv(path)['Adj Close'].pct_change(), name=str)
-    return series
-
-
-# def load_stocks_returns(stocks: typing.List):
-#     portfolio_returns = pd.DataFrame()
-#     for stock in stocks:
-#         path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, stock)
-#         series = read_df_from_csv(path)['Adj Close'].pct_change().rename(stock)
-#         portfolio_returns = portfolio_returns.join(series.to_frame(), how='outer')
-#     return portfolio_returns
-
-
-def slice_resample_merge_returns(returns: list, from_date=None, to_date=None, lookback: timedelta = timedelta(days=0)):
+def slice_resample_merge_returns(returns: list, from_date=None, to_date=None, lookback=None,
+                                 frequency: str = 'Monthly'):
     '''
 
     :param returns:
@@ -231,47 +204,52 @@ def slice_resample_merge_returns(returns: list, from_date=None, to_date=None, lo
     :param lookback:
     :return:
     '''
-    maximum_frequency = 'D'
 
     # Load each asset returns and merge
-    idx = 0
+    returns_copy = []
     for retrn in returns:
         if isinstance(retrn, str):
-            returns[idx] = find_series_from_string(retrn)
-            idx += 1
+            path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, retrn)
+            series = read_df_from_csv(path)['Adj Close'].pct_change().rename(retrn)
+            returns_copy.append(series)
         elif isinstance(retrn, pd.Series):
-            pass
+            returns_copy.append(retrn)
         elif isinstance(retrn, pd.DataFrame):
             for col in retrn.columns:
-                returns[idx] = retrn.loc[col]
-                idx += 1
+                returns_copy.append(retrn[col])
         else:
             raise Exception
 
-        # Find maximum frequency (we'll use that one to resample the rest of the series)
-        # freq_ordered = ['D', 'W', 'M', 'Y']
-        # print(pd.infer_freq(index=returns[idx].index))
-        # if freq_ordered.index(returns[idx].index.inferred_freq) > freq_ordered.index(maximum_frequency):
-        #     maximum_frequency = freq_ordered
-
-    # Resample based on maximum frequency and merge
+    # Resample based on desired frequency and merge
     merged_returns = pd.DataFrame()
-    for retrn in returns:
-        resampled_returns = retrn.resample(maximum_frequency).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+    for retrn in returns_copy:
+        resampled_returns = retrn.resample(frequency[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+        # Resample usually resets date to beginning of day, so we re-do the end of day trick:
+        resampled_returns.index = resampled_returns.index + timedelta(days=1) - timedelta(seconds=1)
         merged_returns = merged_returns.join(resampled_returns.to_frame(), how='outer')
 
     # Cutoff based on from_date and to_date
-    to_date = min([series.index[-1] for series in returns]) if to_date is None else to_date
+
+    # Go over returns list because merged would have nans
+    to_date = min([series.index[-1] for series in returns_copy]) if to_date is None else to_date
     to_date_idx = get_date_index(date=to_date, dates_values=merged_returns.index)
-    from_date = to_date - lookback if from_date is None else from_date
-    from_date_idx = get_date_index(date=from_date, dates_values=merged_returns.index)
+
+    if from_date is not None:  # from_date has precedence over lookback if both are not none
+        from_date_idx = get_date_index(date=from_date, dates_values=merged_returns.index)
+    elif lookback is not None:
+        if isinstance(lookback, int) and frequency is not None:
+            period_to_int = {'D': 1, 'W': 7, 'M': 30.5, 'Y': 365.25}
+            lookback = timedelta(days=int(period_to_int[frequency] * lookback))
+        elif not isinstance(lookback, timedelta):
+            raise Exception
+        from_date_idx = get_date_index(date=to_date - lookback, dates_values=merged_returns.index)
+    else:
+        from_date_idx = 0
+
     merged_returns = merged_returns.iloc[from_date_idx:to_date_idx]
 
     for col in merged_returns.columns:
         merged_returns[col] = merged_returns[col].apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
-
-    # Resample usually resets date to beginning of day, so we re-do the end of day trick:
-    merged_returns.index = merged_returns.index + timedelta(days=1) - timedelta(seconds=1)
 
     return merged_returns
 

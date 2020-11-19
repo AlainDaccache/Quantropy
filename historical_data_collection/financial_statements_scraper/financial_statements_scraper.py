@@ -6,7 +6,7 @@ from datetime import datetime
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 from pprint import pprint
 import config
 # import historical_data_collection.financial_statements_scraper.html_scraper_sec_edgar as html_scraper

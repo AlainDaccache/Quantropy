@@ -3,7 +3,7 @@ import os
 # financial_statements_folder_path = os.path.join(os.path.abspath(os.getcwd()).rsplit('company_analysis\\', 1)[0],
 #                                                 'data_scraping',
 #                                                 'financial_statements').replace('\\', '/')
-
+from enum import Enum
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,8 +12,8 @@ DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
 
 MARKET_INDICES_DIR_NAME = 'historical_indices_constituents'
 MARKET_INDICES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_INDICES_DIR_NAME)
-MARKET_INDICES_TOTAL_US_STOCK_MARKET = os.path.join(MARKET_INDICES_DIR_PATH, 'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.xlsx')
-
+MARKET_INDICES_TOTAL_US_STOCK_MARKET = os.path.join(MARKET_INDICES_DIR_PATH,
+                                                    'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.xlsx')
 
 MARKET_EXCHANGES_DIR_NAME = 'historical_exchanges_constituents'
 MARKET_EXCHANGES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_EXCHANGES_DIR_NAME)
@@ -64,3 +64,80 @@ monthly_factors = 'Monthly'
 yearly_factors = 'Yearly'
 
 ROW_SPACE_BETWEEN_DFS = 3
+
+
+# Some enumerations...
+
+class Regions(Enum):
+    USA = 'United States'
+
+
+class Exchanges(Enum):
+    NASDAQ = 'NASDAQ'
+    AMEX = 'AMEX'
+    NYSE = 'NYSE'
+
+
+class MarketIndices(Enum):
+    DOW_JONES = 'Dow-Jones'
+    SP_500 = 'S&P-500'
+    RUSSELL_3000 = 'Russell-3000'
+
+
+class SIC_Sectors(Enum):
+    AGRICULTURE_FORESTRY_FISHING = 'Agriculture, Forestry, and Fishing'
+    MINING = 'Mining'
+    CONSTRUCTION = 'Construction'
+    MANUFACTURING = 'Manufacturing'
+    TRANSPORTATION_COMMUNICATIONS_ELECTRIC_GAS_SANITARY_SERVICES = 'Transportation, Communications, Electric, Gas, And Sanitary Services'
+    WHOLESALE_TRADE = 'Wholesale Trade'
+    RETAIL_TRADE = 'Retail Trade'
+    FINANCE_INSURANCE_REAL_ESTATE = 'Finance, Insurance, and Real Estate'
+    SERVICES = 'Services'
+    PUBLIC_ADMINISTRATION = 'Public Administration'
+
+
+class GICS_Sectors(Enum):
+    ENERGY = 'Energy'
+    MATERIALS = 'Materials'
+    INDUSTRIALS = 'Industrials'
+    CONSUMER_DISCRETIONARY = 'Consumer Discretionary'
+    CONSUMER_STAPLES = 'Consumer Staples'
+    HEALTHCARE = 'Health Care'
+    FINANCIALS = 'Financials'
+    INFORMATION_TECHNOLOGY = 'Information Technology'
+    TELECOMMUNICATION_SERVICES = 'Telecommunication Services'
+    UTILITIES = 'Utilities'
+    REAL_ESTATE = 'Real Estate'
+
+
+class Industries(Enum):
+    pass
+
+
+class PriceAction(Enum):
+    OPEN = 'Open'
+    HIGH = 'High'
+    LOW = 'Low'
+    CLOSE = 'Close'
+    ADJ_CLOSE = 'Adj Close'
+    VOLUME = 'Volume'
+
+
+class TimeFrame(Enum):
+    ONE_MINUTE = '1m'
+    FIVE_MINUTES = '5m'
+    FIFTEEN_MINUTES = '15m'
+    THIRTY_MINUTES = '30m'
+    ONE_HOUR = '1h'
+    FOUR_HOUR = '4h'
+    DAILY = '1D'
+    WEEKLY = 'W'
+    YEARLY = 'Y'
+
+
+class RebalancingFrequency(Enum):
+    MONTHLY = 30.5
+    QUARTERLY = 3 * 30.5
+    SEMIANNUALLY = 6 * 30.5
+    ANNUALLY = 365.25

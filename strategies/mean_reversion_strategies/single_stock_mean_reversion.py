@@ -2,7 +2,7 @@ import numpy as np
 from statsmodels.regression.linear_model import OLS
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 import config
 import pandas as pd
 from datetime import timedelta

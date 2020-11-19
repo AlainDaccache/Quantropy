@@ -5,7 +5,7 @@ import pandas as pd
 import typing
 from cvxpy import *
 import scipy.optimize
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 import portfolio_management.risk_quantification as risk_measures
 from fundamental_analysis.macroeconomic_analysis import risk_free_rates
 from fundamental_analysis.supporting_metrics import market_capitalization

@@ -9,7 +9,7 @@ from zope.interface import implementer
 import numpy as np
 
 import config
-from historical_data_collection import excel_helpers
+from historical_data_collection import data_preparation_helpers
 from pprint import pprint
 from historical_data_collection.financial_statements_scraper.html_scraper_sec_edgar import HtmlParser
 from historical_data_collection.stock_prices_scraper import save_stock_prices
@@ -262,27 +262,27 @@ def scrape_macrotrend(ticker):
     for period, year_table in main_dict.items():
         for year, table in year_table.items():
             master_dict[period][year] = {} if year not in master_dict[period].keys() else master_dict[period][year]
-            for normalized_category, pattern_string in excel_helpers.flatten_dict(regex_patterns).items():
+            for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(regex_patterns).items():
                 master_dict[period][year][normalized_category] = np.nan
 
     for period, year_table in main_dict.items():
         for year, table in year_table.items():
-            for scraped_name, scraped_value in excel_helpers.flatten_dict(table).items():
-                for normalized_category, pattern_string in excel_helpers.flatten_dict(regex_patterns).items():
+            for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
+                for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(regex_patterns).items():
                     if re.search(pattern_string, scraped_name, re.IGNORECASE):
                         master_dict[period][year][normalized_category] = scraped_value
                         break
 
     path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, ticker)
-    excel_helpers.save_pretty_excel(path, financials_dictio=master_dict)
+    data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict)
 
-    master_dict = excel_helpers.unflatten(excel_helpers.flatten_dict(master_dict))
+    master_dict = data_preparation_helpers.unflatten(data_preparation_helpers.flatten_dict(master_dict))
     pprint(master_dict)
 
 
 if __name__ == '__main__':
     path = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx')
-    tickers = excel_helpers.read_df_from_csv(path=path).iloc[0, :]
+    tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
     for ticker in tickers:
         scrape_macrotrend(ticker)
         # save_stock_prices(ticker)

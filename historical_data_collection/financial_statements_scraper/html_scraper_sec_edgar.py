@@ -11,7 +11,7 @@ from pprint import pprint
 from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
-from historical_data_collection import excel_helpers
+from historical_data_collection import data_preparation_helpers
 import historical_data_collection.financial_statements_scraper.financial_statements_scraper as main_scraper
 from zope.interface import implementer
 
@@ -200,11 +200,11 @@ def normalization_iteration(regexes_dict,
 
     for title, table in input_dict.items():
 
-        for scraped_name, scraped_value in excel_helpers.flatten_dict(table).items():
+        for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
             found_and_done = False
             # for visited_data in visited_data_names[year]:
             for normalized_category, pattern_string in \
-                    excel_helpers.flatten_dict(regexes_dict['Financial Entries Regex']).items():
+                    data_preparation_helpers.flatten_dict(regexes_dict['Financial Entries Regex']).items():
                 if found_and_done:
                     break
                 # if you're a flexible sheet, the sheet we're checking at least shouldn't match the other
@@ -852,7 +852,7 @@ class HtmlParser:
         # pprint(input_dict)
         master_dict = {}
 
-        for normalized_category, pattern_string in excel_helpers.flatten_dict(
+        for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(
                 regex_patterns['Financial Entries Regex']).items():
             master_dict[normalized_category] = np.nan
 
@@ -891,7 +891,7 @@ class HtmlParser:
                 master_dict['Balance Sheet_Assets_Total Assets'] - (shareholders_equity_incl_minority if not np.isnan(
                     shareholders_equity_incl_minority) else shareholders_equity)
 
-        return visited_data_names, excel_helpers.flatten_dict(excel_helpers.unflatten(master_dict))
+        return visited_data_names, data_preparation_helpers.flatten_dict(data_preparation_helpers.unflatten(master_dict))
 
 
 if __name__ == '__main__':

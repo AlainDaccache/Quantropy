@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 import config
 import numpy as np
 from options_scraper.scraper import NASDAQOptionsScraper
@@ -58,7 +58,7 @@ def cash_flow_per_share(cash_flow_metric, stock, date=datetime.today(), lookback
 
 
 def market_capitalization(stock: str, diluted_shares: bool = False, date: datetime = datetime.now(),
-                          lookback_period: timedelta = timedelta(days=0), period: str = ''):
+                          lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
                                                      period=period, diluted_shares=diluted_shares)
     output = market_price(stock, date, lookback_period) * shares_outstanding

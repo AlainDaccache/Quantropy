@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 import fundamental_analysis.accounting_ratios as ratios
-from historical_data_collection import excel_helpers
+from historical_data_collection import data_preparation_helpers
 from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio
 
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     multi_factor = MultiFactorStrategy(starting_date=datetime.now() - timedelta(days=2 * 365),
                                        ending_date=datetime.now(),
                                        starting_capital=10000,
-                                       securities_universe=excel_helpers.get_stock_universe()[:4],
+                                       securities_universe=data_preparation_helpers.get_stock_universe()[:4],
                                        max_stocks_count_in_portfolio=12,
                                        net_exposure=(100, 0),
                                        portfolio_allocation=EquallyWeightedPortfolio,

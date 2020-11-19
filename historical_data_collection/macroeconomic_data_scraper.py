@@ -1,7 +1,7 @@
 import os
 import urllib.request
 import pandas as pd
-import historical_data_collection.excel_helpers as excel
+import historical_data_collection.data_preparation_helpers as excel
 import config
 
 

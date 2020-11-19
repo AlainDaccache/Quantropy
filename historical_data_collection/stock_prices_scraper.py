@@ -1,18 +1,26 @@
 import os
 from datetime import datetime, timedelta
 import pandas_datareader.data as web
-import historical_data_collection.excel_helpers as excel
+import typing
+
+import historical_data_collection.data_preparation_helpers as excel
 import ta
 import config
+import fundamental_analysis.macroeconomic_analysis as macro
 
 
 def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
-    df = web.DataReader(stock.replace('.', '-'), data_source='yahoo', start=start, end=end)
-    df['Pct Change'] = df['Adj Close'].pct_change()
-    df.index = df.index + timedelta(days=1) - timedelta(seconds=1)
-    path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stock))
-    excel.save_into_csv(path, df, overwrite_sheet=True)
-    return df
+    if isinstance(stock, config.MarketIndices):
+        stock = macro.companies_in_index(market_index=stock, date=end)
+    if isinstance(stock, typing.List):
+        stock = [stk.replace('.', '-') for stk in stock]
+    else:
+        stock = stock.replace('.', '-')
+    for stk in list(stock):
+        df = web.DataReader(stk, data_source='yahoo', start=start, end=end)
+        df.index = df.index + timedelta(days=1) - timedelta(seconds=1)  # TODO think about EOD?
+        path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stk))
+        excel.save_into_csv(path, df, overwrite_sheet=True)
 
 
 def get_technical_indicators(stock):
@@ -29,4 +37,4 @@ def get_technical_indicators(stock):
 
 
 if __name__ == '__main__':
-    save_stock_prices(stock='AAPL')
+    save_stock_prices(stock=config.MarketIndices.DOW_JONES)

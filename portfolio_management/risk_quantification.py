@@ -3,7 +3,7 @@ import math
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
-import portfolio_management.asset_pricing_models as asset_pricing_models
+import FactorBox.asset_pricing_models as asset_pricing_models
 from scipy.stats import norm
 
 '''
