@@ -14,6 +14,7 @@ def resample_daily_df(daily_df, path):
         df = daily_df.resample(freq[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
         df.index = df.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
         excel.save_into_csv(filename=path, df=df, sheet_name=freq)
+        daily_df.to_pickle(path + '.pkl')
 
 
 def scrape_AQR_factors():
@@ -38,7 +39,11 @@ def scrape_Fama_French_factors():
     daily_df = pd.DataFrame()
     for idx, url in \
             enumerate([
+                # 3 Factors
+                'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip',
+                # 5 Factors
                 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip',
+                # Momentum
                 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip']):
         urllib.request.urlretrieve(url, 'fama_french.zip')
         zip_file = zipfile.ZipFile('fama_french.zip', 'r')
@@ -53,10 +58,11 @@ def scrape_Fama_French_factors():
         os.remove(file_name)
         os.remove('fama_french.zip')
 
-    path = os.path.join(config.FACTORS_DIR_PATH, 'Fama-French Factors Data.xlsx')
+    path = os.path.join(config.FACTORS_DIR_PATH, 'Fama-French Factors Data')
     daily_df.rename(columns={'Mom   ': 'UMD', 'Mkt-RF': 'MKT-RF'}, inplace=True)
     daily_df.index = daily_df.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
-    daily_df.to_excel(path, sheet_name='Daily')
+    daily_df.to_excel(path + '.xlsx', sheet_name='Daily')
+    daily_df.to_pickle(path + '.pkl')
     resample_daily_df(daily_df=daily_df, path=path)
 
 

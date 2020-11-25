@@ -662,7 +662,7 @@ class HtmlParser:
             elif table_title == 'No Table Title':
                 table_multiplier = 1
 
-            first_level = ''  # that's for whether the table is yearly of quarterly
+            first_level = ''  # that's for whether the table is Yearly of Quarterly
             for index, row in enumerate(rows):
 
                 reg_row = [ele.text for ele in row.find_all(lambda tag: tag.name == 'td' or tag.name == 'th')]

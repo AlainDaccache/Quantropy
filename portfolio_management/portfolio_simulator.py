@@ -17,12 +17,12 @@ plt.style.use('fivethirtyeight')
 
 
 # TODO: Add statistics i.e. average drawdown, alpha, beta/sharpe/sortino...
-# TODO: Functionality for reinvesting dividends
-# TODO: Functionality for stock screening
-# TODO: Functionality for technical indicators
-# TODO: Functionality for commission (as percent of trade or fix cost)
-# TODO: Functionality for slippage (do one day slippage)
-# TODO: Functionality for fractional shares (optional)
+#       Functionality for reinvesting dividends
+#       Functionality for stock screening
+#       Functionality for technical indicators
+#       Functionality for commission (as percent of trade or fix cost)
+#       Functionality for slippage (do one day slippage)
+#       Functionality for fractional shares (optional)
 
 class Stock:
 
@@ -291,37 +291,11 @@ class Strategy(metaclass=abc.ABCMeta):
         return evolution_df
 
 
-class StockMarketIndices:
-
-    def sp500_index(self, date, top=500):
-        '''
-
-        :param top: Top by default 500, but other indices exist such as S&P 100 (so top=100)
-        :param date:
-        :return:
-        '''
-        pass
-
-    def russell3000_index(self, date, top=3000):
-        pass
-
-    def djia30_index(self, date, top=30):
-        pass
-
-
-"""
 def sort_df(df, column_idx, key):
     '''Takes dataframe, column index and custom function for sorting,
     returns dataframe sorted by this column using this function'''
-    
-    col = df.iloc[:,column_idx]
+
+    col = df.iloc[:, column_idx]
     temp = np.array(col.values.tolist())
     order = sorted(range(len(temp)), key=lambda j: key(temp[j]))
     return df.iloc[order]
-"""
-
-if __name__ == '__main__':
-    stocks = pd.Series()
-    for ticker in ['AAPL', 'FB', 'GOOG', 'MSFT']:
-        stocks[ticker] = Stock(ticker)
-    pairs_trading = AssetSelectionStrategies(date=datetime.today(), stocks=stocks).split_based_on_pairs()

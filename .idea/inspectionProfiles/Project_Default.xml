@@ -21,6 +21,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="bool.any" />
+          <option value="bool.items" />
         </list>
       </option>
     </inspection_tool>

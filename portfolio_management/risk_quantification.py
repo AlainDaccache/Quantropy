@@ -3,7 +3,7 @@ import math
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
-import FactorBox.asset_pricing_models as asset_pricing_models
+import quantitative_analysis.asset_pricing_models as asset_pricing_models
 from scipy.stats import norm
 
 '''
@@ -241,7 +241,7 @@ def roys_safety_first_criterion(portfolio_returns, minimum_threshold=0.02, perio
 
 
 '''Two main variables that will cause differing results:
-- The frequency (daily, weekly, monthly, yearly)
+- The frequency (daily, weekly, monthly, Yearly)
 - The window (from which date to which date)
 For example, some services calculate 'during the last 3 years, the 30 days X is Y'''
 

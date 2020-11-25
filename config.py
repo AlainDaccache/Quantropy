@@ -5,6 +5,12 @@ import os
 #                                                 'financial_statements').replace('\\', '/')
 from enum import Enum
 
+yearly = 'Yearly'
+quarterly = 'Quarterly'
+six_months = '6 Months'
+nine_months = '9 Months'
+periods = [quarterly, six_months, nine_months, yearly]
+
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DATA_DIR_NAME = 'data'
@@ -13,7 +19,7 @@ DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
 MARKET_INDICES_DIR_NAME = 'historical_indices_constituents'
 MARKET_INDICES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_INDICES_DIR_NAME)
 MARKET_INDICES_TOTAL_US_STOCK_MARKET = os.path.join(MARKET_INDICES_DIR_PATH,
-                                                    'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.xlsx')
+                                                    'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.pkl')
 
 MARKET_EXCHANGES_DIR_NAME = 'historical_exchanges_constituents'
 MARKET_EXCHANGES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_EXCHANGES_DIR_NAME)
@@ -22,6 +28,10 @@ FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, FACTORS_DIR_NAME)
 
 FINANCIAL_STATEMENTS_DIR_NAME = 'financial_statements'
 FINANCIAL_STATEMENTS_DIR_PATH = os.path.join(DATA_DIR_PATH, FINANCIAL_STATEMENTS_DIR_NAME)
+FINANCIAL_STATEMENTS_DIR_PATH_EXCEL = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'excel')
+FINANCIAL_STATEMENTS_DIR_PATH_PICKLE = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'pickle')
+FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_QUARTERLY = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, quarterly)
+FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_YEARLY = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, yearly)
 
 STOCK_PRICES_DIR_NAME = 'stock_prices'
 STOCK_PRICES_DIR_PATH = os.path.join(DATA_DIR_PATH, STOCK_PRICES_DIR_NAME)
@@ -37,12 +47,6 @@ balance_sheet_name = 'Balance Sheet'
 income_statement_name = 'Income Statement'
 cash_flow_statement_name = 'Cash Flow Statement'
 technical_indicators_name = 'Technical Indicators'
-
-yearly = 'Yearly'
-quarterly = 'Quarterly'
-six_months = '6 Months'
-nine_months = '9 Months'
-periods = [quarterly, six_months, nine_months, yearly]
 
 balance_sheet_quarterly = '{} ({})'.format(balance_sheet_name, quarterly)
 balance_sheet_yearly = '{} ({})'.format(balance_sheet_name, yearly)

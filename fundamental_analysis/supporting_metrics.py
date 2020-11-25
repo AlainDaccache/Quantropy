@@ -11,10 +11,9 @@ Data outside financial statements for the company
 '''
 
 
-def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
-    path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stock))
-    output = excel.read_entry_from_csv(path=path, x='Adj Close', y=date, lookback_index=lookback_period.days)
-    print('Market Price for {} on the {} is: {}'.format(stock, date, output))
+def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0), spec='Adj Close'):
+    path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(stock))
+    output = excel.read_entry_from_pickle(path=path, x=spec, y=date, lookback_index=lookback_period.days)
     return output
 
 

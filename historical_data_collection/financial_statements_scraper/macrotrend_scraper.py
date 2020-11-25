@@ -199,7 +199,7 @@ regex_patterns = {
         'Financing Activities': {
             'Proceeds from Issuance of Common Stock': r'$^',
             'Payment, Tax Withholding, Share-based Payment Arrangement': r'$^',
-            'Payments of Dividends': r'$^',
+            'Payments of Dividends': r'(^Total Common And Preferred Stock Dividends Paid$)|(Common Stock Dividends Paid)',
             'Payments for Repurchase of Common Stock': r'$^',
             'Proceeds from Issuance of Long-term Debt': r'$^',
             'Repayments of Long-term Debt': r'$^',
@@ -207,7 +207,7 @@ regex_patterns = {
             'Proceeds from (Repayments of) Bank Overdrafts': r'$^',
             'Proceeds from (Repayments of) Commercial Paper': r'$^',
             'Proceeds from (Payments for) Other Financing Activities': r'$^',
-            'Net Cash Provided by (Used in) Financing Activities': r'^Cash Flow From Financing Activities$'
+            'Net Cash Provided by (Used in) Financing Activities': r'^Cash Flow From Financial Activities$'
         },
         'Effect of Exchange Rate on Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents': r'$^',
         'Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Period Increase (Decrease), Including Exchange Rate Effect': r'$^',
@@ -246,10 +246,12 @@ def scrape_macrotrend(ticker):
                 # field_name = '_'.join([statement, soup.select_one('a, span').text])
                 field_name = soup.select_one('a, span').text
                 row_values = list(row.values())[2:]
-                dictio[field_name] = row_values
-
+                try:
+                    dictio[field_name] = [float(i) if i != '' else 0 for i in row_values]
+                except:
+                    pass
             df = pd.DataFrame.from_dict(dictio, orient='index', columns=dates)
-            # df = df.mul(multiplier)
+            # df = df.apply(lambda x: x.mul(multiplier))
             for year in df.columns:
                 main_dict[period][year] = {} if year not in main_dict[period].keys() else main_dict[period][year]
                 main_dict[period][year].update(df[year])
@@ -268,12 +270,13 @@ def scrape_macrotrend(ticker):
     for period, year_table in main_dict.items():
         for year, table in year_table.items():
             for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
-                for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(regex_patterns).items():
+                for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(
+                        regex_patterns).items():
                     if re.search(pattern_string, scraped_name, re.IGNORECASE):
                         master_dict[period][year][normalized_category] = scraped_value
                         break
 
-    path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, ticker)
+    path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL, ticker)
     data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict)
 
     master_dict = data_preparation_helpers.unflatten(data_preparation_helpers.flatten_dict(master_dict))
@@ -281,8 +284,8 @@ def scrape_macrotrend(ticker):
 
 
 if __name__ == '__main__':
-    path = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx')
-    tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
-    for ticker in tickers:
+    # path = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx')
+    # tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
+    for ticker in ['AAPL', 'FB', 'AMZN']:
         scrape_macrotrend(ticker)
         # save_stock_prices(ticker)

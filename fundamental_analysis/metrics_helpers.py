@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from functools import partial
 import numpy as np
 from fundamental_analysis import accounting_ratios
-from fundamental_analysis import macroeconomic_analysis
+from macroeconomic_analysis import macroeconomic_analysis
 from scipy import stats
 
 
@@ -13,8 +13,8 @@ from scipy import stats
 #                                                   diluted_shares=diluted_shares)
 
 
-def mean_over_time(stock: str, metric: partial, how_many_periods: int = 5, intervals: timedelta = timedelta(days=90),
-                   geometric=False):
+def mean_over_time_at_intervals(stock: str, metric: partial, how_many_periods: int = 5,
+                                intervals: timedelta = timedelta(days=90), geometric=False):
     '''
     Arithmetic mean by default
 
@@ -31,20 +31,31 @@ def mean_over_time(stock: str, metric: partial, how_many_periods: int = 5, inter
     return np.mean(metrics) if not geometric else stats.gmean(metrics)
 
 
-def average_growth_over_time(lst):  # assumes order from left to right chronological
-    growths = [(lst[i] - lst[i - 1]) / lst[i - 1] for i in range(1, len(lst))]
-    return np.mean(growths)
-
-
-def metric_growth_rate(cash_flow_type: partial, stock, periods: int = 5, date=datetime.now(),
+def metric_growth_rate(metric: partial, stock, periods: int = 5, date=datetime.now(),
                        lookback_period=timedelta(days=0), period: str = 'FY', weighted_average=False):
-    ls = [cash_flow_type(stock=stock, date=date - timedelta(days=365 * i if period == 'FY' else 90 * i),
-                         lookback_period=lookback_period, period=period)
+    '''
+
+    :param metric:
+    :param stock:
+    :param periods:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :param weighted_average:
+    :return:
+    '''
+
+    def average_growth_over_time(lst):  # assumes order from left to right chronological
+        growths = [(lst[i] - lst[i - 1]) / lst[i - 1] for i in range(1, len(lst))]
+        return np.mean(growths)
+
+    ls = [metric(stock=stock, date=date - timedelta(days=365 * i if period == 'FY' else 90 * i),
+                 lookback_period=lookback_period, period=period)
           for i in range(0, periods)]
     return average_growth_over_time(ls[::-1])  # reverse
 
 
-def stock_macro_percentile(stock: str, metric: partial, against: str = 'industry'):
+def metric_market_percentile(stock: str, metric: partial, against: str = 'industry'):
     '''
 
     :param stock:

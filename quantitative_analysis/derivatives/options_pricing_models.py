@@ -6,8 +6,8 @@
 from datetime import datetime, timedelta
 import numpy as np
 import scipy.stats as si
-from fundamental_analysis import supporting_metrics as me, macroeconomic_analysis as macro, \
-    financial_statements_entries as fi
+from fundamental_analysis import supporting_metrics as me, financial_statements_entries as fi
+from macroeconomic_analysis import macroeconomic_analysis as macro
 
 
 def black_scholes_model_non_dividend_paying(spot_price, strike_price, time_to_maturity, interest_rate,

@@ -13,11 +13,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pprint import pprint
-import numpy as np
 import os
 import config
-import historical_data_collection.data_preparation_helpers as excel
-from fundamental_analysis.macroeconomic_analysis import companies_in_exchange
+from macroeconomic_analysis.macroeconomic_analysis import companies_in_exchange
 
 
 def save_gics():
@@ -87,10 +85,10 @@ def save_gics():
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df)
 
-    writer = pd.ExcelWriter(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Industry-Classification.xlsx'),
-                            engine='xlsxwriter')
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Industry-Classification')
+    writer = pd.ExcelWriter(path=path+'.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='GICS')
-
+    df.to_pickle(path + '-GICS.pkl')
     writer.save()
 
 
@@ -212,8 +210,9 @@ def get_company_meta():
     df = edgar_df.join(init_df)
     df = df[['Company Name', 'SIC Industry', 'SIC Sector', 'GICS Sector', 'Location', 'CIK', 'Exchange', 'Asset Class']]
     # df = pd.concat([edgar_df, init_df], axis=1)
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Stock-Market.xlsx')
-    df.to_excel(path, engine='xlsxwriter')
+    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Stock-Market')
+    df.to_excel(path+'.xlsx', engine='xlsxwriter')
+    df.to_pickle(path=path+'.pkl')
 
 
 def save_country_codes():
@@ -233,7 +232,7 @@ def save_country_codes():
                 code = unicodedata.normalize("NFKD", tr.find_all('td')[0].text).replace('\n', '')
                 state = unicodedata.normalize("NFKD", tr.find_all('td')[1].text).replace('\n', '')
                 dictio[current_category][code] = state
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pickle"),
+    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pkl"),
               "wb") as f:
         pickle.dump(dictio, f)
     pprint(dictio)

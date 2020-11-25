@@ -6057,7 +6057,7 @@
 #                 for j in sheet_dict[i].keys() if j.split('_')[0] in sheet_name  # sheet name
 #             } for i in sheet_dict.keys()})  # date
 #
-#         if sheet_name == config.balance_sheet_name and sheet_period in [config.yearly, config.quarterly] \
+#         if sheet_name == config.balance_sheet_name and sheet_period in [config.Yearly, config.Quarterly] \
 #                 and not visited_first_balance_sheet:
 #             first_balance_sheet_df = pd.DataFrame.from_dict(diction)
 #             # print(first_balance_sheet_df.to_string())
@@ -6065,7 +6065,7 @@
 #         else:
 #             df = pd.DataFrame.from_dict(diction)
 #
-#             if sheet_name == config.balance_sheet_name and sheet_period in [config.yearly, config.quarterly]:
+#             if sheet_name == config.balance_sheet_name and sheet_period in [config.Yearly, config.Quarterly]:
 #                 if visited_first_balance_sheet:
 #                     # print(df.to_string())
 #                     # df = pd.concat([first_balance_sheet_df, df], axis=0)
@@ -6075,7 +6075,7 @@
 #                     # print(df.to_string())
 #                     df = df.groupby(lambda x: x, axis=1).max()
 #                     df_yearly = df[[x for x in df.columns if x in year_dates]]
-#                     for datafrme, period in zip([df_yearly, df], [config.yearly, config.quarterly]):
+#                     for datafrme, period in zip([df_yearly, df], [config.Yearly, config.Quarterly]):
 #                         datafrme = datafrme.reindex(sorted(datafrme.columns, reverse=True), axis=1)
 #                         datafrme.dropna(axis=0, how='all', inplace=True)
 #                         datafrme = datafrme.loc[:, datafrme.any()]

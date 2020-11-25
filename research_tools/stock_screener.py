@@ -3,10 +3,9 @@ from datetime import datetime
 from enum import Enum
 from functools import partial
 import pandas as pd
-import fundamental_analysis.macroeconomic_analysis as macro
+import macroeconomic_analysis.macroeconomic_analysis as macro
 import fundamental_analysis.accounting_ratios as ratios
 from config import MarketIndices, Exchanges, GICS_Sectors, Industries, Regions, SIC_Sectors
-import FactorBox.asset_pricing_models as pricing_model
 
 '''
 I. Market:

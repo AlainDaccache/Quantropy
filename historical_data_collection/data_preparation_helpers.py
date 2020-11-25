@@ -115,9 +115,62 @@ def read_df_from_csv(path, sheet_name='Sheet1'):
     return pd.DataFrame()
 
 
+def read_entry_from_pickle(path, x, y, lookback_index=0):
+    if os.path.exists(path):
+
+        df: pd.DataFrame = pd.read_pickle(filepath_or_buffer=path)
+
+        if isinstance(y, datetime):  # if the input is a date...
+            date_index = get_date_index(date=y, dates_values=df.index.values, lookback_index=lookback_index)
+            return df[x].iloc[date_index]
+
+        elif isinstance(x, datetime):
+            date_index = get_date_index(date=x, dates_values=df.columns, lookback_index=lookback_index)
+
+            reduced_df = df.iloc[:, date_index]
+            for el in list(y):
+                if el in reduced_df.index:
+                    reduced_df = reduced_df.loc[el]
+                else:
+                    return np.nan
+            return reduced_df
+
+        elif isinstance(y, list) and isinstance(y[0], datetime):
+            to_return = pd.Series()
+            for date in y:
+                date_index = get_date_index(date=date, dates_values=df.index, lookback_index=lookback_index)
+
+                reduced_df = df.iloc[date_index, :]
+                for el in ([x] if not isinstance(x, list) else x):
+                    if el in reduced_df.index:
+                        reduced_df = reduced_df.loc[el]
+                    else:
+                        to_return[date] = np.nan
+                to_return[date] = reduced_df
+            return to_return
+
+        elif isinstance(x, list) and isinstance(x[0], datetime):
+            to_return = pd.Series()
+            for date in x:
+                date_index = get_date_index(date=date, dates_values=df.columns, lookback_index=lookback_index)
+                reduced_df = df.iloc[:, date_index]
+                if reduced_df.index.isin([tuple(y)]).any():
+                    reduced_df = reduced_df.loc[tuple(y)]
+                    to_return[date] = reduced_df
+                else:
+                    to_return[date] = np.nan
+
+            return to_return
+
+        else:
+            return df[x].loc[y]
+    else:
+        return np.nan
+
+
 def read_entry_from_csv(path, x, y, sheet_name='Sheet1', lookback_index=0, skip_first_sheet=False):
     if os.path.exists(path):
-        ticker = Path(path).stem
+        # ticker = Path(path).stem
         if config.balance_sheet_name in sheet_name:
             index_col = [0, 1, 2]
         elif config.income_statement_name in sheet_name or config.cash_flow_statement_name in sheet_name:
@@ -284,7 +337,7 @@ def flatten_dict(d, parent_key='', sep='_'):
     return dict(items)
 
 
-def save_pretty_excel(path, financials_dictio):
+def save_pretty_excel(path, financials_dictio, with_pickle=True):
     for sheet_name in [config.income_statement_name, config.cash_flow_statement_name]:
         for sheet_period, sheet_dict in financials_dictio.items():
 
@@ -302,6 +355,11 @@ def save_pretty_excel(path, financials_dictio):
             df.dropna(axis=0, how='all', inplace=True)
             df = df.loc[:, df.any()]
             if not df.empty:
+                if with_pickle:
+                    stock = path.split('/')[-1].split('.xlsx')[0]
+                    pickly_path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, sheet_period,
+                                               sheet_name, '{}.pkl'.format(stock))
+                    df.to_pickle(pickly_path)
                 save_into_csv(path, df, '{} ({})'.format(sheet_name, sheet_period))
 
     #  this is to standardize cumulated 3 6 9 12 months
@@ -356,21 +414,26 @@ def save_pretty_excel(path, financials_dictio):
                                              entry_name.split('_')[0] in sheet_name
                                              }) for i in financials_dictio[sheet_period].keys()})  # date
 
-            # Because Balance Sheet is a statement of position, the quarterly statement that has the same
-            # date as the yearly statement, will have the same information. Sometimes reports avoid explicitly
+            # Because Balance Sheet is a statement of position, the Quarterly statement that has the same
+            # date as the Yearly statement, will have the same information. Sometimes reports avoid explicitly
             # specifying a balance sheet for a certain quarter for that reason, so we need to consider the case.
             balance_sheet_df = pd.concat([balance_sheet_df, pd.DataFrame.from_dict(diction)], axis=1, join='outer')
 
         # since we might have duplicate columns after concatenating, we drop the duplicated ones
         balance_sheet_df = balance_sheet_df.loc[:, ~balance_sheet_df.columns.duplicated()]
-        # keep the yearly balance sheets as a separate df
-        balance_sheet_yearly = balance_sheet_df[financials_dictio['Yearly'].keys()]  # now can extract the yearly
+        # keep the Yearly balance sheets as a separate df
+        balance_sheet_yearly = balance_sheet_df[financials_dictio['Yearly'].keys()]  # now can extract the Yearly
 
         for datafrme, period in zip([balance_sheet_yearly, balance_sheet_df], [config.yearly, config.quarterly]):
             datafrme = datafrme.reindex(sorted(datafrme.columns, reverse=True), axis=1)
             datafrme.dropna(axis=0, how='all', inplace=True)
             datafrme = datafrme.loc[:, datafrme.any()]
             if not datafrme.empty:
+                if with_pickle:
+                    stock = path.split('/')[-1].split('.xlsx')[0]
+                    pickly_path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, period,
+                                               sheet_name, '{}.pkl'.format(stock))
+                    datafrme.to_pickle(pickly_path)
                 save_into_csv(path, datafrme, '{} ({})'.format(sheet_name, period))
 
     #  finally, paint alternate rows to excel file

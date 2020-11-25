@@ -2,11 +2,11 @@ import os
 from datetime import datetime, timedelta
 import pandas_datareader.data as web
 import typing
-
+import pandas as pd
 import historical_data_collection.data_preparation_helpers as excel
 import ta
 import config
-import fundamental_analysis.macroeconomic_analysis as macro
+import macroeconomic_analysis.macroeconomic_analysis as macro
 
 
 def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
@@ -17,10 +17,12 @@ def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
     else:
         stock = stock.replace('.', '-')
     for stk in list(stock):
-        df = web.DataReader(stk, data_source='yahoo', start=start, end=end)
+        df: pd.DataFrame = web.DataReader(stk, data_source='yahoo', start=start, end=end)
         df.index = df.index + timedelta(days=1) - timedelta(seconds=1)  # TODO think about EOD?
-        path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stk))
-        excel.save_into_csv(path, df, overwrite_sheet=True)
+        # path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stk))
+        # excel.save_into_csv(path, df, overwrite_sheet=True)
+        path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(stk))
+        df.to_pickle(path=path)
 
 
 def get_technical_indicators(stock):
