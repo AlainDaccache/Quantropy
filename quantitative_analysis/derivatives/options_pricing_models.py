@@ -6,7 +6,7 @@
 from datetime import datetime, timedelta
 import numpy as np
 import scipy.stats as si
-from fundamental_analysis import supporting_metrics as me, financial_statements_entries as fi
+from fundamental_analysis import financial_statements_entries as fi, supporting_metrics as me
 from macroeconomic_analysis import macroeconomic_analysis as macro
 
 

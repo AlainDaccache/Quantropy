@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pprint import pprint
 import os
 import config
-from macroeconomic_analysis.macroeconomic_analysis import companies_in_exchange
+from macroeconomic_analysis.macroeconomic_analysis import companies_in_exchange, companies_in_index
 
 
 def save_gics():
@@ -85,7 +85,7 @@ def save_gics():
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(df)
 
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'Industry-Classification')
+    path = os.path.join(config.MARKET_DATA_DIR_PATH, 'Industry-Classification')
     writer = pd.ExcelWriter(path=path+'.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='GICS')
     df.to_pickle(path + '-GICS.pkl')
@@ -98,9 +98,10 @@ def get_company_meta():
     :return:
     '''
 
-    init_df = pd.read_excel(os.path.join(config.MARKET_INDICES_TOTAL_US_STOCK_MARKET),
-                            skiprows=7, index_col=0)
+    init_df = pd.read_csv('https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1467271812596.ajax?fileType=csv&fileName=ITOT_holdings&dataType=fund',
+                          skiprows=9, index_col=0)
     tickers = init_df.index.tolist()
+    # tickers = companies_in_index(config.MarketIndices.SP_500)
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
     sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',
@@ -118,11 +119,11 @@ def get_company_meta():
                       'NYSE': companies_in_exchange('NYSE'),
                       'NASDAQ': companies_in_exchange('NASDAQ')}
 
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pickle"),
+    with open(os.path.join(config.DATA_DIR_PATH, "market_data/country_codes_dictio.pickle"),
               "rb") as f:
         country_codes = pickle.load(f)
     edgar_dict = {}
-    for ticker in tickers[:100]:
+    for ticker in tickers:
         edgar_dict[ticker] = {}
         try:
             for i in range(2):  # just try again if didn't work first time, might be advertisement showed up
@@ -210,7 +211,7 @@ def get_company_meta():
     df = edgar_df.join(init_df)
     df = df[['Company Name', 'SIC Industry', 'SIC Sector', 'GICS Sector', 'Location', 'CIK', 'Exchange', 'Asset Class']]
     # df = pd.concat([edgar_df, init_df], axis=1)
-    path = os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, 'US-Stock-Market')
+    path = os.path.join(config.MARKET_DATA_DIR_PATH, 'US-Stock-Market')
     df.to_excel(path+'.xlsx', engine='xlsxwriter')
     df.to_pickle(path=path+'.pkl')
 
@@ -232,7 +233,7 @@ def save_country_codes():
                 code = unicodedata.normalize("NFKD", tr.find_all('td')[0].text).replace('\n', '')
                 state = unicodedata.normalize("NFKD", tr.find_all('td')[1].text).replace('\n', '')
                 dictio[current_category][code] = state
-    with open(os.path.join(config.ROOT_DIR, config.DATA_DIR_NAME, "country_codes_dictio.pkl"),
+    with open(os.path.join(config.MARKET_DATA_DIR_PATH, "country_codes_dictio.pkl"),
               "wb") as f:
         pickle.dump(dictio, f)
     pprint(dictio)

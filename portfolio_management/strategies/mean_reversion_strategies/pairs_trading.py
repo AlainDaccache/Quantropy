@@ -1,13 +1,9 @@
 import typing
 from abc import abstractmethod
 
-import pandas
-from portfolio_management.portfolio_simulator import AssetSelectionStrategies
-from strategies.mean_reversion_strategies.single_stock_mean_reversion import MeanReversionStrategy
+from portfolio_management.strategies.mean_reversion_strategies.single_stock_mean_reversion import MeanReversionStrategy
 import matplotlib.pyplot as plt
 import seaborn
-from statsmodels.tsa.stattools import coint
-from functools import partial
 import pandas as pd
 import numpy as np
 

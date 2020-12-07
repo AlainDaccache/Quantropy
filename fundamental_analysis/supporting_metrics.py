@@ -5,6 +5,7 @@ import historical_data_collection.data_preparation_helpers as excel
 import config
 import numpy as np
 from options_scraper.scraper import NASDAQOptionsScraper
+import pandas as pd
 
 '''
 Data outside financial statements for the company
@@ -12,9 +13,25 @@ Data outside financial statements for the company
 
 
 def market_price(stock, date=datetime.today(), lookback_period=timedelta(days=0), spec='Adj Close'):
-    path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(stock))
-    output = excel.read_entry_from_pickle(path=path, x=spec, y=date, lookback_index=lookback_period.days)
-    return output
+    to_return = {}
+    stock_list = [stock] if isinstance(stock, str) else stock
+    for stock_ in stock_list:
+        path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(stock_))
+        output = excel.read_entry_from_pickle(path=path, x=spec, y=date, lookback_index=lookback_period.days)
+        to_return[stock_] = output
+
+    if isinstance(stock, str):
+        return_ = to_return[stock]
+        if isinstance(return_, pd.Series):
+            return_.name = stock
+        return return_
+    elif isinstance(date, datetime):
+        return pd.Series(to_return, name=date)
+
+    elif isinstance(stock, list) and isinstance(date, list):
+        return pd.DataFrame.from_dict(to_return, orient='index')
+    else:
+        raise Exception
 
 
 def options_price(stock, date=datetime.today(), lookback_period=timedelta(days=0)):
@@ -60,7 +77,7 @@ def market_capitalization(stock: str, diluted_shares: bool = False, date: dateti
                           lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
                                                      period=period, diluted_shares=diluted_shares)
-    output = market_price(stock, date, lookback_period) * shares_outstanding
+    output = market_price(stock, date, lookback_period) * shares_outstanding * 1000000  # TODO hotfix!
     print('Market Capitalization for {} on the {} is: {}'.format(stock, date, output))
     return output
 

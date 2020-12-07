@@ -1,4 +1,5 @@
 import os
+import pickle
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
 import re
@@ -13,6 +14,7 @@ from historical_data_collection import data_preparation_helpers
 from pprint import pprint
 from historical_data_collection.financial_statements_scraper.html_scraper_sec_edgar import HtmlParser
 from historical_data_collection.stock_prices_scraper import save_stock_prices
+from macroeconomic_analysis.macroeconomic_analysis import companies_in_index
 
 regex_patterns = {
     'Balance Sheet': {
@@ -217,75 +219,104 @@ regex_patterns = {
 }
 
 
-def scrape_macrotrend(ticker):
-    """
-    Step 1: Load Data Source
-    """
-    name = requests.get('https://www.macrotrends.net/stocks/charts/{}'.format(ticker)).url.rsplit('/')[-2]
-    urls = {'Yearly': {}, 'Quarterly': {}}
-    for freq in ['A', 'Q']:
-        for statement in ['cash-flow-statement', 'income-statement', 'balance-sheet']:
-            urls['Yearly' if freq == 'A' else 'Quarterly'][statement.replace('-', ' ').title()] = \
-                "https://www.macrotrends.net/stocks/charts/{}/{}/{}?freq={}".format(ticker, name, statement, freq)
+def scrape_macrotrend(tickers):
+    multiples_dictio = {}
 
-    """
-    Step 2: Collect Tables
-    """
-    main_dict = {'Yearly': {}, 'Quarterly': {}}
-    for period, statement_and_links in urls.items():
-        for statement, link in statement_and_links.items():
-            r = requests.get(link)
-            multiplier = 1000000 if 'Millions' in r.text else 1000 if 'Thousands' in r.text else 1
-            p = re.compile(r' var originalData = (.*?);\r\n\r\n\r', re.DOTALL)
-            table_data = json.loads(p.findall(r.text)[0])
+    if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL):
+        os.makedirs(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL)
+    for period in ['Quarterly', 'Yearly']:
+        for sheet in ['Balance Sheet', 'Cash Flow Statement', 'Income Statement']:
+            path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, period, sheet)
+            if not os.path.exists(path):
+                os.makedirs(path)
 
-            dates = list(table_data[0].keys())[2:]
-            dictio = {}
-            for row in table_data:
-                soup = bs(row['field_name'], features="lxml")
-                # field_name = '_'.join([statement, soup.select_one('a, span').text])
-                field_name = soup.select_one('a, span').text
-                row_values = list(row.values())[2:]
-                try:
-                    dictio[field_name] = [float(i) if i != '' else 0 for i in row_values]
-                except:
-                    pass
-            df = pd.DataFrame.from_dict(dictio, orient='index', columns=dates)
-            # df = df.apply(lambda x: x.mul(multiplier))
-            for year in df.columns:
-                main_dict[period][year] = {} if year not in main_dict[period].keys() else main_dict[period][year]
-                main_dict[period][year].update(df[year])
+    for ticker in tickers:
+        """
+        Step 1: Load Data Source
+        """
+        name = requests.get('https://www.macrotrends.net/stocks/charts/{}'.format(ticker)).url.rsplit('/')[-2]
+        urls = {'Yearly': {}, 'Quarterly': {}}
+        for freq in ['A', 'Q']:
+            for statement in ['cash-flow-statement', 'income-statement', 'balance-sheet']:
+                urls['Yearly' if freq == 'A' else 'Quarterly'][statement.replace('-', ' ').title()] = \
+                    "https://www.macrotrends.net/stocks/charts/{}/{}/{}?freq={}".format(ticker, name, statement, freq)
 
-    """
-    Step 3: Normalize Tables
-    """
+        """
+        Step 2: Collect Tables
+        """
 
-    master_dict = {'Yearly': {}, 'Quarterly': {}}  # frequency -> year -> title_category_name -> value
-    for period, year_table in main_dict.items():
-        for year, table in year_table.items():
-            master_dict[period][year] = {} if year not in master_dict[period].keys() else master_dict[period][year]
-            for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(regex_patterns).items():
-                master_dict[period][year][normalized_category] = np.nan
+        main_dict = {'Yearly': {}, 'Quarterly': {}}
+        for period, statement_and_links in urls.items():
+            for statement, link in statement_and_links.items():
+                r = requests.get(link)
 
-    for period, year_table in main_dict.items():
-        for year, table in year_table.items():
-            for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
+                multiplier = 1000000 if 'Millions' in r.text else 1000 if 'Thousands' in r.text else 1
+                if ticker not in multiples_dictio.keys():
+                    multiples_dictio[ticker] = multiplier
+
+                p = re.compile(r' var originalData = (.*?);\r\n\r\n\r', re.DOTALL)
+                table_data = json.loads(p.findall(r.text)[0])
+
+                dates = list(table_data[0].keys())[2:]
+                dictio = {}
+                for row in table_data:
+                    soup = bs(row['field_name'], features="lxml")
+                    # field_name = '_'.join([statement, soup.select_one('a, span').text])
+                    field_name = soup.select_one('a, span').text
+                    row_values = list(row.values())[2:]
+                    try:
+                        dictio[field_name] = [float(i) if i != '' else 0 for i in row_values]
+                    except:
+                        pass
+                df = pd.DataFrame.from_dict(dictio, orient='index', columns=dates)
+                # df = df.apply(lambda x: x.mul(multiplier))
+                for year in df.columns:
+                    main_dict[period][year] = {} if year not in main_dict[period].keys() else main_dict[period][year]
+                    main_dict[period][year].update(df[year])
+
+        """
+        Step 3: Normalize Tables
+        """
+
+        master_dict = {'Yearly': {}, 'Quarterly': {}}  # frequency -> year -> title_category_name -> value
+        for period, year_table in main_dict.items():
+            for year, table in year_table.items():
+                master_dict[period][year] = {} if year not in master_dict[period].keys() else master_dict[period][year]
                 for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(
                         regex_patterns).items():
-                    if re.search(pattern_string, scraped_name, re.IGNORECASE):
-                        master_dict[period][year][normalized_category] = scraped_value
-                        break
+                    master_dict[period][year][normalized_category] = np.nan
 
-    path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL, ticker)
-    data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict)
+        for period, year_table in main_dict.items():
+            for year, table in year_table.items():
+                for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
+                    for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(
+                            regex_patterns).items():
+                        if re.search(pattern_string, scraped_name, re.IGNORECASE):
+                            master_dict[period][year][normalized_category] = scraped_value
+                            break
 
-    master_dict = data_preparation_helpers.unflatten(data_preparation_helpers.flatten_dict(master_dict))
-    pprint(master_dict)
+        path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL, ticker)
+        data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict, with_pickle=True)
+        master_dict = data_preparation_helpers.unflatten(data_preparation_helpers.flatten_dict(master_dict))
+        pprint(master_dict)
+
+    multiple_pickle_path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, 'multiples.pkl')
+
+    try:
+        with open(multiple_pickle_path, 'rb') as handle:
+            existing_dictio = pickle.load(handle)
+    except:
+        existing_dictio = {}
+
+    with open(multiple_pickle_path, 'wb') as handle:
+        existing_dictio.update(multiples_dictio)
+        pickle.dump(existing_dictio, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
     # path = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx')
     # tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
-    for ticker in ['AAPL', 'FB', 'AMZN']:
-        scrape_macrotrend(ticker)
-        # save_stock_prices(ticker)
+
+    tickers = companies_in_index(config.MarketIndices.DOW_JONES)
+    scrape_macrotrend(tickers[:10])
+    # save_stock_prices(ticker)

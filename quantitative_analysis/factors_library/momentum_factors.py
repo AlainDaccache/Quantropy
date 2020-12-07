@@ -16,7 +16,7 @@ class MomentumFactors:
             else 21 if frequency == 'Months' else 252 if frequency == 'Years' else Exception
         self.lookback_idx = self.frequency_in_trading_days * window_size
 
-    def traditional(self):
+    def classical_momentum(self):
         '''
         The classical momentum would be one year percentage price change
         :return:
@@ -57,9 +57,9 @@ if __name__ == '__main__':
     stock = 'AAPL'
     prices = data_preparation_helpers.read_df_from_csv('{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, stock))['Adj Close']
     # One year percentage price change
-    momo_1_a = MomentumFactors(prices=prices, frequency='Years', window_size=1).traditional()
+    momo_1_a = MomentumFactors(prices=prices, frequency='Years', window_size=1).classical_momentum()
     # Six months percentage price change
-    momo_1_b = MomentumFactors(prices=prices, frequency='Months', window_size=6).traditional()
+    momo_1_b = MomentumFactors(prices=prices, frequency='Months', window_size=6).classical_momentum()
     # One year minus Two month
     momo_2_a = MomentumFactors(prices=prices, frequency='Months', window_size=12).less_last(less_last_window_size=2)
     # Same but Mean Reverting

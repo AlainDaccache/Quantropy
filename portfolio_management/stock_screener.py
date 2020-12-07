@@ -68,6 +68,22 @@ def helper_condition(metric, comparator, otherside):
         return lambda ticker, date: compare(metric(ticker, date), comparator, otherside)
 
 
+def filter_by_metric_comparison(self, metric: partial, comparator: str, otherside):
+    '''
+
+    Example use: helper_condition(rsi, '>', 70)
+
+    :param metric:
+    :param comparator:
+    :param otherside: might be a value or another metric
+    :return:
+    '''
+    self.stocks = [stock for stock in self.stocks if
+                   helper_condition(metric, comparator, otherside)(stock, self.date)]
+    self.conditions.append((self.filter_by_metric_comparison, metric, comparator, otherside))
+    return self.stocks
+
+
 class StockScreener:
     def __init__(self, stocks=None, columns=None, date=datetime.now()):
         '''
@@ -78,21 +94,21 @@ class StockScreener:
             * 'Valuation': ['Last', 'Market Cap', 'P/E', 'Price/Rev', 'EPS', 'EV/EBITDA']
         :param date:
         '''
-        self.stocks = stocks if stocks is not None else macro.companies_in_index(market_index='S&P-500')
+        self.stocks = stocks if stocks is not None else macro.companies_in_index(market_index=MarketIndices.SP_500)
         self.date = date
         self.conditions = []
-        self.columns = columns if columns is not None else [[partial(ratios.price_to_earnings_ratio, period='Q'),
-                                                             partial(ratios.earnings_per_share, period='Q')]]
+        self.columns = columns if columns is not None else [[partial(ratios.price_to_earnings, period='FY'),
+                                                             partial(ratios.earnings_per_share, period='FY')]]
         self.dataframe = pd.DataFrame()
 
-    def filter_by_region(self, region):
+    def filter_by_market(self, region):
 
         if not isinstance(region, Regions):
             raise Exception
 
         companies_ = macro.companies_in_location(location=region.value)
         self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((self.filter_by_region, region.value))
+        self.conditions.append((self.filter_by_market, region.value))
         return self.stocks
 
     def filter_by_exchange(self, exchange):
@@ -133,20 +149,11 @@ class StockScreener:
         self.conditions.append((self.filter_by_industry, industry.value))
         return self.stocks
 
-    def filter_by_metric_comparison(self, metric: partial, comparator: str, otherside):
-        '''
+    def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float):
+        pass
 
-        Example use: helper_condition(rsi, '>', 70)
-
-        :param metric:
-        :param comparator:
-        :param otherside: might be a value or another metric
-        :return:
-        '''
-        self.stocks = [stock for stock in self.stocks if
-                       helper_condition(metric, comparator, otherside)(stock, self.date)]
-        self.conditions.append((self.filter_by_metric_comparison, metric, comparator, otherside))
-        return self.stocks
+    def filter_by_comparison_to_other_metric(self, metric: partial, comparator: str, other_metric: typing.Callable):
+        pass
 
     def filter_by_exposure_from_factor_model(self, factor_model: FactorModels,
                                              lower_bound: int, upper_bound: int, regression_period: int = 36,

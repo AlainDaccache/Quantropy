@@ -1,4 +1,4 @@
-from strategies.trend_following_strategies.trend_following import TrendFollowingStrategy
+from portfolio_management.strategies.trend_following_strategies.trend_following import TrendFollowingStrategy
 
 
 class MomentumStrategy(TrendFollowingStrategy):

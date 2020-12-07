@@ -13,21 +13,17 @@ periods = [quarterly, six_months, nine_months, yearly]
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DATA_DIR_NAME = 'data'
-DATA_DIR_PATH = os.path.join(ROOT_DIR, DATA_DIR_NAME)
+DATA_DIR_PATH = os.path.join(ROOT_DIR, 'data')
 
-MARKET_INDICES_DIR_NAME = 'historical_indices_constituents'
-MARKET_INDICES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_INDICES_DIR_NAME)
-MARKET_INDICES_TOTAL_US_STOCK_MARKET = os.path.join(MARKET_INDICES_DIR_PATH,
-                                                    'iShares-Core-SP-Total-US-Stock-Market-ETF_fund.pkl')
+MARKET_DATA_DIR_PATH = os.path.join(DATA_DIR_PATH, 'market_data')
 
-MARKET_EXCHANGES_DIR_NAME = 'historical_exchanges_constituents'
-MARKET_EXCHANGES_DIR_PATH = os.path.join(DATA_DIR_PATH, MARKET_EXCHANGES_DIR_NAME)
-FACTORS_DIR_NAME = 'factors_data'
-FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, FACTORS_DIR_NAME)
+MARKET_INDICES_DIR_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'historical_indices_constituents')
+TOTAL_MARKET_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'US-Stock-Market.pkl')
+MARKET_EXCHANGES_DIR_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'historical_exchanges_constituents')
 
-FINANCIAL_STATEMENTS_DIR_NAME = 'financial_statements'
-FINANCIAL_STATEMENTS_DIR_PATH = os.path.join(DATA_DIR_PATH, FINANCIAL_STATEMENTS_DIR_NAME)
+FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, 'factors_data')
+
+FINANCIAL_STATEMENTS_DIR_PATH = os.path.join(DATA_DIR_PATH, 'financial_statements')
 FINANCIAL_STATEMENTS_DIR_PATH_EXCEL = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'excel')
 FINANCIAL_STATEMENTS_DIR_PATH_PICKLE = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'pickle')
 FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_QUARTERLY = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, quarterly)
@@ -38,9 +34,6 @@ STOCK_PRICES_DIR_PATH = os.path.join(DATA_DIR_PATH, STOCK_PRICES_DIR_NAME)
 
 MACRO_DATA_FILE_NAME = 'Macro-Data.xlsx'
 MACRO_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, MACRO_DATA_FILE_NAME)
-
-COMPANY_META_DATA_FILE_NAME = 'Companies_Metadata.xlsx'
-COMPANY_META_DATA_FILE_PATH = os.path.join(DATA_DIR_PATH, COMPANY_META_DATA_FILE_NAME)
 
 stock_prices_sheet_name = 'Stock Prices'
 balance_sheet_name = 'Balance Sheet'

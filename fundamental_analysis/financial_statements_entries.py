@@ -1,3 +1,4 @@
+import pickle
 from datetime import datetime, timedelta
 from itertools import chain
 from pprint import pprint
@@ -10,9 +11,9 @@ import math
 import pandas as pd
 
 
-def read_financial_statement_entry(stock, financial_statement: str, entry_name: list,
+def read_financial_statement_entry(stock, financial_statement: str, entry_name: list, period: str,
                                    date=None,
-                                   lookback_period: timedelta = timedelta(days=0), period: str = ''):
+                                   lookback_period: timedelta = timedelta(days=0)):
     '''
     Read an entry from a financial statement. By default, we read the most recent position for the balance sheet,
     and the trailing twelve months for the income statement and cash flow statement.
@@ -51,43 +52,63 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
     #     raise Exception
     to_return = {}
     stock_list = [stock] if isinstance(stock, str) else stock
+    date_list = [date] if isinstance(date, datetime) else date
     for stock_ in stock_list:
+        # TODO perhaps diff multiples depending on year and statement
+        with open(os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, 'multiples.pkl'), 'rb') as handle:
+            dictio = pickle.load(handle)
+            multiple = dictio[stock_]
+
         path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, path_period, financial_statement,
                             '{}.pkl'.format(stock_))
         if period == 'TTM':
+            entries_for_ttm = {date: [excel.read_entry_from_pickle(path=path, y=entry_name, x=date,
+                                                                   lookback_index=math.floor(
+                                                                       i + (lookback_period.days / 90))) * multiple
+                                      for i in range(4)]
+                               for date in date_list}
 
-            entries_for_ttm = [excel.read_entry_from_pickle(path=path, y=entry_name, x=date,
-                                                            lookback_index=math.floor(i + (lookback_period.days / 90)))
-                               for i in range(4)]
             if financial_statement == 'Balance Sheet':
-                to_return[stock_] = [float(np.mean(entries_for_ttm_)) for entries_for_ttm_ in list(entries_for_ttm)]
+                entries_for_ttm = {k: np.mean(v) for k, v in entries_for_ttm.items()}
+
             else:  # income statement or cash flow statement, cumulative
-                to_return[stock_] = [float(np.sum(entries_for_ttm_)) for entries_for_ttm_ in list(entries_for_ttm)]
+                entries_for_ttm = {k: np.sum(v) for k, v in entries_for_ttm.items()}
 
+            to_return[stock_] = pd.Series(entries_for_ttm)
         elif period == 'YTD':
-            entries_post_year_beginning, i = [], 0
-            while datetime((date - lookback_period).year, 1, 1) + timedelta(days=i * 90) < date:
-                entry = excel.read_entry_from_pickle(path=path,
-                                                     y=entry_name,
-                                                     x=datetime((date - lookback_period).year, 1, 1) + timedelta(
-                                                         days=i * 90),
-                                                     lookback_index=math.floor(lookback_period.days / 90))
-                i = i + 1
-                entries_post_year_beginning.append(entry)
-            to_return[stock_] = [float(np.mean(entries_post_year_beginning_))
-                                 for entries_post_year_beginning_ in [entries_post_year_beginning]]
-
-        to_return[stock_] = excel.read_entry_from_pickle(path=path, y=entry_name, x=date,
+            entries_for_ytd, i = {date: [] for date in date_list}, 0
+            for date in date_list:
+                while datetime((date - lookback_period).year, 1, 1) + timedelta(days=i * 90) < date:
+                    entry = excel.read_entry_from_pickle(path=path,
+                                                         y=entry_name,
+                                                         x=datetime((date - lookback_period).year, 1, 1) + timedelta(
+                                                             days=i * 90),
                                                          lookback_index=math.floor(
-                                                             lookback_period.days / 90) if period == 'Q'
-                                                         else math.floor(lookback_period.days / 365))
+                                                             lookback_period.days / 90)) * multiple
+                    i = i + 1
+                    entries_for_ytd[date].append(entry)
+
+            if financial_statement == 'Balance Sheet':
+                entries_for_ytd = {k: np.mean(v) for k, v in entries_for_ytd.items()}
+
+            else:  # income statement or cash flow statement, cumulative
+                entries_for_ytd = {k: np.sum(v) for k, v in entries_for_ytd.items()}
+
+            to_return[stock_] = pd.Series(entries_for_ytd)
+
+        else:
+            to_return[stock_] = excel.read_entry_from_pickle(path=path, y=entry_name, x=date,
+                                                             lookback_index=math.floor(
+                                                                 lookback_period.days / 90) if period == 'Q'
+                                                             else math.floor(lookback_period.days / 365)) * multiple
     if isinstance(stock, str):
         return_ = to_return[stock]
         if isinstance(return_, pd.Series):
             return_.name = stock
         return return_
     elif isinstance(date, datetime):
-        return to_return
+        return pd.Series(to_return, name=date)
+
     elif isinstance(stock, list) and isinstance(date, list):
         return pd.DataFrame.from_dict(to_return, orient='index')
     else:
@@ -95,25 +116,28 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
 
 def try_multiple_entries(stock, statement, entries, lookback_period: timedelta, period: str, date=None):
-    output = pd.DataFrame()
+    output = None
     if date is None:  # don't delete, useful for when doing len(date)
         date = datetime.now()
     for el in entries:
-        try_ = read_financial_statement_entry(financial_statement=statement, stock=stock, entry_name=[el, el],
-                                              date=date, lookback_period=lookback_period, period=period).to_frame()
+        try_ = read_financial_statement_entry(financial_statement=statement, stock=stock, entry_name=el,
+                                              date=date, lookback_period=lookback_period, period=period)
 
-        output = output.join(try_, how='left') if not output.empty else try_
+        if not (isinstance(try_, pd.Series) or isinstance(try_, pd.DataFrame)):
+            return try_
 
-        date = date if isinstance(date, list) else [date]
-        stock = stock if isinstance(stock, list) else [stock]
-        if output.shape == (len(date), len(stock)):
-            if output.shape[0] == 1:  # just want first row if there's only one row
-                output = output.iloc[0, :]
-                output.name = date[0]
-            if output.shape[1] == 1:  # just want first column if there's only one column
-                output = output.iloc[:, 0]
-                output.name = stock[0]
-            return output
+        elif isinstance(try_, pd.Series):
+            output = pd.concat([output, try_], axis=0) if output is not None else try_
+            if (isinstance(date, list) and len(date) == len(output)) \
+                    or isinstance(stock, list) and len(stock) == len(output):
+                return output
+
+        elif isinstance(try_, pd.DataFrame):
+            # TODO test when not all values are in same entry
+            output = pd.concat([output, try_], axis=0) if output is not None else try_
+            if output.shape == (len(stock), len(date)):
+                return output
+
     return np.nan
 
 
@@ -427,19 +451,15 @@ def total_shares_outstanding(stock, diluted_shares: bool = False, date=None,
 
 def total_shareholders_equity(stock, date=None,
                               lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
-    including_noncontrolling = read_financial_statement_entry(financial_statement='Balance Sheet', stock=stock,
-                                                              entry_name=['Liabilities and Shareholders\' Equity',
-                                                                          'Shareholders\' Equity',
-                                                                          'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest'],
-                                                              date=date, lookback_period=lookback_period, period=period)
-    if np.isnan(including_noncontrolling):
-        return read_financial_statement_entry(financial_statement='Balance Sheet', stock=stock,
-                                              entry_name=['Liabilities and Shareholders\' Equity',
-                                                          'Shareholders\' Equity',
-                                                          'Stockholders\' Equity Attributable to Parent'],
-                                              date=date, lookback_period=lookback_period, period=period)
-    else:
-        return including_noncontrolling
+    return try_multiple_entries(stock=stock, date=date, lookback_period=lookback_period, period=period,
+                                statement='Balance Sheet',
+                                entries=[['Liabilities and Shareholders\' Equity',
+                                          'Shareholders\' Equity',
+                                          'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest'],
+                                         ['Liabilities and Shareholders\' Equity',
+                                          'Shareholders\' Equity',
+                                          'Stockholders\' Equity Attributable to Parent']
+                                         ])
 
 
 '''Income Statement Entries'''
@@ -532,13 +552,16 @@ def income_tax_expense(stock, date=None,
                                           date=date, lookback_period=lookback_period, period=period)
 
 
-def net_income(stock, date=None,
-               lookback_period: timedelta = timedelta(days=0), period: str = 'TTM'):
+def net_income(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'TTM'):
     return try_multiple_entries(stock=stock, statement='Income Statement', date=date, lookback_period=lookback_period,
                                 period=period,
-                                entries=['Net Income (Loss) Attributable to Parent',
-                                         'Net Income (Loss) Available to Common Stockholders, Basic',
-                                         'Net Income Loss Attributable to Noncontrolling (Minority) Interest'])
+                                entries=[['Net Income (Loss) Attributable to Parent',
+                                          'Net Income (Loss) Attributable to Parent'],
+                                         ['Net Income (Loss) Available to Common Stockholders, Basic',
+                                          'Net Income (Loss) Available to Common Stockholders, Basic'],
+                                         ['Net Income Loss Attributable to Noncontrolling (Minority) Interest',
+                                          'Net Income Loss Attributable to Noncontrolling (Minority) Interest']
+                                         ])
 
 
 def preferred_dividends(stock, date=None,
@@ -632,8 +655,11 @@ def net_debt_issued(stock, date=None, lookback_period: timedelta = timedelta(day
 
 
 if __name__ == '__main__':
-    pprint(total_assets(stock='AAPL'))
-    pprint(total_assets(stock='AAPL', date=[datetime.now(), datetime(2019, 1, 1)]))
-    pprint(total_assets(stock=['AAPL', 'AMZN'], date=None))
-    pprint(total_assets(stock=['AAPL', 'AMZN'], date=[datetime.now(), datetime(2019, 1, 1)]))
-    pprint(net_income(stock=['AAPL', 'AMZN']))
+    # pprint(total_assets(stock='AAPL'))
+    # pprint(total_assets(stock='AAPL', date=[datetime.now(), datetime(2019, 1, 1)]))
+    # pprint(total_assets(stock=['AAPL', 'AMZN'], date=None))
+    # pprint(total_assets(stock=['AAPL', 'AMZN'], date=[datetime.now(), datetime(2019, 1, 1)]))
+    # pprint(net_income(stock='AMGN', period='TTM'))
+    pprint(net_income(stock='AMGN', date=[datetime.now(), datetime(2019, 1, 1)], period='TTM'))
+    pprint(net_income(stock=['AMGN', 'AXP'], date=datetime.now(), period='FY'))
+    pprint(net_income(stock=['AMGN', 'MMM'], date=[datetime.now(), datetime(2019, 1, 1)]))

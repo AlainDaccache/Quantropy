@@ -1,83 +1,66 @@
 from datetime import timedelta, datetime
 from functools import partial
+from typing import Callable
+
 import numpy as np
 from fundamental_analysis import accounting_ratios
+from fundamental_analysis.accounting_ratios import price_to_earnings
 from macroeconomic_analysis import macroeconomic_analysis
 from scipy import stats
 
 
-# def metric_per_share(metric: Callable, diluted_shares=False):
-#     metric_args = 0
-#     return metric() / fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
-#                                                   period=period,
-#                                                   diluted_shares=diluted_shares)
+class FundamentalMetricsHelpers:
+    def __init__(self, metric, stock, date=None):
+        if not (isinstance(metric, Callable) or isinstance(metric, partial)):
+            raise Exception
+        self.metric = metric
+        self.stock = stock
+        self.date = date
 
+    # Helpers to compare across time
+    def mean_over_time_intervals(self, how_many_periods: int = 5, intervals: timedelta = timedelta(days=90),
+                                 geometric=False):
+        lookback_period = self.metric.keywords['lookback_period']
+        metrics = [self.metric(stock=self.stock,
+                               lookback_period=timedelta(days=lookback_period.days + intervals.days * i)) for i
+                   in range(how_many_periods + 1)]
+        return np.mean(metrics) if not geometric else stats.gmean(metrics)
 
-def mean_over_time_at_intervals(stock: str, metric: partial, how_many_periods: int = 5,
-                                intervals: timedelta = timedelta(days=90), geometric=False):
-    '''
-    Arithmetic mean by default
+    def metric_growth_rate(self, periods: int = 5, lookback_period=timedelta(days=0), period: str = 'FY',
+                           weighted_average=False):
+        def average_growth_over_time(lst):  # assumes order from left to right chronological
+            growths = [(lst[i] - lst[i - 1]) / lst[i - 1] for i in range(1, len(lst))]
+            return np.mean(growths)
 
-    :param stock:
-    :param metric:
-    :param how_many_periods:
-    :param intervals:
-    :param geometric:
-    :return:
-    '''
-    lookback_period = metric.keywords['lookback_period']
-    metrics = [metric(stock=stock, lookback_period=timedelta(days=lookback_period.days + intervals.days * i)) for i in
-               range(how_many_periods + 1)]
-    return np.mean(metrics) if not geometric else stats.gmean(metrics)
+        ls = [self.metric(stock=self.stock, date=self.date - timedelta(days=365 * i if period == 'FY' else 90 * i),
+                          lookback_period=lookback_period, period=period)
+              for i in range(0, periods)]
+        return average_growth_over_time(ls[::-1])  # reverse
 
+    # Helpers to compare across competition
+    def percentile_against_macro(self, against: str):
+        '''
 
-def metric_growth_rate(metric: partial, stock, periods: int = 5, date=datetime.now(),
-                       lookback_period=timedelta(days=0), period: str = 'FY', weighted_average=False):
-    '''
-
-    :param metric:
-    :param stock:
-    :param periods:
-    :param date:
-    :param lookback_period:
-    :param period:
-    :param weighted_average:
-    :return:
-    '''
-
-    def average_growth_over_time(lst):  # assumes order from left to right chronological
-        growths = [(lst[i] - lst[i - 1]) / lst[i - 1] for i in range(1, len(lst))]
-        return np.mean(growths)
-
-    ls = [metric(stock=stock, date=date - timedelta(days=365 * i if period == 'FY' else 90 * i),
-                 lookback_period=lookback_period, period=period)
-          for i in range(0, periods)]
-    return average_growth_over_time(ls[::-1])  # reverse
-
-
-def metric_market_percentile(stock: str, metric: partial, against: str = 'industry'):
-    '''
-
-    :param stock:
-    :param metric:
-    :param against: 'industry', 'sector', 'market'
-    :return:
-    '''
-    if against == 'industry':
-        stock_macro = macroeconomic_analysis.company_industry(ticker=stock)
-        stocks_in_macro = macroeconomic_analysis.companies_in_industry(industry=stock_macro)
-    elif against == 'sector':
-        stock_macro = macroeconomic_analysis.company_sector(ticker=stock)
-        stocks_in_macro = macroeconomic_analysis.companies_in_sector(sector=stock_macro)
-    else:
-        return Exception
-    metric_applied_in_macro = stocks_in_macro.map(lambda ticker: metric(ticker))
-    metric_applied_to_stock = metric(stock)
-    # np.percentile(metric_applied_in_industry, metric_applied_to_stock)
-    return stats.percentileofscore(metric_applied_in_macro, metric_applied_to_stock)
+        :param against: industry, sector, market, exchange, index...
+        :return:
+        '''
+        if against == 'industry':
+            stock_macro = macroeconomic_analysis.company_industry(ticker=self.stock, date=self.date)
+            stocks_in_macro = macroeconomic_analysis.companies_in_industry(industry=stock_macro, date=self.date)
+        elif against == 'sector':
+            stock_macro = macroeconomic_analysis.company_sector(ticker=self.stock, date=self.date)
+            stocks_in_macro = macroeconomic_analysis.companies_in_sector(sector=stock_macro, date=self.date)
+        elif against == 'market':
+            stock_macro = macroeconomic_analysis.company_location(ticker=self.stock, date=self.date)
+            stocks_in_macro = macroeconomic_analysis.companies_in_location(location=stock_macro, date=self.date)
+        else:
+            return Exception
+        metric_applied_in_macro = stocks_in_macro.map(lambda ticker: self.metric(ticker, self.date))
+        metric_applied_to_stock = self.metric(self.stock, self.date)
+        # np.percentile(metric_applied_in_industry, metric_applied_to_stock)
+        return stats.percentileofscore(metric_applied_in_macro, metric_applied_to_stock)
 
 
 if __name__ == '__main__':
-    print(stock_macro_percentile('MSFT',
-                                 metric=partial(accounting_ratios.price_to_earnings_ratio, period='FY'),
-                                 against='sector'))
+    helpers = FundamentalMetricsHelpers(stock='AAPL', date=datetime.now(), metric=price_to_earnings)
+    print(helpers.percentile_against_macro('sector'))

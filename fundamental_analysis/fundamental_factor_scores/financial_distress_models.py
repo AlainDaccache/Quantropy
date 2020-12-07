@@ -120,6 +120,10 @@ def piotroski_f_score(stock: str, date: datetime = datetime.now(), lookback_peri
     return piotroski_dictio
 
 
+def probability_of_bankruptcy(score):
+    return math.exp(score) / (1 + math.exp(score))
+
+
 def altman_z_score(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                    period: str = 'TTM'):
     A = metrics.net_working_capital(stock=stock, date=date, lookback_period=lookback_period, period=period) \
@@ -199,8 +203,31 @@ def ohlson_o_score(stock: str, date: datetime = datetime.now(), lookback_period:
 
 # https://scholar.harvard.edu/files/campbell/files/campbellhilscherszilagyi_jf2008.pdf
 def campbell_hilscher_szilagyi_model():
-    pass
+    # Net income to market total assets
+    NIMTAAVG = 0
 
+    # Total liabilities to market total assets
+    TLMTA = 0
 
-def probability_of_bankruptcy(score):
-    return math.exp(score) / (1 + math.exp(score))
+    # Cash to market total assets
+    CASHMTA = 0
+
+    # Excess return compared to the S&P 500
+    EXRETAVG = 0
+
+    # Standard deviation of daily returns over the past three months
+    SIGMA = 0
+
+    # Relative size
+    RSIZE = 0
+
+    # Market-to-book equity ratio
+    MB = 0
+
+    # The log of the stock price, capped at log(15)
+    PRICE = 0
+
+    LPFD = -20.12 * NIMTAAVG + 1.60 * TLMTA - 7.88 * EXRETAVG + 1.55 * SIGMA - 0.005 * RSIZE \
+           - 2.27 * CASHMTA + 0.070 * MB - 0.09 * PRICE - 8.87
+
+    return probability_of_bankruptcy(LPFD)

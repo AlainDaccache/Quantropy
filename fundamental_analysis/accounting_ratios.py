@@ -9,8 +9,7 @@ Liquidity ratios are financial ratios that measure a company’s ability to repa
 '''
 
 
-def current(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-            period: str = 'Q') -> float:
+def current_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q') -> float:
     """
     The current ratio measures a company’s ability to pay off short-term liabilities with current assets.
 
@@ -26,8 +25,7 @@ def current(stock, date=None, lookback_period: timedelta = timedelta(days=0),
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def acid_test(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-              period: str = 'Q'):
+def acid_test_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
     The acid-test ratio (or quick ratio) measures a company’s ability to pay off short-term liabilities with quick assets
 
@@ -43,8 +41,7 @@ def acid_test(stock, date=None, lookback_period: timedelta = timedelta(days=0),
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def cash(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-         period: str = 'Q'):
+def cash_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
     The cash ratio measures a company’s ability to pay off short-term liabilities with cash and cash equivalents
 
@@ -61,8 +58,7 @@ def cash(stock, date=None, lookback_period: timedelta = timedelta(days=0),
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def operating_cash_flow(stock, date=None,
-                        lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+def operating_cash_flow_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
     The operating cash flow ratio is a measure of the number of times a company can pay off current liabilities with the cash generated in a given period
 
@@ -83,8 +79,7 @@ Leverage ratios measure the amount of capital that comes from debt. In other wor
 '''
 
 
-def debt(stock, date=None,
-         lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+def debt_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
     The debt ratio measures the relative amount of a company’s assets that are provided from debt
 
@@ -100,8 +95,7 @@ def debt(stock, date=None,
            / fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def asset_to_equity(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-                    period: str = 'Q'):
+def asset_to_equity(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     '''
     The asset/equity ratio indicates the relationship of the total assets of the firm to the part owned by shareholders (aka, owner's equity)
 
@@ -118,8 +112,7 @@ def asset_to_equity(stock, date=None, lookback_period: timedelta = timedelta(day
     return total_assets / total_equity
 
 
-def debt_to_equity(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-                   period: str = 'Q',
+def debt_to_equity(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q',
                    only_interest_expense=False, all_liabilities=False, only_long_term_debt=True,
                    exclude_current_portion_long_term_debt=False):
     '''
@@ -144,8 +137,8 @@ def debt_to_equity(stock, date=None, lookback_period: timedelta = timedelta(days
            / fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def debt_to_capital(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-                    period: str = 'Q', interest_expense=False, all_liabilities=False, long_term_debt=True):
+def debt_to_capital(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q',
+                    interest_expense=False, all_liabilities=False, long_term_debt=True):
     '''
     A company's debt-to-capital ratio or D/C ratio is the ratio of its total debt to its total capital, its debt and equity combined. The ratio measures a company's capital structure, financial solvency, and degree of leverage, at a particular point in time.
 
@@ -485,9 +478,8 @@ def price_to_cash_flow(stock, date=None,
                                             diluted_shares=diluted_shares))
 
 
-def price_to_book_value(stock, date=None,
-                        lookback_period: timedelta = timedelta(days=0),
-                        period: str = 'Q', diluted_shares: bool = False):
+def price_to_book_value(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q',
+                        diluted_shares: bool = False):
     return me.market_price(stock=stock, date=date, lookback_period=lookback_period) \
            / book_value_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                   diluted_shares=diluted_shares)
@@ -634,5 +626,6 @@ def enterprise_value_to_free_cash_flow(stock, date=None,
 
 
 if __name__ == '__main__':
-    # print(earnings_per_share(stock='AAPL', date=[datetime.now(), datetime(2019, 1, 1)], period='FY'))
-    print(price_to_earnings(stock='AAPL', date=[datetime.now(), datetime(2019, 1, 1)], period='FY'))
+    print(price_to_book_value(stock=['BA', 'AXP'], date=[datetime.now(), datetime(2019, 9, 1)], period='FY'))
+    print(me.market_price(stock=['BA', 'AXP'],
+                          date=[datetime.now(), datetime(2019, 1, 1)]))
