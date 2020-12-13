@@ -24,14 +24,29 @@ def market_premiums(to_date: datetime, from_date: datetime = None, lookback=None
                                               frequency=frequency)
 
 
-def companies_in_industry(industry: str, type: str = 'SIC', date=datetime.now()):
+def companies_in_industry(industry, date=datetime.now()):
+    if isinstance(industry, config.SIC_Sectors):
+        entry = 'SIC Industry'
+    elif isinstance(industry, config.GICS_Sectors):
+        entry = 'GICS Industry'
+    else:
+        raise Exception
+
     df = pd.read_pickle(config.TOTAL_MARKET_PATH)
-    return df[df['{} Industry'.format(type)] == industry].index
+
+    return df[df[entry] == industry.value].index
 
 
-def companies_in_sector(sector: str, type: str = 'SIC', date=datetime.now()):
+def companies_in_sector(sector, date=datetime.now()):
+    if isinstance(sector, config.SIC_Sectors):
+        entry = 'SIC Sector'
+    elif isinstance(sector, config.GICS_Sectors):
+        entry = 'GICS Sector'
+    else:
+        raise Exception
+
     df = pd.read_pickle(config.TOTAL_MARKET_PATH)
-    return df[df['{} Sector'.format(type)] == sector].index
+    return df[df[entry] == sector.value].index
 
 
 def companies_in_location(location: str, date=datetime.now()):
@@ -39,15 +54,15 @@ def companies_in_location(location: str, date=datetime.now()):
     return df[df['Location'].str.contains(location)].index
 
 
-def companies_in_exchange(exchange: str, date=datetime.now()):
-    path = os.path.join(config.MARKET_EXCHANGES_DIR_PATH, '{}.txt'.format(exchange))
+def companies_in_exchange(exchange: config.Exchanges, date=datetime.now()):
+    path = os.path.join(config.MARKET_EXCHANGES_DIR_PATH, '{}.txt'.format(exchange.value))
     df = pd.read_csv(filepath_or_buffer=path, sep='\t', header=0)
     return list(df['Symbol'])
 
 
 def companies_in_index(market_index: config.MarketIndices, date=datetime.now()):
-    path = os.path.join(config.MARKET_INDICES_DIR_PATH, '{}-Stock-Tickers.csv'.format(market_index.value))
-    df = pd.read_csv(path, parse_dates=True, index_col=0)
+    path = os.path.join(config.MARKET_INDICES_DIR_PATH, '{}-Tickers-History.pkl'.format(market_index.value))
+    df = pd.read_pickle(path)
     idx = excel.get_date_index(date, df.columns)
     return list(df.iloc[:, idx])
 

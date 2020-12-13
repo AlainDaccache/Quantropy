@@ -3,8 +3,8 @@ import math
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
-import quantitative_analysis.asset_pricing_models as asset_pricing_models
 from scipy.stats import norm
+from quantitative_analysis.risk_factor_modeling import asset_pricing_model
 
 '''
 The methods in this field serve as utility functions for our portfolio optimization

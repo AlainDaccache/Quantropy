@@ -2,17 +2,12 @@ import collections
 import os
 import traceback
 from datetime import datetime, timedelta
-from pathlib import Path
 import pandas as pd
-import typing
 from openpyxl.styles import PatternFill
 import config
 from openpyxl import load_workbook
 import numpy as np
 import xlrd
-from typing import Callable
-
-from historical_data_collection.financial_statements_scraper.financial_statements_scraper import quarterlize_statements
 
 
 def get_date_index(date, dates_values, lookback_index=0):

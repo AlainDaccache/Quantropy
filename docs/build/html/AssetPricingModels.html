@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Asset Pricing Models &mdash; Quantropy 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Quantropy’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Quantropy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Asset Pricing Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-quest-for-asset-pricing-the-efficient-market-hypothesis">The Quest for Asset Pricing: The Efficient Market Hypothesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-intuition-behind-capm">The Intuition behind CAPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-derivation-of-capm">The Derivation of CAPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#beta-a-proxy-of-market-risk">Beta: A Proxy of Market Risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-security-market-line">The Security Market Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-capital-allocation-line">The Capital Allocation Line</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a-tale-of-asset-pricing-models">A Tale of Asset Pricing Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fama-french-three-factor-model-1992">Fama-French Three Factor Model (1992)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#carhart-four-factor-model-1997">Carhart Four Factor Model (1997)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pastor-stambaugh-model-2003">Pastor-Stambaugh Model (2003)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aqr-factors-2013-2014">AQR Factors (2013-2014)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fama-french-five-factor-model-2015">Fama-French Five Factor Model (2015)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Quantropy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Asset Pricing Models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/AssetPricingModels.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-quantitative_analysis.risk_factor_modeling">
+<span id="asset-pricing-models"></span><h1>Asset Pricing Models<a class="headerlink" href="#module-quantitative_analysis.risk_factor_modeling" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the theory behind, and implementation of asset pricing models, which will allow you,
+in plain terms, to identify (and capitalize on) the drivers of the stock market’s returns. We will start by
+analyzing common factor models developed in academia (i.e. CAPM, Fama-French, Carhart…) and
+used in the industry (AQR, MSCI, MorningStar, BlackRock).
+We will then going about researching factors to define your own asset pricing models.</p>
+<dl class="simple">
+<dt>Such models are typically used to</dt><dd><ol class="arabic simple">
+<li><p><em>Explain</em> stock market returns (in regression terms), and determine the degree of out-performance of your portfolio.</p></li>
+<li><p>Evaluate the risk factor exposures, to filter or optimize your portfolio.</p></li>
+<li><p>Compute the expected rate of return, in equity and option valuation models</p></li>
+</ol>
+</dd>
+</dl>
+<div class="section" id="the-quest-for-asset-pricing-the-efficient-market-hypothesis">
+<h2>The Quest for Asset Pricing: The Efficient Market Hypothesis<a class="headerlink" href="#the-quest-for-asset-pricing-the-efficient-market-hypothesis" title="Permalink to this headline">¶</a></h2>
+<p>There is a common question that looms in</p>
+<p>The <strong>Efficient Market Hypothesis</strong>, formulated by <em>Eugene Fama</em>, posits that asset prices
+reflect all available information. And therefore, if markets are indeed efficient, asset prices
+should only react to new information, and it would be impossible to beat the market, consistently, in a risk-adjusted basis.
+In other words, you cannot consistently earn excess returns over the market if you were not to use leverage.</p>
+<p>What does <em>all available information</em> entail, however? There are three types of market efficiency, and are explained in the context of what information sets are factored in price trend.
+This hypothesis can thus be empirically tested in three forms:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>Weak-form</em>: these test take the information set to be only the historical prices.
+So, assuming the hypothesis is true, only historical prices are factored in current prices,
+i.e. prices reflect all past price movements.
+This means current prices can be predicted from historical price trend; thus, it is impossible
+to profit from just looking at historical prices. You will need more information (i.e. private).</p></li>
+<li><p><em>Semi-strong form</em>: in addition to historical prices, all information which is publicly available, is reflected in prices already, such as companies’ announcements or annual earnings figures</p></li>
+<li><p><em>Strong-form</em>: these tests regard private information.</p></li>
+</ul>
+</div></blockquote>
+<p id="bibtex-bibliography-AssetPricingModels-0"></p>
+<p>Market efficiency denotes how information is factored in price. Fama emphasizes that, to test the hypothesis of
+market efficiency, you need to test it along a model of market equilibrium (i.e. an asset pricing model);
+this the <em>Joint Hypothesis Problem</em>, the efficient market hypothesis on its own doesn’t generate testable
+predictions. So, if a certain model yields a predicted return significantly different
+from the actual return (this difference is called the <em>alpha</em>), you can’t be certain if it’s because of (a) an
+inefficient market, or (b) an imperfect model. So you cannot disprove market efficiency. Researchers can only modify their models by adding different factors to eliminate any anomalies, in hopes of fully explaining (in other words, perfectly predicting)
+the return within the model. If you find such model, this disproves market inefficiency (i.e. proves efficiency).</p>
+</div>
+<div class="section" id="capital-asset-pricing-model">
+<h2>Capital Asset Pricing Model<a class="headerlink" href="#capital-asset-pricing-model" title="Permalink to this headline">¶</a></h2>
+<p>The Capital Asset Pricing Model, or CAPM for short, is a factor model that attempts to explain the returns
+of a portfolio as a function of the overall market returns.</p>
+<dl class="py function">
+<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__">
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">factor_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frequency</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Monthly'</span></em>, <em class="sig-param"><span class="n">to_date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">from_date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>factor_dataset</strong> – Either a pandas DataFrame/Series
+or a FactorModelDataset object. By default, takes FAMA_FRENCH_3_DATASET, i.e. the market returns
+the returns AMEX, NYSE, NASDAQ overall.</p></li>
+<li><p><strong>frequency</strong> – The desired resampling frequency of the returns.
+‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, ‘Yearly’.</p></li>
+<li><p><strong>to_date</strong> – By default, takes the last day in the factor_dataset</p></li>
+<li><p><strong>from_date</strong> – Typically datetime object. If timedelta object, then deducts from to_date.
+If int, then deducts from to_date with given frequency parameter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="the-intuition-behind-capm">
+<h3>The Intuition behind CAPM<a class="headerlink" href="#the-intuition-behind-capm" title="Permalink to this headline">¶</a></h3>
+<p>Regardless of the companies that you choose to invest in, regardless of the diversification you achieved (in terms of industry,
+sector etc. or some mean variance analysis to minimize correlation), each of those companies are to some degree exposed
+to the risk of the overall market. For instance, the Covid-19 pandemic caused companies across the market to fall, even
+if the cause of the fall itself isn’t related to the company’s operations (i.e. poor earnings, lawsuit etc.)</p>
+<p>Therefore, there is a risk inherent when participating in the free market. This risk is called the <strong>systematic risk</strong> (often times
+dubbed as non-diversifiable risk, or non-idiosyncratic risk), and you should be compensated for it.</p>
+<p>We can use this risk exposure to measure the return you should expect from this security. As a risk averse investor,
+you would like to be compensated for the additional risk you are taking by investing
+in equities. So, you should expect at least the <em>risk-free rate of return</em> (i.e. Treasury bills as a proxy),
+and, for each unit of risk (i.e. the Beta), you should be additionally compensated by the market returns (in excess of the risk-free rate)
+This assumes that beta risk is the only kind of risk for which investors should receive an expected return higher than the risk-free rate of interest.
+This forms the intuition behind the model most commonly used in asset pricing, the <em>Capital Asset Pricing Model</em>. It is a <em>single-factor model</em>.</p>
+</div>
+<div class="section" id="the-derivation-of-capm">
+<h3>The Derivation of CAPM<a class="headerlink" href="#the-derivation-of-capm" title="Permalink to this headline">¶</a></h3>
+<p>Let’s look at the effect of adding an asset <em>a</em> to a market portfolio <em>m</em>, under the Modern Portfolio Theory Model (more detail in the <cite>Portfolio Optimization</cite> module)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The expected return of the market portfolio is <span class="math notranslate nohighlight">\(w_m * E(R_{m})\)</span>, and by adding an asset of expected return <span class="math notranslate nohighlight">\(w_a * E(R_{m})\)</span>, that would be the added return to the market portfolio. So, the market portfolio’s updated expected returns would be <span class="math notranslate nohighlight">\(w_m * E(R_{m}) + w_a * E(R_{m})\)</span></p></li>
+<li><p>The risk of the market portfolio is <span class="math notranslate nohighlight">\(w_{m}^2 * \sigma_{m}^2\)</span>. When adding an asset <em>a</em> of risk <span class="math notranslate nohighlight">\(w_{a}^2 * \sigma_{a}^2\)</span> to the market portfolio, the added risk is <span class="math notranslate nohighlight">\(w_{a}^2 * \sigma_{a}^2 + 2 * w_m * w_a * \rho_{am} * \sigma_{a} * \sigma_{m}\)</span>, but since the weight of the asset will be relatively low, <span class="math notranslate nohighlight">\(w_{a}^2 \approx 0\)</span>, so the additional risk would be <span class="math notranslate nohighlight">\(2 * w_m * w_a * \rho_{am} * \sigma_{a} * \sigma_{m}\)</span>. The updated market portfolio risk is then <span class="math notranslate nohighlight">\(w_{m}^2 * \sigma_{m}^2 + 2 * w_m * w_a * \rho_{am} * \sigma_{a} * \sigma_{m}\)</span></p></li>
+</ul>
+</div></blockquote>
+<p>How do we use this to derive an appropriate discount rate for our asset?
+The asset return depends on the amount paid for the asset today.
+The price paid must ensure that the market portfolio’s risk / return characteristics improve when the asset is added to it.
+If an asset, a, is correctly priced, the improvement in its risk-to-expected return ratio achieved by adding it to the
+market portfolio, m, will at least match the gains of spending that money on an increased stake in the market portfolio.
+The assumption is that the investor will purchase the asset with funds borrowed at the risk-free rate, <span class="math notranslate nohighlight">\(R_{f}\)</span>;
+this is rational if <span class="math notranslate nohighlight">\(E(R_a) &gt; R_f\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\frac{w_{a} * (E(R_a) - R_f)}{2 * w_m * w_a * \rho_{am} * \sigma_{a} * \sigma_{m}} = \frac{w_a * (E(R_m) - R_f)}{2 * w_m * w_a * \sigma_m * \sigma_m}\]</div>
+<div class="math notranslate nohighlight">
+\[\implies E(R_a) = R_f + (E(R_m) - R_f) * \frac{\rho_{am} \sigma_a \sigma_m}{\sigma_m \sigma_m}\]</div>
+<div class="math notranslate nohighlight">
+\[\implies E(R_a) = R_f + (E(R_m) - R_f) * \frac{\sigma_{am}}{\sigma_{mm}}\]</div>
+</div>
+<div class="section" id="beta-a-proxy-of-market-risk">
+<h3>Beta: A Proxy of Market Risk<a class="headerlink" href="#beta-a-proxy-of-market-risk" title="Permalink to this headline">¶</a></h3>
+<p>The <span class="math notranslate nohighlight">\(\frac{\sigma_{am}}{\sigma_{mm}}\)</span> is the ‘beta’, <span class="math notranslate nohighlight">\(\beta\)</span>.
+It is the covariance between the asset’s return and the market’s return divided by the variance of the market return.</p>
+<div class="math notranslate nohighlight" id="equation-covariance-method">
+<span class="eqno">(1)<a class="headerlink" href="#equation-covariance-method" title="Permalink to this equation">¶</a></span>\[\beta_i = \frac{Covariance(E(R_a), E(R_m))}{Variance(E(R_m))}\]</div>
+<p>In other words, it is the sensitivity of the asset price to movement in the market portfolio’s value.
+How does this asset <em>react</em> - on average - when the market goes up or down, or, how does it move with respect to the market.
+An asset with a beta greater (less) than 1 means that, on average, its returns moves more (less) than 1-to-1 with the return of the market portfolio.</p>
+<p>The CAPM formula becomes</p>
+<div class="math notranslate nohighlight" id="equation-capm">
+<span class="eqno">(2)<a class="headerlink" href="#equation-capm" title="Permalink to this equation">¶</a></span>\[E(R_i) = \beta_i * (E(R_m) - R_f) + R_f\]</div>
+<p>What I found interesting, is that not only beta represents how much an asset is <em>exposed</em> to the market risk,
+but also the <em>contribution</em> of an asset to the risk of the market portfolio, that was not reduced by diversification.
+If we were to compute the value-weighted (market-cap weighted) average of the beta of all assets with respect to
+the value-weighted portfolio, we would get 1. This is why Betas with respect to different market indexes are not comparable.</p>
+<dl class="py function">
+<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns">
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">get_expected_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio</strong> – </p></li>
+<li><p><strong>benchmark_returns</strong> – </p></li>
+<li><p><strong>date</strong> – </p></li>
+<li><p><strong>regression_window</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>If the CAPM is correct, then using this rate of return to discount the future cash flows produced by the asset (DCF, to be covered
+in another section) should give its actual price, according to the <strong>Efficient Market Hypothesis</strong>,
+which staples that all assets are correctly priced.</p>
+<p>This is the rate of return used in Discounted Cash Flow (DCF) analysis to discount the future
+cash flows produced by the asset, which we cover in another section. Thus, <strong>assuming</strong> that the
+CAPM is correct, an asset would be correctly priced if this discounted value is equal to its estimated price
+based on either fundamental or technical analysis techniques, including P/E, M/B etc.</p>
+<p>If the estimated price is higher (lower) than the</p>
+<p>CAPM is not <em>just</em> a regression.
+We can run a regression of your portfolio against the returns of the market.
+Alphas from a time-series regression are error terms in the cross-sectional, linear relationship between expected returns and factor betas. If a factor model were correct those error terms (the alphas) would be zero.</p>
+</div>
+<div class="section" id="the-security-market-line">
+<h3>The Security Market Line<a class="headerlink" href="#the-security-market-line" title="Permalink to this headline">¶</a></h3>
+<p>The CAPM formula can be visualized through the Security Market Line, which computes the
+expected rate of returns (<cite>y-axis</cite>) for different values of <span class="math notranslate nohighlight">\(\beta\)</span> (<cite>x-axis</cite>). The slope
+is thus the market premium, <span class="math notranslate nohighlight">\((E(R_m) - R_f)\)</span>.</p>
+<dl class="py function">
+<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line">
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">security_market_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em>, <em class="sig-param"><span class="n">benchmark</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio</strong> – </p></li>
+<li><p><strong>date</strong> – </p></li>
+<li><p><strong>regression_window</strong> – </p></li>
+<li><p><strong>benchmark</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="the-capital-allocation-line">
+<h3>The Capital Allocation Line<a class="headerlink" href="#the-capital-allocation-line" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="a-tale-of-asset-pricing-models">
+<h2>A Tale of Asset Pricing Models<a class="headerlink" href="#a-tale-of-asset-pricing-models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fama-french-three-factor-model-1992">
+<h3>Fama-French Three Factor Model (1992)<a class="headerlink" href="#fama-french-three-factor-model-1992" title="Permalink to this headline">¶</a></h3>
+<p>CAPM posited that a stock’s beta alone should explain its average return.
+Fama and French found two anomalies:</p>
+<p>historical-average returns on stocks of small firms and on stocks with high ratios of
+book equity to market equity (B/M) are higher than predicted by the security market line of the CAPM.
+The reason pointed out by FF that firms with high ratios of book-to-market value are more likely to be
+in financial distress and small stocks may be more sensitive to changes in business conditions and thus
+provide higher historical-average return than predicted by CAPM.
+They justified their model on empirical grounds.</p>
+</div>
+<div class="section" id="carhart-four-factor-model-1997">
+<h3>Carhart Four Factor Model (1997)<a class="headerlink" href="#carhart-four-factor-model-1997" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="pastor-stambaugh-model-2003">
+<h3>Pastor-Stambaugh Model (2003)<a class="headerlink" href="#pastor-stambaugh-model-2003" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="aqr-factors-2013-2014">
+<h3>AQR Factors (2013-2014)<a class="headerlink" href="#aqr-factors-2013-2014" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="fama-french-five-factor-model-2015">
+<h3>Fama-French Five Factor Model (2015)<a class="headerlink" href="#fama-french-five-factor-model-2015" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Quantropy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alain Daccache
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

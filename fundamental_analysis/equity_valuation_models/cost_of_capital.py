@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
 import fundamental_analysis.supporting_metrics as me
-import quantitative_analysis.asset_pricing_models as required_rr
+from quantitative_analysis.risk_factor_modeling import asset_pricing_model
 import macroeconomic_analysis.macroeconomic_analysis as macro
 import numpy as np
 from functools import partial

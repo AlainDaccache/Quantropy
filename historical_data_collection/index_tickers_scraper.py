@@ -1,3 +1,4 @@
+import json
 import urllib
 from datetime import datetime
 import unicodedata
@@ -71,11 +72,40 @@ def save_current_sp500_tickers():
         ticker = row.findAll('td')[0].text
         ticker = ticker.strip()
         tickers.append(ticker)
-    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Stock-Tickers.csv'),
-                 tickers=tickers)
+    # store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Stock-Tickers.csv'),
+    #              tickers=tickers)
     return tickers
 
 
+# def save_historical_sp500_tickers():
+#     html = requests.get("https://www.ishares.com/us/products/239726/#tabsAll").content
+#     soup = BeautifulSoup(html)
+#
+#     # find available dates
+#     holdings = soup.find("div", {"id": "holdings"})
+#     dates_div = holdings.find_all("div", "component-date-list")[0]
+#     dates_div.find_all("option")
+#     dates = [option.attrs["value"] for option in dates_div.find_all("option")]
+#
+#     # download constituents for each date
+#     constituents = pd.Series()
+#     for date in dates:
+#         resp = requests.get(
+#             f"https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf/1467271812596.ajax?tab=all&fileType=json&asOfDate={date}"
+#         ).content[3:]
+#         tickers = json.loads(resp)
+#         tickers = [(arr[0], arr[1]) for arr in tickers['aaData']]
+#         date = datetime.strptime(date, "%Y%m%d")
+#         constituents[date] = tickers
+#
+#     constituents = constituents.iloc[::-1]  # reverse into cronlogical order
+#     constituents: pd.Series = constituents.apply(lambda lst: [ticker for ticker, name in lst])
+#     constituents.to_pickle(path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Tickers-History.pkl'))
+#     return constituents
+
+def save_historical_sp500_tickers():
+    current_tickers = save_current_sp500_tickers()
+    
 def url_to_excel_clean_to_df(url: str, output_name: str, skiprows: int = 0):
     path = os.path.join(config.MARKET_INDICES_DIR_PATH, output_name)
     urllib.request.urlretrieve(url, path)
@@ -102,14 +132,11 @@ def save_total_us_stock_market_tickers():
         skiprows=7)
 
 
-def historical_sp500_ticker():
-    pass
-
-
 if __name__ == '__main__':
-    save_current_sp500_tickers()
-    save_current_dow_jones_tickers()
+    # save_current_sp500_tickers()
+    # save_current_dow_jones_tickers()
     # save_current_nasdaq()
-    save_current_russell_3000_tickers()
+    # save_current_russell_3000_tickers()
     # save_total_us_stock_market_tickers()
     # save_current_amex()
+    print(save_current_sp500_tickers())

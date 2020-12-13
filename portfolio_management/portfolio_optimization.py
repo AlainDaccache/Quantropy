@@ -1,12 +1,7 @@
 import abc
 import numpy as np
 import pandas as pd
-import typing
-from cvxpy import *
-import scipy.optimize
 from scipy.optimize import minimize, Bounds
-
-import historical_data_collection.data_preparation_helpers as excel
 from macroeconomic_analysis.macroeconomic_analysis import risk_free_rates
 from fundamental_analysis.supporting_metrics import market_capitalization
 from portfolio_management import Portfolio

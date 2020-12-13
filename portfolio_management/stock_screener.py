@@ -6,47 +6,8 @@ import pandas as pd
 import macroeconomic_analysis.macroeconomic_analysis as macro
 import fundamental_analysis.accounting_ratios as ratios
 from config import MarketIndices, Exchanges, GICS_Sectors, Industries, Regions, SIC_Sectors
-
-'''
-I. Market:
-    * Region: USA...
-    * Stock Exchange: NYSE, AMEX, NASDAQ...
-    * Index: Dow Jones, S&P, Russell...
-    * Industry: 
-    * Sector: 
-    * Market Capitalization
-    
-II. Technicals:
-    Select timeframe for each: 1m, 5m, 15m, 1h, 4h, 1d, 1w, 1m, 1y
-    * Performance: Change %, New High, New Low
-    * Volatility: Beta, Standard Deviation
-    * Indicators: Below, Below or Equal, Above, Above or Equal, Crosses, Crosses up, Crosses down, Between, Outside, Equal, Not Equal
-        * 
-    * Chart Patterns:
-    * Candlestick Patterns: 
-
-III. Fundamentals:
-    Select timeframe for each: Fiscal Year (FY), Most Recent Quarter (MRQ), Trailing Twelve Months (TTM)
-    * Financial Statements: 
-        * Balance Sheet: 
-        * Income Statement: 
-        * Cash Flow Statement:
-    * Accounting Ratios
-        * 
-    * Scores:
-    
-    * Valuation: 
-    
-Once Filtered, user selects template for columns (inspired from TradingView)
-'''
-
-
-class FactorModels(Enum):
-    pass
-    # CAPM = partial(pricing_model.capital_asset_pricing_model)
-    # FAMA_FRENCH_3 = partial(pricing_model.fama_french_3_factor_model)
-    # CARHART_4 = partial(pricing_model.carhart_4_factor_model)
-    # FAMA_FRENCH_5 = partial(pricing_model.fama_french_5_factor_model)
+from portfolio_management.Portfolio import Portfolio
+from quantitative_analysis.risk_factor_modeling import AssetPricingModel
 
 
 def helper_condition(metric, comparator, otherside):
@@ -68,38 +29,27 @@ def helper_condition(metric, comparator, otherside):
         return lambda ticker, date: compare(metric(ticker, date), comparator, otherside)
 
 
-def filter_by_metric_comparison(self, metric: partial, comparator: str, otherside):
-    '''
-
-    Example use: helper_condition(rsi, '>', 70)
-
-    :param metric:
-    :param comparator:
-    :param otherside: might be a value or another metric
-    :return:
-    '''
-    self.stocks = [stock for stock in self.stocks if
-                   helper_condition(metric, comparator, otherside)(stock, self.date)]
-    self.conditions.append((self.filter_by_metric_comparison, metric, comparator, otherside))
-    return self.stocks
-
-
 class StockScreener:
-    def __init__(self, stocks=None, columns=None, date=datetime.now()):
+    def __init__(self):
         '''
 
-        :param stocks:
+        :param stocks: either a list, or a MarketIndices, or Exchanges, or Regions object (to avoid survivorship
+            bias when selecting a date to filter)
         :param columns: Can enter one value for template:
             * 'Technical': ['Open', 'High', 'Low', 'Close', 'Volume', 'Change']
             * 'Valuation': ['Last', 'Market Cap', 'P/E', 'Price/Rev', 'EPS', 'EV/EBITDA']
         :param date:
         '''
-        self.stocks = stocks if stocks is not None else macro.companies_in_index(market_index=MarketIndices.SP_500)
-        self.date = date
+        self.stocks = macro.companies_in_index(MarketIndices.SP_500)  # starting universe
         self.conditions = []
-        self.columns = columns if columns is not None else [[partial(ratios.price_to_earnings, period='FY'),
-                                                             partial(ratios.earnings_per_share, period='FY')]]
         self.dataframe = pd.DataFrame()
+
+    def run(self, conditions=None, date: datetime = datetime.now()):
+        if conditions is None:
+            conditions = self.conditions
+        for condition in conditions:
+            args = condition[1:]
+            fn = condition[0](args)
 
     def filter_by_market(self, region):
 
@@ -134,12 +84,12 @@ class StockScreener:
         if not (isinstance(sector, SIC_Sectors) or isinstance(sector, GICS_Sectors)):
             raise Exception
 
-        companies_ = macro.companies_in_sector(sector=sector.value)
+        companies_ = macro.companies_in_sector(sector=sector)
         self.stocks = list(set(self.stocks).intersection(companies_))
         self.conditions.append((self.filter_by_sector, sector.value))
         return self.stocks
 
-    def filter_by_industry(self, industry):
+    def filter_by_industry(self, industry: Industries):
 
         if not isinstance(industry, Industries):
             raise Exception
@@ -149,20 +99,52 @@ class StockScreener:
         self.conditions.append((self.filter_by_industry, industry.value))
         return self.stocks
 
-    def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float):
-        pass
+    def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float, date=None):
+        if date is not None:
+            self.stocks = [stock for stock in self.stocks if
+                           helper_condition(metric, comparator, number)(stock, date)]
+        self.conditions.append((self.filter_by_comparison_to_other_metric, metric, comparator, number))
+        return self.stocks
 
-    def filter_by_comparison_to_other_metric(self, metric: partial, comparator: str, other_metric: typing.Callable):
-        pass
+    def filter_by_comparison_to_other_metric(self, metric: partial, comparator: str, other_metric: typing.Callable,
+                                             date=None):
+        if date is not None:
+            self.stocks = [stock for stock in self.stocks if
+                           helper_condition(metric, comparator, other_metric)(stock, date)]
+        self.conditions.append((self.filter_by_comparison_to_other_metric, metric, comparator, other_metric))
+        return self.stocks
 
-    def filter_by_exposure_from_factor_model(self, factor_model: FactorModels,
-                                             lower_bound: int, upper_bound: int, regression_period: int = 36,
-                                             frequency: str = 'Monthly', factors: typing.List = None):
+    def filter_by_exposure_from_factor_model(self, factor_model: AssetPricingModel,
+                                             lower_bounds: typing.List, upper_bounds: typing.List,
+                                             benchmark_returns=None, regression_period: int = 36):
+        """
 
+        :param factor_model:
+        :param lower_bounds: List of ints between 0 and 100, each representing a factor exposure.
+        Make sure they are in the order of the factor dataframe. If don't want to filter by a  certain factor, just put 0
+        :param upper_bounds: List of ints between 0 and 100, each representing a factor exposure.
+        Make sure they are in the order of the factor dataframe. If don't want to filter by a certain factor, just put 100
+        :param benchmark_returns:
+        :param regression_period:
+        :param frequency:
+        :return:
+        """
+        regression_dict = {}
+        portfolio = Portfolio(assets=self.stocks)
         for stock in self.stocks:
-            regression = factor_model.value(portfolio_returns=stock, regression_period=regression_period,
-                                            frequency=frequency)
-            print(regression)
+            regression = factor_model.regress_factor_loadings(portfolio=portfolio, benchmark_returns=benchmark_returns,
+                                                              regression_window=regression_period, rolling=False)
+
+            regression_dict[stock] = {factor[0]: factor[1] for factor in regression.params}
+        regression_df = pd.DataFrame.from_dict(data=regression_dict, orient='index')
+        # min-max normalize and scale
+        regression_df = regression_df.apply(func=lambda x: 100 * (x - min(x) / (max(x) - min(x))), axis=0)
+        for idx, factor in enumerate(regression_df.columns):
+            regression_df = regression_df[regression_df[factor] > lower_bounds[idx]
+                                          & regression_df[factor] < upper_bounds[idx]]
+        self.conditions.append((self.filter_by_exposure_from_factor_model, factor_model, lower_bounds, upper_bounds,
+                                benchmark_returns, regression_period))
+        return list(regression_df.index)
 
     def filter_by_institutional_ownership_percentage(self, cutoff):
         pass
@@ -172,25 +154,32 @@ class StockScreener:
 
     def undo_condition(self, condition: typing.Callable, args):
         self.conditions.remove((condition, args))
+        # re-add them
         stocks_that_meet_condition = condition(args)
         self.stocks.append(stocks_that_meet_condition)
         for condition, args in self.conditions:
             condition(args)
 
-    def render_dataframe(self):
-        stock_screener_dict = {stock: {metric.func.__name__: metric(stock, self.date)}
+    def render_dataframe(self, columns=None, date=datetime.now()):
+        if columns is None:
+            columns = [[partial(ratios.price_to_earnings, period='FY'),
+                        partial(ratios.earnings_per_share, period='FY')]]
+
+        stock_screener_dict = {stock: {metric.func.__name__: metric(stock, date)}
                                for stock in self.stocks
-                               for metric in self.columns}
+                               for metric in columns}
         stock_screener_df = pd.DataFrame.from_dict(stock_screener_dict, orient='index')
 
         return stock_screener_df
 
 
 if __name__ == '__main__':
-    stock_screener = StockScreener(stocks=['AAPL', 'AMGN'])
-    stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.FAMA_FRENCH_3,
-                                                        factors=[''],
-                                                        lower_bound=20, upper_bound=40, regression_period=36)
-    print(stock_screener.render_dataframe())
-    # stock_screener.filter_by_metric_comparison(partial(ratios.price_to_earnings_ratio, period='Q'), '>', 2)
-    # print(stock_screener.stocks)
+    stock_screener = StockScreener()
+    # stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.FAMA_FRENCH_3,
+    #                                                     factors=[''],
+    #                                                     lower_bound=20, upper_bound=40, regression_period=36)
+    # print(stock_screener.render_dataframe())
+    stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 20)
+    print(stock_screener.stocks)
+    stock_screener.filter_by_sector(sector=GICS_Sectors.INFORMATION_TECHNOLOGY)
+    print(stock_screener.stocks)

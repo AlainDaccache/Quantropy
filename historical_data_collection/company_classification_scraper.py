@@ -101,7 +101,7 @@ def get_company_meta():
     init_df = pd.read_csv('https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1467271812596.ajax?fileType=csv&fileName=ITOT_holdings&dataType=fund',
                           skiprows=9, index_col=0)
     tickers = init_df.index.tolist()
-    # tickers = companies_in_index(config.MarketIndices.SP_500)
+    tickers = companies_in_index(config.MarketIndices.DOW_JONES)
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
     sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',

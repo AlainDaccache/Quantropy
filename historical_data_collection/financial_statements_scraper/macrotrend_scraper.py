@@ -1,19 +1,14 @@
 import os
 import pickle
-from datetime import datetime
 from bs4 import BeautifulSoup as bs
 import re
 import json
 import pandas as pd
 import requests
-from zope.interface import implementer
 import numpy as np
-
 import config
 from historical_data_collection import data_preparation_helpers
 from pprint import pprint
-from historical_data_collection.financial_statements_scraper.html_scraper_sec_edgar import HtmlParser
-from historical_data_collection.stock_prices_scraper import save_stock_prices
 from macroeconomic_analysis.macroeconomic_analysis import companies_in_index
 
 regex_patterns = {
@@ -318,5 +313,5 @@ if __name__ == '__main__':
     # tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
 
     tickers = companies_in_index(config.MarketIndices.DOW_JONES)
-    scrape_macrotrend(tickers[:10])
+    scrape_macrotrend(tickers)
     # save_stock_prices(ticker)

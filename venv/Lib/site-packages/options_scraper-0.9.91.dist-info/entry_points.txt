@@ -1,0 +1,3 @@
+[console_scripts]
+options-scraper = options_scraper.cli:main
+

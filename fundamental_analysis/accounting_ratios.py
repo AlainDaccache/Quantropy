@@ -15,11 +15,13 @@ def current_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=
 
     Category: Liquidity Ratio
 
-    :param stock: ticker in question i.e. 'AAPL'
-    :param date: date (the most recent date of reporting from that date will be used) i.e. datetime(2019, 1, 1)
+    :param stock: ticker(s) in question. Can be string (i.e. 'AAPL') or list of strings (i.e. ['AAPL', 'BA'])
+    :param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes.
+    The most recent date of reporting from that date will be used. By default, date=datetime.now().
     :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90)
     :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months
-    :return: Current Assets / Current Liabilities
+    :return: .. math::
+        \text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}
     """
     return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
@@ -213,9 +215,18 @@ def payables_conversion_period(stock, date=datetime.now(), lookback_period=timed
            / payables_turnover(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# The asset turnover ratio measures a company’s ability to generate sales from assets
-# Asset turnover ratio = Net sales / Total assets
-def asset_turnover(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = ''):
+def asset_turnover_ratio(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = ''):
+    """
+    The asset turnover ratio measures a company’s ability to generate sales from assets. Formula:
+
+    Asset turnover ratio = Net sales / Total assets
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return:
+    """
     return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
@@ -294,8 +305,8 @@ def cash_conversion_cycle(stock, date=None, lookback_period: timedelta = timedel
            - payables_conversion_period(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-def retention(stock, date=None, lookback_period: timedelta = timedelta(days=0),
-              period: str = ''):
+def retention_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0),
+                    period: str = ''):
     net_income = fi.net_income(stock=stock, date=date, lookback_period=lookback_period, period=period)
     dividends = fi.payments_for_dividends(stock=stock, date=date, lookback_period=lookback_period, period=period)
     return (net_income - abs(dividends)) / net_income

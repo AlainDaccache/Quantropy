@@ -13,6 +13,8 @@ import seaborn
 from statsmodels.tsa.stattools import coint
 from enum import Enum
 
+from portfolio_management.stock_screener import StockScreener
+
 plt.style.use('fivethirtyeight')
 
 
@@ -168,10 +170,10 @@ class RebalancingFrequency(Enum):
 
 class Strategy(metaclass=abc.ABCMeta):
 
-    def __init__(self, starting_date: datetime, ending_date: datetime,
-                 starting_capital: float, securities_universe: typing.List[str], max_stocks_count_in_portfolio: int,
-                 net_exposure: tuple,
-                 portfolio_allocation, maximum_leverage: float = 1.0,
+    def __init__(self, starting_date: datetime, ending_date: datetime, starting_capital: float,
+                 stock_screener: StockScreener,
+                 securities_universe, max_stocks_count_in_portfolio: int,
+                 net_exposure: tuple, portfolio_allocation, maximum_leverage: float = 1.0,
                  reinvest_dividends: bool = False, fractional_shares: bool = False,
                  include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
 
@@ -197,6 +199,7 @@ class Strategy(metaclass=abc.ABCMeta):
         self.ending_date = ending_date
         self.starting_capital = starting_capital
         self.securities_universe = populate_stock_universe(securities_universe)
+        self.stock_screener = stock_screener
         self.max_stocks_count_in_portfolio = max_stocks_count_in_portfolio
         self.net_exposure = net_exposure
         self.portfolio_allocation = portfolio_allocation
@@ -207,9 +210,10 @@ class Strategy(metaclass=abc.ABCMeta):
         self.include_capital_gains_tax = include_capital_gains_tax
         self.commission = commission
 
-    @abstractmethod
+
     def generate_assets_to_trade(self, current_date):
-        pass
+        conditions = self.stock_screener.conditions
+        return self.stock_screener.stocks
 
     @abstractmethod
     def is_time_to_reschedule(self, current_date, last_rebalancing_day):
