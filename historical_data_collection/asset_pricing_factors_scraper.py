@@ -78,5 +78,5 @@ def scrape_Q_factors():
 
 
 if __name__ == '__main__':
-    scrape_AQR_factors()
-    # scrape_Fama_French_factors()
+    # scrape_AQR_factors()
+    scrape_Fama_French_factors()

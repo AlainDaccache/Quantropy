@@ -39,8 +39,9 @@ def save_current_nasdaq():
             main_df.sort_index(inplace=True)
             main_df = main_df[~main_df.index.str.contains('\$')]  # this is to remove derived asset classes
         os.remove(path)
-    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'Nasdaq-Stocks-Tickers.xlsx'),
-                 tickers=main_df.index)
+
+    df = pd.DataFrame.from_dict({datetime.now(): main_df.index})
+    pd.DataFrame.to_pickle(df, path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'NASDAQ-Historical-Constituents.pkl'))
 
     return main_df.index
 
@@ -52,17 +53,17 @@ def save_current_dow_jones_tickers():
     table = soup.find('table', {'class': 'wikitable sortable'})
     tickers = []
     for row in table.findAll('tr')[1:]:
-        ticker = unicodedata.normalize("NFKD", row.findAll('td')[1].text).split(': ')[-1]
+        ticker = unicodedata.normalize("NFKD", row.findAll('td')[2].text).split(': ')[-1]
         ticker = ticker.strip()
         tickers.append(ticker)
 
-    store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'Dow-Jones-Stock-Tickers.csv'),
-                 tickers=tickers)
+    df = pd.DataFrame.from_dict({datetime.now(): tickers}, orient='index')
+    pd.DataFrame.to_pickle(df, path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'Dow-Jones-Historical-Constituents.pkl'))
 
     return tickers
 
 
-def save_current_sp500_tickers():
+def get_current_sp500_tickers():
     url = 'http://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'lxml')
@@ -72,71 +73,78 @@ def save_current_sp500_tickers():
         ticker = row.findAll('td')[0].text
         ticker = ticker.strip()
         tickers.append(ticker)
-    # store_to_csv(file_path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Stock-Tickers.csv'),
-    #              tickers=tickers)
+
     return tickers
 
 
-# def save_historical_sp500_tickers():
-#     html = requests.get("https://www.ishares.com/us/products/239726/#tabsAll").content
-#     soup = BeautifulSoup(html)
-#
-#     # find available dates
-#     holdings = soup.find("div", {"id": "holdings"})
-#     dates_div = holdings.find_all("div", "component-date-list")[0]
-#     dates_div.find_all("option")
-#     dates = [option.attrs["value"] for option in dates_div.find_all("option")]
-#
-#     # download constituents for each date
-#     constituents = pd.Series()
-#     for date in dates:
-#         resp = requests.get(
-#             f"https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf/1467271812596.ajax?tab=all&fileType=json&asOfDate={date}"
-#         ).content[3:]
-#         tickers = json.loads(resp)
-#         tickers = [(arr[0], arr[1]) for arr in tickers['aaData']]
-#         date = datetime.strptime(date, "%Y%m%d")
-#         constituents[date] = tickers
-#
-#     constituents = constituents.iloc[::-1]  # reverse into cronlogical order
-#     constituents: pd.Series = constituents.apply(lambda lst: [ticker for ticker, name in lst])
-#     constituents.to_pickle(path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Tickers-History.pkl'))
-#     return constituents
-
 def save_historical_sp500_tickers():
-    current_tickers = save_current_sp500_tickers()
-    
-def url_to_excel_clean_to_df(url: str, output_name: str, skiprows: int = 0):
+    resp = requests.get('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
+    soup = BeautifulSoup(resp.text, 'lxml')
+    historical_changes_table = soup.findAll('table', {'class': 'wikitable sortable'})[1]
+    historical_changes_dictio = {}
+    for row in historical_changes_table.findAll('tr')[2:]:
+        row_data = row.findAll('td')
+        date = datetime.strptime(row_data[0].text.rstrip(), '%B %d, %Y')
+        ticker_added, ticker_removed = row_data[1].text.rstrip(), row_data[3].text.rstrip()
+        if date not in historical_changes_dictio.keys():
+            historical_changes_dictio[date] = {'Added': [], 'Removed': []}
+        historical_changes_dictio[date]['Added'].append(ticker_added)
+        historical_changes_dictio[date]['Removed'].append(ticker_removed)
+
+    cumulative_dictio = {}
+    current_tickers = get_current_sp500_tickers()
+    # Not perfectly accurate, as ticker names can change with time (i.e. SAIC = SAI)
+    for date, added_removed in historical_changes_dictio.items():
+
+        cumulative_dictio[date] = current_tickers
+        for added in added_removed['Added']:
+            if len(added) > 0:  # before this date, the ticker wasn't there
+                try:
+                    current_tickers.remove(added)
+                except:
+                    print(f'Manual check needed for added ticker {added} on {date}')
+        for removed in added_removed['Removed']:
+            if len(removed) > 0:  # before this date, the ticker was there
+                current_tickers.append(removed)
+
+    cumulative_df = pd.DataFrame.from_dict(cumulative_dictio, orient='index')
+    pd.DataFrame.to_pickle(cumulative_df,
+                           path=os.path.join(config.MARKET_INDICES_DIR_PATH, 'S&P-500-Historical-Constituents.pkl'))
+    return cumulative_df
+
+
+def url_to_pickle_clean_to_df(url: str, output_name: str, skiprows: int = 0):
     path = os.path.join(config.MARKET_INDICES_DIR_PATH, output_name)
     urllib.request.urlretrieve(url, path)
-    df = pd.read_excel(pd.ExcelFile(path), index_col=0, skiprows=skiprows, warn_bad_lines=False, error_bad_lines=False)
+    try:
+        df = pd.read_excel(pd.ExcelFile(path), index_col=0, skiprows=skiprows)
+    except:
+        df = pd.read_html(path, index_col=0, skiprows=skiprows)
     os.remove(path)
-    print(df.to_string())
+    # print(df.to_string())
     tickers = list(df.index)
     file_path = os.path.join(config.MARKET_INDICES_DIR_PATH, output_name)
-    store_to_csv(file_path=file_path, tickers=tickers)
+    cumulative_df = pd.DataFrame.from_dict({datetime.now(): tickers}, orient='index')
+    pd.DataFrame.to_pickle(cumulative_df, path=file_path)
     return tickers
 
 
 def save_current_russell_3000_tickers():
-    return url_to_excel_clean_to_df(
+    return url_to_pickle_clean_to_df(
         url="http://www.beatthemarketanalyzer.com/blog/wp-content/uploads/2016/10/Russell-3000-Stock-Tickers-List.xlsx",
         output_name='Russell-3000-Stock-Tickers.csv',
         skiprows=3)
 
 
 def save_total_us_stock_market_tickers():
-    return url_to_excel_clean_to_df(
+    return url_to_pickle_clean_to_df(
         url='https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1521942788811.ajax?fileType=xls&fileName=iShares-Core-SP-Total-US-Stock-Market-ETF_fund&dataType=fund',
-        output_name='US-Stock-Market-Tickers.xls',
-        skiprows=7)
+        output_name='US-Stock-Market-Tickers.xls', skiprows=7)
 
 
 if __name__ == '__main__':
-    # save_current_sp500_tickers()
-    # save_current_dow_jones_tickers()
+    save_current_dow_jones_tickers()
     # save_current_nasdaq()
     # save_current_russell_3000_tickers()
     # save_total_us_stock_market_tickers()
-    # save_current_amex()
-    print(save_current_sp500_tickers())
+    # save_historical_sp500_tickers()

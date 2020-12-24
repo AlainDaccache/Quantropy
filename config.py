@@ -4,6 +4,7 @@ import os
 #                                                 'data_scraping',
 #                                                 'financial_statements').replace('\\', '/')
 from enum import Enum
+from functools import partial
 
 yearly = 'Yearly'
 quarterly = 'Quarterly'

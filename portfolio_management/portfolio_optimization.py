@@ -60,7 +60,7 @@ class EquallyWeightedPortfolio(PortfolioAllocationModel):
     def solve_weights(self, objective=None, leverage=0, long_short_exposure=0):
         output = pd.Series()
         for ticker, stock_return in self.portfolio.df_returns.iteritems():
-            output[ticker] = 1 / len(self.portfolio.portfolio_tickers)
+            output[ticker] = 1 / len(self.portfolio.stocks)
         return output
 
 

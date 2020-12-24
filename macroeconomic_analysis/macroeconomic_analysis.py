@@ -4,6 +4,7 @@ import config
 import historical_data_collection.data_preparation_helpers as excel
 import pandas as pd
 import os
+import numpy as np
 
 
 def gross_national_product_price_index(date):
@@ -30,7 +31,7 @@ def companies_in_industry(industry, date=datetime.now()):
     elif isinstance(industry, config.GICS_Sectors):
         entry = 'GICS Industry'
     else:
-        raise Exception
+        raise Exception('Ensure arg for industry is an instance of config.SIC_Sectors or config.GICS_Sectorsll')
 
     df = pd.read_pickle(config.TOTAL_MARKET_PATH)
 
@@ -49,22 +50,26 @@ def companies_in_sector(sector, date=datetime.now()):
     return df[df[entry] == sector.value].index
 
 
-def companies_in_location(location: str, date=datetime.now()):
+def companies_in_location(location: config.Regions, date=datetime.now()):
+    if not isinstance(location, config.Regions):
+        raise Exception('Ensure arg for location is an instance of config.Regions')
     df = pd.read_pickle(config.TOTAL_MARKET_PATH)
     return df[df['Location'].str.contains(location)].index
 
 
 def companies_in_exchange(exchange: config.Exchanges, date=datetime.now()):
+    if not isinstance(exchange, config.Exchanges):
+        raise Exception('Ensure arg for exchange is an instance of config.Exchanges')
     path = os.path.join(config.MARKET_EXCHANGES_DIR_PATH, '{}.txt'.format(exchange.value))
     df = pd.read_csv(filepath_or_buffer=path, sep='\t', header=0)
     return list(df['Symbol'])
 
 
 def companies_in_index(market_index: config.MarketIndices, date=datetime.now()):
-    path = os.path.join(config.MARKET_INDICES_DIR_PATH, '{}-Tickers-History.pkl'.format(market_index.value))
+    path = os.path.join(config.MARKET_INDICES_DIR_PATH, '{}-Historical-Constituents.pkl'.format(market_index.value))
     df = pd.read_pickle(path)
-    idx = excel.get_date_index(date, df.columns)
-    return list(df.iloc[:, idx])
+    idx = excel.get_date_index(date, df.index)
+    return list(df.iloc[idx, :])
 
 
 def company_cik(ticker: str):

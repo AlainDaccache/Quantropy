@@ -1,5 +1,6 @@
 import abc
 import math
+import os
 from datetime import datetime, timedelta
 import typing
 from functools import partial
@@ -13,6 +14,9 @@ import seaborn
 from statsmodels.tsa.stattools import coint
 from enum import Enum
 
+import macroeconomic_analysis.macroeconomic_analysis as macro
+from portfolio_management.Portfolio import Portfolio, TimeDataFrame
+from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio, PortfolioAllocationModel
 from portfolio_management.stock_screener import StockScreener
 
 plt.style.use('fivethirtyeight')
@@ -25,138 +29,6 @@ plt.style.use('fivethirtyeight')
 #       Functionality for commission (as percent of trade or fix cost)
 #       Functionality for slippage (do one day slippage)
 #       Functionality for fractional shares (optional)
-
-class Stock:
-
-    def __init__(self, ticker: str):
-        self.ticker = ticker
-        self.price_data = excel.read_df_from_csv('{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, self.ticker))
-        self.price_date_idx = 0
-        self.current_price = 0
-
-
-class Trade:
-    def __init__(self, stock: Stock, direction: bool, shares: int, date: datetime,
-                 stop_loss: float = None, take_profit: float = None, commission: float = 5):
-        self.stock = stock
-        self.direction = direction
-        self.shares = shares
-        self.date = date
-        self.stop_loss = stop_loss
-        self.take_profit = take_profit
-        self.commission = commission
-
-
-class Portfolio:
-    def __init__(self, balance: float, trades: list, date: datetime):
-        self.balance = balance
-        self.trades = trades
-        self.float = float(balance)
-        self.date = date
-        self.last_rebalancing_day = date
-
-    def rebalance_portfolio(self, stocks_to_trade, weights, commission, fractional_shares):
-        '''
-        Place Positions (Rebalance Portfolio)
-        First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
-        (gives us capital to invest for the others). Second sweep is for buying
-        :return:
-        '''
-        long_stocks, short_stocks = stocks_to_trade
-        for i in range(2):
-
-            for stock in long_stocks + short_stocks:
-                stock_is_in_portfolio = False
-
-                for trade in self.trades:
-
-                    # If the stock computed is already part of our portfolio, then:
-                    if stock.ticker == trade.stock.ticker \
-                            and ((stock.ticker in long_stocks and trade.stock.ticker in long_stocks)
-                                 or (stock.ticker in short_stocks and trade.stock.ticker in short_stocks)):
-
-                        stock_is_in_portfolio = True
-
-                        # Aggregate total weight of asset in portfolio
-                        current_weight_in_portfolio = 0
-                        for trade in self.trades:
-                            if stock.ticker == trade.stock.ticker:
-                                current_weight_in_portfolio += trade.shares * trade.stock.current_price \
-                                                               / self.float
-
-                        # The weight we need to rebalance for
-                        delta_weights = weights[stock.ticker] - current_weight_in_portfolio
-                        delta_shares = (abs(delta_weights) * self.float - commission) / stock.current_price
-
-                        # for first sweep, target weight should less than current weight and original position is long
-                        #  or vice versa for short (means we're selling)
-                        # for second sweep, target weight should be more than current weight and original position is long
-                        # or vice versa for short (means we're buying)
-
-                        if delta_shares > 0 and \
-                                (i == 0 and ((delta_weights < 0 and trade.direction)
-                                             or (delta_weights > 0 and not trade.direction))
-                                 or (i == 1 and ((delta_weights > 0 and trade.direction)
-                                                 or (delta_weights < 0 and not trade.direction)))):
-                            if not fractional_shares:
-                                delta_shares = math.floor(delta_shares)
-                            if delta_shares > 0:
-                                trade = Trade(direction=True if stock.ticker in long_stocks else False,
-                                              stock=stock, shares=delta_shares, date=self.date)
-                                # we're exiting longs and entering shorts
-                                self.make_position(trade, entry=False if stock.ticker in long_stocks else True)
-                                break
-
-                # If the stock computed is not already part of our portfolio
-                if not stock_is_in_portfolio:
-                    shares_to_trade = (weights[stock.ticker] * self.float - commission) \
-                                      / stock.current_price
-                    if not fractional_shares:
-                        shares_to_trade = math.floor(shares_to_trade)
-                    if shares_to_trade > 0:
-                        if i == 0 and stock.ticker in short_stocks:  # entering shorts
-                            trade = Trade(direction=False, stock=stock, shares=shares_to_trade, date=self.date)
-                            self.make_position(trade, entry=True)
-                        if i == 1 and stock.ticker in long_stocks:  # entering longs
-                            trade = Trade(direction=True, stock=stock, shares=shares_to_trade, date=self.date)
-                            self.make_position(trade, entry=True)
-
-    def make_position(self, trade: Trade, entry: bool):
-
-        if not entry:  # if I am exiting a position
-
-            shares_left = trade.shares
-            for portfolio_trade in self.trades:
-                if portfolio_trade.stock.ticker == trade.stock.ticker and trade.direction == portfolio_trade.direction:
-                    # If the number of shares to exit is greater than the trade in the portfolio
-                    # (total exit or simply partial exit with more shares than trade placed at such date)
-                    if shares_left > portfolio_trade.shares:
-                        self.trades.pop(self.trades.index(portfolio_trade))
-                        shares_left -= portfolio_trade.shares
-                    else:  # partial exit
-                        portfolio_trade.shares -= shares_left
-                        break
-        else:
-            if self.balance > trade.stock.current_price * trade.shares + trade.commission:
-                self.trades.append(trade)
-        # Now Adjust Balance: making a position should only affect the balance, not the float
-
-        # if entering a long position or exiting a short position
-        if (trade.direction and entry) or (not trade.direction and not entry):
-            if self.balance > trade.stock.current_price * trade.shares + trade.commission:
-                self.balance = self.balance - (trade.stock.current_price * trade.shares + trade.commission)
-        # if exiting a long position or entering a short position
-        elif (trade.direction and not entry) or (not trade.direction and entry):
-            self.balance = self.balance + (trade.stock.current_price * trade.shares - trade.commission)
-        else:
-            return
-
-
-def populate_stock_universe(securities_universe: typing.List[str]):
-    securities_universe_objects = pd.Series()
-    for ticker in securities_universe:
-        securities_universe_objects[ticker] = Stock(ticker)
-    return securities_universe_objects
 
 
 class RebalancingFrequency(Enum):
@@ -171,8 +43,7 @@ class RebalancingFrequency(Enum):
 class Strategy(metaclass=abc.ABCMeta):
 
     def __init__(self, starting_date: datetime, ending_date: datetime, starting_capital: float,
-                 stock_screener: StockScreener,
-                 securities_universe, max_stocks_count_in_portfolio: int,
+                 stock_screener: StockScreener, max_stocks_count_in_portfolio: int,
                  net_exposure: tuple, portfolio_allocation, maximum_leverage: float = 1.0,
                  reinvest_dividends: bool = False, fractional_shares: bool = False,
                  include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
@@ -182,7 +53,7 @@ class Strategy(metaclass=abc.ABCMeta):
         :param starting_date:
         :param ending_date:
         :param starting_capital:
-        :param securities_universe:
+        :param stock_screener:
         :param max_stocks_count_in_portfolio:
         :param net_exposure: tuple that represents (long_percent, short_percent)
             * (0.5, 0.5) is Dollar Neutral Strategy
@@ -195,10 +66,12 @@ class Strategy(metaclass=abc.ABCMeta):
         :param include_capital_gains_tax:
         :param commission:
         """
+        if not issubclass(portfolio_allocation, PortfolioAllocationModel):
+            raise Exception('Make sure that portfolio_allocation is a subclass of PortfolioAllocationModel')
+
         self.starting_date = starting_date
         self.ending_date = ending_date
         self.starting_capital = starting_capital
-        self.securities_universe = populate_stock_universe(securities_universe)
         self.stock_screener = stock_screener
         self.max_stocks_count_in_portfolio = max_stocks_count_in_portfolio
         self.net_exposure = net_exposure
@@ -210,85 +83,89 @@ class Strategy(metaclass=abc.ABCMeta):
         self.include_capital_gains_tax = include_capital_gains_tax
         self.commission = commission
 
-
     def generate_assets_to_trade(self, current_date):
-        conditions = self.stock_screener.conditions
-        return self.stock_screener.stocks
+        """
+        This is basic implementation. You can implement for other strategies like smart-beta.
+        :param current_date:
+        :return: a tuple of two lists: long stocks, and short stocks.
+        """
+        self.stock_screener.run(date=current_date)
+        return self.stock_screener.stocks, []
 
     @abstractmethod
     def is_time_to_reschedule(self, current_date, last_rebalancing_day):
         pass
 
-    def simulate_strategy(self):
+    def historical_simulation(self):
         results = []
-        portfolio = Portfolio(balance=self.starting_capital, trades=[], date=self.starting_date)
+        portfolio = Portfolio(assets=[], balance=self.starting_capital, trades=[], date=self.starting_date)
+
+        # First, populate stock returns universe
+        securities_universe_prices_df = pd.DataFrame()
+        for stock in os.listdir(path=config.STOCK_PRICES_DIR_PATH):
+            ticker = stock.strip('.pkl')
+            series = pd.read_pickle(os.path.join(config.STOCK_PRICES_DIR_PATH, stock))['Adj Close']
+
+            dummy_dates = pd.date_range(start=series.index[0], end=series.index[-1])
+            zeros_dummy = pd.Series(data=np.zeros(shape=len(dummy_dates)).fill(np.nan),
+                                    index=dummy_dates, name='Dummy', dtype='float64')
+
+            series = pd.concat([series, zeros_dummy], axis=1).iloc[:, 0]
+            securities_universe_prices_df[ticker] = series.ffill()
+
+        securities_universe_returns_df = securities_universe_prices_df.pct_change()
 
         for date in pd.date_range(start=self.starting_date, end=self.ending_date):
-            try:
-                portfolio.date = date
-                # stocks in portfolio: list(set([x.stock for x in portfolio.trades]))
-                for stock in self.securities_universe:  # update current prices according to date
-                    date_index = excel.get_date_index(date, stock.price_data['Adj Close'].index)
-                    stock.current_price = stock.price_data['Adj Close'].iloc[date_index]
-                    stock.price_date_idx = date_index
+            portfolio.date = datetime(year=date.year, month=date.month, day=date.day)
 
-                for trade in portfolio.trades:  # update portfolio float
-                    daily_pct_return = trade.stock.price_data['Pct Change'].iloc[trade.stock.price_date_idx]
-                    daily_doll_return = daily_pct_return * trade.stock.current_price * trade.shares
-                    portfolio.float = portfolio.float + daily_doll_return if trade.direction else portfolio.float - daily_doll_return
+            for trade in portfolio.trades:  # update portfolio float
+                date_loc = trade.stock.index.get_loc(date - timedelta(seconds=1))
 
-                if not self.is_time_to_reschedule(current_date=date,
-                                                  last_rebalancing_day=portfolio.last_rebalancing_day):
-                    continue
+                daily_pct_return = (trade.stock.iloc[date_loc] - trade.stock.iloc[date_loc - 1]) \
+                                   / trade.stock.iloc[date_loc - 1]
 
-                portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
+                daily_doll_return = daily_pct_return * trade.stock.loc[date - timedelta(seconds=1)] * trade.shares
 
-                stocks_to_trade = self.generate_assets_to_trade(portfolio.date)
+                portfolio.float = portfolio.float + daily_doll_return if trade.direction \
+                    else portfolio.float - daily_doll_return
 
-                long_stocks, short_stocks = stocks_to_trade
-                for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
-                    if trade.stock.ticker not in stocks_to_trade:
-                        portfolio.make_position(trade, entry=False)
+            if not (self.is_time_to_reschedule(current_date=date,
+                                               last_rebalancing_day=portfolio.last_rebalancing_day)
+                    or date == self.starting_date):
+                continue
 
-                # Close positions for stocks that are in neither long and short:
-                for trade in portfolio.trades:
-                    if trade.stock.ticker not in stocks_to_trade:
-                        portfolio.make_position(trade, entry=False)
+            portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
+            stocks_to_trade = self.generate_assets_to_trade(portfolio.date)
+            long_stocks, short_stocks = stocks_to_trade
 
-                # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation
-                portfolio_returns = pd.Series()
-                stock_objects = ([], [])
-                for stock_ticker in stocks_to_trade[0]:
-                    stock = self.securities_universe[stock_ticker]
-                    stock_objects[0].append(stock)
-                    portfolio_returns[stock.ticker] = stock.price_data['Pct Change'].iloc[:stock.price_date_idx]
+            for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
+                if trade.stock.name not in stocks_to_trade:
+                    portfolio.make_position(trade, entry=False)
 
-                for stock_ticker in stocks_to_trade[1]:
-                    stock = self.securities_universe[stock_ticker]
-                    stock_objects[1].append(stock)
-                    portfolio_returns[stock.ticker] = stock.price_data['Pct Change'].iloc[:stock.price_date_idx]
+            # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation
+            portfolio.df_returns = securities_universe_returns_df[long_stocks]
+            sliced_portfolio = portfolio.slice_dataframe(to_date=date, inplace=False)
+            weights = self.portfolio_allocation(portfolio=sliced_portfolio).solve_weights()
 
-                weights = self.portfolio_allocation(portfolio_returns=portfolio_returns).solve_weights()
+            portfolio.rebalance_portfolio(long_stocks=securities_universe_prices_df[long_stocks],
+                                          short_stocks=securities_universe_prices_df[short_stocks],
+                                          weights=weights, commission=self.commission,
+                                          fractional_shares=self.fractional_shares)
 
-                portfolio.rebalance_portfolio(stock_objects, weights, self.commission, self.fractional_shares)
+            # Aggregate trades for better formatting in the dataframe
+            dictionary = dict()
+            for trade in portfolio.trades:
+                dictionary[trade.stock.name] = dictionary.get(trade.stock.name, 0) + trade.shares
 
-            finally:
-                # that's to aggregate trades for better formatting in the dataframe
-                dictionary = dict()
-                for trade in portfolio.trades:
-                    dictionary[trade.stock.ticker] = dictionary.get(trade.stock.ticker, 0) + trade.shares
-
-                aggregated_trades = [(key, val) for (key, val) in dictionary.items()]
-                results.append([date.strftime("%Y-%m-%d"),
-                                aggregated_trades,
-                                round(portfolio.balance, 2),
-                                round(portfolio.float, 2)])
+            aggregated_trades = [(key, val) for (key, val) in dictionary.items()]
+            results.append([date.strftime("%Y-%m-%d"), aggregated_trades,
+                            round(portfolio.balance, 2), round(portfolio.float, 2)])
 
         evolution_df = pd.DataFrame(results, columns=['Date', 'Holdings', 'Balance', 'Float'])
         evolution_df.set_index('Date', inplace=True)
         evolution_df['Cumulative (%) Return'] = evolution_df.filter(['Float']).pct_change().apply(
             lambda x: x + 1).cumprod()
-        evolution_df['Cumulative (%) Return'].plot(grid=True, figsize=(10, 6))
+        evolution_df['Float'].plot(grid=True, figsize=(10, 6))
         plt.show()
         with pd.option_context('display.max_rows', None, 'display.max_columns', None):
             print(evolution_df.to_string())
@@ -303,3 +180,49 @@ def sort_df(df, column_idx, key):
     temp = np.array(col.values.tolist())
     order = sorted(range(len(temp)), key=lambda j: key(temp[j]))
     return df.iloc[order]
+
+
+# import pyformulas as pf
+# import matplotlib.pyplot as plt
+# import numpy as np
+# import time
+#
+# fig = plt.figure()
+#
+# canvas = np.zeros((480,640))
+# screen = pf.screen(canvas, 'Sinusoid')
+#
+# start = time.time()
+# while True:
+#     now = time.time() - start
+#
+#     x = np.linspace(now-2, now, 100)
+#     y = np.sin(2*np.pi*x) + np.sin(3*np.pi*x)
+#     plt.xlim(now-2,now+1)
+#     plt.ylim(-3,3)
+#     plt.plot(x, y, c='black')
+#
+#     # If we haven't already shown or saved the plot, then we need to draw the figure first...
+#     fig.canvas.draw()
+#
+#     image = np.fromstring(fig.canvas.tostring_rgb(), dtype=np.uint8, sep='')
+#     image = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+#
+#     screen.update(image)
+#
+# #screen.close()
+if __name__ == '__main__':
+    class Alainps(Strategy):
+        def is_time_to_reschedule(self, current_date, last_rebalancing_day):
+            return (current_date - last_rebalancing_day).days > RebalancingFrequency.Quarterly.value
+
+
+    import fundamental_analysis.accounting_ratios as ratios
+
+    stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+    stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
+    stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+    strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
+                       starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
+                       net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
+    strategy.historical_simulation()

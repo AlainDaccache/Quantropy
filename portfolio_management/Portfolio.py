@@ -1,3 +1,4 @@
+import math
 import os
 import re
 
@@ -9,7 +10,19 @@ import macroeconomic_analysis.macroeconomic_analysis as macro
 import numpy as np
 from datetime import timedelta, datetime
 from datetime import datetime
-from config import MarketIndices
+import config
+
+
+class Trade:
+    def __init__(self, stock: pd.Series, direction: bool, shares: int, date: datetime,
+                 stop_loss: float = None, take_profit: float = None, commission: float = 5):
+        self.stock = stock
+        self.direction = direction
+        self.shares = shares
+        self.date = date
+        self.stop_loss = stop_loss
+        self.take_profit = take_profit
+        self.commission = commission
 
 
 class TimeDataFrame:
@@ -36,7 +49,9 @@ class TimeDataFrame:
                 raise Exception
 
             returns_freq = returns_copy[-1].index.inferred_freq
-            if returns_freq is None:  # usually happens when weekend days are not in dataframe
+            if returns_freq is not None:
+                returns_copy[-1].index = pd.DatetimeIndex(returns_copy[-1].index.values, freq=returns_freq)
+            else:  # usually happens when weekend days are not in dataframe
                 test_0, test_1 = returns_copy[-1].index[:2]  # take two consecutive elements
                 delta = (test_1 - test_0).days  # timedelta object, get days
                 if 1 <= delta <= 7:
@@ -49,8 +64,11 @@ class TimeDataFrame:
                     returns_freq = 'Q'
                 else:
                     returns_freq = 'Y'
-                for l in range(1, l_ + 1):
-                    returns_copy[-l] = returns_copy[-l].asfreq(freq=returns_freq, fill_value=0.0)
+            # case where it's a dataframe that was split in the previous loop, need
+            # to go through all, l_ representing the length of that dataframe
+            for l in range(1, l_ + 1):
+                returns_copy[-l] = returns_copy[-l].asfreq(freq=returns_freq, fill_value=0.0)
+
             if frequencies.index(returns_freq) > frequencies.index(cur_max_freq):
                 cur_max_freq = returns_freq
 
@@ -126,11 +144,118 @@ class TimeDataFrame:
 
 
 class Portfolio(TimeDataFrame):
-    def __init__(self, assets):
-        if isinstance(assets, MarketIndices):
-            assets = macro.companies_in_index(market_index=assets)[:5]
+    def __init__(self, assets, balance: float = 0, trades=None, date: datetime = datetime.now()):
+        """
+
+        :param assets:
+        :param balance:
+        :param trades:
+        :param date:
+        """
+        if trades is None:
+            trades = []
+
         super().__init__(assets)
-        self.portfolio_tickers = self.df_returns.columns
+        self.stocks = self.df_returns.columns
+        self.balance = balance
+        self.trades = trades
+        self.float = float(balance)
+        self.date = date
+        self.last_rebalancing_day = date
+
+    def rebalance_portfolio(self, long_stocks: pd.DataFrame, short_stocks: pd.DataFrame, weights, commission, fractional_shares):
+        '''
+        Place Positions (Rebalance Portfolio)
+        First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
+        (gives us capital to invest for the others). Second sweep is for buying
+        :return:
+        '''
+        long_short = pd.concat([long_stocks, short_stocks], axis=1)
+        for i in range(2):
+            for stock, prices in long_short.iteritems():
+                closing_price = prices.loc[self.date - timedelta(seconds=1)]  # TODO end of day or start?
+                stock_is_in_portfolio = False
+
+                for trade in self.trades:
+
+                    # If the stock computed is already part of our portfolio, then:
+                    if stock == trade.stock.name \
+                            and ((stock in long_stocks.columns and trade.stock.name in long_stocks.columns)
+                                 or (stock in short_stocks.columns and trade.stock.name in short_stocks.columns)):
+
+                        stock_is_in_portfolio = True
+
+                        # Aggregate total weight of asset in portfolio
+                        current_weight_in_portfolio = 0
+                        for trade in self.trades:
+                            if stock == trade.stock.name:
+                                current_weight_in_portfolio += trade.shares * closing_price / self.float
+
+                        # The weight we need to rebalance for
+                        delta_weights = weights[stock] - current_weight_in_portfolio
+                        delta_shares = (abs(delta_weights) * self.float - commission) / closing_price
+
+                        # for first sweep, target weight should less than current weight and original position is long
+                        #  or vice versa for short (means we're selling)
+                        # for second sweep, target weight should be more than current weight and original position is long
+                        # or vice versa for short (means we're buying)
+
+                        if delta_shares > 0 and \
+                                (i == 0 and ((delta_weights < 0 and trade.direction)
+                                             or (delta_weights > 0 and not trade.direction))
+                                 or (i == 1 and ((delta_weights > 0 and trade.direction)
+                                                 or (delta_weights < 0 and not trade.direction)))):
+                            if not fractional_shares:
+                                delta_shares = math.floor(delta_shares)
+                            if delta_shares > 0:
+                                trade = Trade(direction=True if stock in long_stocks.columns else False,
+                                              stock=prices, shares=delta_shares, date=self.date)
+                                # we're exiting longs and entering shorts
+                                self.make_position(trade, entry=False if stock in long_stocks.columns else True)
+                                break
+
+                # If the stock computed is not already part of our portfolio
+                if not stock_is_in_portfolio:
+                    shares_to_trade = (weights[stock] * self.float - commission) / closing_price
+                    if not fractional_shares:
+                        shares_to_trade = math.floor(shares_to_trade)
+                    if shares_to_trade > 0:
+                        if i == 0 and stock in short_stocks.columns:  # entering shorts
+                            trade = Trade(direction=False, stock=prices, shares=shares_to_trade, date=self.date)
+                            self.make_position(trade, entry=True)
+                        if i == 1 and stock in long_stocks.columns:  # entering longs
+                            trade = Trade(direction=True, stock=prices, shares=shares_to_trade, date=self.date)
+                            self.make_position(trade, entry=True)
+
+    def make_position(self, trade: Trade, entry: bool):
+        trade_closing_price = trade.stock[self.date - timedelta(seconds=1)]
+        if not entry:  # if I am exiting a position
+
+            shares_left = trade.shares
+            for portfolio_trade in self.trades:
+                if portfolio_trade.stock.name == trade.stock.name and trade.direction == portfolio_trade.direction:
+                    # If the number of shares to exit is greater than the trade in the portfolio
+                    # (total exit or simply partial exit with more shares than trade placed at such date)
+                    if shares_left > portfolio_trade.shares:
+                        self.trades.pop(self.trades.index(portfolio_trade))
+                        shares_left -= portfolio_trade.shares
+                    else:  # partial exit
+                        portfolio_trade.shares -= shares_left
+                        break
+        else:
+            if self.balance > trade_closing_price * trade.shares + trade.commission:
+                self.trades.append(trade)
+        # Now Adjust Balance: making a position should only affect the balance, not the float
+
+        # if entering a long position or exiting a short position
+        if (trade.direction and entry) or (not trade.direction and not entry):
+            if self.balance > trade_closing_price * trade.shares + trade.commission:
+                self.balance = self.balance - (trade_closing_price * trade.shares + trade.commission)
+        # if exiting a long position or entering a short position
+        elif (trade.direction and not entry) or (not trade.direction and entry):
+            self.balance = self.balance + (trade_closing_price * trade.shares - trade.commission)
+        else:
+            return
 
     def get_volatility_returns(self):
         return self.df_returns.std(axis=0) * np.sqrt(self.freq_to_yearly[self.frequency[0]])

@@ -30,6 +30,16 @@ more flexibly validate them *ex-post*, reuse, and extend on. The pipeline looks 
 3.  In the `portfolio_management` package, we construct portfolios by using the aforementioned analysis for **stock screening**, as well as quantitative techniques for **asset pricing modeling**
     and **portfolio optimization**. We can then backtest the strategy using the **portfolio simulator**, and deploy it to a broker.
 
+Note: I am currently focused in more of the *project management* aspects of the project, for writing unit and mock tests, DevOps and
+documentation. After I'm done (~ Feb 2021), I will extend the implementation based on the books I just ordered:
+* Andrew Ang. *Asset Management: A Systematic Approach to Factor Investing*
+* Ernie Chan - *Algorithmic Trading: Winning Strategies and Their Rationale*
+* Ernie Chan - *Quantitative Trading: How to Build Your Own Algorithmic Trading Business*
+* Marcos Lopez de Prado - *Advances in Financial Machine Learning*
+* Marcos Lopez de Prado - *Machine Learning for Asset Managers*
+* Stefan Jansen - *Machine Learning for Algorithmic Trading*
+* Edward Qian - *Quantitative Equity Portfolio Management: Modern Techniques and Applications*
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Current opportunities for contribution include:
 
@@ -40,27 +50,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 superinvestors (i.e. Warren Buffet, Benjamin Graham, Peter Lynch) based on books written and interviews. Extending broker deployment implementation.
 
 Please make sure to update tests as appropriate.
-
-## License
-
-MIT License
-
-Copyright (c) 2020 Alain Daccache
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.

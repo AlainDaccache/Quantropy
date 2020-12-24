@@ -1,4 +1,43 @@
+"""
+
+Tangible
+Top down
+When there is no
+
+any industry that tries to keep lock people in to their way of doing things, eventually ends
+up being disrupted. I want to become the industry standard for algorithmic trading.
+A standardized layer that allows you to access data from multiple sources and
+
+When you write code, you write to specified broker.
+
+we have a black box api, that talks to many brokers and providers,
+while the coder only talks to us
+
+advanced features
+* screening
+* optimization
+* portfolio construction (asset pricing models)
+
+they end up dependent on me, but on something that is (a) free
+
+standardizing a fragmented market of the communication link for algorithmic trading
+* no more reinventing the wheel or from-scratch
+/
+my available market is in terms of deployment fees (brokers alreayd have that). the total avialable
+market is tools for stock screening, data etc.
+
+easy way to talk to provider for free
+premium service for advanced tools: educational
+
+people already subscribe to diff data, diff analytics, different broker
+-> it's fragmented. Time to integrate, reinvent wheel etc.
+
+People pay subscriptions for services like that -> whats the amount for that kind of info
+"""
+
 import os
+from functools import partial
+
 import pandas as pd
 import statsmodels.formula.api as sm
 import matplotlib.pyplot as plt
@@ -12,7 +51,7 @@ from portfolio_management.Portfolio import TimeDataFrame
 from datetime import timedelta
 from sklearn import preprocessing
 from scipy.stats import mstats, stats
-from config import RebalancingFrequency
+import config
 from portfolio_management.portfolio_optimization import PortfolioAllocationModel, ValueWeightedPortfolio
 from datetime import datetime
 from enum import Enum
@@ -78,7 +117,7 @@ class AssetPricingModel:
         self.factors = self.factors_timedf.df_returns.columns
 
     def regress_factor_loadings(self, portfolio, benchmark_returns: pd.Series = None,
-                                date: datetime = None, regression_window: int = 36, rolling=False):
+                                date: datetime = None, regression_window: int = 36, rolling=False, show=True):
         '''
 
         :param portfolio: str, pd.Series, TimeDataFrame, Portfolio... If more than an asset, we compute an equal weighted returns
@@ -121,8 +160,9 @@ class AssetPricingModel:
             rres = rols.fit()
             params = rres.params.dropna()
             print(params.tail())
-            rres.plot_recursive_coefficient(variables=factors_df.columns, figsize=(10, 6))
-            plt.show()
+            if show:
+                rres.plot_recursive_coefficient(variables=factors_df.columns, figsize=(10, 6))
+                plt.show()
             return rres
         else:
             # need to merge again to run regression on dataframe (with y being XsRet)
@@ -133,31 +173,33 @@ class AssetPricingModel:
             reg = sm.ols(formula='XsRet ~ {}'.format(' + '.join(factors_df.columns)),
                          data=df_stock_factor).fit(cov_type='HAC', cov_kwds={'maxlags': 1})
             print(reg.summary())
+            if show:
+                nrows, ncols = ceil(len(factors_df.columns) / 3), min(len(factors_df.columns), 3)
+                fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(12, 5))
+                plt.tight_layout()
 
-            nrows, ncols = ceil(len(factors_df.columns) / 3), min(len(factors_df.columns), 3)
-            fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(12, 5))
-            plt.tight_layout()
+                for i, factor in enumerate(df_stock_factor.iloc[:, 1:]):
 
-            for i, factor in enumerate(df_stock_factor.iloc[:, 1:]):
+                    idx_x, idx_y = floor(i / 3), floor(i % 3)
+                    ax = axs
+                    if nrows > 1:
+                        ax = axs[idx_x,]
+                    if ncols > 1:
+                        ax = ax[idx_y]
 
-                idx_x, idx_y = floor(i / 3), floor(i % 3)
-                ax = axs
-                if nrows > 1:
-                    ax = axs[idx_x,]
-                if ncols > 1:
-                    ax = ax[idx_y]
+                    X = np.linspace(df_stock_factor[factor].min(), df_stock_factor[factor].max())
+                    Y = reg.params[i + 1] * X + reg.params[0]  # beta * x + alpha
+                    ax.plot(X, Y)
+                    plt.draw()
+                    plt.pause(0.001)
 
-                X = np.linspace(df_stock_factor[factor].min(), df_stock_factor[factor].max())
-                Y = reg.params[i + 1] * X + reg.params[0]  # beta * x + alpha
-                ax.plot(X, Y)
-
-                ax.scatter(df_stock_factor[factor], df_stock_factor.iloc[:, 0], alpha=0.3)
-                ax.grid(True)
-                ax.axis('tight')
-                ax.set_xlabel(factor if factor != 'MKT' else 'MKT-RF')
-                ax.set_ylabel('Portfolio Excess Returns')
-
-            plt.show()
+                    ax.scatter(df_stock_factor[factor], df_stock_factor.iloc[:, 0], alpha=0.3)
+                    ax.grid(True)
+                    ax.axis('tight')
+                    ax.set_xlabel(factor if factor != 'MKT' else 'MKT-RF')
+                    ax.set_ylabel('Portfolio Excess Returns')
+                plt.ion()
+                plt.show()
 
             return reg
 
@@ -387,6 +429,15 @@ class Q_FactorModel(AssetPricingModel):
     pass
 
 
+class FactorModels(Enum):
+    CAPM = CapitalAssetPricingModel
+    FamaFrench3 = FamaFrench_ThreeFactorModel
+    Carhart4 = Carhart_FourFactorModel
+    FamaFrench5 = FamaFrench_FiveFactorModel
+    AQR = AQR_FactorModel
+    Q = Q_FactorModel
+
+
 def factor_dataframe(portfolio: Portfolio, regression_window: int = 36, frequency='Monthly'):
     capm_stats = CapitalAssetPricingModel(frequency=frequency).regress_factor_loadings(portfolio=portfolio,
                                                                                        rolling=False,
@@ -495,7 +546,7 @@ class CustomAssetPricingModel(AssetPricingModel):
     """
 
     def __init__(self, factors: typing.List, securities_universe, start_date: datetime,
-                 end_date: datetime, rebalancing_frequency: RebalancingFrequency):
+                 end_date: datetime, rebalancing_frequency: config.RebalancingFrequency):
         # super().__init__()
         self.factors = factors
         self.asset_returns = Portfolio(assets=securities_universe).df_returns
