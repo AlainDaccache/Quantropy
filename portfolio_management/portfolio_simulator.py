@@ -216,7 +216,6 @@ if __name__ == '__main__':
         def is_time_to_reschedule(self, current_date, last_rebalancing_day):
             return (current_date - last_rebalancing_day).days > RebalancingFrequency.Quarterly.value
 
-
     import fundamental_analysis.accounting_ratios as ratios
 
     stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)

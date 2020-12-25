@@ -70,31 +70,49 @@ class AssetPricingModel:
         :param args:
         Import a dataframe
             * factor_df: pd.DataFrame   for your own dataframe
+
         Or for an already computed factors historical returns, like CAPM, Fama-French, AQR...
             * factor_model_type: FactorModelDataset.
             * factors: list[str]        the factors in that model you want to use. By default all.
+
+        Or for even more customization
+            * factor_model_dict: { factor_model: factors }
+
+        Other parameters:
             * frequency: str optional, Monthly default.
             * to_date: datetime optional, otherwise keeps all dates available for no information loss.
             * lookback_period or from_date: timedelta, datetime, or int.
-        Or for even more customization
-            * factor_model_dict: { factor_model: factors }
-            * frequency: str optional, Monthly default
-            * to_date: datetime optional
-            * lookback_period or from_date: timedelta, datetime, or int.
-
         '''
         # argspec = inspect.signature(self.__init__)
         # we keep an internal granular df to resample from (it's Daily)
         frequency, from_date, to_date, lookback = 'Monthly', None, None, None
 
-        if isinstance(args[0], pd.DataFrame) and len(args) == 1:
-            self.factor_timedf = TimeDataFrame([args])
-            self.granular_df = self.factor_timedf
+        # Case one
+        if (isinstance(args[0], pd.DataFrame) or isinstance(args[0], pd.Series)) and len(args) >= 1:
+            self.factors_timedf = TimeDataFrame([args[0]])
+            self.granular_df = self.factors_timedf
 
+            if len(args) >= 2 and isinstance(args[1], str):
+                frequency = args[1]
+
+            if self.factors_timedf.frequency != frequency[0]:
+                self.factors_timedf = self.factors_timedf.set_frequency(frequency=frequency, inplace=False)
+
+            self.factors_timedf.df_returns = self.factors_timedf.df_returns.dropna(how='all')
+
+            if len(args) >= 3 and isinstance(args[2], datetime):
+                to_date = args[2]
+            if len(args) >= 4 and (isinstance(args[3], datetime)
+                                   or isinstance(args[3], timedelta) or isinstance(args[3], int)):
+                from_date = args[3]
+
+            self.factors_timedf.slice_dataframe(to_date=to_date, from_date=from_date, inplace=True)
+        # Case two
         elif isinstance(args[0], FactorModelDataset) and len(args) >= 2:
             self.factor_model_type = args[0]
             path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(args[0].value))
             self.granular_df = pd.read_pickle(path)
+
             if isinstance(args[1], list):
                 factors = args[1] + ['RF']
                 self.granular_df = self.granular_df[factors]
@@ -190,15 +208,15 @@ class AssetPricingModel:
                     X = np.linspace(df_stock_factor[factor].min(), df_stock_factor[factor].max())
                     Y = reg.params[i + 1] * X + reg.params[0]  # beta * x + alpha
                     ax.plot(X, Y)
-                    plt.draw()
-                    plt.pause(0.001)
+                    # plt.draw()
+                    # plt.pause(0.001)
 
                     ax.scatter(df_stock_factor[factor], df_stock_factor.iloc[:, 0], alpha=0.3)
                     ax.grid(True)
                     ax.axis('tight')
                     ax.set_xlabel(factor if factor != 'MKT' else 'MKT-RF')
                     ax.set_ylabel('Portfolio Excess Returns')
-                plt.ion()
+                # plt.ion()
                 plt.show()
 
             return reg
@@ -244,8 +262,13 @@ class CapitalAssetPricingModel(AssetPricingModel):
         """
         if factor_dataset is None:
             factor_dataset = FactorModelDataset.FAMA_FRENCH_3_DATASET
-        super().__init__(factor_dataset, ['MKT-RF'], frequency, to_date, from_date)
-        self.excess_market_returns = self.factors_timedf.df_returns['MKT-RF']
+            super().__init__(factor_dataset, ['MKT-RF'], frequency, to_date, from_date)
+            self.excess_market_returns = self.factors_timedf.df_returns['MKT-RF']
+        else:
+            # factor_dataset.rename('MKT')
+            # rf = macro.risk_free_rates()
+            super().__init__(factor_dataset, frequency, to_date, from_date)
+            self.excess_market_returns = self.factors_timedf.df_returns.iloc[:, 0]
 
     def beta_covariance_method(self):
         """
@@ -785,6 +808,11 @@ class CustomAssetPricingModel(AssetPricingModel):
 
 
 if __name__ == '__main__':
-    sp_500_market = Portfolio(assets=['^GSPC'])
-    CapitalAssetPricingModel(factor_dataset=sp_500_market.df_returns, frequency='Monthly',
-                             to_date=datetime.today(), )
+    # sp_500_market = Portfolio(assets=['AAPL'])
+    # capm = CapitalAssetPricingModel(frequency='Monthly', to_date=datetime.today(), from_date=80)
+    # reg = capm.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
+    # print(reg.params)
+
+    ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
+    reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
+    print(reg.params)
