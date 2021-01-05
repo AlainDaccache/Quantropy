@@ -29,7 +29,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -37,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to Quantropy’s documentation!" href="index.html" /> 
+    <link rel="next" title="Investment Styles" href="PortfolioManagement.html" />
+    <link rel="prev" title="Fundamental Analysis" href="fundamental.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,8 +83,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fundamental.html">Fundamental Analysis</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Asset Pricing Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#the-quest-for-asset-pricing-the-efficient-market-hypothesis">The Quest for Asset Pricing: The Efficient Market Hypothesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-efficient-market-hypothesis">The Efficient Market Hypothesis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#the-intuition-behind-capm">The Intuition behind CAPM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-derivation-of-capm">The Derivation of CAPM</a></li>
@@ -103,6 +104,8 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="PortfolioManagement.html">Investment Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PortfolioManagement.html#portfolio-optimization">Portfolio Optimization</a></li>
 </ul>
 
             
@@ -183,8 +186,8 @@ We will then going about researching factors to define your own asset pricing mo
 </ol>
 </dd>
 </dl>
-<div class="section" id="the-quest-for-asset-pricing-the-efficient-market-hypothesis">
-<h2>The Quest for Asset Pricing: The Efficient Market Hypothesis<a class="headerlink" href="#the-quest-for-asset-pricing-the-efficient-market-hypothesis" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-efficient-market-hypothesis">
+<h2>The Efficient Market Hypothesis<a class="headerlink" href="#the-efficient-market-hypothesis" title="Permalink to this headline">¶</a></h2>
 <p>There is a common question that looms in</p>
 <p>The <strong>Efficient Market Hypothesis</strong>, formulated by <em>Eugene Fama</em>, posits that asset prices
 reflect all available information. And therefore, if markets are indeed efficient, asset prices
@@ -203,14 +206,15 @@ to profit from just looking at historical prices. You will need more information
 <li><p><em>Strong-form</em>: these tests regard private information.</p></li>
 </ul>
 </div></blockquote>
-<p id="bibtex-bibliography-AssetPricingModels-0"></p>
 <p>Market efficiency denotes how information is factored in price. Fama emphasizes that, to test the hypothesis of
 market efficiency, you need to test it along a model of market equilibrium (i.e. an asset pricing model);
 this the <em>Joint Hypothesis Problem</em>, the efficient market hypothesis on its own doesn’t generate testable
 predictions. So, if a certain model yields a predicted return significantly different
 from the actual return (this difference is called the <em>alpha</em>), you can’t be certain if it’s because of (a) an
-inefficient market, or (b) an imperfect model. So you cannot disprove market efficiency. Researchers can only modify their models by adding different factors to eliminate any anomalies, in hopes of fully explaining (in other words, perfectly predicting)
+inefficient market, or (b) an imperfect model. So you cannot disprove market efficiency because the <em>alpha</em> might
+be due to a wrong model. Researchers can only modify their models by adding different factors to eliminate any anomalies, in hopes of fully explaining (in other words, perfectly predicting)
 the return within the model. If you find such model, this disproves market inefficiency (i.e. proves efficiency).</p>
+<p>So take some time to wrap your head around it; we’ve all been there:</p>
 </div>
 <div class="section" id="capital-asset-pricing-model">
 <h2>Capital Asset Pricing Model<a class="headerlink" href="#capital-asset-pricing-model" title="Permalink to this headline">¶</a></h2>
@@ -218,7 +222,7 @@ the return within the model. If you find such model, this disproves market ineff
 of a portfolio as a function of the overall market returns.</p>
 <dl class="py function">
 <dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">factor_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frequency</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Monthly'</span></em>, <em class="sig-param"><span class="n">to_date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">from_date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">factor_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frequency</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Monthly'</span></em>, <em class="sig-param"><span class="n">to_date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">from_date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -291,7 +295,7 @@ If we were to compute the value-weighted (market-cap weighted) average of the be
 the value-weighted portfolio, we would get 1. This is why Betas with respect to different market indexes are not comparable.</p>
 <dl class="py function">
 <dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">get_expected_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">get_expected_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pandas.core.series.Series<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -326,7 +330,7 @@ expected rate of returns (<cite>y-axis</cite>) for different values of <span cla
 is thus the market premium, <span class="math notranslate nohighlight">\((E(R_m) - R_f)\)</span>.</p>
 <dl class="py function">
 <dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">security_market_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em>, <em class="sig-param"><span class="n">benchmark</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">security_market_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em>, <em class="sig-param"><span class="n">benchmark</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pandas.core.series.Series<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -383,8 +387,10 @@ They justified their model on empirical grounds.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="PortfolioManagement.html" class="btn btn-neutral float-right" title="Investment Styles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Quantropy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="fundamental.html" class="btn btn-neutral float-left" title="Fundamental Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

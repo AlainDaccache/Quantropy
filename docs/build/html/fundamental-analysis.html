@@ -1,0 +1,1279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fundamental Analysis &mdash; Quantropy 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="technical-analysis.html" />
+    <link rel="prev" title="Welcome to Quantropy’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Quantropy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Fundamental Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#financial-statements">Financial Statements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#balance-sheet">Balance Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#income-statement">Income Statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cash-flow-statement">Cash Flow Statement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#intermediary-metrics">Intermediary Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accounting-ratios">Accounting Ratios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#liquidity-ratios">Liquidity Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#activity-efficiency-ratios">Activity (Efficiency) Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#profitability-ratios">Profitability Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#market-ratios">Market Ratios</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#equity-valuation-models">Equity Valuation Models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-optimization.html">Portfolio Optimization</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Quantropy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Fundamental Analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fundamental-analysis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fundamental-analysis">
+<h1>Fundamental Analysis<a class="headerlink" href="#fundamental-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Fundamental analysis assesses a company by looking at its financial statements to evaluate its health and value, and compares them across time and against
+competitors.</p>
+<div class="section" id="financial-statements">
+<h2>Financial Statements<a class="headerlink" href="#financial-statements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="balance-sheet">
+<h3>Balance Sheet<a class="headerlink" href="#balance-sheet" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="income-statement">
+<h3>Income Statement<a class="headerlink" href="#income-statement" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="cash-flow-statement">
+<h3>Cash Flow Statement<a class="headerlink" href="#cash-flow-statement" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="intermediary-metrics">
+<h2>Intermediary Metrics<a class="headerlink" href="#intermediary-metrics" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="accounting-ratios">
+<h2>Accounting Ratios<a class="headerlink" href="#accounting-ratios" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="liquidity-ratios">
+<h3>Liquidity Ratios<a class="headerlink" href="#liquidity-ratios" title="Permalink to this headline">¶</a></h3>
+<p>These ratios measure the availability of cash to pay debt.</p>
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.current_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">current_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#fundamental_analysis.accounting_ratios.current_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>current ratio</strong> measures a company’s ability to pay off short-term liabilities with current assets.</p>
+<ul class="simple">
+<li><p><em>Category:</em> Liquidity Ratio</p></li>
+<li><p><em>Healthy Range:</em> between 1.2 and 2</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.acid_test_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">acid_test_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.acid_test_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The acid-test ratio (or quick ratio) measures a company’s ability to pay off short-term liabilities with quick assets</p>
+<ul class="simple">
+<li><p><em>Category:</em> Liquidity Ratio</p></li>
+<li><p><em>Healthy Range:</em></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Acid-Test Ratio} = \frac{\text{Liquid Assets}}{\text{Current Liabilities}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.cash_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">cash_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.cash_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cash ratio measures a company’s ability to pay off short-term liabilities with cash and cash equivalents</p>
+<ul class="simple">
+<li><p><em>Category:</em> Liquidity Ratio</p></li>
+<li><p><em>Healthy Range:</em></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Cash Ratio} = \frac{\text{Cash and Cash equivalents + Current Marketable Securities}}{\text{Current Liabilities}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.operating_cash_flow_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">operating_cash_flow_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.operating_cash_flow_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The operating cash flow ratio is a measure of the number of times a company can pay off current liabilities with the cash generated in a given period</p>
+<ul class="simple">
+<li><p><em>Category:</em> Liquidity Ratio</p></li>
+<li><p><em>Healthy Range:</em></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Operating Cash Flow Ratio} = \frac{\text{Operating Cash Flow}}{\text{Current Liabilities}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="activity-efficiency-ratios">
+<h3>Activity (Efficiency) Ratios<a class="headerlink" href="#activity-efficiency-ratios" title="Permalink to this headline">¶</a></h3>
+<p>These ratios measure how quickly a firm converts non-cash assets to cash assets.</p>
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.degree_of_operating_leverage">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">degree_of_operating_leverage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.degree_of_operating_leverage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Degree of Operating Leverage} = \frac{\text{}}{\text{}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.asset_turnover_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">asset_turnover_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.asset_turnover_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The asset turnover ratio measures a company’s ability to generate sales from assets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Asset Turnover Ratio} = \frac{\text{Net Sales}}{\text{Total Assets}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.accounts_payables_turnover_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">accounts_payables_turnover_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.accounts_payables_turnover_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The accounts payables turnover ratio measures the number of times the company pays off all its creditors in one year.</p>
+<ul class="simple">
+<li><p><em>Category</em>: Efficiency (Activity) Ratio</p></li>
+<li><p><em>Subcategory</em>: Accounts Payable</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Accounts Payables Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Accounts Payable}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.payables_conversion_period">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">payables_conversion_period</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em>, <em class="sig-param"><span class="n">number_of_days</span><span class="o">=</span><span class="default_value">365</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.payables_conversion_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>The payables conversion period, or Days Payable Outstanding (DPO), is the average number of days of payables.
+For instance, a conversion period of 30 means that on average, the company takes 30 days to pay its creditors.
+It is an element of the cash conversion cycle.</p>
+<ul class="simple">
+<li><p><em>Category</em>: Efficiency (Activity) Ratio</p></li>
+<li><p><em>Subcategory</em>: Accounts Payable</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>number_of_days</strong> – Number of days in period. By default the period is 365 days, but some analysts use 360.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Payables Conversion Period} = \frac{\text{365}}{\text{Payables Turnover}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.inventory_turnover_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">inventory_turnover_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.inventory_turnover_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inventory (or stock) turnover ratio measures how many times a company’s inventory is sold and replaced over a given period</p>
+<ul class="simple">
+<li><p><em>Category</em>: Efficiency (Activity) Ratio</p></li>
+<li><p><em>Subcategory</em>: Inventory</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Inventory Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Inventory}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.inventory_conversion_period">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">inventory_conversion_period</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em>, <em class="sig-param"><span class="n">number_of_days</span><span class="o">=</span><span class="default_value">365</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.inventory_conversion_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inventory conversion period, or days inventory outstanding (DIO), measures the average number of days that a
+company holds on to inventory before selling it to customers. It is an element of the cash conversion cycle.</p>
+<ul class="simple">
+<li><p><em>Category</em>: Efficiency (Activity) Ratio</p></li>
+<li><p><em>Subcategory</em>: Inventory</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>number_of_days</strong> – Number of days in period. By default the period is 365 days, but some analysts use 360.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Inventory Conversion Period} = \frac{\text{365}}{\text{Inventory Turnover}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.accounts_receivables_turnover_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">accounts_receivables_turnover_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.accounts_receivables_turnover_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The accounts receivable turnover ratio measures how many times a company can turn receivables into cash over a given period</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Accounts Receivables Turnover Ratio} = \frac{\text{Net Credit Sales}}{\text{Accounts Receivables}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.average_collection_period">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">average_collection_period</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em>, <em class="sig-param"><span class="n">number_of_days</span><span class="o">=</span><span class="default_value">365</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.average_collection_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>The average collection period, or Days Sales Outstanding (DSO), represents the average number of days between the date a credit sale is made and the date the purchaser pays for that sale.
+It is an element of the cash conversion cycle.</p>
+<ul class="simple">
+<li><p><em>Category</em>: Efficiency (Activity) Ratio</p></li>
+<li><p><em>Subcategory</em>: Accounts Receivables</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>number_of_days</strong> – Number of days in period. By default the period is 365 days, but some analysts use 360.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Average Collection Period} = \frac{\text{365}}{\text{Accounts Receivables Turnover Ratio}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.cash_conversion_cycle">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">cash_conversion_cycle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.cash_conversion_cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cash conversion cycle (CCC) is a metric that expresses the time (measured in days) it takes for a company to
+convert its investments in inventory and other resources into cash flows from sales</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Cash Conversion Cycle} = \text{Days Inventory Outstanding} + \text{Days Sales Outstanding} + \text{Days Payable Outstanding}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="profitability-ratios">
+<h3>Profitability Ratios<a class="headerlink" href="#profitability-ratios" title="Permalink to this headline">¶</a></h3>
+<p>These ratios measure the firm’s use of its assets and control of its expenses to generate an acceptable rate of return.
+Profitability ratios measure a company’s ability to generate income relative to revenue, balance sheet assets, operating costs, and equity.</p>
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.gross_profit_margin">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">gross_profit_margin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.gross_profit_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gross margin ratio compares the gross profit of a company to its net sales to show how much profit a company makes after paying its cost of goods sold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Gross Margin Ratio} = \frac{\text{Gross Profit}}{\text{Net Sales}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.net_profit_margin">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">net_profit_margin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.net_profit_margin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Net Profit Margin} = \frac{\text{Net Income}}{\text{Net Sales}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.operating_profit_margin">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">operating_profit_margin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.operating_profit_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The operating margin ratio compares the operating income of a company to its net sales to determine operating efficiency</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Operating Margin Ratio} = \frac{\text{Operating Income}}{\text{Net Sales}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.return_on_assets">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">return_on_assets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.return_on_assets" title="Permalink to this definition">¶</a></dt>
+<dd><p>The return on assets ratio measures how efficiently a company is using its assets to generate profit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Return on Assets} = \frac{\text{Net Income}}{\text{Total Assets}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.return_on_equity">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">return_on_equity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.return_on_equity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The return on equity ratio measures how efficiently a company is using its equity to generate profit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Return on Equity} = \frac{\text{Net Income}}{\text{Shareholder’s equity}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.return_on_net_assets">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">return_on_net_assets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.return_on_net_assets" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Return on Net Assets} = \frac{\text{Net Income}}{\text{Fixed Assets + Working Capital}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.return_on_invested_capital">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">return_on_invested_capital</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em>, <em class="sig-param"><span class="n">invested_capital_operating_approach</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.return_on_invested_capital" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>invested_capital_operating_approach</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Return on Invested Capital} = \frac{\text{NOPAT}}{\text{Invested Capital}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.return_on_capital_employed">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">return_on_capital_employed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.return_on_capital_employed" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Return on Capital Employed} = \frac{\text{EBIT}}{\text{Capital Employed}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.cash_flow_return_on_investment">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">cash_flow_return_on_investment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.cash_flow_return_on_investment" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Cash Flow Return on Investment} = \frac{\text{Cash Flow}}{\text{Market Recapitalisation}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.efficiency_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">efficiency_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.efficiency_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Efficiency Ratio} = \frac{\text{Non-Interest Expense}}{\text{Revenue}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.net_gearing">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">net_gearing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.net_gearing" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Net Gearing} = \frac{\text{Net Debt}}{\text{Equity}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.basic_earnings_power">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">basic_earnings_power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.basic_earnings_power" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{} = \frac{\text{}}{\text{}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="market-ratios">
+<h3>Market Ratios<a class="headerlink" href="#market-ratios" title="Permalink to this headline">¶</a></h3>
+<p>These ratios measure investor response to owning a company’s stock and also the cost of issuing stock.</p>
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.dividend_payout_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">dividend_payout_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_augmented_ratio</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.dividend_payout_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dividend payout ratio is the fraction of net income a firm pays to its stockholders in dividends.
+The part of earnings not paid to investors is <em>retained</em> i.e. left for investment to provide for future earnings growth.
+:param stock: ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).
+:param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().
+:param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).
+:param period: ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.
+:param deduct_preferred_dividends:
+:param use_augmented_ratio: Some companies choose stock buybacks as an alternative to dividends; in such cases this ratio becomes less meaningful.
+The augmented ratio adds <em>Buybacks</em> to the Dividends in the numerator.
+:return: .. math:: text{Dividend Payout Ratio} = frac{text{Dividends}}{text{Net Income}}</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.retention_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">retention_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_augmented_ratio</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.retention_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>retention ratio</strong> indicates the percentage of a company’s earnings that are not paid out in dividends but
+credited to retained earnings. It is the opposite of the dividend payout ratio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+<li><p><strong>use_augmented_ratio</strong> – Some companies choose stock buybacks as an alternative to dividends; in such cases this ratio becomes less meaningful.
+The augmented ratio adds <em>Buybacks</em> to the Dividends in the numerator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Retention Ratio} = 1 - \text{Dividend Payout Ratio} = \frac{\text{Retained Earnings}}{\text{Net Income}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.dividend_coverage_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">dividend_coverage_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_augmented_ratio</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.dividend_coverage_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>dividend coverage ratio</strong> is the ratio of company’s earnings (net income) over the dividend paid to shareholders, calculated as net profit or loss attributable to ordinary shareholders by total ordinary dividend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>use_augmented_ratio</strong> – </p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Dividend Coverage Ratio} = \frac{\text{Net Income}}{\text{Dividends}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.dividend_yield">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">dividend_yield</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.dividend_yield" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations. use diluted shares in the computations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Dividend Yield} = \frac{\text{Dividend-per-share}}{\text{Share Price}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.earnings_per_share">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">earnings_per_share</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">weighted_average_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">as_reported</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.earnings_per_share" title="Permalink to this definition">¶</a></dt>
+<dd><p>The earnings per share ratio measures the amount of net income earned for each share outstanding</p>
+<p><em>Category:</em> Market Value Ratios
+<em>Subcategory:</em> Equity Value Ratios</p>
+<p><em>Notes:</em> Compared with Earnings per share, a company’s cash flow is better indicator of the company’s earnings power.
+If a company’s earnings per share is less than cash flow per share over long term, investors need to be cautious and find out why.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>as_reported</strong> – outputs the EPS as reported by the company in the 10-K or 10-Q filing.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>use_income_from_operations</strong> – Use income from continuing operations instead of Net Income in the numerator.</p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+<li><p><strong>weighted_average_shares</strong> – It is more accurate to use a weighted average number of common shares over the reporting term because the number of shares can change over time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Earnings Per Share} = \frac{\text{Net Income}}{\text{Total Shares Outstanding}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.price_to_earnings">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>The price-earnings ratio compares a company’s share price to its earnings per share</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>use_income_from_operations</strong> – </p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Price-earnings ratio} = \frac{\text{Share Price}}{\text{Earnings Per Share}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.earnings_yield">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">earnings_yield</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.earnings_yield" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>earnings yield</strong> is the inverse of price to earnings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>use_income_from_operations</strong> – </p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Earnings Yield} = \frac{\text{Earnings Per Share}}{\text{Share Price}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.greenblatt_earnings_yield">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">greenblatt_earnings_yield</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FY'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.greenblatt_earnings_yield" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Greenblatt Earnings Yield} = \frac{\text{EBIT}}{\text{Enterprise Value}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.price_to_earnings_to_growth">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings_to_growth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">growth_periods</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings_to_growth" title="Permalink to this definition">¶</a></dt>
+<dd><p>The price/earnings to growth ratio (or PEG ratio) is a valuation metric for determining the relative trade-off
+between the price of a stock, the earnings generated per share (EPS), and the company’s expected growth.</p>
+<p><em>Category:</em> Market Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="simple">
+<dt><em>Notes:</em></dt><dd><ul class="simple">
+<li><p>In general, the P/E ratio is higher for a company with a higher growth rate. Thus, using just the P/E ratio
+would make high-growth companies appear overvalued relative to others. It is assumed that by dividing the P/E
+ratio by the earnings growth rate, the resulting ratio is better for comparing companies with different growth
+rates. Therefore, a lower ratio is “better” (cheaper) and a higher ratio is “worse” (expensive).</p></li>
+<li><p>According to Peter Lynch in his book <em>One Up on Wall Street</em>, the P/E ratio of any company that’s fairly
+priced will equal its growth rate”, i.e., a fairly valued company will have its PEG equal to 1.</p></li>
+<li><p>The P/E ratio used in the calculation may be projected or trailing. The (annual) growth rate is expressed as
+a percent value, and should use real growth only, to correct for inflation. It may be the
+expected growth rate for the next year or the next five years.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>growth_periods</strong> – </p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>use_income_from_operations</strong> – </p></li>
+<li><p><strong>deduct_preferred_dividends</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{} = \frac{\text{}}{\text{}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.book_value_per_share">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">book_value_per_share</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tangible</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.book_value_per_share" title="Permalink to this definition">¶</a></dt>
+<dd><p>The book value per share ratio calculates the per-share value of a company based on equity available to shareholders</p>
+<p><em>Category:</em> Market Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>tangible</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Book Value Per Share} = \frac{\text{Shareholder's Equity}}{\text{Total Shares Outstanding}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.price_to_book_ratio">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_book_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tangible_book_value</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_book_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The price-to-book ratio (or P/B ratio) is used to compare a company’s current market capitalization to its book value;
+or, equivalently, divide the per-share stock price by the per-share book value.</p>
+<p><em>Category:</em> Market Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="simple">
+<dt><em>Notes:</em></dt><dd><ul class="simple">
+<li><p>A higher P/B ratio implies that investors expect management to create more value from a given set of
+assets, all else equal (and/or that the market value of the firm’s assets is significantly higher than their accounting
+value). P/B ratios do not, however, directly provide any information on the ability of the firm to generate profits
+or cash for shareholders.</p></li>
+<li><p>As with most ratios, it varies a fair amount by industry. Industries that require more infrastructure capital
+(for each dollar of profit) will usually trade at P/B ratios much lower than, for example, consulting firms. P/B
+ratios are commonly used to compare banks, because most assets and liabilities of banks are constantly valued at
+market values.</p></li>
+<li><p>This ratio also gives some idea of whether an investor is paying too much for what would be left if the company
+went bankrupt immediately. For companies in distress, the book value is usually calculated without the intangible
+assets that would have no resale value. In such cases, P/B should also be calculated on a “diluted” basis, because
+stock options may well vest on sale of the company or change of control or firing of management.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+<li><p><strong>tangible_book_value</strong> – P/B can be calculated either including or excluding intangible assets and goodwill. When intangible assets and goodwill are excluded,
+the ratio is often specified to be “price to tangible book value”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Price-to-Book Ratio} = \frac{\text{Market Capitalization}}{\text{Book Value}} = \frac{\text{Share Price}}{\text{Book Value per Share}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.price_to_sales">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_sales</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_sales" title="Permalink to this definition">¶</a></dt>
+<dd><p>Price–sales ratio (or P/S ratio, or PSR) is used to compare a company’s current market capitalization and the revenue in
+the most recent year; or, equivalently, divide the per-share stock price by the per-share revenue.</p>
+<p><em>Category:</em> Market Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<p><em>Notes:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations. use diluted shares instead of basic in calculations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Price-to-Sales Ratio} = \frac{\text{Market Capitalization}}{\text{Revenue}} = \frac{\text{Share Price}}{\text{Per-Share Revenue}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.justified_price_to_sales">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">justified_price_to_sales</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.justified_price_to_sales" title="Permalink to this definition">¶</a></dt>
+<dd><p>The justified P/S ratio is calculated as the price-to-sales ratio based on the Gordon Growth Model.
+Thus, it is the price-to-sales ratio based on the company’s fundamentals rather than .
+Here, <em>g</em> is the sustainable growth rate as defined below and <em>r</em> is the required rate of return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+<li><p><strong>diluted_shares</strong> – use diluted shares instead of basic in calculations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><div class="math notranslate nohighlight">
+\[\text{Justified P/S} = \text{Profit Margin} * \text{Payout} * \frac{1+g}{r-g} where .. math:: g = \text{Retention Ratio} * \text{Net Profit Margin} * \frac{\text{Sales}}{\text{Assets}} * \frac{\text{Assets}}{\text{Shareholders' Equity}}\]</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.enterprise_value_to_revenue">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">enterprise_value_to_revenue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.enterprise_value_to_revenue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The enterprise value-to-revenue multiple is a measure of the value of a stock that compares a company’s enterprise value to its revenue.
+It is often used to determine a company’s valuation in the case of a potential acquisition, and can be used for
+companies that do not generate income or profits.</p>
+<p><em>Category:</em> Enterprise Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.enterprise_value_to_ebitda">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">enterprise_value_to_ebitda</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.enterprise_value_to_ebitda" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Category:</em> Enterprise Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.enterprise_value_to_ebit">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">enterprise_value_to_ebit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.enterprise_value_to_ebit" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Category:</em> Enterprise Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.enterprise_value_to_invested_capital">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">enterprise_value_to_invested_capital</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.enterprise_value_to_invested_capital" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Category:</em> Enterprise Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fundamental_analysis.accounting_ratios.enterprise_value_to_free_cash_flow">
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">enterprise_value_to_free_cash_flow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.enterprise_value_to_free_cash_flow" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Category:</em> Enterprise Value Ratios</p>
+<p><em>Subcategory:</em> Equity Value Ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="equity-valuation-models">
+<h2>Equity Valuation Models<a class="headerlink" href="#equity-valuation-models" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="technical-analysis.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Quantropy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alain Daccache
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

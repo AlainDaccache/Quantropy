@@ -1,3 +1,0 @@
-.. py:currentmodule:: quantitative_analysis.risk_factor_modeling.standard_factor_models
-
-..autofunction:: CapitalAssetPricingModel.beta_covariance_method

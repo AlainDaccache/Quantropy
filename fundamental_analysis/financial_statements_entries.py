@@ -441,6 +441,17 @@ def minority_interest(stock, date=None, lookback_period: timedelta = timedelta(d
 
 def total_shares_outstanding(stock, diluted_shares: bool = False, date=None,
                              lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+    """
+
+    :param stock:
+    :param diluted_shares: Share dilution is when a company issues additional stock, reducing the ownership proportion
+    of a current shareholder. Shares can be diluted through a conversion by holders of optionable securities, secondary
+    offerings to raise additional capital, or offering new shares in exchange for acquisitions or services.
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return:
+    """
     entry = ['Liabilities and Shareholders\' Equity', 'Shareholders\' Equity',
              'Weighted Average Number of Shares Outstanding, Diluted'] if diluted_shares \
         else ['Liabilities and Shareholders\' Equity', 'Shareholders\' Equity',
@@ -502,8 +513,17 @@ def total_operating_expenses(stock, date=None,
                                           date=date, lookback_period=lookback_period, period=period)
 
 
-def operating_income(stock, date=None,
-                     lookback_period: timedelta = timedelta(days=0), period: str = 'TTM'):
+def operating_income(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'TTM'):
+    """
+    The **operating income** is the profit realized from a business's operations, after deducting operating expenses
+    such as wages, depreciation, and cost of goods sold (COGS).
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return:
+    """
     return read_financial_statement_entry(financial_statement='Income Statement', stock=stock,
                                           entry_name=['Operating Income (Loss) / EBIT',
                                                       'Operating Income (Loss) / EBIT'],

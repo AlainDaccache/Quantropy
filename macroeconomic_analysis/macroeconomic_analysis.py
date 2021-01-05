@@ -6,16 +6,19 @@ import pandas as pd
 import os
 import numpy as np
 
+from portfolio_management.Portfolio import TimeDataFrame
+
 
 def gross_national_product_price_index(date):
     return float(excel.read_entry_from_csv(config.MACRO_DATA_FILE_PATH, 'Yearly', 'GNP Price Index', date))
 
 
-def risk_free_rates(to_date: datetime, from_date: datetime = None, lookback=None, frequency: str = 'Yearly'):
-    df = excel.read_df_from_csv(path='{}/Fama-French Factors Data.xlsx'.format(config.FACTORS_DIR_PATH),
-                                sheet_name='Daily')['RF']
-    return excel.slice_resample_merge_returns(returns=[df], lookback=lookback, from_date=from_date, to_date=to_date,
-                                              frequency=frequency)
+def risk_free_rates(to_date: datetime, from_date=None, frequency: str = 'Yearly'):
+    df = pd.read_pickle('{}/pickle/Fama-French 3 Factors Data.pkl'.format(config.FACTORS_DIR_PATH))['RF']
+    time_df = TimeDataFrame(df)
+    time_df.slice_dataframe(to_date=to_date, from_date=from_date, inplace=True)
+    time_df.set_frequency(frequency=frequency, inplace=True)
+    return time_df.df_returns
 
 
 def market_premiums(to_date: datetime, from_date: datetime = None, lookback=None, frequency: str = 'Yearly'):

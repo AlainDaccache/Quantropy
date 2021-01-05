@@ -6,7 +6,6 @@ import pandas as pd
 import typing
 import historical_data_collection.data_preparation_helpers as excel
 import config
-import macroeconomic_analysis.macroeconomic_analysis as macro
 import numpy as np
 from datetime import timedelta, datetime
 from datetime import datetime
@@ -163,7 +162,8 @@ class Portfolio(TimeDataFrame):
         self.date = date
         self.last_rebalancing_day = date
 
-    def rebalance_portfolio(self, long_stocks: pd.DataFrame, short_stocks: pd.DataFrame, weights, commission, fractional_shares):
+    def rebalance_portfolio(self, long_stocks: pd.DataFrame, short_stocks: pd.DataFrame, weights, commission,
+                            fractional_shares):
         '''
         Place Positions (Rebalance Portfolio)
         First sweep over the stocks already for which we need to sell some of its shares (entry short or exit long)
@@ -171,6 +171,7 @@ class Portfolio(TimeDataFrame):
         :return:
         '''
         long_short = pd.concat([long_stocks, short_stocks], axis=1)
+        float_before_trades = self.float
         for i in range(2):
             for stock, prices in long_short.iteritems():
                 closing_price = prices.loc[self.date - timedelta(seconds=1)]  # TODO end of day or start?
@@ -189,34 +190,38 @@ class Portfolio(TimeDataFrame):
                         current_weight_in_portfolio = 0
                         for trade in self.trades:
                             if stock == trade.stock.name:
-                                current_weight_in_portfolio += trade.shares * closing_price / self.float
+                                current_weight_in_portfolio += trade.shares * closing_price / float_before_trades
 
                         # The weight we need to rebalance for
                         delta_weights = weights[stock] - current_weight_in_portfolio
-                        delta_shares = (abs(delta_weights) * self.float - commission) / closing_price
+                        delta_shares = (abs(delta_weights) * float_before_trades - commission) / closing_price
 
                         # for first sweep, target weight should less than current weight and original position is long
                         #  or vice versa for short (means we're selling)
-                        # for second sweep, target weight should be more than current weight and original position is long
-                        # or vice versa for short (means we're buying)
+                        # for second sweep, target weight should be more than current weight and original position is
+                        # long or vice versa for short (means we're buying)
 
-                        if delta_shares > 0 and \
-                                (i == 0 and ((delta_weights < 0 and trade.direction)
-                                             or (delta_weights > 0 and not trade.direction))
-                                 or (i == 1 and ((delta_weights > 0 and trade.direction)
-                                                 or (delta_weights < 0 and not trade.direction)))):
+                        if delta_shares > 0:
                             if not fractional_shares:
                                 delta_shares = math.floor(delta_shares)
-                            if delta_shares > 0:
+                            if (i == 0 and ((delta_weights < 0 and trade.direction)
+                                            or (delta_weights > 0 and not trade.direction))):
+                                # we're exiting longs and entering shorts
                                 trade = Trade(direction=True if stock in long_stocks.columns else False,
                                               stock=prices, shares=delta_shares, date=self.date)
-                                # we're exiting longs and entering shorts
                                 self.make_position(trade, entry=False if stock in long_stocks.columns else True)
+                                break
+                            elif (i == 1 and ((delta_weights > 0 and trade.direction)
+                                              or (delta_weights < 0 and not trade.direction))):
+                                # we're entering longs and exiting shorts
+                                trade = Trade(direction=True if stock in long_stocks.columns else False,
+                                              stock=prices, shares=delta_shares, date=self.date)
+                                self.make_position(trade, entry=True if stock in long_stocks.columns else False)
                                 break
 
                 # If the stock computed is not already part of our portfolio
                 if not stock_is_in_portfolio:
-                    shares_to_trade = (weights[stock] * self.float - commission) / closing_price
+                    shares_to_trade = (weights[stock] * float_before_trades - commission) / closing_price
                     if not fractional_shares:
                         shares_to_trade = math.floor(shares_to_trade)
                     if shares_to_trade > 0:

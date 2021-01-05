@@ -1,10 +1,15 @@
+import inspect
 import math
+from functools import partial
 
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+
+from portfolio_management.Portfolio import Portfolio
 from quantitative_analysis.risk_factor_modeling import asset_pricing_model
+import macroeconomic_analysis.macroeconomic_analysis as macro
 
 '''
 The methods in this field serve as utility functions for our portfolio optimization
@@ -159,7 +164,16 @@ def treynor_ratio(portfolio_returns, benchmark_returns, risk_free_rates, period=
 
 # extension of Traynor - discounts expected excess returns by vol
 def sharpe_ratio(portfolio_returns, risk_free_rates, period=252):
+    """
+
+    :param portfolio_returns: should be same time range and frequency as risk free rates
+    :param risk_free_rates: should be same time range and frequency as portfolio_returns
+    :param period:
+    :return:
+    """
     portfolio_volatility = portfolio_returns.std() * np.sqrt(period)
+    print(portfolio_returns.mean(), risk_free_rates.mean())
+
     return ((portfolio_returns.mean() - risk_free_rates.mean()) * period) / portfolio_volatility
 
 
@@ -236,6 +250,17 @@ def roys_safety_first_criterion(portfolio_returns, minimum_threshold=0.02, perio
     return (portfolio_returns.mean() * period - minimum_threshold) / (portfolio_returns.std() * math.sqrt(period))
 
 
+def risk_measures_wrapper(risk_measure: partial, portfolio: Portfolio):
+    fn_args_names = inspect.signature(risk_measure.func)
+
+    if 'portfolio_returns' in fn_args_names.parameters.keys():
+        risk_measure = partial(risk_measure, portfolio_returns=portfolio.df_returns)
+    if 'risk_free_rates' in fn_args_names.parameters.keys():
+        rf = macro.risk_free_rates(to_date=portfolio.df_returns.index[-1], from_date=portfolio.df_returns.index[0])
+        risk_measure = partial(risk_measure, risk_free_rates=rf)
+    return risk_measure()
+
+
 # Regarding time horizon. If you have a mean for a horizon of 10 days, and a volatility over a year, then
 # you can convert that volatility to be over the horizon as VOL * np.sqrt(10/252)
 
@@ -245,12 +270,8 @@ def roys_safety_first_criterion(portfolio_returns, minimum_threshold=0.02, perio
 - The window (from which date to which date)
 For example, some services calculate 'during the last 3 years, the 30 days X is Y'''
 
-# if __name__ == '__main__':
-#     path = '{}/{}.xlsx'.format(config.STOCK_PRICES_DIR_PATH, 'AAPL')
-#     portfolio_returns = excel.read_df_from_csv(path)['Adj Close'].pct_change()
-#
-#     risk = risk_measures_wrapper(risk_measure=partial(sharpe_ratio),
-#                                  portfolio_returns=portfolio_returns,
-#                                  from_date=datetime.now() - timedelta(days=3 * 365),
-#                                  to_date=datetime.now())
-#     print(risk)
+if __name__ == '__main__':
+    portfolio = Portfolio(assets=['AAPL'])
+    # TODO remove weekend returns in Portfolio!!!!
+    risk = risk_measures_wrapper(risk_measure=partial(sharpe_ratio), portfolio=portfolio)
+    print(risk)

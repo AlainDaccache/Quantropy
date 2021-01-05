@@ -29,7 +29,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -37,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Asset Pricing Models" href="AssetPricingModels.html" /> 
+    <link rel="next" title="Fundamental Analysis" href="fundamental-analysis.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,7 +82,12 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="AssetPricingModels.html">Asset Pricing Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-strategies.html">Investment Strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-optimization.html">Portfolio Optimization</a></li>
 </ul>
 
             
@@ -153,24 +157,91 @@
 <h1>Welcome to Quantropy’s documentation!<a class="headerlink" href="#welcome-to-quantropy-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="AssetPricingModels.html">Asset Pricing Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="AssetPricingModels.html#the-quest-for-asset-pricing-the-efficient-market-hypothesis">The Quest for Asset Pricing: The Efficient Market Hypothesis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="AssetPricingModels.html#capital-asset-pricing-model">Capital Asset Pricing Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#the-intuition-behind-capm">The Intuition behind CAPM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#the-derivation-of-capm">The Derivation of CAPM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#beta-a-proxy-of-market-risk">Beta: A Proxy of Market Risk</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#the-security-market-line">The Security Market Line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#the-capital-allocation-line">The Capital Allocation Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fundamental-analysis.html#financial-statements">Financial Statements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#balance-sheet">Balance Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#income-statement">Income Statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#cash-flow-statement">Cash Flow Statement</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="AssetPricingModels.html#a-tale-of-asset-pricing-models">A Tale of Asset Pricing Models</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#fama-french-three-factor-model-1992">Fama-French Three Factor Model (1992)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#carhart-four-factor-model-1997">Carhart Four Factor Model (1997)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#pastor-stambaugh-model-2003">Pastor-Stambaugh Model (2003)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#aqr-factors-2013-2014">AQR Factors (2013-2014)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AssetPricingModels.html#fama-french-five-factor-model-2015">Fama-French Five Factor Model (2015)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamental-analysis.html#intermediary-metrics">Intermediary Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fundamental-analysis.html#accounting-ratios">Accounting Ratios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#liquidity-ratios">Liquidity Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#activity-efficiency-ratios">Activity (Efficiency) Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#profitability-ratios">Profitability Ratios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fundamental-analysis.html#market-ratios">Market Ratios</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="fundamental-analysis.html#equity-valuation-models">Equity Valuation Models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="technical-analysis.html#charting-basics">Charting Basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="technical-analysis.html#types-of-charts">Types of Charts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="technical-analysis.html#price-action">Price Action</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="technical-analysis.html#technical-indicators">Technical Indicators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="technical-analysis.html#chart-patterns">Chart Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="technical-analysis.html#candlestick-patterns">Candlestick Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="asset-pricing-models.html#the-efficient-market-hypothesis">The Efficient Market Hypothesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asset-pricing-models.html#capital-asset-pricing-model">Capital Asset Pricing Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#the-intuition-behind-capm">The Intuition behind CAPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#the-derivation-of-capm">The Derivation of CAPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#beta-a-proxy-of-market-risk">Beta: A Proxy of Market Risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#the-security-market-line">The Security Market Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#the-capital-allocation-line">The Capital Allocation Line</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="asset-pricing-models.html#a-tale-of-asset-pricing-models">A Tale of Asset Pricing Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#fama-french-three-factor-model-1992">Fama-French Three Factor Model (1992)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#carhart-four-factor-model-1997">Carhart Four Factor Model (1997)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#pastor-stambaugh-model-2003">Pastor-Stambaugh Model (2003)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#aqr-factors-2013-2014">AQR Factors (2013-2014)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#fama-french-five-factor-model-2015">Fama-French Five Factor Model (2015)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-management.html#framework-of-an-investment-strategy">Framework of an Investment Strategy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-management.html#securities-universe">Securities Universe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-management.html#stock-selection">Stock Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-management.html#market-timing">Market Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-management.html#portfolio-allocation">Portfolio Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-management.html#other-considerations">Other Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="investment-strategies.html">Investment Strategies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="investment-strategies.html#style-investing">Style Investing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="investment-strategies.html#value-investing">Value Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-strategies.html#growth-investing">Growth Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-strategies.html#quality-investing">Quality Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-strategies.html#momentum-investing">Momentum Investing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="investment-strategies.html#even-driven-arbitrage">Even-Driven Arbitrage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-strategies.html#trend-vs-mean-reversion">Trend vs. Mean Reversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-strategies.html#factor-investing-smart-beta">Factor Investing (Smart-Beta)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-strategies.html#pairs-trading">Pairs Trading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-optimization.html">Portfolio Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#modern-portfolio-theory">Modern Portfolio Theory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-optimization.html#markowitz-mean-variance-1952">Markowitz Mean-Variance (1952)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio-optimization.html#risk-parity-1996">Risk Parity (1996)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#treynor-black-model-1973">Treynor-Black Model (1973)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#black-litterman-model-1990">Black-Litterman Model (1990)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#post-modern-portfolio-theory-1991">Post-Modern Portfolio Theory (1991)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#universal-portfolio-algorithm-2016">Universal Portfolio Algorithm (2016)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portfolio-optimization.html#hierarchical-risk-parity-2016">Hierarchical Risk Parity (2016)</a></li>
 </ul>
 </li>
 </ul>
@@ -193,7 +264,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="AssetPricingModels.html" class="btn btn-neutral float-right" title="Asset Pricing Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="fundamental-analysis.html" class="btn btn-neutral float-right" title="Fundamental Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

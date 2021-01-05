@@ -139,7 +139,7 @@ class Strategy(metaclass=abc.ABCMeta):
             long_stocks, short_stocks = stocks_to_trade
 
             for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
-                if trade.stock.name not in stocks_to_trade:
+                if trade.stock.name not in long_stocks+short_stocks:
                     portfolio.make_position(trade, entry=False)
 
             # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation

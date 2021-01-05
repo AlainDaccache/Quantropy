@@ -10,25 +10,25 @@ What if we have been fooled by randomness?
 This project is an attempt to shed light on this question that has puzzled researchers for the past century. It is the culmination of three years of learning about the financial markets, and almost a year of
 developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
 
-We replicate the research and industry methodologies that have been used in order to allow our community to
+Specifically, we replicate the research and industry methodologies that have been used in order to allow our community to
 more flexibly validate them *ex-post*, reuse, and extend on. The pipeline looks as such:
 
 1.  In the `historical_data_collection` package, we scrape data from various sources, including SEC Edgar for **financial statements** and **market classification**,
-    YahooFinance for **asset prices**, Fred for **macroeconomic data**, and Fama-French for **risk factors**. 
+    YahooFinance for **asset prices**, FRED for **macroeconomic data**, and Fama-French for **risk factors**. 
     *Currently migrating from Excel and Pickle files to MongoDB and Kafka for real-time streaming.*
 
 2.  a.  In the `fundamental_analysis` package, we provide tools to assess a company's fair value (**equity valuation models**),
-        and evaluate by looking at **accounting ratios** and accompanying *financial distress* and *earnings manipulation* models,
+        and evaluate by looking at **accounting ratios**, and accompanying *financial distress* and *earnings manipulation* models,
         and compare across time and competitors. 
     
     b. In the `technical_analysis` package, we provide tools to detect geometric shapes (**chart patterns**, **candlestick patterns**) 
     and price characteristics (**technical indicators**). *Still under development, not a priority, but can use `TA-Lib` meanwhile.*
     
-    c. In the `quantitative_analysis` package, we provide tools to study statistical characteristics of stocks for **risk quantification**,
-    **stochastic processes**.
+    c. In the `quantitative_analysis` package, we provide tools to model risk for **portfolio optimization**, as well 
+    as research drivers of returns through **asset pricing models**, and forecast outcomes through **stochastic processes**.
     
-3.  In the `portfolio_management` package, we construct portfolios by using the aforementioned analysis for **stock screening**, as well as quantitative techniques for **asset pricing modeling**
-    and **portfolio optimization**. We can then backtest the strategy using the **portfolio simulator**, and deploy it to a broker.
+3.  In the `portfolio_management` package, we construct portfolios by using the aforementioned analysis for **stock screening**, 
+through the lens of styles such as value, growth, momentum, income... We then realistically simulate their performance, and deploy to a broker.
 
 Note: I am currently focused in more of the *project management* aspects of the project, for writing unit and mock tests, DevOps and
 documentation. After I'm done (~ Feb 2021), I will extend the implementation based on the books I just ordered:

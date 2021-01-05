@@ -66,6 +66,10 @@ ROW_SPACE_BETWEEN_DFS = 3
 
 # Some enumerations...
 
+class Period(Enum):
+    YEARLY = 252
+    MONTHLY = 21
+
 class Regions(Enum):
     USA = 'United States'
 

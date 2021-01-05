@@ -58,8 +58,10 @@ Intermediary data from financial statements used in accounting ratios and financ
 
 
 def dividend_per_share(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
-                       period: str = '', diluted_shares=True):
+                       period: str = '', diluted_shares: bool = True, deduct_preferred_dividends: bool = False):
     dividends_paid = fi.payments_for_dividends(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    dividends_paid -= abs(fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period,
+                                                 period=period)) if deduct_preferred_dividends else 0
     shares_outstanding = fi.total_shares_outstanding(stock=stock, diluted_shares=diluted_shares, date=date,
                                                      lookback_period=lookback_period, period=period)
     return abs(dividends_paid) / shares_outstanding
@@ -84,6 +86,15 @@ def market_capitalization(stock: str, diluted_shares: bool = False, date: dateti
 
 def enterprise_value(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                      period: str = ''):
+    """
+
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return:
+    """
     # TODO check for unfunded pension liabilities and other debt-deemed provisions, and value of associate companies
     output = market_capitalization(stock=stock, date=date, lookback_period=lookback_period, period=period) \
              + fi.total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period) \

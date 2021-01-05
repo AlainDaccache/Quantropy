@@ -4,7 +4,8 @@ import pandas as pd
 from scipy.optimize import minimize, Bounds
 from macroeconomic_analysis.macroeconomic_analysis import risk_free_rates
 from fundamental_analysis.supporting_metrics import market_capitalization
-from portfolio_management import Portfolio
+from portfolio_management.Portfolio import Portfolio
+from portfolio_management.risk_quantification import sortino_ratio
 
 np.random.seed(123)
 
@@ -95,7 +96,7 @@ class MeanVarianceModel(PortfolioAllocationModel):
             # objective function for portfolio volatility. We're optimizing for the weights
             fun=lambda w: np.sqrt(np.dot(w, np.dot(w, covariance_matrix))),
             # initial guess for weights (all equal)
-            x0=np.ones((len(self.portfolio.portfolio_tickers))) / (len(self.portfolio.portfolio_tickers)),
+            x0=np.ones((len(self.portfolio.stocks))) / (len(self.portfolio.stocks)),
             method='SLSQP',
             # weighted sum should equal target return, and weights should sum to one
             constraints=({'type': 'eq', 'fun': lambda x: np.sum(x) - 1}),
@@ -162,4 +163,10 @@ class NestedClusteredOptimization(PortfolioAllocationModel):
 
 
 if __name__ == '__main__':
-    pass
+    portfolio = Portfolio(assets=['AAPL', 'MSFT', 'CSCO'])
+    # mean_variance = MeanVarianceModel(portfolio)
+    # w = mean_variance.solve_weights()
+    # print(w)
+    postmodern = PostModernPortfolioTheoryOptimization(portfolio)
+    print(postmodern.solve_weights(objective=lambda w: sortino_ratio(portfolio_returns=portfolio.df_returns,
+                                                                     risk_free_rates=risk_free_rates())))

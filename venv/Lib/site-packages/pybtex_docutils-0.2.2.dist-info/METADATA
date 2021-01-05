@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: pybtex-docutils
+Version: 0.2.2
+Summary: A docutils backend for pybtex.
+Home-page: https://github.com/mcmtroffaes/pybtex-docutils
+Author: Matthias C. M. Troffaes
+Author-email: matthias.troffaes@gmail.com
+License: MIT
+Download-URL: http://pypi.python.org/pypi/pybtex-docutils
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Text Editors :: Text Processing
+Classifier: Topic :: Text Processing :: Markup :: XML
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*
+Requires-Dist: docutils (>=0.8)
+Requires-Dist: pybtex (>=0.16)
+Requires-Dist: six
+
+* Download: http://pypi.python.org/pypi/pybtex-docutils/#downloads
+
+* Documentation: http://pybtex-docutils.readthedocs.org/
+
+* Development: http://github.com/mcmtroffaes/pybtex-docutils/ |imagetravis| |imagecoveralls|
+
+.. |imagetravis| image:: https://travis-ci.org/mcmtroffaes/pybtex-docutils.png?branch=develop
+       :target: https://travis-ci.org/mcmtroffaes/pybtex-docutils
+       :alt: travis-ci
+
+.. |imagecoveralls| image:: https://coveralls.io/repos/mcmtroffaes/pybtex-docutils/badge.png?branch=develop
+       :target: https://coveralls.io/r/mcmtroffaes/pybtex-docutils?branch=develop
+       :alt: coveralls.io
+
+
