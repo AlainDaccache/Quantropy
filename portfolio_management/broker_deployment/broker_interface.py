@@ -20,7 +20,7 @@ class Broker(metaclass=abc.ABCMeta):
                     order_type: str = 'Market', time_in_force: str = 'DAY'):
         '''
         :param symbol:
-        :param side: Buy, Sell
+        :param side: str    'buy', 'sell'
         :param quantity:
         :param order_type: Market, Limit, Stop, Stop Limit
         :param time_in_force: DAY, GTC (Good till Canceled), FOK (Fill or Kill), IOC (Immediate or Cancel), OPG (At-the-open)

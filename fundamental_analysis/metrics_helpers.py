@@ -4,7 +4,6 @@ from typing import Callable
 
 import numpy as np
 from fundamental_analysis import accounting_ratios
-from fundamental_analysis.accounting_ratios import price_to_earnings
 from macroeconomic_analysis import macroeconomic_analysis
 from scipy import stats
 
@@ -62,5 +61,6 @@ class FundamentalMetricsHelpers:
 
 
 if __name__ == '__main__':
-    helpers = FundamentalMetricsHelpers(stock='AAPL', date=datetime.now(), metric=price_to_earnings)
-    print(helpers.percentile_against_macro('sector'))
+    pass
+    # helpers = FundamentalMetricsHelpers(stock='AAPL', date=datetime.now(), metric=price_to_earnings)
+    # print(helpers.percentile_against_macro('sector'))

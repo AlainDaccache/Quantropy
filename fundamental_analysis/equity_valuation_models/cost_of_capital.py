@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as fi
 import fundamental_analysis.supporting_metrics as me
+from fundamental_analysis.metrics_helpers import FundamentalMetricsHelpers
 from quantitative_analysis.risk_factor_modeling import asset_pricing_model
 import macroeconomic_analysis.macroeconomic_analysis as macro
 import numpy as np
@@ -37,13 +38,15 @@ def cost_of_equity_capm(stock: str, from_date: datetime = datetime.now() - timed
     return risk_free_rate + beta * risk_premium
 
 
-def cost_of_equity_ddm(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = 'FY', diluted_shares=True):
+def cost_of_equity_ddm(stock, date=datetime.now(), lookback_period=timedelta(days=0), period: str = 'FY',
+                       diluted_shares=True):
     stock_price = me.market_price(stock=stock, date=date, lookback_period=lookback_period)
 
     this_period_dividend = me.dividend_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                                  diluted_shares=diluted_shares)
-    growth_rate = metric_growth_rate(metric=partial(me.dividend_per_share), stock=stock, date=date,
-                                        lookback_period=lookback_period, period=period)
+    growth_rate = FundamentalMetricsHelpers(metric=partial(me.dividend_per_share), stock=stock, date=date) \
+        .metric_growth_rate(lookback_period=lookback_period, period=period)
+
     next_period_dividend = this_period_dividend * (1 + growth_rate)
     return (next_period_dividend / stock_price) + growth_rate
 

@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Portfolio Backtester" href="portfolio-management.html" /> 
+    <link rel="prev" title="Investment Strategies" href="investment-strategies.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,19 +83,38 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-strategies.html">Investment Strategies</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Optimization</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modern-portfolio-theory">Modern Portfolio Theory</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#markowitz-mean-variance-1952">Markowitz Mean-Variance (1952)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#risk-parity-1996">Risk Parity (1996)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#markowitz-mean-variance-framework-1952">Markowitz Mean-Variance Framework (1952)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#treynor-black-model-1973">Treynor-Black Model (1973)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#black-litterman-model-1990">Black-Litterman Model (1990)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#treynor-black-model-1973">Treynor-Black Model (1973)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#black-litterman-model-1990">Black-Litterman Model (1990)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#post-modern-portfolio-theory-1991">Post-Modern Portfolio Theory (1991)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-modern-portfolio-theory-1991">Post Modern Portfolio Theory (1991)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#risk-deviation-measures">Risk Deviation Measures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#risk-adjusted-returns-measures-based-on-volatility">Risk Adjusted Returns Measures Based on Volatility</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#value-at-risk-var">Value at Risk (VaR)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#risk-adjusted-returns-measures-based-on-var">Risk Adjusted Returns Measures Based on VaR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#drawdown-risk">Drawdown Risk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#partial-moments-risk">Partial Moments Risk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#risk-adjusted-returns-measures-based-on-partial-moments">Risk Adjusted Returns Measures Based on Partial Moments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#risk-parity-1996">Risk Parity (1996)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hierarchical-risk-parity-2016">Hierarchical Risk Parity (2016)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#universal-portfolio-algorithm-2016">Universal Portfolio Algorithm (2016)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#hierarchical-risk-parity-2016">Hierarchical Risk Parity (2016)</a></li>
 </ul>
 </li>
 </ul>
@@ -165,29 +184,590 @@
             
   <div class="section" id="portfolio-optimization">
 <h1>Portfolio Optimization<a class="headerlink" href="#portfolio-optimization" title="Permalink to this headline">¶</a></h1>
+<p>The aim of <strong>portfolio optimization</strong> is to construct a portfolio by determining what proportions of our portfolio that each
+asset should hold, according to quantifiable characteristics such as risk, return, covariance matrices, as well as
+mathematical methodologies such as optimization (i.e. CLA) and machine learning techniques (i.e. hierarchical clustering).</p>
 <div class="section" id="modern-portfolio-theory">
 <h2>Modern Portfolio Theory<a class="headerlink" href="#modern-portfolio-theory" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="markowitz-mean-variance-1952">
-<h3>Markowitz Mean-Variance (1952)<a class="headerlink" href="#markowitz-mean-variance-1952" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="risk-parity-1996">
-<h3>Risk Parity (1996)<a class="headerlink" href="#risk-parity-1996" title="Permalink to this headline">¶</a></h3>
-</div>
+<p>In a 1952 essay, economist Harry Markowitz introduced <strong>Modern Portfolio Theory</strong> (MPT). Also termed <em>mean-variance analysis</em>,
+it is a mathematical framework for to determine the proportion of an asset in the portfolio, so that the expected return is maximized
+for a given level of risk. It formalizes the idea of <em>diversification</em>, i.e. that owning different types of financial assets is less
+risky than owning only one. Essentially, an asset’s risk and return should not be assessed by itself, but by how it
+contributes to the risk and overall return of a portfolio. This framework has then been improved by other economists
+and mathematicians who went on to account for its limitations.</p>
+<div class="section" id="markowitz-mean-variance-framework-1952">
+<h3>Markowitz Mean-Variance Framework (1952)<a class="headerlink" href="#markowitz-mean-variance-framework-1952" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory">
+<em class="property">class </em><code class="sig-prename descclassname">portfolio_management.portfolio_optimization.</code><code class="sig-name descname">ModernPortfolioTheory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory" title="Permalink to this definition">¶</a></dt>
+<dd><p>In <strong>Markowitz’s mean-variance framework</strong>:</p>
+<p>The portfolio’s <em>expected return</em> is the proportion-weighted combination of the constituents assets’ returns.
+It is the weighted-average of the returns of the portfolio’s constituents.</p>
+<div class="math notranslate nohighlight">
+\[E(R_p) = \sum_{i} w_i * E(R_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_p\)</span> is the return of the portfolio, <span class="math notranslate nohighlight">\(R_i\)</span> is the return of asset <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(w_i\)</span> is
+the weighting of component asset <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The portfolio’s <em>return variance</em> is used as a proxy for risk. It is not simply a linear combination of individual
+risks, but a function of the correlations <span class="math notranslate nohighlight">\(\rho_{ij}\)</span> of the component assets, for all asset pairs <span class="math notranslate nohighlight">\((i, j)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\sigma_p^2 = \sum_{i} (w_i^2 + \sigma_i^2) + \sum_{i} \sum_{i \neq j} w_i * w_j * \sigma_i * \sigma_j * \rho_{ij}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the (sample) standard deviation of the periodic returns on an asset, and <span class="math notranslate nohighlight">\(\rho_{ij}\)</span>:
+is the correlation coefficient between the returns on assets <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>With the idea of <strong>diversification</strong>, an investor can reduce portfolio risk simply by holding combinations of
+instruments that are not perfectly positively correlated (correlation coefficient <span class="math notranslate nohighlight">\(-1 &lt;= \rho_{ij} &lt; 1\)</span>).
+In other words, investors can reduce their exposure to individual asset risk by holding a diversified portfolio of
+assets. Diversification may allow for the same portfolio expected return with reduced risk.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="treynor-black-model-1973">
-<h2>Treynor-Black Model (1973)<a class="headerlink" href="#treynor-black-model-1973" title="Permalink to this headline">¶</a></h2>
+<h3>Treynor-Black Model (1973)<a class="headerlink" href="#treynor-black-model-1973" title="Permalink to this headline">¶</a></h3>
+<p>Unlike the <strong>Markowitz’s</strong> approach for portfolio allocation, the <strong>Treynor-Black model</strong> is a type of <em>active</em> portfolio
+management.</p>
+<dl class="py class">
+<dt id="portfolio_management.portfolio_optimization.TreynorBlackModel">
+<em class="property">class </em><code class="sig-prename descclassname">portfolio_management.portfolio_optimization.</code><code class="sig-name descname">TreynorBlackModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.TreynorBlackModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Under the <strong>Treynor-Black model</strong>, an investor considers that most securities are priced efficiently,
+but believes they have information that can be used to predict the abnormal performance (captured by the alpha
+of some factor model) of a few of them. The model combines an actively managed portfolio built with a few mispriced
+securities and a passively managed market index fund. As such, the overall portfolio consists of an active portfolio of weight <span class="math notranslate nohighlight">\(w_A\)</span> and a passive portfolio
+with weight <span class="math notranslate nohighlight">\(w_P = 1 - w_A\)</span>.</p>
+<ul class="simple">
+<li><p>The higher the <span class="math notranslate nohighlight">\(\alpha\)</span> of a security, the higher the weight we assign to it.</p></li>
+<li><p>The more risky the security is (unsystematic risk), the lower the weight we assign to it.</p></li>
+</ul>
+<p>The weight we assign to a security <em>i</em> should therefore be proportional to <span class="math notranslate nohighlight">\(\frac{\alpha_i}{\sigma(\epsilon_i)^2}\)</span>.
+By default, we take the <span class="math notranslate nohighlight">\(\alpha\)</span> of the Capital Asset Pricing Model, <span class="math notranslate nohighlight">\(r_i + \beta_i * (R_M - R_F) + \alpha_i + \epsilon_i\)</span>.</p>
+<p>Then it was shown by Treynor and Black that the active portfolio is constructed using the weights
+<span class="math notranslate nohighlight">\(w_i = \frac{\frac{\alpha_i}{\sigma_i^2}}{\sum_{j=1}^{N} \frac{\alpha_j}{\sigma_j^2}}\)</span>.
+Using these weights, we can construct the active portfolio and calculate the following:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_A = \sum_{i=1}^{N} w_i * \alpha_i ,
+\beta_A = \sum_{i=1}^{N} w_i * \beta_i ,
+\sigma(\epsilon_A)^2 = \sum_{i=1}^{N} w_i^2 * \sigma(\epsilon_i)^2\]</div>
+<p>They then determine the size of the active portfolio in the overall portfolio,</p>
+<div class="math notranslate nohighlight">
+\[w_A = \frac{\frac{\alpha_A}{\sigma_A^2}}{\frac{E(r_P) - r_f}{\sigma_P^2}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_p\)</span> is the return of the passive portfolio, <span class="math notranslate nohighlight">\(r_f\)</span> is the risk-free rate, and
+<span class="math notranslate nohighlight">\(\sigma_P^2\)</span> is the volatility of the passive portfolio.</p>
+<p>To avoid the overall portfolio from exhibiting a lot of unsystematic risk, we correct the formula
+to ensure the beta of the overall portfolio doesn’t change.</p>
+<div class="math notranslate nohighlight">
+\[w_A = \frac{w_A}{1 + (1 - \beta_A) * w_A}\]</div>
+<p>The model is not bounded <span class="math notranslate nohighlight">\(0 ≤ w_A ≤ 1\)</span> and <span class="math notranslate nohighlight">\(0 ≤ w_M ≤ 0\)</span> i.e short positions in the market portfolio or active portfolio
+could be initiated to leverage a position in the other portfolio. This is often regarded as the major flaw of the
+model, as it often yields an unrealistic weight in the active portfolio. Imposing lower and upper bounds for
+<span class="math notranslate nohighlight">\(w_A\)</span> is a measure to counter this.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="black-litterman-model-1990">
-<h2>Black-Litterman Model (1990)<a class="headerlink" href="#black-litterman-model-1990" title="Permalink to this headline">¶</a></h2>
+<h3>Black-Litterman Model (1990)<a class="headerlink" href="#black-litterman-model-1990" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="post-modern-portfolio-theory-1991">
-<h2>Post-Modern Portfolio Theory (1991)<a class="headerlink" href="#post-modern-portfolio-theory-1991" title="Permalink to this headline">¶</a></h2>
+<h2>Post Modern Portfolio Theory (1991)<a class="headerlink" href="#post-modern-portfolio-theory-1991" title="Permalink to this headline">¶</a></h2>
+<p>Two major limitations of MPT are in measuring <em>risk</em> and <em>return</em> in a way that doesn’t represent the realities of the
+investment markets. Specifically, it assumes the following:</p>
+<ul class="simple">
+<li><p><strong>Risk proxy:</strong> The variance of portfolio returns is the correct measure of investment risk. Using the variance (or its square root,
+the standard deviation) implies that uncertainty about better-than-expected returns is equally averred as uncertainty
+about returns that are worse than expected. It has long been recognized that investors typically do not view as
+risky those returns above the minimum they must earn in order to achieve their investment objectives.
+They believe that risk has to do with the bad outcomes (i.e., returns below a required target), not the good
+outcomes (i.e., returns in excess of the target) and that losses weigh more heavily than gains.</p></li>
+<li><p><strong>Statistical distribution:</strong> The investment returns of all securities and portfolios can be adequately represented by a joint elliptical
+distribution, such as the <strong>normal distribution</strong>. The assumption of a normal distribution is a major practical limitation,
+because it is symmetrical. Using the normal distribution to model the pattern of investment returns makes investment results with
+more upside than downside returns appear more risky than they really are.</p></li>
+</ul>
+<p>Recent advances in portfolio and financial theory, coupled with increased computing power, have overcome these limitations.
+The resulting expanded risk/return paradigm is known as Post-Modern Portfolio Theory, or PMPT.
+Thus, MPT becomes nothing more than a special (symmetrical) case of PMPT.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The risk measures we will describe below are mainly used to evaluate mutual fund and portfolio manager performance.
+It is important to note that some variables will cause differing results, such as the <em>frequency</em> (daily, weekly, monthly, yearly)
+and the <a href="#id1"><span class="problematic" id="id2">*</span></a>window*(from which date to which date). For example, some services calculate ‘during the last 3 years, the 30 days X is Y’.</p>
+<p>Also, regarding time horizon, if you have a mean for a horizon of say 10 days, and a volatility over a year, then
+you can convert that volatility to be over the horizon by multiplying by <span class="math notranslate nohighlight">\(\sqrt{10/252}\)</span>.</p>
+</div>
+<p>As a case, let’s take as an example the following portfolio</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">portfolio_management.Portfolio</span> <span class="kn">import</span> <span class="n">Portfolio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">assets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;KO&#39;</span><span class="p">,</span> <span class="s1">&#39;CAT&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="n">assets</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span><span class="o">.</span><span class="n">slice_dataframe</span><span class="p">(</span><span class="n">to_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">from_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio_returns</span> <span class="o">=</span> <span class="n">portfolio</span><span class="o">.</span><span class="n">get_weighted_sum_returns</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">assets</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">assets</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">portfolio_returns</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="go">Date</span>
+<span class="go">1970-01-05 23:59:59   -0.004553</span>
+<span class="go">1970-01-06 23:59:59   -0.003728</span>
+<span class="go">1970-01-07 23:59:59   -0.006211</span>
+<span class="go">1970-01-08 23:59:59    0.001179</span>
+<span class="go">1970-01-09 23:59:59   -0.005915</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+<p>First, we cover some measures that are based on the <em>Capital Asset Pricing Model</em>:</p>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.jensens_alpha">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">jensens_alpha</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.jensens_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>Jensen’s alpha</strong> determines the abnormal return of a security or portfolio of securities over the theoretical
+expected return. It is a version of the standard alpha based on a theoretical performance index instead of a market index.
+The theoretical return is predicted by a market model, most commonly the capital asset pricing model (CAPM).
+The market model uses statistical methods to predict the appropriate risk-adjusted return of an asset.</p>
+<p>The CAPM for instance uses beta as a multiplier. The CAPM return is supposed to be ‘risk adjusted’,
+which means it takes account of the relative riskiness of the asset. This is based on the concept that riskier
+assets should have higher expected returns than less risky assets. If an asset’s return is even higher than the
+risk adjusted return, that asset is said to have “positive alpha” or “abnormal returns”.
+Investors are constantly seeking investments that have higher alpha.</p>
+<p>Since Eugene Fama, many academics believe financial markets are too efficient to allow for repeatedly earning
+positive Alpha, unless by chance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.capm_beta">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">capm_beta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.capm_beta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="risk-deviation-measures">
+<h3>Risk Deviation Measures<a class="headerlink" href="#risk-deviation-measures" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.standard_deviation">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">standard_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.standard_deviation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.average_absolute_deviation">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">average_absolute_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.average_absolute_deviation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.lower_semi_standard_deviation">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">lower_semi_standard_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.lower_semi_standard_deviation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="risk-adjusted-returns-measures-based-on-volatility">
+<h4>Risk Adjusted Returns Measures Based on Volatility<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-volatility" title="Permalink to this headline">¶</a></h4>
+<p>Volatility is simply the average dispersion of the returns around their mean</p>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.treynor_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">treynor_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.treynor_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>Treynor reward to volatility model</strong> is a measurement of the returns earned in excess of that which could have
+been earned on an investment that has no diversifiable risk (e.g., Treasury bills or a completely diversified portfolio),
+per unit of market risk assumed. In other words, it calculates the excess returns generated by a portfolio
+<span class="math notranslate nohighlight">\(r_i - r_f\)</span>, where <span class="math notranslate nohighlight">\(r_i\)</span> is the portfolio <span class="math notranslate nohighlight">\(i\)</span>’s returns and <span class="math notranslate nohighlight">\(r_f\)</span> is the risk-free
+rate, then discounts it by portfolio <span class="math notranslate nohighlight">\(i\)</span>’s beta, <span class="math notranslate nohighlight">\(\beta_i\)</span>.</p>
+<p>Like the Sharpe ratio, the Treynor ratio (T) does not quantify the value added, if any, of active portfolio
+management. It is a ranking criterion only. A ranking of portfolios based on the Treynor Ratio is only useful if
+the portfolios under consideration are sub-portfolios of a broader, fully diversified portfolio.
+If this is not the case, portfolios with identical systematic risk, but different total risk, will be rated the same.
+But the portfolio with a higher total risk is less diversified and therefore has a higher unsystematic risk which is
+not priced in the market.</p>
+<p>An alternative method of ranking portfolio management is Jensen’s alpha, which quantifies the added return as the
+excess return above the security market line in the capital asset pricing model. As these two methods both determine
+rankings based on systematic risk alone, they will rank portfolios identically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(T = \frac{r_i - r_f}{\beta_i}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.sharpe_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">sharpe_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.sharpe_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>Sharpe ratio</strong> was developed by William F. Sharpe in 1966. It is an extension of the <em>Traynor ratio</em>, as
+it discounts expected excess returns by the volatility. It measures the performance of an investment
+(e.g., a security or portfolio) compared to a risk-free asset, after adjusting for its risk.
+In other words, it is the difference between the returns of the investment  and the risk-free return, divided by
+the standard deviation of the investment (i.e., its volatility). It represents the additional amount of return
+that an investor receives per unit of increase in risk.</p>
+<p>The <em>ex-ante</em> ratio is defined as <span class="math notranslate nohighlight">\(\frac{E[R_a - R_b]}{\sigma_a}\)</span> where <span class="math notranslate nohighlight">\(R_{a}\)</span> is the asset return,
+<span class="math notranslate nohighlight">\(R_b\)</span> is the risk-free return (such as a U.S. Treasury security). <span class="math notranslate nohighlight">\(E[R_{a}-R_{b}]\)</span> is the expected
+value of the excess of the asset return over the benchmark return, and <span class="math notranslate nohighlight">\(\sigma _{a}\)</span> is the standard deviation
+of the asset excess return. The <em>ex-post</em> ratio uses the same equation as the one above but with realized returns
+of the asset and benchmark rather than expected returns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21. Period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(S = \frac{E[R_a - R_b]}{\sigma_a}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.information_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">information_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.information_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>information ratio</strong> is similar to the Sharpe ratio, the main difference being that the Sharpe ratio uses a
+risk-free return as benchmark whereas the information ratio uses a risky index as benchmark (such as the S&amp;P500).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time. Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.modigliani_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">modigliani_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.modigliani_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>Modigliani risk-adjusted performance</strong> is a combination of the Sharpe and info ratios.
+It adjusts the expected excess returns of the portfolio above the risk free rate by the expected excess
+returns of a benchmark portfolio, above the risk free rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.roys_safety_first_criterion">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">roys_safety_first_criterion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">minimum_threshold</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.roys_safety_first_criterion" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>minimum_threshold</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">roys_safety_first_criterion</span><span class="p">(</span><span class="n">portfolio_returns</span><span class="o">=</span><span class="n">portfolio_returns</span><span class="p">,</span> <span class="n">minimum_threshold</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">252</span><span class="p">))</span>
+<span class="go">0.7591708635828361</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="value-at-risk-var">
+<h3>Value at Risk (VaR)<a class="headerlink" href="#value-at-risk-var" title="Permalink to this headline">¶</a></h3>
+<p>Measures of risk-adjusted return based on volatility treat all deviations from the mean as risk, whereas measures of
+risk-adjusted return based on lower partial moments consider only deviations below some predefined minimum return
+threshold, t as risk i.e. positive deviations aren’t risky. VaR is a more probabilistic view of loss as the risk of a portfolio</p>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.value_at_risk_historical_simulation">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_historical_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_historical_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.value_at_risk_variance_covariance">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_variance_covariance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_variance_covariance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.value_at_risk_monte_carlo">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_monte_carlo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_monte_carlo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.conditional_value_at_risk">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">conditional_value_at_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.conditional_value_at_risk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expected Shortfall, otherwise known as CVaR, or conditional value at risk, is simply the expected loss of the worst case scenarios of returns.
+ES answers this question — What is the average loss over the whole range of outcomes in the 1% tail?
+For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be the average value of all losses exceeding -3%.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>confidence_level</strong> – </p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="risk-adjusted-returns-measures-based-on-var">
+<h4>Risk Adjusted Returns Measures Based on VaR<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-var" title="Permalink to this headline">¶</a></h4>
+<p>Value at Risk computes the expected loss over a specified period of time given a confidence level</p>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.excess_return_value_at_risk">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">excess_return_value_at_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.excess_return_value_at_risk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discounts the excess return of the portfolio above the risk-free rate by the value at risk of the portfolio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>confidence_level</strong> – </p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.conditional_sharpe_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">conditional_sharpe_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.conditional_sharpe_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discounts the excess return of the portfolio above the risk-free rate by the conditional VaR of the portfolio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>confidence_level</strong> – </p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="drawdown-risk">
+<h3>Drawdown Risk<a class="headerlink" href="#drawdown-risk" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.drawdown_risk">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">drawdown_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">trailing_period</span><span class="o">=</span><span class="default_value">252</span></em>, <em class="sig-param"><span class="n">max</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.drawdown_risk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drawdown risk is the maximum (or average) historical ‘drawdown’ of the portfolio.
+A drawdown is the percentage loss between peak and trough.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>trailing_period</strong> – </p></li>
+<li><p><strong>max</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="partial-moments-risk">
+<h3>Partial Moments Risk<a class="headerlink" href="#partial-moments-risk" title="Permalink to this headline">¶</a></h3>
+<p>These measures consider downside risk, and do not assume that returns are normally adjusted.
+The mean and variance do not completely describe the distribution, therefore using only both of
+them (i.e. the first and second moment of a distribution), would technically assume a normal distribution.</p>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.lpm">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">lpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returns</span></em>, <em class="sig-param"><span class="n">threshold</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.lpm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a lower partial moment of the returns. Example usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">r</span> <span class="o">=</span> <span class="n">nrand</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lpm(0.0)_1 = &#39;</span><span class="p">,</span> <span class="n">lpm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>returns</strong> – </p></li>
+<li><p><strong>threshold</strong> – </p></li>
+<li><p><strong>order</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.hpm">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">hpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returns</span></em>, <em class="sig-param"><span class="n">threshold</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.hpm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a higher partial moment of the returns. Example usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">nrand</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hpm(0.0)_1 = &#39;</span><span class="p">,</span> <span class="n">hpm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>returns</strong> – </p></li>
+<li><p><strong>threshold</strong> – </p></li>
+<li><p><strong>order</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="risk-adjusted-returns-measures-based-on-partial-moments">
+<h4>Risk Adjusted Returns Measures Based on Partial Moments<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-partial-moments" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.omega_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">omega_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.omega_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notice the denominator is power of 1/1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.sortino_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">sortino_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.sortino_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notice the denominator is power of 1/2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.kappa_three_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">kappa_three_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.kappa_three_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notice the denominator is power of 1/3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
+<li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
+<li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.gain_loss_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">gain_loss_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.gain_loss_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="portfolio_management.risk_quantification.upside_potential_ratio">
+<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">upside_potential_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.upside_potential_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <strong>upside-potential ratio</strong> is a measure of a return of an investment asset relative to the minimal acceptable
+return. The measurement allows a firm or individual to choose investments which have had relatively good upside
+performance, per unit of downside risk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable. minimum acceptable return, below which the returns are less desirable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="risk-parity-1996">
+<h2>Risk Parity (1996)<a class="headerlink" href="#risk-parity-1996" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hierarchical-risk-parity-2016">
+<h3>Hierarchical Risk Parity (2016)<a class="headerlink" href="#hierarchical-risk-parity-2016" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 <div class="section" id="universal-portfolio-algorithm-2016">
 <h2>Universal Portfolio Algorithm (2016)<a class="headerlink" href="#universal-portfolio-algorithm-2016" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="hierarchical-risk-parity-2016">
-<h2>Hierarchical Risk Parity (2016)<a class="headerlink" href="#hierarchical-risk-parity-2016" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -200,7 +780,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="portfolio-management.html" class="btn btn-neutral float-left" title="Portfolio Backtester" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="investment-strategies.html" class="btn btn-neutral float-left" title="Investment Strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -15,8 +15,13 @@ from statsmodels.tsa.stattools import coint
 from enum import Enum
 
 import macroeconomic_analysis.macroeconomic_analysis as macro
+from fundamental_analysis.accounting_ratios import price_to_earnings
 from portfolio_management.Portfolio import Portfolio, TimeDataFrame
-from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio, PortfolioAllocationModel
+from portfolio_management.broker_deployment.alpaca import AlpacaBroker
+from portfolio_management.broker_deployment.broker_interface import Broker
+from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio, ModernPortfolioTheory, \
+    PortfolioAllocationModel
+from portfolio_management.risk_quantification import sharpe_ratio
 from portfolio_management.stock_screener import StockScreener
 
 plt.style.use('fivethirtyeight')
@@ -44,7 +49,7 @@ class Strategy(metaclass=abc.ABCMeta):
 
     def __init__(self, starting_date: datetime, ending_date: datetime, starting_capital: float,
                  stock_screener: StockScreener, max_stocks_count_in_portfolio: int,
-                 net_exposure: tuple, portfolio_allocation, maximum_leverage: float = 1.0,
+                 net_exposure: tuple, maximum_leverage: float = 1.0,
                  reinvest_dividends: bool = False, fractional_shares: bool = False,
                  include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
 
@@ -58,7 +63,6 @@ class Strategy(metaclass=abc.ABCMeta):
         :param net_exposure: tuple that represents (long_percent, short_percent)
             * (0.5, 0.5) is Dollar Neutral Strategy
             * (1.3, 0.3) is 130-30 Strategy
-        :param portfolio_allocation:
         :param maximum_leverage:
         :param reinvest_dividends:
         :param fractional_shares:
@@ -66,8 +70,6 @@ class Strategy(metaclass=abc.ABCMeta):
         :param include_capital_gains_tax:
         :param commission:
         """
-        if not issubclass(portfolio_allocation, PortfolioAllocationModel):
-            raise Exception('Make sure that portfolio_allocation is a subclass of PortfolioAllocationModel')
 
         self.starting_date = starting_date
         self.ending_date = ending_date
@@ -75,7 +77,6 @@ class Strategy(metaclass=abc.ABCMeta):
         self.stock_screener = stock_screener
         self.max_stocks_count_in_portfolio = max_stocks_count_in_portfolio
         self.net_exposure = net_exposure
-        self.portfolio_allocation = portfolio_allocation
         self.maximum_leverage = maximum_leverage
         self.reinvest_dividends = reinvest_dividends
         self.fractional_shares = fractional_shares
@@ -91,6 +92,10 @@ class Strategy(metaclass=abc.ABCMeta):
         """
         self.stock_screener.run(date=current_date)
         return self.stock_screener.stocks, []
+
+    @abstractmethod
+    def allocation_regime(self, portfolio):
+        return EquallyWeightedPortfolio(portfolio).solve_weights()
 
     @abstractmethod
     def is_time_to_reschedule(self, current_date, last_rebalancing_day):
@@ -139,13 +144,13 @@ class Strategy(metaclass=abc.ABCMeta):
             long_stocks, short_stocks = stocks_to_trade
 
             for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
-                if trade.stock.name not in long_stocks+short_stocks:
+                if trade.stock.name not in long_stocks + short_stocks:
                     portfolio.make_position(trade, entry=False)
 
             # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation
             portfolio.df_returns = securities_universe_returns_df[long_stocks]
             sliced_portfolio = portfolio.slice_dataframe(to_date=date, inplace=False)
-            weights = self.portfolio_allocation(portfolio=sliced_portfolio).solve_weights()
+            weights = self.allocation_regime(portfolio=sliced_portfolio)
 
             portfolio.rebalance_portfolio(long_stocks=securities_universe_prices_df[long_stocks],
                                           short_stocks=securities_universe_prices_df[short_stocks],
@@ -170,6 +175,25 @@ class Strategy(metaclass=abc.ABCMeta):
         with pd.option_context('display.max_rows', None, 'display.max_columns', None):
             print(evolution_df.to_string())
         return evolution_df
+
+    def broker_deployment(self, broker):
+        """
+        Of course, need to schedule that function depending on the `is_time_to_reschedule`. Potentially use AWS Lambda
+
+        :param broker:
+        :return:
+        """
+        if not issubclass(broker.__class__, Broker):
+            raise Exception('Ensure that the broker object inherits from the `Broker` class.')
+
+        assets_to_long, assets_to_short = self.generate_assets_to_trade(datetime.now())
+        # TODO long for now, improve optimization to include diff constraints
+        weights = self.portfolio_allocation(portfolio=Portfolio(assets_to_long)).solve_weights()
+        broker.place_order(symbol='AAPL', side='buy')
+        current_positions = broker.list_positions()
+        for position in current_positions:
+            print(position)
+        broker.place_order()
 
 
 def sort_df(df, column_idx, key):
@@ -212,16 +236,37 @@ def sort_df(df, column_idx, key):
 #
 # #screen.close()
 if __name__ == '__main__':
+    stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+    stock_screener.filter_by_comparison_to_number(partial(price_to_earnings, period='FY'), '>', 5)
+    stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+    stock_screener.run()
+
+
+    # # TODO percentile_against_macro
+    #
+    # lower_bounds = pd.Series(data=[40], index=['Alpha'])
+    # upper_bounds = pd.Series(data=[80], index=['MKT'])
+    # stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
+    #                                                     lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+    # stock_screener.run(date=datetime(2018, 1, 1))
+    # print(stock_screener.stocks)
+
     class Alainps(Strategy):
         def is_time_to_reschedule(self, current_date, last_rebalancing_day):
-            return (current_date - last_rebalancing_day).days > RebalancingFrequency.Quarterly.value
+            return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.QUARTERLY.value
 
-    import fundamental_analysis.accounting_ratios as ratios
+        def allocation_regime(self, portfolio: Portfolio):
+            return ModernPortfolioTheory(portfolio).solve_weights(risk_metric=sharpe_ratio, objective='maximize')
 
-    stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
-    stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
-    stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+
     strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
-                       starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
-                       net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
+                       starting_capital=50000, stock_screener=stock_screener,
+                       max_stocks_count_in_portfolio=12, net_exposure=(100, 0))
+
     strategy.historical_simulation()
+
+    # API_KEY_ID = 'PKOG800MQG7J30EZ1PJ0'
+    # API_SECRET_KEY = 'MED9IwqKOfZ1HYNa4Iy5BeJoR3yEPaP5d34TwnxY'
+    # API_ENDPOINT = 'https://paper-api.alpaca.markets'
+    # alpaca = AlpacaBroker(key_id=API_KEY_ID, secret_key=API_SECRET_KEY, endpoint=API_ENDPOINT)
+    # strategy.broker_deployment(broker=alpaca)

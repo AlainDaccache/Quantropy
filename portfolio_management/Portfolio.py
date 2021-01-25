@@ -66,8 +66,7 @@ class TimeDataFrame:
             # case where it's a dataframe that was split in the previous loop, need
             # to go through all, l_ representing the length of that dataframe
             for l in range(1, l_ + 1):
-                returns_copy[-l] = returns_copy[-l].asfreq(freq=returns_freq, fill_value=0.0)
-
+                returns_copy[-l] = returns_copy[-l].asfreq(freq=returns_freq)
             if frequencies.index(returns_freq) > frequencies.index(cur_max_freq):
                 cur_max_freq = returns_freq
 
@@ -76,10 +75,11 @@ class TimeDataFrame:
         for retrn in returns_copy:
             f = retrn.index.freq
             if hasattr(f, 'name'):
-                f = retrn.index.freq.name
+                f = f.name
             if frequencies.index(f) < frequencies.index(cur_max_freq):
                 resampled_returns = retrn.resample(self.frequency[0]).apply(
                     lambda x: ((x + 1).cumprod() - 1).last("D"))
+
                 resampled_returns.index = resampled_returns.index + timedelta(days=1) - timedelta(seconds=1)
                 merged_returns = merged_returns.join(resampled_returns.to_frame(), how='outer')
             else:
@@ -88,11 +88,16 @@ class TimeDataFrame:
         for col in merged_returns.columns:
             merged_returns[col] = merged_returns[col].apply(lambda y: 0 if isinstance(y, np.ndarray) else y)
 
+        merged_returns.dropna(how='all', inplace=True)
         self.df_returns = merged_returns
 
     freq_to_yearly = {'D': 252, 'W': 52, 'M': 12, 'Y': 1}
 
     def set_frequency(self, frequency: str, inplace: bool = False):
+
+        if self.frequency == frequency:
+            return
+
         resampled = self.df_returns.resample(frequency[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
         resampled.index = resampled.index + timedelta(days=1) - timedelta(seconds=1)
         if not inplace:
@@ -133,6 +138,7 @@ class TimeDataFrame:
                 retrn = TimeDataFrame(retrn)
             resampled_returns = retrn.df_returns.resample(self.frequency[0]).apply(
                 lambda x: ((x + 1).cumprod() - 1).last("D"))
+
             resampled_returns.index = resampled_returns.index + timedelta(days=1) - timedelta(seconds=1)
             merged_returns = merged_returns.join(resampled_returns, how='inner')  # TODO inner or outer?
         if inplace:
