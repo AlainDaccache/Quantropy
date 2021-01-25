@@ -91,7 +91,10 @@ class TimeDataFrame:
         merged_returns.dropna(how='all', inplace=True)
         self.df_returns = merged_returns
 
-    freq_to_yearly = {'D': 252, 'W': 52, 'M': 12, 'Y': 1}
+    freq_multipliers = {'D': {'Y': 252, 'M': 21, 'W': 5},
+                        'W': {'Y': 52, 'M': 4},
+                        'M': {'Y': 12},
+                        'Y': 1}
 
     def set_frequency(self, frequency: str, inplace: bool = False):
 
@@ -268,17 +271,17 @@ class Portfolio(TimeDataFrame):
         else:
             return
 
-    def get_volatility_returns(self):
-        return self.df_returns.std(axis=0) * np.sqrt(self.freq_to_yearly[self.frequency[0]])
+    def get_volatility_returns(self, to_freq: str = 'Y'):
+        return self.df_returns.std(axis=0) * np.sqrt(self.freq_multipliers[self.frequency[0]][to_freq])
 
     def get_weighted_volatility_returns(self, weights):
         return np.sqrt(np.dot(weights, np.dot(weights, self.get_covariance_matrix())))
 
-    def get_covariance_matrix(self):
-        return self.df_returns.cov() * self.freq_to_yearly[self.frequency[0]]
+    def get_covariance_matrix(self, to_freq: str = 'Y'):
+        return self.df_returns.cov() * self.freq_multipliers[self.frequency[0]][to_freq]
 
-    def get_mean_returns(self):
-        return self.df_returns.mean(axis=0) * self.freq_to_yearly[self.frequency[0]]
+    def get_mean_returns(self, to_freq: str = 'Y'):
+        return self.df_returns.mean(axis=0) * self.freq_multipliers[self.frequency[0]][to_freq]
 
     def get_weighted_sum_returns(self, weights):
         return np.sum(weights * self.df_returns, axis=1)

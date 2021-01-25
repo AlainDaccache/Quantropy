@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Portfolio Backtesting &amp; Deployment Framework &mdash; Quantropy 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Portfolio Allocation Models" href="portfolio-allocation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Quantropy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Backtesting &amp; Deployment Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#securities-universe">Securities Universe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stock-selection">Stock Selection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stock-screener">Stock Screener</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#market-timing">Market Timing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rebalancing-frequency">Rebalancing Frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trigger-based">Trigger-Based</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#portfolio-allocation">Portfolio Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-considerations">Other Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reinvesting-dividends">Reinvesting dividends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#including-capital-gain-taxes">Including capital gain taxes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#historical-simulation">Historical Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#broker-deployment">Broker Deployment</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Quantropy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Portfolio Backtesting &amp; Deployment Framework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/portfolio-backtesting-deployment.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="portfolio-backtesting-deployment-framework">
+<h1>Portfolio Backtesting &amp; Deployment Framework<a class="headerlink" href="#portfolio-backtesting-deployment-framework" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="securities-universe">
+<h2>Securities Universe<a class="headerlink" href="#securities-universe" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="stock-selection">
+<h2>Stock Selection<a class="headerlink" href="#stock-selection" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="stock-screener">
+<h3>Stock Screener<a class="headerlink" href="#stock-screener" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="market-timing">
+<h2>Market Timing<a class="headerlink" href="#market-timing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rebalancing-frequency">
+<h3>Rebalancing Frequency<a class="headerlink" href="#rebalancing-frequency" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="trigger-based">
+<h3>Trigger-Based<a class="headerlink" href="#trigger-based" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="portfolio-allocation">
+<h2>Portfolio Allocation<a class="headerlink" href="#portfolio-allocation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="other-considerations">
+<h2>Other Considerations<a class="headerlink" href="#other-considerations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reinvesting-dividends">
+<h3>Reinvesting dividends<a class="headerlink" href="#reinvesting-dividends" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="including-capital-gain-taxes">
+<h3>Including capital gain taxes<a class="headerlink" href="#including-capital-gain-taxes" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="historical-simulation">
+<h2>Historical Simulation<a class="headerlink" href="#historical-simulation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="broker-deployment">
+<h2>Broker Deployment<a class="headerlink" href="#broker-deployment" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="portfolio-allocation.html" class="btn btn-neutral float-left" title="Portfolio Allocation Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alain Daccache
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

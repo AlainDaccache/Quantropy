@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Portfolio Optimization &mdash; Quantropy 0.0.1 documentation</title>
+  <title>Portfolio Allocation Models &mdash; Quantropy 0.0.1 documentation</title>
   
 
   
@@ -36,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Investment Strategies" href="investment-strategies.html" /> 
+    <link rel="next" title="Portfolio Backtesting &amp; Deployment Framework" href="portfolio-backtesting-deployment.html" />
+    <link rel="prev" title="Investment Paradigms" href="investment-paradigms.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,11 +86,16 @@
 <li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a></li>
-<li class="toctree-l1"><a class="reference internal" href="investment-strategies.html">Investment Strategies</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Optimization</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Allocation Models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modern-portfolio-theory">Modern Portfolio Theory</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#markowitz-mean-variance-framework-1952">Markowitz Mean-Variance Framework (1952)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#markowitz-mean-variance-framework-1952">Markowitz Mean-Variance Framework (1952)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#efficient-frontier">Efficient Frontier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capital-allocation-line">Capital Allocation Line</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-market-line">Security Market Line</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#treynor-black-model-1973">Treynor-Black Model (1973)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#black-litterman-model-1990">Black-Litterman Model (1990)</a></li>
 </ul>
@@ -117,6 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#universal-portfolio-algorithm-2016">Universal Portfolio Algorithm (2016)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a></li>
 </ul>
 
             
@@ -163,13 +170,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Portfolio Optimization</li>
+      <li>Portfolio Allocation Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/portfolio-optimization.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/portfolio-allocation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -182,26 +189,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="portfolio-optimization">
-<h1>Portfolio Optimization<a class="headerlink" href="#portfolio-optimization" title="Permalink to this headline">¶</a></h1>
-<p>The aim of <strong>portfolio optimization</strong> is to construct a portfolio by determining what proportions of our portfolio that each
-asset should hold, according to quantifiable characteristics such as risk, return, covariance matrices, as well as
-mathematical methodologies such as optimization (i.e. CLA) and machine learning techniques (i.e. hierarchical clustering).</p>
+  <div class="section" id="portfolio-allocation-models">
+<h1>Portfolio Allocation Models<a class="headerlink" href="#portfolio-allocation-models" title="Permalink to this headline">¶</a></h1>
+<p>The aim of <strong>portfolio allocation</strong> is to construct a portfolio by determining the proportions of our portfolio that each
+asset should hold, according to <em>quantifiable characteristics</em> such as risk, return, covariance matrices, as well as
+<em>mathematical methodologies</em> such as optimization (i.e. CLA) and machine learning techniques (i.e. hierarchical clustering).</p>
+<p>Let’s use the <em>Dow Jones Industrial Average</em> as our market proxy. It will be our main use case throughout this tutorial.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct the DJIA index portfolio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="s1">&#39;^DJI&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># resample to Monthly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span><span class="o">.</span><span class="n">slice_dataframe</span><span class="p">(</span><span class="n">from_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct the DJIA constituents portfolio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assets</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">companies_in_index</span><span class="p">(</span><span class="n">MarketIndices</span><span class="o">.</span><span class="n">DOW_JONES</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="n">assets</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span><span class="o">.</span><span class="n">slice_dataframe</span><span class="p">(</span><span class="n">from_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">portfolio</span><span class="o">.</span><span class="n">df_returns</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">                          MMM       AXP      AMGN  ...       WBA       WMT       DIS</span>
+<span class="go">Date                                               ...</span>
+<span class="go">2019-03-31 23:59:59  0.001881  0.014479 -0.000526  ... -0.111251 -0.009448 -0.016040</span>
+<span class="go">2019-04-30 23:59:59 -0.087929  0.076349 -0.056111  ... -0.153311  0.054445  0.233631</span>
+<span class="go">2019-05-31 23:59:59 -0.149824 -0.021496 -0.062373  ... -0.071178 -0.008374 -0.035993</span>
+<span class="go">2019-06-30 23:59:59  0.085070  0.076105  0.105459  ...  0.108026  0.089215  0.057558</span>
+<span class="go">2019-07-31 23:59:59  0.007961  0.010685  0.012481  ... -0.003292 -0.000996  0.030476</span>
+<span class="go">2019-08-31 23:59:59 -0.065935 -0.032162  0.126048  ... -0.051960  0.040247 -0.040207</span>
+<span class="go">2019-09-30 23:59:59  0.016572 -0.017363 -0.072428  ...  0.080484  0.038684 -0.050561</span>
+<span class="go">2019-10-31 23:59:59  0.003589 -0.004662  0.102010  ... -0.009582 -0.011965 -0.003069</span>
+<span class="go">2019-11-30 23:59:59  0.037880  0.024216  0.107994  ...  0.096093  0.015606  0.166718</span>
+<span class="go">2019-12-31 23:59:59  0.039171  0.036380  0.027054  ... -0.010738  0.002377 -0.040134</span>
+<span class="go">[10 rows x 30 columns]</span>
+</pre></div>
+</div>
 <div class="section" id="modern-portfolio-theory">
 <h2>Modern Portfolio Theory<a class="headerlink" href="#modern-portfolio-theory" title="Permalink to this headline">¶</a></h2>
 <p>In a 1952 essay, economist Harry Markowitz introduced <strong>Modern Portfolio Theory</strong> (MPT). Also termed <em>mean-variance analysis</em>,
-it is a mathematical framework for to determine the proportion of an asset in the portfolio, so that the expected return is maximized
+it is a mathematical framework for determining the proportion of an asset in the portfolio, so that the expected return is maximized
 for a given level of risk. It formalizes the idea of <em>diversification</em>, i.e. that owning different types of financial assets is less
 risky than owning only one. Essentially, an asset’s risk and return should not be assessed by itself, but by how it
-contributes to the risk and overall return of a portfolio. This framework has then been improved by other economists
-and mathematicians who went on to account for its limitations.</p>
+contributes to the risk and overall return of a portfolio.</p>
 <div class="section" id="markowitz-mean-variance-framework-1952">
 <h3>Markowitz Mean-Variance Framework (1952)<a class="headerlink" href="#markowitz-mean-variance-framework-1952" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory">
 <em class="property">class </em><code class="sig-prename descclassname">portfolio_management.portfolio_optimization.</code><code class="sig-name descname">ModernPortfolioTheory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory" title="Permalink to this definition">¶</a></dt>
-<dd><p>In <strong>Markowitz’s mean-variance framework</strong>:</p>
-<p>The portfolio’s <em>expected return</em> is the proportion-weighted combination of the constituents assets’ returns.
+<dd><p>The portfolio’s <em>expected return</em> is the proportion-weighted combination of the constituents assets’ returns.
 It is the weighted-average of the returns of the portfolio’s constituents.</p>
 <div class="math notranslate nohighlight">
 \[E(R_p) = \sum_{i} w_i * E(R_i)\]</div>
@@ -211,7 +244,7 @@ the weighting of component asset <span class="math notranslate nohighlight">\(i\
 risks, but a function of the correlations <span class="math notranslate nohighlight">\(\rho_{ij}\)</span> of the component assets, for all asset pairs <span class="math notranslate nohighlight">\((i, j)\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\sigma_p^2 = \sum_{i} (w_i^2 + \sigma_i^2) + \sum_{i} \sum_{i \neq j} w_i * w_j * \sigma_i * \sigma_j * \rho_{ij}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the (sample) standard deviation of the periodic returns on an asset, and <span class="math notranslate nohighlight">\(\rho_{ij}\)</span>:
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the (sample) standard deviation of the periodic returns on an asset, and <span class="math notranslate nohighlight">\(\rho_{ij}\)</span>
 is the correlation coefficient between the returns on assets <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>With the idea of <strong>diversification</strong>, an investor can reduce portfolio risk simply by holding combinations of
 instruments that are not perfectly positively correlated (correlation coefficient <span class="math notranslate nohighlight">\(-1 &lt;= \rho_{ij} &lt; 1\)</span>).
@@ -219,6 +252,156 @@ In other words, investors can reduce their exposure to individual asset risk by 
 assets. Diversification may allow for the same portfolio expected return with reduced risk.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory.solve_weights">
+<code class="sig-prename descclassname">portfolio_management.portfolio_optimization.ModernPortfolioTheory.</code><code class="sig-name descname">solve_weights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">use_sharpe</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">leverage</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">long_short_exposure</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory.solve_weights" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use_sharpe</strong> – to optimize for Sharpe ratio, input True. By default minimizes volatility.</p></li>
+<li><p><strong>leverage</strong> – leverage constraints. By default, 1 (no leverage).</p></li>
+<li><p><strong>long_short_exposure</strong> – exposure between long and short positions. By default, 1 (long-only).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MPT</span> <span class="o">=</span> <span class="n">ModernPortfolioTheory</span><span class="p">(</span><span class="n">portfolio</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">MPT</span><span class="o">.</span><span class="n">solve_weights</span><span class="p">(</span><span class="n">use_sharpe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="go">MMM     8.252014e-11</span>
+<span class="go">AXP     5.754070e-12</span>
+<span class="go">AMGN    1.026955e-11</span>
+<span class="go">AAPL    1.065381e-09</span>
+<span class="go">BA      0.000000e+00</span>
+<span class="go">CAT     5.458483e-11</span>
+<span class="go">CVX     1.986690e-11</span>
+<span class="go">CSCO    3.633562e-11</span>
+<span class="go">KO      4.627803e-01</span>
+<span class="go">DOW     5.289753e-12</span>
+<span class="go">GS      4.808235e-11</span>
+<span class="go">HD      1.116429e-11</span>
+<span class="go">HON     0.000000e+00</span>
+<span class="go">IBM     8.356778e-12</span>
+<span class="go">INTC    8.504801e-12</span>
+<span class="go">JNJ     1.047248e-11</span>
+<span class="go">JPM     1.002877e-02</span>
+<span class="go">MCD     0.000000e+00</span>
+<span class="go">MRK     0.000000e+00</span>
+<span class="go">MSFT    0.000000e+00</span>
+<span class="go">NKE     0.000000e+00</span>
+<span class="go">PG      5.280897e-02</span>
+<span class="go">CRM     2.149651e-11</span>
+<span class="go">TRV     5.207088e-02</span>
+<span class="go">UNH     1.965341e-01</span>
+<span class="go">VZ      0.000000e+00</span>
+<span class="go">V       2.266829e-12</span>
+<span class="go">WBA     0.000000e+00</span>
+<span class="go">WMT     2.257769e-01</span>
+<span class="go">DIS     0.000000e+00</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+<div class="section" id="efficient-frontier">
+<h4>Efficient Frontier<a class="headerlink" href="#efficient-frontier" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory.markowitz_efficient_frontier">
+<code class="sig-prename descclassname">portfolio_management.portfolio_optimization.ModernPortfolioTheory.</code><code class="sig-name descname">markowitz_efficient_frontier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">market_portfolio</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>portfolio_management.Portfolio.Portfolio<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_assets</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot_cal</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory.markowitz_efficient_frontier" title="Permalink to this definition">¶</a></dt>
+<dd><p>One can plot every possible combination of risky assets on the <em>risk-return space</em>, a graph with the horizontal axis
+representing the <em>variance</em> (a.k.a risk), and the vertical axis representing the <em>expected returns</em>.
+The left boundary of this region is parabolic, and the upper part of the parabolic boundary is the <strong>efficient frontier</strong>
+in the absence of a risk-free asset (sometimes called <em>the Markowitz bullet</em>). Combinations along this upper edge
+represent portfolios (including no holdings of the risk-free asset) for which there is lowest risk for a given
+level of expected return. Equivalently, a portfolio lying on the efficient frontier represents the combination
+offering the best possible expected return for given risk level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>market_portfolio</strong> – </p></li>
+<li><p><strong>plot_assets</strong> – Plot risk/return profile of each asset in the portfolio</p></li>
+<li><p><strong>plot_cal</strong> – Plot the Capital Allocation Line</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pandas DataFrame representing optimal weights and minimun volatilities for each level of required return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats_df</span> <span class="o">=</span> <span class="n">MPT</span><span class="o">.</span><span class="n">markowitz_efficient_frontier</span><span class="p">(</span><span class="n">market_portfolio</span><span class="o">=</span><span class="n">market_portfolio</span><span class="p">,</span> <span class="n">plot_assets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_cal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># show all columns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="go">   Target Return  Minimum Volatilty  Sharpe Ratio  \</span>
+<span class="go">0      -0.038987           0.242079     -0.161053</span>
+<span class="go">1      -0.031797           0.230182     -0.138139</span>
+<span class="go">2      -0.024607           0.219190     -0.112263</span>
+<span class="go">3      -0.017417           0.208682     -0.083460</span>
+<span class="go">4      -0.010226           0.198630     -0.051484</span>
+<span class="go">                                     Optimal Weights</span>
+<span class="go">0  [0.0, 5.676814812498321e-17, 6.248307942010797...</span>
+<span class="go">1  [0.0, 2.1251952869548186e-16, 7.33663515761706...</span>
+<span class="go">2  [1.0495623187945156e-16, 1.022455433619923e-16...</span>
+<span class="go">3  [0.0, 0.0, 2.0295223730939766e-16, 0.0, 1.3976...</span>
+<span class="go">4  [1.7626656648200915e-16, 1.4969544279368077e-1...</span>
+</pre></div>
+</div>
+<p>The resulting graph follows:</p>
+<img alt="_images/efficient_frontier.PNG" src="_images/efficient_frontier.PNG" />
+</div>
+<div class="section" id="capital-allocation-line">
+<h4>Capital Allocation Line<a class="headerlink" href="#capital-allocation-line" title="Permalink to this headline">¶</a></h4>
+<p>The tangent to the upper part of the hyperbolic boundary is the <strong>Capital Allocation Line (CAL)</strong>, determining how to allocate
+funds between a risky asset and a risk-free asset. It is given by the equation:</p>
+<div class="math notranslate nohighlight">
+\[E(R_C) = R_F + \sigma_C + \frac{E(R_P) - R_F}{\sigma_P}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is the sub-portfolio of risky assets at the tangency with the Markowitz bullet, <span class="math notranslate nohighlight">\(F\)</span> is the
+risk-free asset, and <span class="math notranslate nohighlight">\(C\)</span> is a combination of portfolios <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(F\)</span>. It is also known as the <strong>Capital Market Line (CML)</strong>.</p>
+</div>
+<div class="section" id="security-market-line">
+<h4>Security Market Line<a class="headerlink" href="#security-market-line" title="Permalink to this headline">¶</a></h4>
+<p>The <strong>Security Market Line (SML)</strong></p>
+</div>
+<div class="section" id="capital-asset-pricing-model">
+<h4>Capital Asset Pricing Model<a class="headerlink" href="#capital-asset-pricing-model" title="Permalink to this headline">¶</a></h4>
+<p>As we’ve seen in the Asset Pricing Models module, the CAPM states that the expected return of any given asset should equal
+<span class="math notranslate nohighlight">\(R_i = R_f + \beta_i * (R_m - R_f)\)</span>, with <span class="math notranslate nohighlight">\(\alpha\)</span> being the error term having an expected value of zero in theory.
+Thus, the only way to achieve higher expected returns is taking on more <span class="math notranslate nohighlight">\(\beta\)</span> (given that <span class="math notranslate nohighlight">\((R_m - R_f) &gt; 0\)</span>).
+Every individual stock has some idiosyncratic risk in addition to its market <span class="math notranslate nohighlight">\(\beta\)</span> (true always when correlated less than
+perfectly with the market).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The total risk is a combination of systematic and unsystematic (<em>idiosyncratic</em>) risk.
+*   Systematic risk is given by the estimated coefficient of a regression of a security on a market portfolio,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\beta_{security, market} = \frac{\sigma_{security, market}}{\sigma_{market}^2}\)</span>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>The idiosyncratic risk is the portion of risk unexplained by the market factor, <span class="math notranslate nohighlight">\(1 - R^2\)</span>.
+Empirically, the idiosyncratic risk in a single-factor contemporaneous CAPM model with US equities is around 60-70%.</p></li>
+</ul>
+</div>
+<p>Through diversification (i.e. by the <em>mean-variance optimization</em> process), unsystematic risk is eliminated.
+Thus, we can get the best return/risk ratio by buying the market portfolio, as buying anything else, we could not get
+more expected return for the same <span class="math notranslate nohighlight">\(\beta\)</span>, but would only get some additional idiosyncratic risk.</p>
+<p>To maximize investor’s utility function, Modern Portfolio Theory suggests holding the combination of a risk-free
+asset and optimal risky portfolio (ORP) lying on a tangency of the efficient frontier and capital market line.
+Modern Portfolio Theory also suggests that optimal risky portfolio is a market portfolio (e.g. capitalization-weighted index).</p>
+<p>If we assume markets are fully efficient and all assets are fairly priced, we don’t have any reason to deviate
+from the market portfolio in our asset allocation. In such case, we don’t even need to know equilibrium asset
+returns nor perform any kind of portfolio optimization. An optimization based on equilibrium asset returns would
+lead back to the same market portfolio anyway.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using historical data to estimate expected returns implies nonzero expected <span class="math notranslate nohighlight">\(\alpha\)</span>-s for all assets.
+This is not coherent with the CAPM framework, so using this methodology within MPT, it has nothing to do with CAPM.
+In effect by using MPT this way, you are generating a momentum based investment strategy, as you assume that assets
+that have had good returns historically will continue to have good returns in the future.</p>
+</div>
+<p>This framework has then been improved by other economists and mathematicians who went on to account for its limitations.</p>
+</div>
 </div>
 <div class="section" id="treynor-black-model-1973">
 <h3>Treynor-Black Model (1973)<a class="headerlink" href="#treynor-black-model-1973" title="Permalink to this headline">¶</a></h3>
@@ -263,11 +446,14 @@ model, as it often yields an unrealistic weight in the active portfolio. Imposin
 </div>
 <div class="section" id="black-litterman-model-1990">
 <h3>Black-Litterman Model (1990)<a class="headerlink" href="#black-litterman-model-1990" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>Black–Litterman model</strong> optimization is an extension of unconstrained Markowitz optimization that incorporates relative
+and absolute ‘views’ on inputs of risk and returns from.</p>
 </div>
 </div>
 <div class="section" id="post-modern-portfolio-theory-1991">
 <h2>Post Modern Portfolio Theory (1991)<a class="headerlink" href="#post-modern-portfolio-theory-1991" title="Permalink to this headline">¶</a></h2>
-<p>Two major limitations of MPT are in measuring <em>risk</em> and <em>return</em> in a way that doesn’t represent the realities of the
+<p><strong>Post-modern portfolio theory</strong> extends MPT by adopting non-normally distributed, asymmetric, and fat-tailed measures of risk.
+Two major limitations of MPT are in measuring <em>risk</em> and <em>return</em> in a way that doesn’t represent the realities of the
 investment markets. Specifically, it assumes the following:</p>
 <ul class="simple">
 <li><p><strong>Risk proxy:</strong> The variance of portfolio returns is the correct measure of investment risk. Using the variance (or its square root,
@@ -295,9 +481,7 @@ you can convert that volatility to be over the horizon by multiplying by <span c
 <p>As a case, let’s take as an example the following portfolio</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">portfolio_management.Portfolio</span> <span class="kn">import</span> <span class="n">Portfolio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">assets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;KO&#39;</span><span class="p">,</span> <span class="s1">&#39;CAT&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;KO&#39;</span><span class="p">,</span> <span class="s1">&#39;CAT&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="n">assets</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span><span class="o">.</span><span class="n">slice_dataframe</span><span class="p">(</span><span class="n">to_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">from_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio_returns</span> <span class="o">=</span> <span class="n">portfolio</span><span class="o">.</span><span class="n">get_weighted_sum_returns</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">assets</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">assets</span><span class="p">))</span>
@@ -779,8 +963,10 @@ performance, per unit of downside risk.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="portfolio-backtesting-deployment.html" class="btn btn-neutral float-right" title="Portfolio Backtesting &amp; Deployment Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="investment-strategies.html" class="btn btn-neutral float-left" title="Investment Strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="investment-paradigms.html" class="btn btn-neutral float-left" title="Investment Paradigms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

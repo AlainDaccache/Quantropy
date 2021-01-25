@@ -39,4 +39,6 @@ def get_technical_indicators(stock):
 
 
 if __name__ == '__main__':
-    save_stock_prices(stock=config.MarketIndices.DOW_JONES)
+    # save_stock_prices(stock=config.MarketIndices.DOW_JONES)
+    save_stock_prices(stock=['^DJI'])
+

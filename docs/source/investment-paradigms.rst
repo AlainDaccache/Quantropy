@@ -1,5 +1,5 @@
-Investment Strategies
-*********************
+Investment Paradigms
+********************
 
 Now we will go in detail into different trading regimes
 

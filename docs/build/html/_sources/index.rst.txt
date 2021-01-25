@@ -9,9 +9,9 @@ Welcome to Quantropy's documentation!
    fundamental-analysis
    technical-analysis
    asset-pricing-models
-   portfolio-management
-   investment-strategies
-   portfolio-optimization
+   investment-paradigms
+   portfolio-allocation
+   portfolio-backtesting-deployment
 
 Indices and tables
 ==================

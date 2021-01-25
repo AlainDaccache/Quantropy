@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Portfolio Backtester" href="portfolio-management.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="technical-analysis.html" /> 
+    <link rel="next" title="Investment Paradigms" href="investment-paradigms.html" />
+    <link rel="prev" title="Technical Analysis" href="technical-analysis.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,6 +84,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Asset Pricing Models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-efficient-market-hypothesis">The Efficient Market Hypothesis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#capital-asset-pricing-model">Capital Asset Pricing Model</a><ul>
@@ -104,8 +105,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-management.html">Portfolio Backtester</a></li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-optimization.html">Portfolio Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a></li>
 </ul>
 
             
@@ -328,24 +330,6 @@ Alphas from a time-series regression are error terms in the cross-sectional, lin
 <p>The CAPM formula can be visualized through the Security Market Line, which computes the
 expected rate of returns (<cite>y-axis</cite>) for different values of <span class="math notranslate nohighlight">\(\beta\)</span> (<cite>x-axis</cite>). The slope
 is thus the market premium, <span class="math notranslate nohighlight">\((E(R_m) - R_f)\)</span>.</p>
-<dl class="py function">
-<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">security_market_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em>, <em class="sig-param"><span class="n">benchmark</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pandas.core.series.Series<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.security_market_line" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio</strong> – </p></li>
-<li><p><strong>date</strong> – </p></li>
-<li><p><strong>regression_window</strong> – </p></li>
-<li><p><strong>benchmark</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="the-capital-allocation-line">
 <h3>The Capital Allocation Line<a class="headerlink" href="#the-capital-allocation-line" title="Permalink to this headline">¶</a></h3>
@@ -387,10 +371,10 @@ They justified their model on empirical grounds.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="portfolio-management.html" class="btn btn-neutral float-right" title="Portfolio Backtester" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="investment-paradigms.html" class="btn btn-neutral float-right" title="Investment Paradigms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="technical-analysis.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="technical-analysis.html" class="btn btn-neutral float-left" title="Technical Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
