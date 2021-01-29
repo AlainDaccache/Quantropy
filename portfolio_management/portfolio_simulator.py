@@ -20,7 +20,7 @@ from portfolio_management.Portfolio import Portfolio, TimeDataFrame
 from portfolio_management.broker_deployment.alpaca import AlpacaBroker
 from portfolio_management.broker_deployment.broker_interface import Broker
 from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio, ModernPortfolioTheory, \
-    PortfolioAllocationModel
+    PortfolioAllocationModel, PostModernPortfolioTheory
 from portfolio_management.risk_quantification import sharpe_ratio
 from portfolio_management.stock_screener import StockScreener
 
@@ -256,7 +256,7 @@ if __name__ == '__main__':
             return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.QUARTERLY.value
 
         def allocation_regime(self, portfolio: Portfolio):
-            return ModernPortfolioTheory(portfolio).solve_weights(risk_metric=sharpe_ratio, objective='maximize')
+            return PostModernPortfolioTheory(portfolio).solve_weights(risk_metric=sharpe_ratio, objective='maximize')
 
 
     strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),

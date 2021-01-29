@@ -302,6 +302,16 @@ def slice_resample_merge_returns(returns: list, from_date=None, to_date=None, lo
     return merged_returns
 
 
+def fill_last_level(dictionary, fill_value=0):
+    if isinstance(dictionary, dict):
+        result = []
+        for v in dictionary.values():
+            result.extend(fill_last_level(v))
+        return result
+    else:
+        return [dictionary]
+
+
 def unflatten(dictionary):
     resultDict = dict()
     for key, value in dictionary.items():

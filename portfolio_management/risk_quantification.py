@@ -14,7 +14,7 @@ Risk Deviation Measures
 def standard_deviation(portfolio_returns, period=252):
     """
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
     :return:
     """
@@ -71,7 +71,7 @@ def conditional_value_at_risk(portfolio_returns, confidence_level=0.05, period=2
     ES answers this question — What is the average loss over the whole range of outcomes in the 1% tail?
     For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be the average value of all losses exceeding -3%.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param confidence_level:
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
     :return:
@@ -128,7 +128,7 @@ def drawdown_risk(portfolio_returns, trailing_period=252, max=False):
     Drawdown risk is the maximum (or average) historical 'drawdown' of the portfolio.
     A drawdown is the percentage loss between peak and trough.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param trailing_period:
     :param max:
     :return:
@@ -173,7 +173,7 @@ def treynor_ratio(portfolio_returns, risk_free_rates, benchmark_returns=None, pe
     excess return above the security market line in the capital asset pricing model. As these two methods both determine
     rankings based on systematic risk alone, they will rank portfolios identically.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param benchmark_returns: Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time.
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -198,7 +198,7 @@ def sharpe_ratio(portfolio_returns, risk_free_rates, period=252):
     of the asset excess return. The *ex-post* ratio uses the same equation as the one above but with realized returns
     of the asset and benchmark rather than expected returns
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21. Period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
     :return: :math:`S = \\frac{E[R_a - R_b]}{\\sigma_a}`
@@ -212,7 +212,7 @@ def information_ratio(portfolio_returns, benchmark_returns, period=252):
     The **information ratio** is similar to the Sharpe ratio, the main difference being that the Sharpe ratio uses a
     risk-free return as benchmark whereas the information ratio uses a risky index as benchmark (such as the S&P500).
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param benchmark_returns: Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time. Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time.
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
     :return:
@@ -227,7 +227,7 @@ def modigliani_ratio(portfolio_returns, benchmark_returns, risk_free_rates, peri
     It adjusts the expected excess returns of the portfolio above the risk free rate by the expected excess
     returns of a benchmark portfolio, above the risk free rate.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param benchmark_returns: Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time.
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -242,7 +242,7 @@ def excess_return_value_at_risk(portfolio_returns, risk_free_rates, confidence_l
     """
     Discounts the excess return of the portfolio above the risk-free rate by the value at risk of the portfolio
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param confidence_level:
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -256,7 +256,7 @@ def conditional_sharpe_ratio(portfolio_returns, risk_free_rates, confidence_leve
     """
     Discounts the excess return of the portfolio above the risk-free rate by the conditional VaR of the portfolio
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param confidence_level:
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -269,7 +269,7 @@ def conditional_sharpe_ratio(portfolio_returns, risk_free_rates, confidence_leve
 def capm_beta(portfolio_returns, benchmark_returns=None):
     """
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param benchmark_returns: Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time.
     :return:
     """
@@ -294,7 +294,7 @@ def jensens_alpha(portfolio_returns, benchmark_returns):
     Since Eugene Fama, many academics believe financial markets are too efficient to allow for repeatedly earning
     positive Alpha, unless by chance.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param benchmark_returns: Pandas series representing percentage changes of the benchmark (i.e. S&P500) returns over time.
     :return:
     """
@@ -307,7 +307,7 @@ def omega_ratio(portfolio_returns, risk_free_rates, target=0, period: int = 252)
     """
     Notice the denominator is power of 1/1.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param target: minimum acceptable return, below which the returns are less desirable.
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -320,7 +320,7 @@ def sortino_ratio(portfolio_returns, risk_free_rates, target=0, period: int = 25
     """
     Notice the denominator is power of 1/2.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param target: minimum acceptable return, below which the returns are less desirable.
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -333,7 +333,7 @@ def kappa_three_ratio(portfolio_returns, risk_free_rates, target=0, period: int 
     """
     Notice the denominator is power of 1/3.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param risk_free_rates: Pandas series representing percentage changes of a risk-free asset's returns over time. It should be same time range and frequency as portfolio_returns
     :param target: minimum acceptable return, below which the returns are less desirable.
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
@@ -346,7 +346,7 @@ def kappa_three_ratio(portfolio_returns, risk_free_rates, target=0, period: int 
 def gain_loss_ratio(portfolio_returns, target=0):
     """
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param target: minimum acceptable return, below which the returns are less desirable.
     :return:
     """
@@ -359,7 +359,7 @@ def upside_potential_ratio(portfolio_returns, target=0):
     return. The measurement allows a firm or individual to choose investments which have had relatively good upside
     performance, per unit of downside risk.
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param target: minimum acceptable return, below which the returns are less desirable. minimum acceptable return, below which the returns are less desirable.
     :return:
     """
@@ -369,7 +369,7 @@ def upside_potential_ratio(portfolio_returns, target=0):
 def roys_safety_first_criterion(portfolio_returns: pd.Series, minimum_threshold=0.02, period=252):
     """
 
-    :param portfolio_returns: Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
+    :param portfolio_returns: Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates
     :param minimum_threshold: minimum acceptable return, below which the returns are less desirable.
     :param period: period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.
     :return:
@@ -384,6 +384,6 @@ if __name__ == '__main__':
     assets = ['AAPL', 'V', 'KO', 'CAT']
     portfolio = Portfolio(assets=assets)
     portfolio.slice_dataframe(to_date=datetime(2021, 1, 1), from_date=datetime(2016, 1, 1))
-    portfolio_returns = portfolio.get_weighted_sum_returns(weights=np.ones(len(assets)) / len(assets))
-    print(portfolio_returns.head())
-    print(roys_safety_first_criterion(portfolio_returns=portfolio_returns, minimum_threshold=0.02, period=252))
+    # portfolio_returns = portfolio.get_weighted_sum_returns(weights=np.ones(len(assets)) / len(assets))
+    # print(portfolio_returns.head())
+    print(roys_safety_first_criterion(portfolio_returns=portfolio.df_returns, minimum_threshold=0.02, period=252))

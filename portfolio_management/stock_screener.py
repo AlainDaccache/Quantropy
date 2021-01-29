@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from pprint import pprint
 from functools import partial
-from config import MarketIndices, Exchanges, GICS_Sectors, Industries, Regions, SIC_Sectors
+from config import MarketIndices, Exchanges, GICS_Sectors, SIC_Industries, GICS_Industries, Regions, SIC_Sectors
 from portfolio_management.Portfolio import Portfolio, TimeDataFrame
 from quantitative_analysis.risk_factor_modeling.asset_pricing_model import FactorModels
 
@@ -36,25 +36,16 @@ class StockScreener:
     def __init__(self, securities_universe=None, date=datetime.now()):
         '''
 
-        :param stocks: either a list, or a MarketIndices, or Exchanges, or Regions object (to avoid survivorship
-            bias when selecting a date to filter)
-        :param date:
+        :param securities_universe:     by default, we start with the S&P 500, due to current functionality.
+                                        It stays constant throughout the `StockScreener`, which is why we
+                                        separate it from the `stocks` attribute.
+        :param date: by default, now.
         '''
 
         self.securities_universe = securities_universe  # starting universe
 
         if securities_universe is None:
             self.stocks = macro.companies_in_index(MarketIndices.SP_500, date=date)
-        elif isinstance(securities_universe, MarketIndices):
-            self.stocks = macro.companies_in_index(securities_universe, date=date)
-        elif isinstance(securities_universe, Regions):
-            self.stocks = macro.companies_in_location(securities_universe, date=date)
-        elif isinstance(securities_universe, Exchanges):
-            self.stocks = macro.companies_in_exchange(securities_universe, date=date)
-        elif isinstance(securities_universe, GICS_Sectors) or isinstance(securities_universe, SIC_Sectors):
-            self.stocks = macro.companies_in_sector(securities_universe, date=date)
-        elif isinstance(securities_universe, Industries):
-            self.stocks = macro.companies_in_industry(securities_universe, date=date)
         else:
             self.stocks = securities_universe
 
@@ -65,8 +56,10 @@ class StockScreener:
     def run(self, conditions=None, date: datetime = datetime.now()):
         """
         Date setter. Reapply the conditions you applied so far, to any date
-        :param conditions:
-        :param date:
+
+        :param conditions:  list of tuples, the first element of which is the `filter` function, and the rest
+                            being the arguments. By default, the conditions already applied by the `StockScreener` object.
+        :param date: datetime to which we need to apply the conditions. By default, now.
         :return:
         """
         new_screener = StockScreener(securities_universe=self.securities_universe, date=date)
@@ -86,52 +79,39 @@ class StockScreener:
             print(f'{method_name} cur_stocks={output}')
         return new_screener.stocks
 
-    def filter_by_market(self, region):
+    def filter_by_market(self, filter):
+        """
+        If another market already exists, then we reapply the conditions of the `StockScreener` so far
+        to the new market, and do a *union* (instead of an *intersection*) with the current filtered stocks.
 
-        if not isinstance(region, Regions):
-            raise Exception
+        :param filter:  object of type `Regions`, `Exchanges`, `MarketIndices`, `SIC_Sectors`,
+                        `GICS_Sectors`, `SIC_Industries`, or `GICS_Industries`
+        :return: list of companies satisfying conditions so far in additional to market filter.
 
-        companies_ = macro.companies_in_location(location=region, date=self.date)
+        """
+
+        # TODO DO UNION BETWEEN, AND INTERSECTION WITHIN
+
+        if isinstance(filter, Regions):
+            companies_ = macro.companies_in_location(location=filter, date=self.date)
+
+        elif isinstance(filter, Exchanges):
+            companies_ = macro.companies_in_exchange(exchange=filter, date=self.date)
+
+        elif isinstance(filter, MarketIndices):
+            companies_ = macro.companies_in_index(market_index=filter, date=self.date)
+
+        elif isinstance(filter, SIC_Sectors) or isinstance(filter, GICS_Sectors):
+            companies_ = macro.companies_in_sector(sector=filter, date=self.date)
+
+        elif isinstance(filter, SIC_Industries) or isinstance(filter, GICS_Industries):
+            companies_ = macro.companies_in_industry(industry=filter, date=self.date)
+
+        else:
+            raise Exception("'filter' doesn't match any Region, Exchange, Market Index, Sector, or Industry")
+
         self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((StockScreener.filter_by_market, region))
-        return self.stocks
-
-    def filter_by_exchange(self, exchange):
-        if not isinstance(exchange, Exchanges):
-            raise Exception
-
-        companies_ = macro.companies_in_exchange(exchange=exchange, date=self.date)
-        self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((StockScreener.filter_by_exchange, exchange))
-        return self.stocks
-
-    def filter_by_market_index(self, market_index, date=None):
-        if not isinstance(market_index, MarketIndices):
-            raise Exception
-
-        companies_ = macro.companies_in_index(market_index=market_index, date=date)
-        self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((StockScreener.filter_by_market_index, market_index))
-        return self.stocks
-
-    def filter_by_sector(self, sector):
-
-        if not (isinstance(sector, SIC_Sectors) or isinstance(sector, GICS_Sectors)):
-            raise Exception
-
-        companies_ = macro.companies_in_sector(sector=sector, date=self.date)
-        self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((StockScreener.filter_by_sector, sector))
-        return self.stocks
-
-    def filter_by_industry(self, industry: Industries):
-
-        if not isinstance(industry, Industries):
-            raise Exception
-
-        companies_ = macro.companies_in_industry(industry=industry, date=self.date)
-        self.stocks = list(set(self.stocks).intersection(companies_))
-        self.conditions.append((StockScreener.filter_by_industry, industry))
+        self.conditions.append((StockScreener.filter_by_market, filter))
         return self.stocks
 
     def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float):
@@ -226,7 +206,7 @@ if __name__ == '__main__':
     stock_screener = StockScreener(securities_universe=['AAPL', 'AMGN', 'AXP', 'BA', 'CAT'])
     stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
     print(stock_screener.stocks)
-    stock_screener.filter_by_sector(sector=GICS_Sectors.INFORMATION_TECHNOLOGY)
+    stock_screener.filter_by_market(filter=GICS_Sectors.INFORMATION_TECHNOLOGY)
     print(stock_screener.stocks)
     stock_screener.run(date=datetime(2018, 1, 1))
     lower_bounds = pd.Series(data=[40], index=['Alpha'])

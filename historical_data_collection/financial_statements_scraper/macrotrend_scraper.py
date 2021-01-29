@@ -12,97 +12,97 @@ from pprint import pprint
 from macroeconomic_analysis.macroeconomic_analysis import companies_in_index
 
 regex_patterns = {
-    'Balance Sheet': {
+    'BalanceSheet': {
         'Assets': {
-            'Current Assets': {
-                'Cash and Short Term Investments': {
-                    'Cash and Cash Equivalents': r'$^',
-                    'Marketable Securities Current': r'$^',
-                    'Cash and Short Term Investments': r'Cash on Hand',
+            'CurrentAssets': {
+                'CashAndShortTermInvestments': {
+                    'CashAndCashEquivalents': r'$^',
+                    'MarketableSecurities': r'$^',
+                    'CashAndShortTermInvestments': r'Cash on Hand',
                 },
-                'Accounts Receivable': {
-                    'Allowance for Doubtful Accounts': r'$^',
-                    'Net Accounts Receivable': r'^Receivables$',
-                    'Vendor Nontrade Receivables, Current': r'$^'
+                'AccountsReceivable': {
+                    'AllowanceForDoubtfulAccounts': r'$^',
+                    'NetAccountsReceivable': r'^Receivables$',
+                    'VendorNontradeReceivables': r'$^'
                 },
-                'Prepaid Expense, Current': r'^Pre-Paid Expenses$',
-                'Inventory, Net': r'^Inventory$',
-                'Income Taxes Receivable, Current': r'$^',
-                'Assets Held-for-sale': r'$^',
-                'Deferred Tax Assets, Current': r'$^',
-                'Other Current Assets': r'^Other Current Assets$',
-                'Total Current Assets': r'^Total Current Assets$'
+                'PrepaidExpense': r'^Pre-Paid Expenses$',
+                'InventoryNet': r'^Inventory$',
+                'IncomeTaxesReceivable': r'$^',
+                'AssetsHeldForSale': r'$^',
+                'DeferredTaxAssets': r'$^',
+                'OtherCurrentAssets': r'^Other Current Assets$',
+                'TotalCurrentAssets': r'^Total Current Assets$'
             },
-            'Non Current Assets': {
+            'NonCurrentAssets': {
 
-                'Marketable Securities Non Current': r'^Long-Term Investments$',
-                'Restricted Cash Non Current': r'$^',
-                'Property, Plant and Equipment': {
-                    'Gross Property, Plant and Equipment': r'$^',
-                    'Accumulated Depreciation and Amortization': r'$^',
-                    'Property, Plant and Equipment, Net': r'^Property, Plant, And Equipment$',
+                'MarketableSecurities': r'^Long-Term Investments$',
+                'RestrictedCash': r'$^',
+                'PropertyPlantAndEquipment': {
+                    'GrossPropertyPlantAndEquipment': r'$^',
+                    'AccumulatedDepreciationAndAmortization': r'$^',
+                    'NetPropertyPlantAndEquipment': r'^Property, Plant, And Equipment$',
                 },
-                'Operating Lease Right-of-use Assets': r'$^',
-                'Deferred Tax Assets Non Current': r'$^',
-                'Intangible Assets': {
+                'OperatingLeaseRightOfUseAssets': r'$^',
+                'DeferredTaxAssets': r'$^',
+                'IntangibleAssets': {
                     'Goodwill': r'$^',
-                    'Intangible Assets, Net (Excluding Goodwill)': r'$^',
-                    'Total Intangible Assets': r'^Goodwill And Intangible Assets$',
+                    'NetIntangibleAssetsExcludingGoodwill': r'$^',
+                    'TotalIntangibleAssets': r'^Goodwill And Intangible Assets$',
                 },
-                'Other Non Current Assets': r'^Other Long-Term Assets$',
-                'Total Non Current Assets': r'^Total Long-Term Assets$'
+                'OtherNonCurrentAssets': r'^Other Long-Term Assets$',
+                'TotalNonCurrentAssets': r'^Total Long-Term Assets$'
             },
-            'Total Assets': r'^Total Assets$'
+            'TotalAssets': r'^Total Assets$'
         },
-        "Liabilities and Shareholders\' Equity": {
+        "LiabilitiesAndShareholdersEquity": {
             'Liabilities': {
-                'Current Liabilities': {
-                    'Long-term Debt, Current Maturities': r'$^',
-                    'Accounts Payable': r'^Accounts Payable Current$',
-                    'Other Accounts Payable': r'$^',
-                    'Operating Lease, Liability, Current': r'$^',
-                    'Employee-related Liabilities, Current': r'$^',
-                    'Accrued Income Taxes': r'$^',
-                    'Accrued Liabilities, Current': r'$^',
-                    'Deferred Revenue, Current': r'$^',
-                    'Commercial Paper': r'$^',
-                    'Income Taxes Payable': r'$^',
-                    'Other Current Liabilities': r'$^',
-                    'Total Current Liabilities': r'^Total Current Liabilities$',
+                'CurrentLiabilities': {
+                    'LongTermDebtCurrentMaturities': r'$^',
+                    'AccountsPayable': r'^Accounts Payable Current$',
+                    'OtherAccountsPayable': r'$^',
+                    'OperatingLeaseLiability': r'$^',
+                    'EmployeeRelatedLiabilities': r'$^',
+                    'AccruedIncomeTaxes': r'$^',
+                    'AccruedLiabilities': r'$^',
+                    'DeferredRevenue': r'$^',
+                    'CommercialPaper': r'$^',
+                    'IncomeTaxesPayable': r'$^',
+                    'OtherCurrentLiabilities': r'$^',
+                    'TotalCurrentLiabilities': r'^Total Current Liabilities$',
                 },
-                'Non Current Liabilities': {
-                    'Deferred Tax Liabilities': r'$^',
-                    'Long-term Debt, Noncurrent Maturities': r'^Long-Term Debt$',
-                    'Operating Lease, Liability, Noncurrent': r'$^',
-                    'Liability, Defined Benefit Plan, Noncurrent': r'$^',
-                    'Accrued Income Taxes, Noncurrent': r'$^',
-                    'Deferred Revenue, Noncurrent': r'$^',
-                    'Long-Term Unearned Revenue': r'$^',
-                    'Other Liabilities, Noncurrent': r'^Other Non-Current Liabilities$',
-                    'Total Non Current Liabilities': r'^Total Long-Term Liabilities$'
+                'NonCurrentLiabilities': {
+                    'DeferredTaxLiabilities': r'$^',
+                    'LongTermDebtNoncurrentMaturities': r'^Long-Term Debt$',
+                    'OperatingLeaseLiability': r'$^',
+                    'DefinedBenefitPlanLiability': r'$^',
+                    'AccruedIncomeTaxes': r'$^',
+                    'DeferredRevenue': r'$^',
+                    'LongTermUnearnedRevenue': r'$^',
+                    'OtherLiabilitiesNoncurrent': r'^Other Non-Current Liabilities$',
+                    'TotalNonCurrentLiabilities': r'^Total Long-Term Liabilities$'
                 },
-                'Total Liabilities': r'^Total Liabilities$'
+                'TotalLiabilities': r'^Total Liabilities$'
             },
-            "Shareholders' Equity": {
-                'Preferred Stock, Value, Issued': r'$^',
-                'Common Stock and Additional Paid in Capital': {
-                    'Common Stock, Value, Issued': r'^Common Stock Net$',
-                    'Additional Paid in Capital': r'^Additional Paid In Capital$',
-                    'Common Stocks, Including Additional Paid in Capital': r'$^',
-                    'Weighted Average Number of Shares Outstanding, Basic': r'^Basic Shares Outstanding$',
-                    'Weighted Average Number Diluted Shares Outstanding Adjustment': r'$^',
-                    'Weighted Average Number of Shares Outstanding, Diluted': r'^Shares Outstanding$',
+            "ShareholdersEquity": {
+                'PreferredStockValueIssued': r'$^',
+                'CommonStockAndAdditionalPaidInCapital': {
+                    'CommonStockValueIssued': r'^Common Stock Net$',
+                    'AdditionalPaidInCapital': r'^Additional Paid In Capital$',
+                    'CommonStocksIncludingAdditionalPaidInCapital': r'$^',
+                    'WeightedAverageNumberOfSharesOutstandingBasic': r'^Basic Shares Outstanding$',
+                    'WeightedAverageNumberDilutedSharesOutstandingAdjustment': r'$^',
+                    'WeightedAverageNumberOfSharesOutstandingDiluted': r'^Shares Outstanding$',
                 },
 
-                'Treasury Stock, Value': r'$^',
-                'Retained Earnings (Accumulated Deficit)': r'^Retained Earnings (Accumulated Deficit)$',
-                'Accumulated Other Comprehensive Income (Loss)': r'^Comprehensive Income$',
-                'Deferred Stock Compensation': r'$^',
-                'Stockholders\' Equity Attributable to Parent': r'$^',
-                'Minority Interest': r'$^',
-                'Stockholders\' Equity, Including Portion Attributable to Noncontrolling Interest': '^Share Holder Equity$'
+                'TreasuryStockValue': r'$^',
+                'RetainedEarningsAccumulatedDeficit': r'^Retained Earnings (Accumulated Deficit)$',
+                'AccumulatedOtherComprehensiveIncomeLoss': r'^Comprehensive Income$',
+                'DeferredStockCompensation': r'$^',
+                'StockholdersEquityAttributableToParent': r'$^',
+                'MinorityInterest': r'$^',
+                'StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest': '^Share Holder Equity$'
             },
-            'Total Liabilities and Shareholders\' Equity': r'^Total Liabilities And Share Holders Equity$'
+            'TotalLiabilitiesAndShareholdersEquity': r'^Total Liabilities And Share Holders Equity$'
         },
     },
     'Income Statement': {
@@ -214,11 +214,16 @@ regex_patterns = {
 }
 
 
-def scrape_macrotrend(tickers):
+def scrape_macrotrend(tickers, save_to_excel=True, save_to_pickle=True):
     multiples_dictio = {}
 
     if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL):
         os.makedirs(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL)
+    if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE):
+        os.makedirs(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE)
+    if not os.path.exists(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_UNFLATTENED):
+        os.makedirs(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_UNFLATTENED)
+
     for period in ['Quarterly', 'Yearly']:
         for sheet in ['Balance Sheet', 'Cash Flow Statement', 'Income Statement']:
             path = os.path.join(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, period, sheet)
@@ -279,8 +284,10 @@ def scrape_macrotrend(tickers):
                 master_dict[period][year] = {} if year not in master_dict[period].keys() else master_dict[period][year]
                 for normalized_category, pattern_string in data_preparation_helpers.flatten_dict(
                         regex_patterns).items():
-                    master_dict[period][year][normalized_category] = np.nan
+                    # master_dict[period][year][normalized_category] = np.nan
+                    master_dict[period][year][normalized_category] = 0
 
+        # fill values based on match
         for period, year_table in main_dict.items():
             for year, table in year_table.items():
                 for scraped_name, scraped_value in data_preparation_helpers.flatten_dict(table).items():
@@ -290,8 +297,20 @@ def scrape_macrotrend(tickers):
                             master_dict[period][year][normalized_category] = scraped_value
                             break
 
+        unflattened_master_dict = {period:
+                                       {date: data_preparation_helpers.unflatten(filings)
+                                        for date, filings in date_dict.items()
+                                        } for period, date_dict in master_dict.items()
+                                   }
+        # pprint(unflattened_master_dict)
+        pprint(master_dict)
+
+        path = '{}/{}.pkl'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_UNFLATTENED, ticker)
+        with open(path, 'wb') as handle:
+            pickle.dump(unflattened_master_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
         path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_EXCEL, ticker)
-        data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict, with_pickle=True)
+        data_preparation_helpers.save_pretty_excel(path, financials_dictio=master_dict, with_pickle=save_to_pickle)
         master_dict = data_preparation_helpers.unflatten(data_preparation_helpers.flatten_dict(master_dict))
         pprint(master_dict)
 
@@ -313,5 +332,5 @@ if __name__ == '__main__':
     # tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
 
     tickers = companies_in_index(config.MarketIndices.DOW_JONES)
-    scrape_macrotrend(tickers)
+    scrape_macrotrend(tickers[:1])
     # save_stock_prices(ticker)

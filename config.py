@@ -27,6 +27,7 @@ FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, 'factors_data')
 FINANCIAL_STATEMENTS_DIR_PATH = os.path.join(DATA_DIR_PATH, 'financial_statements')
 FINANCIAL_STATEMENTS_DIR_PATH_EXCEL = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'excel')
 FINANCIAL_STATEMENTS_DIR_PATH_PICKLE = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'pickle')
+FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_UNFLATTENED = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH, 'unflattened_pickle')
 FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_QUARTERLY = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, quarterly)
 FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_YEARLY = os.path.join(FINANCIAL_STATEMENTS_DIR_PATH_PICKLE, yearly)
 
@@ -113,7 +114,10 @@ class GICS_Sectors(Enum):
     REAL_ESTATE = 'Real Estate'
 
 
-class Industries(Enum):
+class SIC_Industries(Enum):
+    pass
+
+class GICS_Industries(Enum):
     pass
 
 
