@@ -11,7 +11,6 @@ Let's use the *Dow Jones Industrial Average* as our market proxy. It will be our
 >>> market_portfolio = Portfolio(assets='^DJI')
 >>> market_portfolio.set_frequency(frequency='M', inplace=True) # resample to Monthly
 >>> market_portfolio.slice_dataframe(from_date=datetime(2016, 1, 1), to_date=datetime(2020, 1, 1), inplace=True)
-
 >>> # Construct the DJIA constituents portfolio
 >>> assets = macro.companies_in_index(MarketIndices.DOW_JONES)
 >>> portfolio = Portfolio(assets=assets)

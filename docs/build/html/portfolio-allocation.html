@@ -199,9 +199,7 @@ asset should hold, according to <em>quantifiable characteristics</em> such as ri
 <span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="s1">&#39;^DJI&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># resample to Monthly</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">market_portfolio</span><span class="o">.</span><span class="n">slice_dataframe</span><span class="p">(</span><span class="n">from_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to_date</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct the DJIA constituents portfolio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct the DJIA constituents portfolio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assets</span> <span class="o">=</span> <span class="n">macro</span><span class="o">.</span><span class="n">companies_in_index</span><span class="p">(</span><span class="n">MarketIndices</span><span class="o">.</span><span class="n">DOW_JONES</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span> <span class="o">=</span> <span class="n">Portfolio</span><span class="p">(</span><span class="n">assets</span><span class="o">=</span><span class="n">assets</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">portfolio</span><span class="o">.</span><span class="n">set_frequency</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -513,7 +511,7 @@ positive Alpha, unless by chance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
 </ul>
 </dd>
@@ -529,7 +527,7 @@ positive Alpha, unless by chance.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
 </ul>
 </dd>
@@ -547,7 +545,7 @@ positive Alpha, unless by chance.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
 </ul>
 </dd>
@@ -590,7 +588,7 @@ rankings based on systematic risk alone, they will rank portfolios identically.<
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -619,7 +617,7 @@ of the asset and benchmark rather than expected returns</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21. Period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
 </ul>
@@ -638,7 +636,7 @@ risk-free return as benchmark whereas the information ratio uses a risky index a
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time. Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
 </ul>
@@ -658,7 +656,7 @@ returns of a benchmark portfolio, above the risk free rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>benchmark_returns</strong> – Pandas series representing percentage changes of the benchmark (i.e. S&amp;P500) returns over time.</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -676,7 +674,7 @@ returns of a benchmark portfolio, above the risk free rate.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>minimum_threshold</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
 </ul>
@@ -722,7 +720,7 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>confidence_level</strong> – </p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
 </ul>
@@ -743,7 +741,7 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>confidence_level</strong> – </p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -762,7 +760,7 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>confidence_level</strong> – </p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -786,7 +784,7 @@ A drawdown is the percentage loss between peak and trough.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>trailing_period</strong> – </p></li>
 <li><p><strong>max</strong> – </p></li>
 </ul>
@@ -856,7 +854,7 @@ them (i.e. the first and second moment of a distribution), would technically ass
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -875,7 +873,7 @@ them (i.e. the first and second moment of a distribution), would technically ass
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -894,7 +892,7 @@ them (i.e. the first and second moment of a distribution), would technically ass
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>risk_free_rates</strong> – Pandas series representing percentage changes of a risk-free asset’s returns over time. It should be same time range and frequency as portfolio_returns</p></li>
 <li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
 <li><p><strong>period</strong> – period to compute statistics of returns for. For instance, to compute yearly, then input 252, and to compute monthly, then input 21.</p></li>
@@ -912,7 +910,7 @@ them (i.e. the first and second moment of a distribution), would technically ass
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable.</p></li>
 </ul>
 </dd>
@@ -931,7 +929,7 @@ performance, per unit of downside risk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio_returns</strong> – Pandas series representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
+<li><p><strong>portfolio_returns</strong> – Pandas series or dataframe representing percentage changes of the security (or portfolio) returns over time. It should be same time range and frequency as risk free rates</p></li>
 <li><p><strong>target</strong> – minimum acceptable return, below which the returns are less desirable. minimum acceptable return, below which the returns are less desirable.</p></li>
 </ul>
 </dd>

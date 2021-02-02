@@ -238,7 +238,7 @@ def sort_df(df, column_idx, key):
 if __name__ == '__main__':
     stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
     stock_screener.filter_by_comparison_to_number(partial(price_to_earnings, period='FY'), '>', 5)
-    stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+    stock_screener.filter_by_market(filter=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
     stock_screener.run()
 
 

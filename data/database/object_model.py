@@ -35,7 +35,7 @@ class CashAndShortTermInvestments(EmbeddedDocument):
 class AccountsReceivable(EmbeddedDocument):
     AllowanceForDoubtfulAccounts = IntField()
     NetAccountsReceivable = IntField()
-    VendorNontradeReceivables = IntField()
+    VendorNonTradeReceivables = IntField()
 
 
 class PropertyPlantAndEquipment(EmbeddedDocument):
@@ -95,14 +95,14 @@ class CurrentLiabilities(EmbeddedDocument):
 
 
 class NonCurrentLiabilities(EmbeddedDocument):
-    DeferredTaxLiabilities = IntField()
-    LongTermDebtNoncurrentMaturities = IntField()
-    OperatingLeaseLiability = IntField()
-    DefinedBenefitPlanLiability = IntField()
+    DeferredTax = IntField()
+    LongTermDebtNonCurrentMaturities = IntField()
+    OperatingLease = IntField()
+    DefinedBenefitPlan = IntField()
     AccruedIncomeTaxes = IntField()
     DeferredRevenue = IntField()
     LongTermUnearnedRevenue = IntField()
-    OtherLiabilitiesNoncurrent = IntField()
+    OtherLiabilitiesNonCurrent = IntField()
     TotalNonCurrentLiabilities = IntField()
 
 
@@ -130,7 +130,7 @@ class ShareholdersEquity(EmbeddedDocument):
     DeferredStockCompensation = IntField()
     StockholdersEquityAttributableToParent = IntField()
     MinorityInterest = IntField()
-    StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest = IntField()
+    StockholdersEquityIncludingPortionAttributableToMinorityInterest = IntField()
 
 
 class LiabilitiesAndShareholdersEquity(EmbeddedDocument):
@@ -145,13 +145,140 @@ class BalanceSheet(EmbeddedDocument):
     LiabilitiesAndShareholdersEquity = EmbeddedDocumentField(LiabilitiesAndShareholdersEquity)
 
 
+class Revenues(EmbeddedDocument):
+    ServiceSales = IntField()
+    ProductSales = IntField()
+    NetSales = IntField()
+
+
+class CostOfGoodsAndServicesSold(EmbeddedDocument):
+    CostOfProducts = IntField()
+    CostOfServices = IntField()
+    CostOfGoodsAndServicesSold = IntField()
+    GrossMargin = IntField()
+
+
+class SellingGeneralAndAdministrative(EmbeddedDocument):
+    MarketingExpense = IntField()
+    SellingAndMarketingExpense = IntField()
+    GeneralAndAdministrativeExpense = IntField()
+    SellingGeneralAndAdministrativeExpense = IntField()
+
+
+class OperatingExpenses(EmbeddedDocument):
+    ResearchAndDevelopmentExpense = IntField()
+    SellingGeneralAndAdministrative = EmbeddedDocumentField(SellingGeneralAndAdministrative)
+    OtherOperatingExpenses = IntField()
+    EarningsBeforeInterestTaxesDepreciationAndAmortization = IntField()
+    TotalOperatingExpenses = IntField()
+
+
+class NonOperatingIncomeExpense(EmbeddedDocument):
+    InterestIncome = IntField()
+    InterestAndDividendIncome = IntField()
+    InterestExpense = IntField()
+    InterestIncomeExpenseNet = IntField()
+    ForeignCurrencyTransactionGainLoss = IntField()
+    OtherNonOperatingIncomeExpense = IntField()
+    NonOperatingIncomeExpense = IntField()
+
+
+class IncomeStatement(EmbeddedDocument):
+    filing = ReferenceField('Filing')
+    Revenues = EmbeddedDocumentField(Revenues)
+    CostOfGoodsAndServicesSold = EmbeddedDocumentField(CostOfGoodsAndServicesSold)
+    ProvisionForLoanLeaseAndOtherLosses = IntField()
+    OperatingExpenses = EmbeddedDocumentField(OperatingExpenses)
+    CostsAndExpenses = IntField()
+    OperatingIncomeLoss = IntField()
+    NonOperatingIncomeExpense = EmbeddedDocumentField(NonOperatingIncomeExpense)
+    IncomeLossBeforeIncomeTaxesMinorityInterest = IntField()
+    IncomeTaxExpenseBenefit = IntField()
+    NetIncomeLossIncludingPortionAttributableToMinorityInterest = IntField()
+    NetIncomeLossAttributableToMinorityInterest = IntField()
+    NetIncomeLossAttributableToParent = IntField()
+    UndistributedEarningsLossAllocatedToParticipatingSecuritiesBasic = IntField()
+    PreferredStockDividends = IntField()
+    NetIncomeLossAvailableToCommonStockholdersBasic = IntField()
+    OtherComprehensiveIncomeLoss = IntField()
+    ComprehensiveIncomeLossNetOfTaxAttributableToParent = IntField()
+
+
+class AdjustmentsToReconcileNetIncome(EmbeddedDocument):
+    DepreciationDepletionAndAmortization = IntField()
+    ShareBasedPaymentArrangementNonCashExpense = IntField()
+    DeferredIncomeTaxExpenseBenefit = IntField()
+    OtherNonCashIncomeExpense = IntField()
+
+
+class ChangeInAssetsAndLiabilities(EmbeddedDocument):
+    IncreaseDecreaseInAccountsReceivable = IntField()
+    IncreaseDecreaseInInventories = IntField()
+    IncreaseDecreaseInOtherReceivables = IntField()
+    IncreaseDecreaseInPrepaidExpenseAndOtherAssets = IntField()
+    IncreaseDecreaseInOtherOperatingAssets = IntField()
+    IncreaseDecreaseInAccountsPayable = IntField()
+    IncreaseDecreaseInOtherAccountsPayable = IntField()
+    IncreaseDecreaseInAccruedLiabilities = IntField()
+    IncreaseDecreaseInDeferredRevenue = IntField()
+    IncreaseDecreaseInOtherOperatingLiabilities = IntField()
+
+
+class OperatingActivities(EmbeddedDocument):
+    NetIncomeLossAttributableToParent = IntField()
+    AdjustmentsToReconcileNetIncome = EmbeddedDocumentField(AdjustmentsToReconcileNetIncome)
+    ChangeInAssetsAndLiabilities = EmbeddedDocumentField(ChangeInAssetsAndLiabilities)
+    NetCashProvidedByUsedInOperatingActivities = IntField()
+
+
+class InvestingActivities(EmbeddedDocument):
+    PaymentsToAcquireMarketableSecuritiesAvailableForSale = IntField()
+    ProceedsFromMaturitiesPrepaymentsAndCallsOfDebtSecuritiesAvailableForSale = IntField()
+    ProceedsFromSaleOfDebtSecuritiesAvailableForSale = IntField()
+    PaymentsToAcquirePropertyPlantAndEquipment = IntField()
+    PaymentsToAcquireBusinessesNetOfCashAcquired = IntField()
+    PaymentsToAcquireOtherInvestments = IntField()
+    ProceedsFromSaleAndMaturityOfOtherInvestments = IntField()
+    PaymentsForProceedsFromOtherInvestingActivities = IntField()
+    NetCashProvidedByUsedInInvestingActivities = IntField()
+
+
+class FinancingActivities(EmbeddedDocument):
+    ProceedsFromIssuanceOfCommonStock = IntField()
+    PaymentTaxWithholdingShareBasedPaymentArrangement = IntField()
+    PaymentsOfDividends = IntField()
+    PaymentsForRepurchaseOfCommonStock = IntField()
+    ProceedsFromIssuanceOfLongTermDebt = IntField()
+    RepaymentsOfLongTermDebt = IntField()
+    FinanceLeasePrincipalPayments = IntField()
+    ProceedsFromRepaymentsOfBankOverdrafts = IntField()
+    ProceedsFromRepaymentsOfCommercialPaper = IntField()
+    ProceedsFromPaymentsForOtherFinancingActivities = IntField()
+    NetCashProvidedByUsedInFinancingActivities = IntField()
+
+
+class Supplemental(EmbeddedDocument):
+    pass
+
+
+class CashFlowStatement(EmbeddedDocument):
+    CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsBeginningBalance = IntField()
+    OperatingActivities = EmbeddedDocumentField(OperatingActivities)
+    InvestingActivities = EmbeddedDocumentField(InvestingActivities)
+    FinancingActivities = EmbeddedDocumentField(FinancingActivities)
+    EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents = IntField()
+    CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect = IntField()
+    CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsEndingBalance = IntField()
+    Supplemental = EmbeddedDocumentField(Supplemental)
+
+
 class Filing(Document):
     company = ReferenceField(Company)
     date = DateTimeField(required=True)
     period = StringField()  # Yearly, Quarterly
     BalanceSheet = EmbeddedDocumentField(BalanceSheet)
-    # IncomeStatement = EmbeddedDocumentField(IncomeStatement)
-    # CashFlowStatement = EmbeddedDocumentField(CashFlowStatement)
+    IncomeStatement = EmbeddedDocumentField(IncomeStatement)
+    CashFlowStatement = EmbeddedDocumentField(CashFlowStatement)
 
 
 class DatePrice(EmbeddedDocument):

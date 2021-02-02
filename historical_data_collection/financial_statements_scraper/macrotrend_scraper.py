@@ -12,97 +12,97 @@ from pprint import pprint
 from macroeconomic_analysis.macroeconomic_analysis import companies_in_index
 
 regex_patterns = {
-    'BalanceSheet': {
+    'Balance Sheet': {
         'Assets': {
-            'CurrentAssets': {
-                'CashAndShortTermInvestments': {
-                    'CashAndCashEquivalents': r'$^',
-                    'MarketableSecurities': r'$^',
-                    'CashAndShortTermInvestments': r'Cash on Hand',
+            'Current Assets': {
+                'Cash and Short Term Investments': {
+                    'Cash and Cash Equivalents': r'$^',
+                    'Marketable Securities': r'$^',
+                    'Cash and Short Term Investments': r'Cash on Hand',
                 },
-                'AccountsReceivable': {
-                    'AllowanceForDoubtfulAccounts': r'$^',
-                    'NetAccountsReceivable': r'^Receivables$',
-                    'VendorNontradeReceivables': r'$^'
+                'Accounts Receivable': {
+                    'Allowance for Doubtful Accounts': r'$^',
+                    'Net Accounts Receivable': r'^Receivables$',
+                    'Vendor Non-trade Receivables': r'$^'
                 },
-                'PrepaidExpense': r'^Pre-Paid Expenses$',
-                'InventoryNet': r'^Inventory$',
-                'IncomeTaxesReceivable': r'$^',
-                'AssetsHeldForSale': r'$^',
-                'DeferredTaxAssets': r'$^',
-                'OtherCurrentAssets': r'^Other Current Assets$',
-                'TotalCurrentAssets': r'^Total Current Assets$'
+                'Prepaid Expense': r'^Pre-Paid Expenses$',
+                'Inventory Net': r'^Inventory$',
+                'Income Taxes Receivable': r'$^',
+                'Assets Held For Sale': r'$^',
+                'Deferred Tax Assets': r'$^',
+                'Other Current Assets': r'^Other Current Assets$',
+                'Total Current Assets': r'^Total Current Assets$'
             },
-            'NonCurrentAssets': {
+            'Non Current Assets': {
 
-                'MarketableSecurities': r'^Long-Term Investments$',
-                'RestrictedCash': r'$^',
-                'PropertyPlantAndEquipment': {
-                    'GrossPropertyPlantAndEquipment': r'$^',
-                    'AccumulatedDepreciationAndAmortization': r'$^',
-                    'NetPropertyPlantAndEquipment': r'^Property, Plant, And Equipment$',
+                'Marketable Securities': r'^Long-Term Investments$',
+                'Restricted Cash': r'$^',
+                'Property Plant And Equipment': {
+                    'Gross Property, Plant and Equipment': r'$^',
+                    'Accumulated Depreciation and Amortization': r'$^',
+                    'Net Property, Plant, and Equipment': r'^Property, Plant, And Equipment$',
                 },
-                'OperatingLeaseRightOfUseAssets': r'$^',
-                'DeferredTaxAssets': r'$^',
-                'IntangibleAssets': {
+                'Operating Lease Right-of-use Assets': r'$^',
+                'Deferred Tax Assets': r'$^',
+                'Intangible Assets': {
                     'Goodwill': r'$^',
-                    'NetIntangibleAssetsExcludingGoodwill': r'$^',
-                    'TotalIntangibleAssets': r'^Goodwill And Intangible Assets$',
+                    'Net Intangible Assets Excluding Goodwill': r'$^',
+                    'Total Intangible Assets': r'^Goodwill And Intangible Assets$',
                 },
-                'OtherNonCurrentAssets': r'^Other Long-Term Assets$',
-                'TotalNonCurrentAssets': r'^Total Long-Term Assets$'
+                'Other Non Current Assets': r'^Other Long-Term Assets$',
+                'Total Non Current Assets': r'^Total Long-Term Assets$'
             },
-            'TotalAssets': r'^Total Assets$'
+            'Total Assets': r'^Total Assets$'
         },
-        "LiabilitiesAndShareholdersEquity": {
+        "Liabilities and Shareholders Equity": {
             'Liabilities': {
-                'CurrentLiabilities': {
-                    'LongTermDebtCurrentMaturities': r'$^',
-                    'AccountsPayable': r'^Accounts Payable Current$',
-                    'OtherAccountsPayable': r'$^',
-                    'OperatingLeaseLiability': r'$^',
-                    'EmployeeRelatedLiabilities': r'$^',
-                    'AccruedIncomeTaxes': r'$^',
-                    'AccruedLiabilities': r'$^',
-                    'DeferredRevenue': r'$^',
-                    'CommercialPaper': r'$^',
-                    'IncomeTaxesPayable': r'$^',
-                    'OtherCurrentLiabilities': r'$^',
-                    'TotalCurrentLiabilities': r'^Total Current Liabilities$',
+                'Current Liabilities': {
+                    'Long-Term Debt, Current Maturities': r'$^',
+                    'Accounts Payable': r'^Accounts Payable Current$',
+                    'Other Accounts Payable': r'$^',
+                    'Operating Lease Liability': r'$^',
+                    'Employee-Related Liabilities': r'$^',
+                    'Accrued Income Taxes': r'$^',
+                    'Accrued Liabilities': r'$^',
+                    'Deferred Revenue': r'$^',
+                    'Commercial Paper': r'$^',
+                    'Income Taxes Payable': r'$^',
+                    'Other Current Liabilities': r'$^',
+                    'Total Current Liabilities': r'^Total Current Liabilities$',
                 },
-                'NonCurrentLiabilities': {
-                    'DeferredTaxLiabilities': r'$^',
-                    'LongTermDebtNoncurrentMaturities': r'^Long-Term Debt$',
-                    'OperatingLeaseLiability': r'$^',
-                    'DefinedBenefitPlanLiability': r'$^',
-                    'AccruedIncomeTaxes': r'$^',
-                    'DeferredRevenue': r'$^',
-                    'LongTermUnearnedRevenue': r'$^',
-                    'OtherLiabilitiesNoncurrent': r'^Other Non-Current Liabilities$',
-                    'TotalNonCurrentLiabilities': r'^Total Long-Term Liabilities$'
+                'Non Current Liabilities': {
+                    'Deferred Tax': r'$^',
+                    'Long-Term Debt Non Current Maturities': r'^Long-Term Debt$',
+                    'Operating Lease': r'$^',
+                    'Defined Benefit Plan': r'$^',
+                    'Accrued Income Taxes': r'$^',
+                    'Deferred Revenue': r'$^',
+                    'Long-Term Unearned Revenue': r'$^',
+                    'Other Liabilities Non Current': r'^Other Non-Current Liabilities$',
+                    'Total Non Current Liabilities': r'^Total Long-Term Liabilities$'
                 },
-                'TotalLiabilities': r'^Total Liabilities$'
+                'Total Liabilities': r'^Total Liabilities$'
             },
-            "ShareholdersEquity": {
-                'PreferredStockValueIssued': r'$^',
-                'CommonStockAndAdditionalPaidInCapital': {
-                    'CommonStockValueIssued': r'^Common Stock Net$',
-                    'AdditionalPaidInCapital': r'^Additional Paid In Capital$',
-                    'CommonStocksIncludingAdditionalPaidInCapital': r'$^',
-                    'WeightedAverageNumberOfSharesOutstandingBasic': r'^Basic Shares Outstanding$',
-                    'WeightedAverageNumberDilutedSharesOutstandingAdjustment': r'$^',
-                    'WeightedAverageNumberOfSharesOutstandingDiluted': r'^Shares Outstanding$',
+            "Shareholders Equity": {
+                'Preferred Stock Value Issued': r'$^',
+                'Common Stock and Additional Paid in Capital': {
+                    'Common Stock Value Issued': r'^Common Stock Net$',
+                    'Additional Paid in Capital': r'^Additional Paid In Capital$',
+                    'Common Stocks Including Additional Paid In Capital': r'$^',
+                    'Weighted Average Number of Shares Outstanding Basic': r'^Basic Shares Outstanding$',
+                    'Weighted Average Number Diluted Shares Outstanding Adjustment': r'$^',
+                    'Weighted Average Number of Shares Outstanding Diluted': r'^Shares Outstanding$',
                 },
 
-                'TreasuryStockValue': r'$^',
-                'RetainedEarningsAccumulatedDeficit': r'^Retained Earnings (Accumulated Deficit)$',
-                'AccumulatedOtherComprehensiveIncomeLoss': r'^Comprehensive Income$',
-                'DeferredStockCompensation': r'$^',
-                'StockholdersEquityAttributableToParent': r'$^',
-                'MinorityInterest': r'$^',
-                'StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest': '^Share Holder Equity$'
+                'Treasury Stock Value': r'$^',
+                'Retained Earnings Accumulated Deficit': r'^Retained Earnings (Accumulated Deficit)$',
+                'Accumulated Other Comprehensive Income (Loss)': r'^Comprehensive Income$',
+                'Deferred Stock Compensation': r'$^',
+                'Stockholders Equity Attributable to Parent': r'$^',
+                'Minority Interest': r'$^',
+                'Stockholders Equity Including Portion Attributable to Minority Interest': '^Share Holder Equity$'
             },
-            'TotalLiabilitiesAndShareholdersEquity': r'^Total Liabilities And Share Holders Equity$'
+            'Total Liabilities and Shareholders Equity': r'^Total Liabilities And Share Holders Equity$'
         },
     },
     'Income Statement': {
@@ -117,36 +117,36 @@ regex_patterns = {
             'Cost of Goods and Services Sold': r'^Cost Of Goods Sold$',
             'Gross Margin': r'^Gross Profit$',
         },
-        'Provision for Loan, Lease, and Other Losses': r'$^',
+        'Provision for Loan Lease and Other Losses': r'$^',
         'Operating Expenses': {
             'Research and Development Expense': r'^Research And Development Expenses$',
             'Selling, General and Administrative': {
                 'Marketing Expense': r'$^',
                 'Selling and Marketing Expense': r'$^',
                 'General and Administrative Expense': r'$^',
-                'Selling, General and Administrative Expense': r'^SG&A Expenses$'
+                'Selling General and Administrative Expense': r'^SG&A Expenses$'
             },
             'Other Operating Expenses': r'^Other Operating Income Or Expenses',
-            'EBITDA': r'^EBITDA$',
+            'Earnings Before Interest, Taxes, Depreciation, and Amortization,': r'^EBITDA$',
             'Total Operating Expenses': r'^Operating Expenses$'
         },
         'Costs and Expenses': r'$^',
-        'Operating Income (Loss) / EBIT': r'^Operating Income$',
-        'Other (Non-Operating) Income (Expense)': {
+        'Operating Income (Loss)': r'^Operating Income$',
+        'Non-Operating Income (Expense)': {
             'Interest Income': r'$^',
             'Interest and Dividend Income': r'$^',
             'Interest Expense': r'^Interest Expense$',
             'Interest Income (Expense), Net': r'$^',
             'Foreign Currency Transaction Gain (Loss)': r'$^',
-            'Other Nonoperating Income (Expense)': '$^',
+            'Other Non-Operating Income (Expense)': '$^',
             # below is for 'Interest and other income, net' and 'Total other income/(expense), net'
             'Non-Operating Income (Expense)': r'^Total Non-Operating Income/Expense$'
         },
 
-        'Income (Loss) before Income Taxes, Noncontrolling Interest': r'^Pre-Tax Income$',
+        'Income (Loss) before Income Taxes, Minority Interest': r'^Pre-Tax Income$',
         'Income Tax Expense (Benefit)': r'^Income Taxes$',
-        'Net Income (Loss), Including Portion Attributable to Noncontrolling Interest': r'^Income After Taxes$',
-        'Net Income (Loss) Attributable to Noncontrolling (Minority) Interest': r'^Other Income$',
+        'Net Income (Loss), Including Portion Attributable to Minority Interest': r'^Income After Taxes$',
+        'Net Income (Loss) Attributable to Minority Interest': r'^Other Income$',
         'Net Income (Loss) Attributable to Parent': r'^Net Income$',
         'Undistributed Earnings (Loss) Allocated to Participating Securities, Basic': r'^Undistributed Earnings Loss Allocated To Participating Securities Basic$',
         'Preferred Stock Dividends': r'$^',
@@ -161,23 +161,23 @@ regex_patterns = {
         'Cash, Cash Equivalents, Restricted Cash and Restricted Cash Equivalents, Beginning Balance':
             '$^',
         'Operating Activities': {
-            'Net Income (Loss) Attributable to Parent': r'$^',
+            'Net Income (Loss) Attributable to Parent': r'^Net Income/Loss$',
             'Adjustments to Reconcile Net Income': {
                 'Depreciation, Depletion and Amortization': r'^Total Depreciation And Amortization - Cash Flow',
-                'Share-based Payment Arrangement, Noncash Expense': r'$^',
+                'Share-based Payment Arrangement, Non-Cash Expense': r'$^',
                 'Deferred Income Tax Expense (Benefit)': r'$^',
-                'Other Noncash Income (Expense)': r'$^'
+                'Other Non-Cash Income (Expense)': r'^Other Non-Cash Items$'
             },
             'Change in Assets and Liabilities': {
-                'Increase (Decrease) in Accounts Receivable': r'$^',
-                'Increase (Decrease) in Inventories': r'$^',
+                'Increase (Decrease) in Accounts Receivable': r'^Change In Accounts Receivable$',
+                'Increase (Decrease) in Inventories': r'^Change In Inventories$',
                 'Increase (Decrease) in Other Receivables': r'$^',
                 'Increase (Decrease) in Prepaid Expense and Other Assets': r'$^',
                 'Increase (Decrease) in Other Operating Assets': r'$^',
-                'Increase (Decrease) in Accounts Payable': r'$^',
+                'Increase (Decrease) in Accounts Payable': r'^Change In Accounts Payable$',
                 'Increase (Decrease) in Other Accounts Payable': r'$^',
                 'Increase (Decrease) in Accrued Liabilities': r'$^',
-                'Increase (Decrease) in Deferred Revenue, Liability': r'$^',
+                'Increase (Decrease) in Deferred Revenue': r'$^',
                 'Increase (Decrease) in Other Operating Liabilities': r'$^'
             },
             'Net Cash Provided by (Used in) Operating Activities': r'^Cash Flow From Operating Activities$'
@@ -331,6 +331,6 @@ if __name__ == '__main__':
     # path = os.path.join(config.MARKET_TICKERS_DIR_PATH, 'Dow-Jones-Stock-Tickers.xlsx')
     # tickers = data_preparation_helpers.read_df_from_csv(path=path).iloc[0, :]
 
-    tickers = companies_in_index(config.MarketIndices.DOW_JONES)
-    scrape_macrotrend(tickers[:1])
+    tickers = companies_in_index(config.MarketIndices.DOW_JONES)[:5]
+    scrape_macrotrend(tickers)
     # save_stock_prices(ticker)

@@ -89,23 +89,13 @@
 <li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Backtesting &amp; Deployment Framework</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#securities-universe">Securities Universe</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stock-selection">Stock Selection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#stock-screener">Stock Screener</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#market-timing">Market Timing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rebalancing-frequency">Rebalancing Frequency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#trigger-based">Trigger-Based</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#market-timing">Market Timing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#portfolio-allocation">Portfolio Allocation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#other-considerations">Other Considerations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#reinvesting-dividends">Reinvesting dividends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#including-capital-gain-taxes">Including capital gain taxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#historical-simulation">Historical Simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#broker-deployment">Broker Deployment</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#historical-simulation">Historical Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#broker-deployment">Broker Deployment</a></li>
 </ul>
 </li>
 </ul>
@@ -175,41 +165,141 @@
             
   <div class="section" id="portfolio-backtesting-deployment-framework">
 <h1>Portfolio Backtesting &amp; Deployment Framework<a class="headerlink" href="#portfolio-backtesting-deployment-framework" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we investigate the framework that goes behind <strong>researching</strong> and <strong>developing</strong> investment strategies.
+It ties the previous sections together,</p>
+<p>There are several elements that are considered in academia and industry practice, which we discuss below.</p>
 <div class="section" id="securities-universe">
 <h2>Securities Universe<a class="headerlink" href="#securities-universe" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="stock-selection">
-<h2>Stock Selection<a class="headerlink" href="#stock-selection" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="stock-screener">
-<h3>Stock Screener<a class="headerlink" href="#stock-screener" title="Permalink to this headline">¶</a></h3>
-</div>
+<p>The <em>securities universe</em> is a set of securities based on defined parameters.To apply this procedure,
+we make use of a <cite>StockScreener</cite> object.</p>
+<dl class="py class">
+<dt id="portfolio_management.stock_screener.StockScreener">
+<em class="property">class </em><code class="sig-prename descclassname">portfolio_management.stock_screener.</code><code class="sig-name descname">StockScreener</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">securities_universe</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 29, 10, 56, 19, 264068)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.stock_screener.StockScreener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The process typically starts with first picking stocks that are trading in a specific region (i.e. USA, Canada, Asia…), exchange (i.e. NASDAQ, NYSE…), index (i.e. Dow Jones,
+S&amp;P 500…), sector, or industry.</p>
+<dl class="py function">
+<dt id="portfolio_management.stock_screener.StockScreener.filter_by_market">
+<code class="sig-prename descclassname">portfolio_management.stock_screener.StockScreener.</code><code class="sig-name descname">filter_by_market</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.stock_screener.StockScreener.filter_by_market" title="Permalink to this definition">¶</a></dt>
+<dd><p>If another market already exists, then we reapply the conditions of the <cite>StockScreener</cite> so far
+to the new market, and do a <em>union</em> (instead of an <em>intersection</em>) with the current filtered stocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filter</strong> – object of type <cite>Regions</cite>, <cite>Exchanges</cite>, <cite>MarketIndices</cite>, <cite>SIC_Sectors</cite>,
+<cite>GICS_Sectors</cite>, <cite>SIC_Industries</cite>, or <cite>GICS_Industries</cite></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of companies satisfying conditions so far in additional to market filter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>The process continues with conducting an initial filtering based on concerns like liquidity
+(i.e. <em>market capitalization</em>, <em>volume traded</em>). Finally, narrowing down based on types of analysis such as
+<em>technical</em>, <em>fundamental</em>, and <em>quantitative</em>, which we detail in their respective modules.</p>
+<p>We use the metrics above (either as <em>raw</em>, <em>mean</em>, or <em>growth</em> values), then compare against either a <em>number</em>, <em>another metric</em>, or <em>percentile</em> against competitors.</p>
+<dl class="py function">
+<dt id="portfolio_management.stock_screener.StockScreener.run">
+<code class="sig-prename descclassname">portfolio_management.stock_screener.StockScreener.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">conditions</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span> <span class="o">=</span> <span class="default_value">datetime.datetime(2021, 1, 29, 10, 56, 19, 264068)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.stock_screener.StockScreener.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date setter. Reapply the conditions you applied so far, to any date</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conditions</strong> – list of tuples, the first element of which is the <cite>filter</cite> function, and the rest
+being the arguments. By default, the conditions already applied by the <cite>StockScreener</cite> object.</p></li>
+<li><p><strong>date</strong> – datetime to which we need to apply the conditions. By default, now.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="market-timing">
 <h2>Market Timing<a class="headerlink" href="#market-timing" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="rebalancing-frequency">
-<h3>Rebalancing Frequency<a class="headerlink" href="#rebalancing-frequency" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="trigger-based">
-<h3>Trigger-Based<a class="headerlink" href="#trigger-based" title="Permalink to this headline">¶</a></h3>
-</div>
+<p>It is important that these conditions are all re-evaluated when we rebalance the portfolio, to avoid succumbing
+to mistakes like <em>survivorship bias</em>.</p>
+<p><strong>Rebalancing Frequency</strong>
+<strong>Trigger Based</strong>: Define another <cite>StockScreener</cite> object</p>
 </div>
 <div class="section" id="portfolio-allocation">
 <h2>Portfolio Allocation<a class="headerlink" href="#portfolio-allocation" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="other-considerations">
 <h2>Other Considerations<a class="headerlink" href="#other-considerations" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="reinvesting-dividends">
-<h3>Reinvesting dividends<a class="headerlink" href="#reinvesting-dividends" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="including-capital-gain-taxes">
-<h3>Including capital gain taxes<a class="headerlink" href="#including-capital-gain-taxes" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
+<ul class="simple">
+<li><p>Reinvesting dividends</p></li>
+<li><p>Including capital gain taxes</p></li>
+</ul>
 <div class="section" id="historical-simulation">
-<h2>Historical Simulation<a class="headerlink" href="#historical-simulation" title="Permalink to this headline">¶</a></h2>
+<h3>Historical Simulation<a class="headerlink" href="#historical-simulation" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="broker-deployment">
-<h2>Broker Deployment<a class="headerlink" href="#broker-deployment" title="Permalink to this headline">¶</a></h2>
+<h3>Broker Deployment<a class="headerlink" href="#broker-deployment" title="Permalink to this headline">¶</a></h3>
+<p>from datetime import datetime
+from functools import partial
+from pprint import pprint</p>
+<dl class="simple">
+<dt>from fundamental_analysis.equity_valuation_models.equity_valuation_models import valuation_wrapper, </dt><dd><p>absolute_valuation_two_stage_model</p>
+</dd>
+</dl>
+<p>from fundamental_analysis.financial_statements_entries import net_income
+from portfolio_management.Portfolio import Portfolio
+from portfolio_management.portfolio_optimization import EquallyWeightedPortfolio
+from portfolio_management.portfolio_simulator import Strategy
+from portfolio_management.stock_screener import StockScreener
+import config
+import fundamental_analysis.accounting_ratios as ratios
+import fundamental_analysis.supporting_metrics as me
+import pandas as pd
+from quantitative_analysis.risk_factor_modeling import FamaFrench_ThreeFactorModel
+from quantitative_analysis.risk_factor_modeling.asset_pricing_model import FactorModels</p>
+<dl class="simple">
+<dt>pprint(me.market_price(stock=’BA’,</dt><dd><p>date=[datetime.now(), datetime(2019, 1, 1)]))</p>
+</dd>
+<dt>pprint(net_income(stock=[‘AMGN’, ‘AXP’],</dt><dd><p>date=datetime.now(),
+period=’FY’))</p>
+</dd>
+<dt>pprint(ratios.price_to_book_ratio(stock=[‘BA’, ‘AXP’, ‘AAPL’],</dt><dd><p>date=[datetime.now(), datetime(2019, 9, 1)],
+tangible_book_value=True,
+period=’FY’))</p>
+</dd>
+<dt>pprint(valuation_wrapper(model_type=partial(absolute_valuation_two_stage_model),</dt><dd><p>model_metric=me.dividend_per_share,
+stock=’AAPL’,
+period=’FY’))</p>
+</dd>
+</dl>
+<p>ff3 = FamaFrench_ThreeFactorModel(frequency=’Monthly’, to_date=datetime.today())
+reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=[‘MSFT’]))
+pprint(reg.params)</p>
+<p>stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period=’FY’), ‘&gt;’, 5)
+stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+stock_screener.run()</p>
+<p># TODO percentile_against_macro</p>
+<p>lower_bounds = pd.Series(data=[40], index=[‘Alpha’])
+upper_bounds = pd.Series(data=[80], index=[‘MKT’])
+stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,</p>
+<blockquote>
+<div><p>lower_bounds=lower_bounds, upper_bounds=upper_bounds)</p>
+</div></blockquote>
+<p>stock_screener.run(date=datetime(2018, 1, 1))
+print(stock_screener.stocks)</p>
+<dl class="simple">
+<dt>class Alainps(Strategy):</dt><dd><dl class="simple">
+<dt>def is_time_to_reschedule(self, current_date, last_rebalancing_day):</dt><dd><p>return (current_date - last_rebalancing_day).days &gt; config.RebalancingFrequency.Quarterly.value</p>
+</dd>
+</dl>
+</dd>
+<dt>strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),</dt><dd><p>starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
+net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)</p>
+</dd>
+</dl>
+<p>strategy.historical_simulation()</p>
+</div>
 </div>
 </div>
 

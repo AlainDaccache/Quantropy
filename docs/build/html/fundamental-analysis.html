@@ -179,6 +179,37 @@ competitors.</p>
 <h2>Financial Statements<a class="headerlink" href="#financial-statements" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="balance-sheet">
 <h3>Balance Sheet<a class="headerlink" href="#balance-sheet" title="Permalink to this headline">¶</a></h3>
+<p>It’s a snapshot.</p>
+<dl class="py function">
+<dt id="fundamental_analysis.financial_statements_entries.cash_and_cash_equivalents">
+<code class="sig-prename descclassname">fundamental_analysis.financial_statements_entries.</code><code class="sig-name descname">cash_and_cash_equivalents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.financial_statements_entries.cash_and_cash_equivalents" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Cash and Cash Equivalents</strong> is the amount of money on deposit in the bank. It is composed of</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Cash: ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).  t</dt><dd><p>icker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]). ticker(s)
+in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]). ticker(s) in questio
+n. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]). ticker(s) in question.
+Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p>
+</dd>
+</dl>
+</li>
+<li><p>Short-term investments:</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stock</strong> – ticker(s) in question. Can be a string (i.e. ‘AAPL’) or a list of strings (i.e. [‘AAPL’, ‘BA’]).</p></li>
+<li><p><strong>date</strong> – Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().</p></li>
+<li><p><strong>lookback_period</strong> – lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).</p></li>
+<li><p><strong>period</strong> – ‘FY’ for fiscal year, ‘Q’ for quarter, ‘YTD’ for calendar year to date, ‘TTM’ for trailing twelve months.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="income-statement">
 <h3>Income Statement<a class="headerlink" href="#income-statement" title="Permalink to this headline">¶</a></h3>
@@ -885,7 +916,7 @@ If a company’s earnings per share is less than cash flow per share over long t
 
 <dl class="py function">
 <dt id="fundamental_analysis.accounting_ratios.price_to_earnings">
-<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 29, 11, 1, 42, 282443)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="p">:</span> <span class="n">datetime.timedelta</span> <span class="o">=</span> <span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings" title="Permalink to this definition">¶</a></dt>
 <dd><p>The price-earnings ratio compares a company’s share price to its earnings per share</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -953,7 +984,7 @@ If a company’s earnings per share is less than cash flow per share over long t
 
 <dl class="py function">
 <dt id="fundamental_analysis.accounting_ratios.price_to_earnings_to_growth">
-<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings_to_growth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">growth_periods</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings_to_growth" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">price_to_earnings_to_growth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 29, 11, 1, 42, 282443)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'TTM'</span></em>, <em class="sig-param"><span class="n">growth_periods</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_income_from_operations</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">deduct_preferred_dividends</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.price_to_earnings_to_growth" title="Permalink to this definition">¶</a></dt>
 <dd><p>The price/earnings to growth ratio (or PEG ratio) is a valuation metric for determining the relative trade-off
 between the price of a stock, the earnings generated per share (EPS), and the company’s expected growth.</p>
 <p><em>Category:</em> Market Value Ratios</p>
@@ -995,7 +1026,7 @@ expected growth rate for the next year or the next five years.</p></li>
 
 <dl class="py function">
 <dt id="fundamental_analysis.accounting_ratios.book_value_per_share">
-<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">book_value_per_share</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 5, 14, 44, 28, 360259)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tangible</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.book_value_per_share" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">fundamental_analysis.accounting_ratios.</code><code class="sig-name descname">book_value_per_share</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stock</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">datetime.datetime(2021, 1, 29, 11, 1, 42, 282443)</span></em>, <em class="sig-param"><span class="n">lookback_period</span><span class="o">=</span><span class="default_value">datetime.timedelta(0)</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Q'</span></em>, <em class="sig-param"><span class="n">diluted_shares</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tangible</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fundamental_analysis.accounting_ratios.book_value_per_share" title="Permalink to this definition">¶</a></dt>
 <dd><p>The book value per share ratio calculates the per-share value of a company based on equity available to shareholders</p>
 <p><em>Category:</em> Market Value Ratios</p>
 <p><em>Subcategory:</em> Equity Value Ratios</p>

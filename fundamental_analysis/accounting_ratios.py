@@ -847,8 +847,9 @@ def greenblatt_earnings_yield(stock, date=None, lookback_period: timedelta = tim
     :param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().
     :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).
     :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months.
-    :return: .. math:: \\text{Greenblatt Earnings Yield} = \\frac{\\text{EBIT}}{\\text{Enterprise Value}}
+    :return: .. math:: \\text{Greenblatt Earnings Yield} = \\frac{\\text{EBIT}}{\\text{EV}}
     """
+
     return me.earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / me.enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period)
 

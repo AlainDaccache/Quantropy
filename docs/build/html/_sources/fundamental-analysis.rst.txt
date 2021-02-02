@@ -10,6 +10,11 @@ Financial Statements
 Balance Sheet
 -------------
 
+It's a snapshot.
+
+.. autofunction:: fundamental_analysis.financial_statements_entries.cash_and_cash_equivalents
+
+
 Income Statement
 ----------------
 

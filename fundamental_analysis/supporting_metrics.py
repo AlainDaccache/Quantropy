@@ -271,10 +271,19 @@ def liquid_assets(stock: str, date: datetime = datetime.now(), lookback_period: 
            + fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
-# Free Cash Flow is the amount of cash flow available for discretionary spending by the company after the necessary capital invesment.
-# It builds on CFO but takes into account (deducts) Capital Expenditures. Unlike FCFE and FCFF, it is a generic measure of cash flow.
 def free_cash_flow(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                    period: str = ''):
+    """
+    Free Cash Flow is the amount of cash flow available for discretionary spending by the company after the necessary capital invesment.
+    It builds on CFO but takes into account (deducts) Capital Expenditures. Unlike FCFE and FCFF, it is a generic measure of cash flow.
+
+    :param stock: ticker(s) in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']).
+    :param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months.
+
+    :return:
+    """
     return fi.cash_flow_operating_activities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            - abs(capital_expenditures(stock=stock, date=date, lookback_period=lookback_period, period=period))
 
