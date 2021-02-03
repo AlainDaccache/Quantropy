@@ -64,7 +64,7 @@ regex_patterns = {
                     'Employee-Related Liabilities': r'$^',
                     'Accrued Income Taxes': r'$^',
                     'Accrued Liabilities': r'$^',
-                    'Deferred Revenue': r'$^',
+                    'Deferred Revenue': r'$^', # TODO also known as long term unearned revenue
                     'Commercial Paper': r'$^',
                     'Income Taxes Payable': r'$^',
                     'Other Current Liabilities': r'$^',
@@ -98,9 +98,9 @@ regex_patterns = {
                 'Retained Earnings Accumulated Deficit': r'^Retained Earnings (Accumulated Deficit)$',
                 'Accumulated Other Comprehensive Income (Loss)': r'^Comprehensive Income$',
                 'Deferred Stock Compensation': r'$^',
-                'Stockholders Equity Attributable to Parent': r'$^',
+                'Stockholders Equity Attributable to Parent': r'^Share Holder Equity$',
                 'Minority Interest': r'$^',
-                'Stockholders Equity Including Portion Attributable to Minority Interest': '^Share Holder Equity$'
+                'Stockholders Equity Including Portion Attributable to Minority Interest': '$^'
             },
             'Total Liabilities and Shareholders Equity': r'^Total Liabilities And Share Holders Equity$'
         },

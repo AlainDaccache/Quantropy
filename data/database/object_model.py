@@ -101,7 +101,6 @@ class NonCurrentLiabilities(EmbeddedDocument):
     DefinedBenefitPlan = IntField()
     AccruedIncomeTaxes = IntField()
     DeferredRevenue = IntField()
-    LongTermUnearnedRevenue = IntField()
     OtherLiabilitiesNonCurrent = IntField()
     TotalNonCurrentLiabilities = IntField()
 

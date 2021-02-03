@@ -2,6 +2,7 @@ import os
 from collections import defaultdict
 from pprint import pprint
 
+from numpy import mean
 from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
@@ -184,36 +185,73 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
     if not isinstance(date, list):
         date = [date]
 
+    if not isinstance(stock, list):
+        stock = [stock]
+
+    date.sort()  # for peace of mind
+
     filings = object_model.Filing.objects(company__in=object_model.Company.objects(ticker__in=stock),
                                           date__gte=date[0] - timedelta(days=100) if period == 'Q'
                                           else date[0] - timedelta(days=400),
-                                          date__lte=date[-1], period='Yearly' if period == 'FY' else 'Quarterly'
-                                          )  # .as_pymongo()  # .only(financial_statement).as_pymongo()[financial_statement]
+                                          date__lte=date[-1], period='Yearly' if period == 'FY' else 'Quarterly')
 
-    # # TODO try that https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
-    if period == 'TTM':
-        raise Exception('Not implemented TTM yet')
-    elif period == 'YTD':
-        raise Exception('Not implemented YTD yet')
-    # for Quarterly (Q) and Yearly (FY), since those are last quarter and last year, and we queried corresponding filing
-    else: 
-        pipeline = [{'$sort': {'date': 1}},
-                    {'$group': {
-                        '_id': '$company',
-                        'date': {'$last': '$date'},
-                    }}]
-    agg = filings.aggregate(*pipeline)
-    for a in agg:
-        print(a)
+    # .as_pymongo()  # .only(financial_statement).as_pymongo()[financial_statement]
+    #     pipeline = [{'$sort': {'date': 1}},
+    #                 {'$group': {
+    #                     '_id': '$company',
+    #                     'date': {'$last': '$date'},
+    #                 }}]
+    # agg = filings.aggregate(*pipeline)
+    # for a in agg:
+    #     print(a)
+
+    # TODO This is noob. Should try aggregation https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
 
     output = defaultdict(dict)
-    for filing in agg:
-        entry = filing[financial_statement]
-        for e in entry_name:
-            entry = entry[e]
-        output[filing['date']][filing['company']] = entry
+    for date_ in date:
+        for stock_ in stock:
 
-    return output
+            # get the closest filing from this date for this stock's filings
+            filings_for_stock = filings.filter(company=stock_).order_by('date').as_pymongo()
+            # logic for 'while the next filing has a date less than the date we want, keep iterating'
+            # so we stop when the next filing has a greater date, so we should stop at that current filing.
+            for idx, filing in enumerate(filings_for_stock):
+                if idx + 1 < len(filings_for_stock) and filings_for_stock[idx + 1]['date'] < date_:
+                    continue
+
+                # now can get corresponding entry
+                def get_entry(filing_):
+                    entry = filing_[financial_statement]
+                    for e in entry_name:
+                        entry = entry[e]
+                    return entry
+
+                if period in ['Q', 'FY']:
+                    output[date_][stock_] = get_entry(filing_=filing)
+
+                elif period in ['TTM', 'YTD']:
+                    entries = []
+                    for i in range(4):
+                        filing = filings_for_stock[idx - i]
+                        if period == 'YTD' and filing['date'] < datetime(date_.year, 1, 1):
+                            break
+                        entries.append(get_entry(filing_=filing))
+
+                    if financial_statement == 'BalanceSheet':  # do average since it's a statement of position
+                        output[date_][stock_] = sum(entries)
+
+                    elif financial_statement in ['IncomeStatement', 'CashFlowStatement']:
+                        output[date_][stock_] = mean(entries)
+
+                    else:
+                        raise Exception('Please enter a valid `financial_statement`')
+
+                else:
+                    raise Exception('Please enter a valid `period`')
+
+                break
+
+    return dict(output)
 
 
 '''
@@ -233,5 +271,5 @@ if __name__ == '__main__':
     db = connect_to_mongo_engine(atlas_url)
     pprint(read_financial_statement_entry(stock=companies_in_index(config.MarketIndices.DOW_JONES)[:5],
                                           financial_statement='BalanceSheet',
-                                          period='FY', date=[datetime(2016, 1, 1), datetime.now()],
+                                          period='TTM', date=[datetime(2016, 1, 1), datetime.now()],
                                           entry_name=['Assets', 'CurrentAssets', 'TotalCurrentAssets']))
