@@ -1,13 +1,10 @@
 import math
-import os
-import pickle
 from datetime import datetime, timedelta
 import fundamental_analysis.financial_statements_entries as financials
 import fundamental_analysis.supporting_metrics as metrics
 import fundamental_analysis.accounting_ratios as ratios
 import numpy as np
-import config
-from data.database import object_model
+from matilda.database import object_model
 from macroeconomic_analysis import macroeconomic_analysis
 
 

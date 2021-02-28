@@ -1,14 +1,7 @@
-import pickle
 from datetime import datetime, timedelta
-from itertools import chain
 from pprint import pprint
 
 import numpy as np
-import config
-import os
-import historical_data_collection.data_preparation_helpers as excel
-import math
-import pandas as pd
 
 # def read_financial_statement_entry(stock, financial_statement: str, entry_name: list, period: str,
 #                                    date=None, lookback_period: timedelta = timedelta(days=0)):
@@ -137,7 +130,7 @@ import pandas as pd
 #                 return output
 # 
 #     return np.nan
-from data.database.db_crud import read_financial_statement_entry, get_atlas_db_url, connect_to_mongo_engine
+from matilda.database.db_crud import read_financial_statement_entry, get_atlas_db_url, connect_to_mongo_engine
 
 '''Balance Sheet Entries'''
 

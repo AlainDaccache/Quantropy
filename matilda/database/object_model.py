@@ -1,8 +1,12 @@
 from mongoengine import *
+from flask_login import UserMixin
 
 
-class Meta(Document):
-    date_last_refreshed = DateTimeField()
+class User(Document, UserMixin):
+    _id = ObjectIdField(required=True, primary_key=True)
+    email = StringField(unique=True, required=True)
+    password = StringField(required=True)
+    name = StringField(required=True)
 
 
 class Company(Document):

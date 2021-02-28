@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from data.database.db_crud import get_atlas_db_url, connect_to_mongo_engine
+from matilda.database.db_crud import get_atlas_db_url, connect_to_mongo_engine
 from fundamental_analysis import financial_statements_entries as entries
 
 

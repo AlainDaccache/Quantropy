@@ -1,4 +1,4 @@
-from matilda.portfolio_management.broker_deployment.broker_interface import Broker
+from matilda.broker_deployment.broker_interface import Broker
 import alpaca_trade_api as tradeapi
 
 

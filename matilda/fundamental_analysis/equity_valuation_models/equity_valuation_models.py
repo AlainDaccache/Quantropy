@@ -1,11 +1,11 @@
-import fundamental_analysis.supporting_metrics as me
+import matilda.fundamental_analysis.supporting_metrics as me
 from datetime import datetime, timedelta
-from fundamental_analysis.equity_valuation_models.cost_of_capital import weighted_average_cost_of_capital
+from matilda.fundamental_analysis.equity_valuation_models.cost_of_capital import weighted_average_cost_of_capital
 import numpy as np
-import fundamental_analysis.financial_statements_entries as fi
+import matilda.fundamental_analysis.financial_statements_entries as fi
 from functools import partial
 from typing import Callable
-import fundamental_analysis.accounting_ratios as ratios
+import matilda.fundamental_analysis.accounting_ratios as ratios
 
 '''
 Equity valuation models fall into two major categories: absolute or intrinsic valuation methods and relative valuation 

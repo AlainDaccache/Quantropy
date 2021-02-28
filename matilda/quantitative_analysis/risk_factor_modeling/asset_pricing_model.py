@@ -10,7 +10,7 @@ A standardized layer that allows you to access data from multiple sources and
 
 When you write code, you write to specified broker.
 
-we have a black box api, that talks to many brokers and providers,
+we have a black box api_routes, that talks to many brokers and providers,
 while the coder only talks to us
 
 advanced features

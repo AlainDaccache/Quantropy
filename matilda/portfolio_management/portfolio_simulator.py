@@ -1,26 +1,18 @@
 import abc
-import math
 import os
 from datetime import datetime, timedelta
-import typing
 from functools import partial
 import pandas as pd
 import numpy as np
 from abc import abstractmethod
-import historical_data_collection.data_preparation_helpers as excel
 import config
 import matplotlib.pyplot as plt
-import seaborn
-from statsmodels.tsa.stattools import coint
 from enum import Enum
 
-import macroeconomic_analysis.macroeconomic_analysis as macro
 from fundamental_analysis.accounting_ratios import price_to_earnings
-from matilda.portfolio_management.Portfolio import Portfolio, TimeDataFrame
-from matilda.portfolio_management.broker_deployment.alpaca import AlpacaBroker
-from matilda.portfolio_management.broker_deployment.broker_interface import Broker
-from matilda.quantitative_analysis.portfolio_optimization import EquallyWeightedPortfolio, ModernPortfolioTheory, \
-    PortfolioAllocationModel, PostModernPortfolioTheory
+from matilda.portfolio_management.Portfolio import Portfolio
+from matilda.broker_deployment.broker_interface import Broker
+from matilda.quantitative_analysis.portfolio_optimization import EquallyWeightedPortfolio, PostModernPortfolioTheory
 from matilda.quantitative_analysis.risk_quantification import sharpe_ratio
 from matilda.portfolio_management.stock_screener import StockScreener
 

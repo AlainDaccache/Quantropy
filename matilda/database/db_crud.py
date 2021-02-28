@@ -1,16 +1,16 @@
 import os
-from collections import defaultdict
+import pickle
+import config
+import pandas as pd
 
+from collections import defaultdict
 from numpy import mean
 from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
 from data import data_preparation_helpers
 from data.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, save_historical_sp500_tickers
-from data.database import object_model
-import pickle
-import config
-import pandas as pd
+from matilda.database import object_model
 
 '''
 0. Connect to MongoDB Atlas and Mongo Engine using our URL
@@ -360,6 +360,7 @@ if __name__ == '__main__':
 
     # object_model.Index.drop_collection()
     # populate_indices(from_file=False)
+    object_model.User.drop_collection()
     print(companies_in_classification(class_=config.MarketIndices.SP_500, date=datetime(2016, 1, 1)))
 
     # for period in ['YTD']:

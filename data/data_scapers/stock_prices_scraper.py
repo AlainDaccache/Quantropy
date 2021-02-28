@@ -6,7 +6,7 @@ import pandas as pd
 import ta
 import config
 from data.data_preparation_helpers import save_into_csv, read_df_from_csv
-from data.database.db_crud import companies_in_classification
+from matilda.database.db_crud import companies_in_classification
 
 
 def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
