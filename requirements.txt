@@ -75,3 +75,4 @@ mongoengine~=0.22.1
 setuptools~=51.0.0
 Flask~=1.1.2
 Werkzeug~=1.0.1
+Flask-Login==0.5.0
