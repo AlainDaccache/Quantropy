@@ -1,4 +1,17 @@
-# Quαntropy
+<p align="center">
+    <img width=60% src="file:///docs/source/images/quantropy_logo.PNG">
+</p>
+
+<!-- buttons -->
+<p align="center">
+    <a href="https://www.python.org/">
+        <img src="https://img.shields.io/badge/python-v3-brightgreen.svg"
+            alt="python"></a> &nbsp;
+    <a href="https://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
+            alt="MIT license"></a> &nbsp;
+    
+</p>
 
 The human mind is fascinating. Give it a series of observations, and it will attempt to find structure to it. 
 It will find variables upon which the given data might depend on, and develop elaborate models, 
@@ -9,6 +22,9 @@ What if we have been fooled by randomness?
 
 This project is an attempt to shed light on this question that has puzzled researchers for the past century. It is the culmination of three years of learning about the financial markets, and almost a year of
 developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
+
+You can head over [here](quantropy.readthedocs.io) to read the documentation.
+
 
 Essentially, we replicate the academia and industry methodologies into an open-source framework that our community 
 can reuse and extend on, with the low-level work already done. Therefore, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
