@@ -2,3 +2,4 @@ venv
 .idea
 __pycache__/
 Quantropy.iml
+data/database/db_tutorial.py
