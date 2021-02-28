@@ -1,3 +1,0 @@
-[console_scripts]
-titlecase = titlecase.__init__:cmd
-

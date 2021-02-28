@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/historical_data_collection/financial_statements_scraper/ScraXBRL/logs/extract_log.p" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/historical_data_collection/financial_statements_scraper/ScraXBRL/logs/scrape_log.p" charset="windows-1252" />
-  </component>
-</project>
