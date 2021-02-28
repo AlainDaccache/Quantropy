@@ -1,17 +1,16 @@
 import os
 from collections import defaultdict
-from pprint import pprint
 
 from numpy import mean
 from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
-
+from data import data_preparation_helpers
+from data.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, save_historical_sp500_tickers
 from data.database import object_model
-from historical_data_collection import data_preparation_helpers
-from macroeconomic_analysis.macroeconomic_analysis import companies_in_index
 import pickle
 import config
+import pandas as pd
 
 '''
 0. Connect to MongoDB Atlas and Mongo Engine using our URL
@@ -158,9 +157,45 @@ def populate_db_routine(db_username, db_password, db_name,
         populate_db_risk_factors(from_date, to_date)
 
 
+def populate_indices(from_file=False):
+    for (name, path, fun) in [('Dow Jones', 'Dow-Jones-Historical-Constituents', save_historical_dow_jones_tickers),
+                              ('S&P 500', 'S&P-500-Historical-Constituents', save_historical_sp500_tickers)]:
+        if from_file:
+            with open(os.path.join(config.DATA_DIR_PATH, path), 'rb') as handle:
+                dictio = pickle.load(handle)
+
+        else:
+            dictio = fun(save_pickle=False)
+
+        output = [{'date': date, 'companies': companies} for date, companies in dictio.items()]
+        object_model.Index(name=name, evolution=output).save()
+
+
 '''
 II. `Read` routines
 '''
+
+
+def format_input(stock, date):
+    if date is None:
+        date = datetime.now()
+    if not (isinstance(date, list) or isinstance(date, tuple)):
+        date = [date]
+    if not isinstance(stock, list):
+        stock = [stock]
+    date.sort()  # for peace of mind
+    return stock, date
+
+
+def format_output(output: dict):
+    output = pd.DataFrame.from_dict(output, orient='index')
+    if len(output) == 1:
+        if len(output.columns) > 1:  # one date, many stocks
+            return output.iloc[0, :]
+        return float(output.values[0])  # one date, one stock
+    if len(output.columns) == 1:
+        return output.iloc[:, 0]  # many dates, one stock
+    return output  # many dates, many stocks
 
 
 def read_financial_statement_entry(stock, financial_statement: str, entry_name: list, period: str,
@@ -179,21 +214,13 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
     """
 
-    if date is None:
-        date = datetime.now()
-
-    if not isinstance(date, list):
-        date = [date]
-
-    if not isinstance(stock, list):
-        stock = [stock]
-
-    date.sort()  # for peace of mind
-
+    stock, date = format_input(stock, date)
     filings = object_model.Filing.objects(company__in=object_model.Company.objects(ticker__in=stock),
                                           date__gte=date[0] - timedelta(days=100) if period == 'Q'
                                           else date[0] - timedelta(days=400),
                                           date__lte=date[-1], period='Yearly' if period == 'FY' else 'Quarterly')
+
+    # TODO Try aggregation https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
 
     # .as_pymongo()  # .only(financial_statement).as_pymongo()[financial_statement]
     #     pipeline = [{'$sort': {'date': 1}},
@@ -205,22 +232,21 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
     # for a in agg:
     #     print(a)
 
-    # TODO This is noob. Should try aggregation https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
-
     output = defaultdict(dict)
-    for date_ in date:
-        for stock_ in stock:
+    for stock_ in stock:
+        filings_for_stock = filings.filter(company=stock_).order_by('date').as_pymongo()
+        for date_ in date:
 
             # get the closest filing from this date for this stock's filings
-            filings_for_stock = filings.filter(company=stock_).order_by('date').as_pymongo()
-            # logic for 'while the next filing has a date less than the date we want, keep iterating'
-            # so we stop when the next filing has a greater date, so we should stop at that current filing.
             for idx, filing in enumerate(filings_for_stock):
-                if idx + 1 < len(filings_for_stock) and filings_for_stock[idx + 1]['date'] < date_:
+
+                # if date is instance of tuple, then it's a range and we need to consider all filings queried.
+                if isinstance(date, list) and \
+                        idx + 1 < len(filings_for_stock) \
+                        and filings_for_stock[idx + 1]['date'] < date_:
                     continue
 
-                # now can get corresponding entry
-                def get_entry(filing_):
+                def get_entry(filing_):  # now can get corresponding entry
                     entry = filing_[financial_statement]
                     for e in entry_name:
                         entry = entry[e]
@@ -251,7 +277,69 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
                 break
 
-    return dict(output)
+    return format_output(dict(output))
+
+
+def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec='adj_close'):
+    """
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param spec: 'open', 'high', 'low', 'close', 'adj_close'
+    :return:
+    """
+    stock, date = format_input(stock, date)
+    objects = object_model.AssetPrices.objects(company__in=object_model.Company.objects(ticker__in=stock),
+                                               adj_close__date__lte=date[0])
+    output = defaultdict(dict)
+    for obj in objects:
+        output[date[0]][obj.company.name] = obj.adj_close[-1].price
+    return format_output(dict(output))
+    # output = objects.filter(date__lte=date)
+
+    # pipeline = [ {"$group": {'_id': {"date"}}}
+    #     {"date": {"$company": {"$toUpper": "$name"}}}
+    # ]
+    # data = objects.aggregate(pipeline)
+
+    # return output
+
+
+def companies_in_classification(class_, date=datetime.now()):
+    if isinstance(class_, config.SIC_Industries):
+        companies = object_model.Company.objects(sic_industry=class_.value)
+    elif isinstance(class_, config.GICS_Industries):
+        companies = object_model.Company.objects(gics_industry=class_.value)
+    elif isinstance(class_, config.SIC_Sectors):
+        companies = object_model.Company.objects(sic_sector=class_.value)
+    elif isinstance(class_, config.GICS_Sectors):
+        companies = object_model.Company.objects(gics_sector=class_.value)
+    elif isinstance(class_, config.Regions):
+        companies = object_model.Company.objects(location=class_.value)
+    elif isinstance(class_, config.Exchanges):
+        companies = object_model.Company.objects(exchange=class_.value)
+    elif isinstance(class_, config.MarketIndices):  # TODO do better query
+        query = object_model.Index.objects(name=class_.value).first().to_mongo()
+        for item in query['evolution']:
+            if item['date'] > date:
+                continue
+            return item['companies']
+        return []
+    else:
+        raise Exception('Ensure arg for classification is an instance of config.SIC_Industries, '
+                        'config.GICS_Industries, config.SIC_Sectors, config.GICS_Sectors,'
+                        'config.Regions, config.Exchanges, or config.MarketIndices')
+
+    return [company.ticker for company in companies]
+
+
+def read_factor_returns(factor_model, factor, from_date, to_date, frequency):
+    pass
+
+
+def read_gross_national_product(from_date, to_date, frequency):
+    pass
 
 
 '''
@@ -269,7 +357,16 @@ if __name__ == '__main__':
 
     atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
     db = connect_to_mongo_engine(atlas_url)
-    pprint(read_financial_statement_entry(stock=companies_in_index(config.MarketIndices.DOW_JONES)[:5],
-                                          financial_statement='BalanceSheet',
-                                          period='TTM', date=[datetime(2016, 1, 1), datetime.now()],
-                                          entry_name=['Assets', 'CurrentAssets', 'TotalCurrentAssets']))
+
+    # object_model.Index.drop_collection()
+    # populate_indices(from_file=False)
+    print(companies_in_classification(class_=config.MarketIndices.SP_500, date=datetime(2016, 1, 1)))
+
+    # for period in ['YTD']:
+    #     pprint(read_financial_statement_entry(stock=companies_in_index(config.MarketIndices.DOW_JONES)[:5],
+    #                                           financial_statement='BalanceSheet',
+    #                                           period=period, date=datetime(2018, 6, 6),
+    #                                           entry_name=['Assets', 'CurrentAssets', 'TotalCurrentAssets']))
+    # pprint(market_price(stock=['MMM', 'AMGN'], date=datetime.now()))
+    # nasdaq_tickers = object_model.Company.objects(exchange='NASDAQ').values_list('name')
+    # print(nasdaq_tickers)

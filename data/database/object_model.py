@@ -303,3 +303,13 @@ class RiskFactor(EmbeddedDocument):
 class RiskFactorModel(Document):
     name = StringField()
     risk_factors = ListField(EmbeddedDocumentField(RiskFactor))
+
+
+class DateCompanies(EmbeddedDocument):
+    date = DateTimeField()
+    companies = ListField(ReferenceField(Company))
+
+
+class Index(Document):
+    name = StringField()
+    evolution = ListField(EmbeddedDocumentField(DateCompanies))

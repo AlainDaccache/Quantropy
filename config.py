@@ -82,9 +82,9 @@ class Exchanges(Enum):
 
 
 class MarketIndices(Enum):
-    DOW_JONES = 'Dow-Jones'
-    SP_500 = 'S&P-500'
-    RUSSELL_3000 = 'Russell-3000'
+    DOW_JONES = 'Dow Jones'
+    SP_500 = 'S&P 500'
+    RUSSELL_3000 = 'Russell 3000'
 
 
 class SIC_Sectors(Enum):
@@ -115,7 +115,7 @@ class GICS_Sectors(Enum):
 
 
 class SIC_Industries(Enum):
-    pass
+    ELECTRONIC_COMPUTERS = 'Electronic Computers'
 
 class GICS_Industries(Enum):
     pass

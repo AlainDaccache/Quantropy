@@ -5,7 +5,7 @@ It will find variables upon which the given data might depend on, and develop el
 in the hopes of predicting future observations. What if this search for the Holy Grail is all in vain? 
 What if we have been fooled by randomness? 
 
-## Framework Description
+## Package Description
 
 This project is an attempt to shed light on this question that has puzzled researchers for the past century. It is the culmination of three years of learning about the financial markets, and almost a year of
 developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
@@ -14,21 +14,21 @@ Essentially, we replicate the academia and industry methodologies into an open-s
 can reuse and extend on, with the low-level work already done. Therefore, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
 and comprehensively research models, develop strategies, and deploy them in real-time. The pipeline looks as such:
 
-1.  In the `historical_data_collection` package, we scrape data from various sources, including SEC Edgar for **financial statements** and **market classification**,
+1.  In the `historical_data_collection` module, we scrape data from various sources, including SEC Edgar for **financial statements** and **market classification**,
     YahooFinance for **asset prices**, FRED for **macroeconomic data**, and various datasets for **risk factors**. 
     *Currently migrating from Excel and Pickle files to MongoDB and Kafka for real-time streaming.*
 
-2.  a.  In the `fundamental_analysis` package, we provide tools to assess a company's fair value (**equity valuation models**),
+2.  a.  In the `fundamental_analysis` module, we provide tools to assess a company's fair value (**equity valuation models**),
         and evaluate by looking at **accounting ratios**, and accompanying *financial distress* and *earnings manipulation* models,
         and compare across time and competitors. 
     
-    b. In the `technical_analysis` package, we provide tools to detect geometric shapes (**chart patterns**, **candlestick patterns**) 
+    b. In the `technical_analysis` module, we provide tools to detect geometric shapes (**chart patterns**, **candlestick patterns**) 
     and price characteristics (**technical indicators**). *Still under development, not a priority, but can use `TA-Lib` meanwhile.*
     
-    c. In the `quantitative_analysis` package, we provide tools to model risk for **portfolio optimization**, as well 
+    c. In the `quantitative_analysis` module, we provide tools to model risk for **portfolio optimization**, as well 
     as research drivers of returns through **asset pricing models**, and forecast outcomes through **stochastic processes**.
     
-3.  In the `portfolio_management` package, we construct portfolios by *selecting stocks* using the aforementioned analysis for **stock screening**, 
+3.  In the `portfolio_management` module, we construct portfolios by *selecting stocks* using the aforementioned analysis for **stock screening**, 
     and *allocating weights* through **portfolio optimization**. We then use our **backtester** to realistically evaluate historical performance,
     then **deploy** to a broker. Several **templates** for strategies are provided, including *style* (value, growth, momentum, quality), 
     *trend*, *mean-reversion*, *event-driven arbitrage*, *smart-beta*, and *pairs trading*. 
