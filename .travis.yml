@@ -13,8 +13,8 @@ env:
 deploy:  # command to deploy package
   provider: pypi
   username: "AlainDaccache"
-#  password:
-#    secure: my_secure_password
+  password:
+    secure: PYPI_KEY
   on:
     tags: true
     branch: master
