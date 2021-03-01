@@ -28,7 +28,7 @@ What if we have been fooled by randomness?
 This project is an attempt to shed light on this question that has puzzled researchers for the past century. It is the culmination of three years of learning about the financial markets, and almost a year of
 developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
 
-You can head over [here](quantropy.readthedocs.io) to read the documentation.
+You can head over [here](https://quantropy.readthedocs.io/) to read the documentation.
 
 
 Essentially, we replicate the academia and industry methodologies into an open-source framework that our community 
