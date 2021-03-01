@@ -16,7 +16,7 @@ deploy:  # command to deploy package
   password:
     secure: PYPI_KEY
   on:
-    tags: true
+#    tags: true
     branch: master
 
 #services:
