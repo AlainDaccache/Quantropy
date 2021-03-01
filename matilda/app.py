@@ -4,7 +4,7 @@ When it says 'Running on http://0.0.0.0:5000/', it means it is accepting connect
 not a specific one. Use 127.0.0.1 i.e. 'http://localhost:5000/' to actually connect to a server running on your machine.
 """
 
-from matilda import app
+from . import app
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
