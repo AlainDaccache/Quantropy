@@ -5,5 +5,28 @@ python:
 install:  # command to install dependencies
   - pip install -r requirements.txt
 
-script:  # command to run tests
-  - python -m unittest tests.test_fundamental_analysis
+#deploy:  # command to deploy package
+#  provider: pypi
+#  username: "AlainDaccache"
+#  password:
+#    secure: my_secure_password
+#  on:
+#    tags: true
+#    branch: master
+
+# Then on cmd:
+# gem install travis
+# travis encrypt your-api-token --add deploy.password --com
+
+#services:
+#  - docker
+#
+#before_install:
+#  - docker build -t carlad/sinatra .
+#  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+#  - docker ps -a
+#  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+
+script:
+  - python -m unittest tests.test_fundamental_analysis  # command to run tests
+#  - bundle exec rake test  # command for Docker

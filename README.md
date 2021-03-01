@@ -1,5 +1,5 @@
 <p align="center">
-    <img width=60% src="file:///docs/source/images/quantropy_logo.PNG">
+    <img width=60% src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/quantropy_logo.PNG">
 </p>
 
 <!-- buttons -->
@@ -7,6 +7,11 @@
     <a href="https://www.python.org/">
         <img src="https://img.shields.io/badge/python-v3-brightgreen.svg"
             alt="python"></a> &nbsp;
+    <a href="https://quantropy.readthedocs.io/">
+        <img src="https://img.shields.io/badge/docs-passing-brightgreen.svg" 
+        alt="docs"></a> &nbsp;
+    <a href="https://pypi.org/project/Quantropy/0.0.1/">
+        <img src="https://img.shields.io/badge/pypi-v1.4.1-brightgreen.svg" alt="pypi"></a> &nbsp;
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
             alt="MIT license"></a> &nbsp;

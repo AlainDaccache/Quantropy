@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+Quantropy.egg-info/PKG-INFO
+Quantropy.egg-info/SOURCES.txt
+Quantropy.egg-info/dependency_links.txt
+Quantropy.egg-info/top_level.txt
+matilda/__init__.py
+tests/__init__.py
+tests/test_fundamental_analysis.py
