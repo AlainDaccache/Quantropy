@@ -1,3 +1,4 @@
+sudo: required
 language: python
 python:
   - "3.8.2"
@@ -8,9 +9,10 @@ install:  # command to install dependencies
 env:
   global:
     # global environment variable for PyPi
-    secure: zi4hz9RrLXAfFCZywnoHqIdSqyhrge4M++pQtFU8tqA0tC5IaFF6OUch1vGhSSAQxpLHP67TCh5gQBDXi8VB/TBV7IY229XjQCCCKUWbCXok+26tKGBEF70INHKJP8jsR9S4vOPk3pz1rbzBMKiQaj81thsvJfd/vaexVqxj4gNMgnBf42xrozyxBXOd+QAZsh7/f+Aholckl+GAZ3dRU9at7yqvibgs+v4O9VCyspJkXxO0iHc4OsVjdF4yTxRLHtPrxiiW5Ai7BRqXMMBKlDde3Kx3wt5H4/I6jGC5tS+yKRiHhpcQbrgBErzowjXxEmPVxlmrgY/OpkDPO8k3sXdxFgSI4ko0xqdGLN+m24CZMjwE9Qq/Ck3ai/+AHN1FR/xICh5XNBoYQIDSTNrWPV3k5xJWQFSMT8VlyJ0c2CeDBLOlNx1Ro0W09rQIGI3QG1vPk6upzpeu5HO/kIdTAK3v0KIsDbu6aklvKmTiBJT/1HKk/RfmzD2eRM1HzRM3H2R5Vp68BcKg++OJTtAa294pCj50FuPbWg+JTTxACJO7Z+X9dMrjTx7hVIujnEjQGWBpTgNSlFP1T1Ixd0zsLailsye7g42rBY+55fvvGmW+tBuK4zdAWkhY5csKViMN8c8cdkw/VwBV/3Vtv9Avo9XC6NAV2ccDAdrRSDslyJ0=
+    secure: 1pev3IkBx6l4ndipjNY1jaw9VgV2ERnx9/0JrnS55qiU7udWYlgWiTqDAWa4Ew8LYWG8OitJGHE6GH5HawKzimXzs50Z0H7kOW1qkqhIY4zp67bEQPROzupn4bJDPaetmYl9Hj9Pg3evqnL8l0h34QsREY1n+AJGEGh0na36q1nm2qPJTsEv081tg+tPrTdidN9m0v9G+++tK93pz4gRO5KAmFBpxVPgCo9r0zU5AeKuu+EWHDG+J+gWdsR4RGkT2HoQ+0hHHK6SGrxwpQvup+lB4iCWShBQ20hQynEKEzJBPRFrAaNmt5zz25uGaidtGu9XTPaMoqNNbH+cpd48HX4qI7ao7bY8Xy/P59ll/arJmYE/em1cGJvrUeMEWFI9QyaN1ukPvt6f32iASSwr7Vm7jUg9hfT5uiNBG4wmqaJqMKGcIz6X7wYWW7tmYgkIlFkuAXAmrbzicKfHG+0xzFzVeQknQIh9Iw7dGG+8FfYiPPMaYDNOBrpcQpQkfXtubyxqeTenOn3DN9if7Q9wr9CAySBqy1P5wjuEnrVZhgJl/Nj+ppkF+zMUW9Q/Tvpv1RqTY3/8eYoWmTGuMQ+BoTj6oD58wYst9cUGKaqtbXYVIHg9u5HlSkT2JHaHzVIG5zLmVwo7FZNH2KrTBOCS9hLow96Roasb0it9wPbsycU=
 
 deploy:  # command to deploy package
+  # basically: delete .egg-info, build, and dist, then 'py -m build', and 'py -m twine upload --skip-existing dist/*'
   provider: pypi
   username: "AlainDaccache"
   password:
@@ -19,15 +21,9 @@ deploy:  # command to deploy package
 #    tags: true
     branch: master
 
-#services:
-#  - docker
-#
-#before_install:
-#  - docker build -t carlad/sinatra .
-#  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
-#  - docker ps -a
-#  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+services:
+  - docker
 
 script:
-  - python -m unittest tests.test_fundamental_analysis  # command to run tests
-#  - bundle exec rake test  # command for Docker
+  - python -m unittest tests.test_fundamental_analysis  # run tests
+  - docker build -t matilda .  # run docker

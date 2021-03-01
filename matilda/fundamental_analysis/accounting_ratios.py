@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from functools import partial
 
-import fundamental_analysis.financial_statements_entries as fi
+import matilda.fundamental_analysis.financial_statements_entries as fi
 import fundamental_analysis.supporting_metrics as me
 import fundamental_analysis.equity_valuation_models.equity_valuation_models as valuation
 from matilda.database.db_crud import get_atlas_db_url, connect_to_mongo_engine
