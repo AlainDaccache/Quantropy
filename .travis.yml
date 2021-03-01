@@ -14,7 +14,8 @@ deploy:  # command to deploy package
   provider: pypi
   username: "AlainDaccache"
   password:
-    secure: PYPI_KEY
+    secure: "zi4hz9RrLXAfFCZywnoHqIdSqyhrge4M++pQtFU8tqA0tC5IaFF6OUch1vGhSSAQxpLHP67TCh5gQBDXi8VB/TBV7IY229XjQCCCKUWbCXok+26tKGBEF70INHKJP8jsR9S4vOPk3pz1rbzBMKiQaj81thsvJfd/vaexVqxj4gNMgnBf42xrozyxBXOd+QAZsh7/f+Aholckl+GAZ3dRU9at7yqvibgs+v4O9VCyspJkXxO0iHc4OsVjdF4yTxRLHtPrxiiW5Ai7BRqXMMBKlDde3Kx3wt5H4/I6jGC5tS+yKRiHhpcQbrgBErzowjXxEmPVxlmrgY/OpkDPO8k3sXdxFgSI4ko0xqdGLN+m24CZMjwE9Qq/Ck3ai/+AHN1FR/xICh5XNBoYQIDSTNrWPV3k5xJWQFSMT8VlyJ0c2CeDBLOlNx1Ro0W09rQIGI3QG1vPk6upzpeu5HO/kIdTAK3v0KIsDbu6aklvKmTiBJT/1HKk/RfmzD2eRM1HzRM3H2R5Vp68BcKg++OJTtAa294pCj50FuPbWg+JTTxACJO7Z+X9dMrjTx7hVIujnEjQGWBpTgNSlFP1T1Ixd0zsLailsye7g42rBY+55fvvGmW+tBuK4zdAWkhY5csKViMN8c8cdkw/VwBV/3Vtv9Avo9XC6NAV2ccDAdrRSDslyJ0="
+
   on:
 #    tags: true
     branch: master
