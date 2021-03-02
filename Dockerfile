@@ -1,6 +1,6 @@
 # Bare minimum Dockerfile configuration. First, make sure you're cd'ed into the Quantropy directory
 #    To build the Docker image: 'docker build -t matilda .' (do not forget the dot at the end)
-#    To run the Docker image: 'docker run --name matilda'
+#    To run the Docker image: 'docker run -d -p 5000:5000 matilda'
 
 FROM python:3.8-slim
 
@@ -26,4 +26,4 @@ COPY . .
 
 # ENTRYPOINT configures the container to run as an executable; only the last ENTRYPOINT instruction executes
 ENTRYPOINT [ "python" ]
-CMD [ "matilda/app.py" ]
+CMD [ "matilda/__init__.py" ]

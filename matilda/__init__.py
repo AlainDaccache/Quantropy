@@ -1,5 +1,11 @@
 from flask import Flask
 from flask_login import LoginManager
+import os
+import sys
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
+sys.path.insert(0, parent_dir_path)
 
 from matilda.database.object_model import User
 from matilda.database.db_crud import get_atlas_db_url, connect_to_mongo_engine

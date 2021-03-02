@@ -7,11 +7,14 @@
     <a href="https://www.python.org/">
         <img src="https://img.shields.io/badge/python-v3-brightgreen.svg"
             alt="python"></a> &nbsp;
+    <a href="https://travis-ci.com/github/AlainDaccache/Quantropy">
+        <img src="https://shields.beevelop.com/travis/beevelop/docker-shields.svg?style=flat-square" alt="Travis">
+        </a> &nbsp;
+    <a href="https://pypi.org/project/Quantropy/0.0.1/">
+        <img src="https://img.shields.io/badge/pypi-v1.4.1-brightgreen.svg" alt="pypi"></a> &nbsp;
     <a href="https://quantropy.readthedocs.io/">
         <img src="https://img.shields.io/badge/docs-passing-brightgreen.svg" 
         alt="docs"></a> &nbsp;
-    <a href="https://pypi.org/project/Quantropy/0.0.1/">
-        <img src="https://img.shields.io/badge/pypi-v1.4.1-brightgreen.svg" alt="pypi"></a> &nbsp;
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
             alt="MIT license"></a> &nbsp;
@@ -23,39 +26,74 @@ It will find variables upon which the given data might depend on, and develop el
 in the hopes of predicting future observations. What if this search for the Holy Grail is all in vain? 
 What if we have been fooled by randomness? 
 
-## Package Description
+## Table of Contents
 
-This project is an attempt to shed light on this question that has puzzled researchers for the past century. It is the culmination of three years of learning about the financial markets, and almost a year of
-developing a platform in order to provide a comprehensive and unified approach to trading the financial markets.
+- [Getting Started](#getting-started)
+    - [Docker](#docker)
+    - [Git](#git)
+- [Proof of Concept](#proof-of-concept)
+- [Architectural Design](#architectural-design)
+- [Acknowledgment](#acknowledgment)
 
-You can head over [here](https://quantropy.readthedocs.io/) to read the documentation.
+## Getting Started
 
+This project is an attempt to shed light on this question that has puzzled researchers over the past century. 
+It is the culmination of three years of learning about the financial markets, in order to develop a platform 
+that hopes to provide a comprehensive and unified approach to trading the financial markets. You can choose one of the methods 
+below to fetch and run the project. If successful, `Quantropy` should now be running [here](http://127.0.0.1:5000/).
 
-Essentially, we replicate the academia and industry methodologies into an open-source framework that our community 
-can reuse and extend on, with the low-level work already done. Therefore, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
-and comprehensively research models, develop strategies, and deploy them in real-time. The pipeline looks as such:
+### Docker
 
-1.  In the `historical_data_collection` module, we scrape data from various sources, including SEC Edgar for **financial statements** and **market classification**,
-    YahooFinance for **asset prices**, FRED for **macroeconomic data**, and various datasets for **risk factors**. 
-    *Currently migrating from Excel and Pickle files to MongoDB and Kafka for real-time streaming.*
+Basic, will eventually need `docker-compose`.
 
-2.  a.  In the `fundamental_analysis` module, we provide tools to assess a company's fair value (**equity valuation models**),
-        and evaluate by looking at **accounting ratios**, and accompanying *financial distress* and *earnings manipulation* models,
-        and compare across time and competitors. 
-    
-    b. In the `technical_analysis` module, we provide tools to detect geometric shapes (**chart patterns**, **candlestick patterns**) 
-    and price characteristics (**technical indicators**). *Still under development, not a priority, but can use `TA-Lib` meanwhile.*
-    
-    c. In the `quantitative_analysis` module, we provide tools to model risk for **portfolio optimization**, as well 
-    as research drivers of returns through **asset pricing models**, and forecast outcomes through **stochastic processes**.
-    
-3.  In the `portfolio_management` module, we construct portfolios by *selecting stocks* using the aforementioned analysis for **stock screening**, 
-    and *allocating weights* through **portfolio optimization**. We then use our **backtester** to realistically evaluate historical performance,
-    then **deploy** to a broker. Several **templates** for strategies are provided, including *style* (value, growth, momentum, quality), 
-    *trend*, *mean-reversion*, *event-driven arbitrage*, *smart-beta*, and *pairs trading*. 
+```bash
+docker pull matilda
+docker run -d -p 5000:5000 matilda
+```
 
-Note: I am currently focused in more of the *project management* aspects of the project, for writing unit and mock tests, DevOps and
-documentation, as well as database migration. After I'm done (~ April 2021), I will extend the implementation based on the books I just ordered:
+### Git
+
+```bash
+git clone https://github.com/AlainDaccache/Quantropy/
+cd Quantropy
+py -m pip install -r requirements.txt
+set FLASK_APP=matilda
+py -m flask run
+```
+
+## Proof of Concept
+
+This open-source project is built with all types of users in mind. Whether you're a seasoned trader that wants to progressively learn how to code in order to automate your
+strategies, or vice-versa, the [documentation](https://quantropy.readthedocs.io/) covers both aspects. Through it, 
+we synthesize the theoretical groundwork that was laid by academicians and industry practitioners for 
+modeling equity valuation, risk factors, portfolio allocation, etc. Alongside it, we provide  an implementation 
+that uses our API calls to apply and validate these models in real-life.
+
+```bash
+```
+
+alaindacc[at]gmail[dot]com
+
+## Architectural Design
+
+Essentially, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
+and comprehensively research models, develop strategies, and deploy them in real-time. The flow looks as such:
+
+<img src="" alt="Architecture Diagram">
+
+The library attempts to:
+- Implement the low-level work to achieve **abstraction**, 
+- Follow good design practices to achieve **modularity**, allowing the user to swap in their components while still 
+being able to reuse and extend on our framework.
+- Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies
+
+<img src="" alt="DevOps Pipeline">
+
+## Acknowledgment
+
+Thanks to a part of **McGill University**'s generous donation, I was able to acquire these books that I will use 
+as reference throughout the implementation of this project:
+
 * Andrew Ang. *Asset Management: A Systematic Approach to Factor Investing*
 * Ernie Chan - *Algorithmic Trading: Winning Strategies and Their Rationale*
 * Ernie Chan - *Quantitative Trading: How to Build Your Own Algorithmic Trading Business*
@@ -65,12 +103,23 @@ documentation, as well as database migration. After I'm done (~ April 2021), I w
 * Edward Qian - *Quantitative Equity Portfolio Management: Modern Techniques and Applications*
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Current opportunities for contribution include:
 
-* **Documentation**: For literally everything. 
-* **Data collection**: Scraping *alternative data* (news sentiment analysis, web/app usage and reviews etc.), improve the *HTML scraper* for Edgar.
-* **Fundamental analysis**: Using `matplotlib` for appropriate visualizations across time, industry, sector, and market.
-* **Portfolio management**: Implementing risk parity models for portfolio optimization, and pre-defined strategies of 
-superinvestors (i.e. Warren Buffet, Benjamin Graham, Peter Lynch) based on books written and interviews. Extending broker deployment implementation.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. 
+Here is a list of areas `Quantropy` I think can really benefit from:
+- **Data Scraping**: Scrape alternative data (news sentiment analysis, web/app usage and reviews etc.), improve the HTML scraper for Edgar.
+- **Factor Library**: Use our risk factor modeling interface to develop and publish your own factors! We can 
+surely integrate them to develop our own community's asset pricing model (and perhaps our fund :smirk:).
+- **Data Visualization**: Develop more visualizations using *Bokeh*. Integrate with *PowerBI*.
+- **Portfolio management**: Implementing pre-defined strategies of fund managers (i.e. Warren Buffet, Benjamin Graham, Peter Lynch) 
+based on books written and interviews. Extend broker deployment implementation.
+- **Misc**: And of course, we can never get enough of *unit tests* and *documentation*!
 
 Please make sure to update tests as appropriate.
+
+## Getting in Touch
+
+If you are having a problem with `Quantropy`, please raise a GitHub issue. For anything else, you can reach me at:
+
+<center>
+<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/email.png" style="width:50%;">
+</center>
