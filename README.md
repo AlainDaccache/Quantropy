@@ -34,13 +34,15 @@ What if we have been fooled by randomness?
 - [Proof of Concept](#proof-of-concept)
 - [Architectural Design](#architectural-design)
 - [Acknowledgment](#acknowledgment)
+- [Contributing](#contributing)
+- [Getting in Touch](#getting-in-touch)
 
 ## Getting Started
 
 This project is an attempt to shed light on this question that has puzzled researchers over the past century. 
 It is the culmination of three years of learning about the financial markets, in order to develop a platform 
-that hopes to provide a comprehensive and unified approach to trading the financial markets. You can choose one of the methods 
-below to fetch and run the project. If successful, `Quantropy` should now be running [here](http://127.0.0.1:5000/).
+that hopes to provide a comprehensive and unified approach to trading the financial markets. To fetch and run the project, 
+you can choose one of the methods below. If successful, `Quantropy` should now be running [here](http://127.0.0.1:5000/).
 
 ### Docker
 
@@ -66,13 +68,11 @@ py -m flask run
 This open-source project is built with all types of users in mind. Whether you're a seasoned trader that wants to progressively learn how to code in order to automate your
 strategies, or vice-versa, the [documentation](https://quantropy.readthedocs.io/) covers both aspects. Through it, 
 we synthesize the theoretical groundwork that was laid by academicians and industry practitioners for 
-modeling equity valuation, risk factors, portfolio allocation, etc. Alongside it, we provide  an implementation 
-that uses our API calls to apply and validate these models in real-life.
+conducting fundamental, technical, and quantitative analysis, and using these for stock picking, market timing, 
+and portfolio allocation. Alongside it, we provide an implementation that uses our API calls to apply and validate these models in real-life.
 
 ```bash
 ```
-
-alaindacc[at]gmail[dot]com
 
 ## Architectural Design
 
@@ -82,16 +82,17 @@ and comprehensively research models, develop strategies, and deploy them in real
 <img src="" alt="Architecture Diagram">
 
 The library attempts to:
-- Implement the low-level work to achieve **abstraction**, 
+- Implement the low-level work to achieve **abstraction**, so that the user can swiftly translate his insights into practice, 
+without wasting time, energy, and money reinventing the wheel.
 - Follow good design practices to achieve **modularity**, allowing the user to swap in their components while still 
 being able to reuse and extend on our framework.
-- Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies
+- Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies.
 
 <img src="" alt="DevOps Pipeline">
 
 ## Acknowledgment
 
-Thanks to a part of **McGill University**'s generous donation, I was able to acquire these books that I will use 
+Thanks to part of **McGill University**'s generous donation, I was able to acquire these books that I will use 
 as reference throughout the implementation of this project:
 
 * Andrew Ang. *Asset Management: A Systematic Approach to Factor Investing*
@@ -121,5 +122,5 @@ Please make sure to update tests as appropriate.
 If you are having a problem with `Quantropy`, please raise a GitHub issue. For anything else, you can reach me at:
 
 <center>
-<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/email.png" style="width:50%;">
+<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/email.png" style="width:50%;"/>
 </center>
