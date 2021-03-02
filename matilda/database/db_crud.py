@@ -1,5 +1,7 @@
 import os
 import pickle
+from pprint import pprint
+
 import config
 import pandas as pd
 
@@ -200,6 +202,7 @@ def format_output(output: dict):
 
 def read_financial_statement_entry(stock, financial_statement: str, entry_name: list, period: str,
                                    date=None, lookback_period: timedelta = timedelta(days=0)):
+    # TODO also try multiple entries (allow entry_name to be list of list)
     """
     Read an entry from a financial statement. By default, we read the most recent position for the balance sheet,
     and the trailing twelve months for the income statement and cash flow statement.
@@ -216,9 +219,9 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
     stock, date = format_input(stock, date)
     filings = object_model.Filing.objects(company__in=object_model.Company.objects(ticker__in=stock),
-                                          date__gte=date[0] - timedelta(days=100) if period == 'Q'
-                                          else date[0] - timedelta(days=400),
-                                          date__lte=date[-1], period='Yearly' if period == 'FY' else 'Quarterly')
+                                          date__gte=date[0] - lookback_period - timedelta(days=100) if period == 'Q'
+                                          else date[0] - lookback_period - timedelta(days=400),
+                                          date__lte=date[-1] - lookback_period, period='Yearly' if period == 'FY' else 'Quarterly')
 
     # TODO Try aggregation https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
 
@@ -242,8 +245,8 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
                 # if date is instance of tuple, then it's a range and we need to consider all filings queried.
                 if isinstance(date, list) and \
-                        idx + 1 < len(filings_for_stock) \
-                        and filings_for_stock[idx + 1]['date'] < date_:
+                        idx + 1 < len(filings_for_stock) and \
+                        filings_for_stock[idx + 1]['date'] < date_ - lookback_period:
                     continue
 
                 def get_entry(filing_):  # now can get corresponding entry
@@ -360,14 +363,14 @@ if __name__ == '__main__':
 
     # object_model.Index.drop_collection()
     # populate_indices(from_file=False)
-    object_model.User.drop_collection()
-    print(companies_in_classification(class_=config.MarketIndices.SP_500, date=datetime(2016, 1, 1)))
+    # object_model.User.drop_collection()
+    # print(companies_in_classification(class_=config.MarketIndices.SP_500, date=datetime(2016, 1, 1)))
 
-    # for period in ['YTD']:
-    #     pprint(read_financial_statement_entry(stock=companies_in_index(config.MarketIndices.DOW_JONES)[:5],
-    #                                           financial_statement='BalanceSheet',
-    #                                           period=period, date=datetime(2018, 6, 6),
-    #                                           entry_name=['Assets', 'CurrentAssets', 'TotalCurrentAssets']))
-    # pprint(market_price(stock=['MMM', 'AMGN'], date=datetime.now()))
-    # nasdaq_tickers = object_model.Company.objects(exchange='NASDAQ').values_list('name')
-    # print(nasdaq_tickers)
+    for period in ['YTD']:
+        pprint(read_financial_statement_entry(stock=companies_in_classification(config.MarketIndices.DOW_JONES)[:5],
+                                              financial_statement='BalanceSheet',
+                                              period=period, date=datetime(2018, 6, 6),
+                                              entry_name=['Assets', 'CurrentAssets', 'TotalCurrentAssets']))
+    pprint(read_market_price(stock=['MMM', 'AMGN'], date=datetime.now()))
+    nasdaq_tickers = object_model.Company.objects(exchange='NASDAQ').values_list('name')
+    print(nasdaq_tickers)

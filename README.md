@@ -22,7 +22,7 @@
 </p>
 
 The human mind is fascinating. Give it a series of observations, and it will attempt to find structure to it. 
-It will find variables upon which the given data might depend on, and develop elaborate models, 
+It will find variables upon which the given data might depend on, and develop elaborate models 
 in the hopes of predicting future observations. What if this search for the Holy Grail is all in vain? 
 What if we have been fooled by randomness? 
 
@@ -39,14 +39,14 @@ What if we have been fooled by randomness?
 
 ## Getting Started
 
-This project is an attempt to shed light on this question that has puzzled researchers over the past century. 
-It is the culmination of three years of learning about the financial markets, in order to develop a platform 
-that hopes to provide a comprehensive and unified approach to trading the financial markets. To fetch and run the project, 
-you can choose one of the methods below. If successful, `Quantropy` should now be running [here](http://127.0.0.1:5000/).
+This project is an attempt on shedding light to this question that has puzzled researchers over the past century. 
+It is the culmination of three years of learning about the financial markets, in order to develop a platform in the 
+hopes of providing a comprehensive and unified approach to trading the financial markets. 
+
+To fetch and run the project, you can choose one of the methods below. 
+If successful, `Quantropy` should now be running [here](http://127.0.0.1:5000/).
 
 ### Docker
-
-Basic, will eventually need `docker-compose`.
 
 ```bash
 docker pull matilda
@@ -65,11 +65,13 @@ py -m flask run
 
 ## Proof of Concept
 
-This open-source project is built with all types of users in mind. Whether you're a seasoned trader that wants to progressively learn how to code in order to automate your
-strategies, or vice-versa, the [documentation](https://quantropy.readthedocs.io/) covers both aspects. Through it, 
-we synthesize the theoretical groundwork that was laid by academicians and industry practitioners for 
-conducting fundamental, technical, and quantitative analysis, and using these for stock picking, market timing, 
-and portfolio allocation. Alongside it, we provide an implementation that uses our API calls to apply and validate these models in real-life.
+This open-source project is built with all types of users in mind. Whether you're a *seasoned trader* that wants to 
+progressively learn how to code in order to automate your strategies, or vice-versa, the 
+[documentation](https://quantropy.readthedocs.io/) covers both aspects. Through it, we synthesize the theoretical 
+groundwork that was laid by academicians and industry practitioners for conducting fundamental, technical, and 
+quantitative analysis, and using these for **stock picking**, **market timing**, 
+and **portfolio allocation**. Alongside it, we provide an implementation that uses our API calls to apply and validate 
+these models in real-life.
 
 ```bash
 ```
@@ -83,7 +85,7 @@ and comprehensively research models, develop strategies, and deploy them in real
 
 The library attempts to:
 - Implement the low-level work to achieve **abstraction**, so that the user can swiftly translate his insights into practice, 
-without wasting time, energy, and money reinventing the wheel.
+without wasting time, energy, and money, reinventing the wheel.
 - Follow good design practices to achieve **modularity**, allowing the user to swap in their components while still 
 being able to reuse and extend on our framework.
 - Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies.
@@ -106,7 +108,7 @@ as reference throughout the implementation of this project:
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. 
-Here is a list of areas `Quantropy` I think can really benefit from:
+Here is a list of areas that I think `Quantropy` can really benefit from:
 - **Data Scraping**: Scrape alternative data (news sentiment analysis, web/app usage and reviews etc.), improve the HTML scraper for Edgar.
 - **Factor Library**: Use our risk factor modeling interface to develop and publish your own factors! We can 
 surely integrate them to develop our own community's asset pricing model (and perhaps our fund :smirk:).
@@ -115,12 +117,8 @@ surely integrate them to develop our own community's asset pricing model (and pe
 based on books written and interviews. Extend broker deployment implementation.
 - **Misc**: And of course, we can never get enough of *unit tests* and *documentation*!
 
-Please make sure to update tests as appropriate.
-
 ## Getting in Touch
 
 If you are having a problem with `Quantropy`, please raise a GitHub issue. For anything else, you can reach me at:
 
-<center>
-<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/email.png" style="width:50%;"/>
-</center>
+<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/email.png" alt="email" class="center" style="width:50%;">

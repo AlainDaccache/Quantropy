@@ -1,27 +1,7 @@
-import os
-from datetime import datetime, timedelta
-import fundamental_analysis.financial_statements_entries as fi
-import historical_data_collection.data_preparation_helpers as excel
-import config
-import numpy as np
-from options_scraper.scraper import NASDAQOptionsScraper
-import pandas as pd
+from datetime import datetime
 
-'''
-Data outside financial statements for the company
-'''
-
-def get_stock_location(stock: str):
-    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Location', stock)
-
-
-def get_stock_industry(stock: str):
-    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Industry', stock)
-
-
-def get_stock_sector(stock: str):
-    return excel.read_entry_from_csv(config.COMPANY_META_DATA_FILE_PATH, 'Sheet1', 'Sector', stock)
-
+from matilda.database.db_crud import read_market_price
+from matilda.fundamental_analysis.financial_statements import *
 
 '''
 Intermediary data from financial statements used in accounting ratios and financial modeling
@@ -30,27 +10,27 @@ Intermediary data from financial statements used in accounting ratios and financ
 
 def dividend_per_share(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                        period: str = '', diluted_shares: bool = True, deduct_preferred_dividends: bool = False):
-    dividends_paid = fi.payments_for_dividends(stock=stock, date=date, lookback_period=lookback_period, period=period)
-    dividends_paid -= abs(fi.preferred_dividends(stock=stock, date=date, lookback_period=lookback_period,
-                                                 period=period)) if deduct_preferred_dividends else 0
-    shares_outstanding = fi.total_shares_outstanding(stock=stock, diluted_shares=diluted_shares, date=date,
-                                                     lookback_period=lookback_period, period=period)
+    dividends_paid = payments_of_dividends(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    dividends_paid -= abs(preferred_dividends(stock=stock, date=date, lookback_period=lookback_period,
+                                              period=period)) if deduct_preferred_dividends else 0
+    shares_outstanding = total_shares_outstanding(stock=stock, diluted_shares=diluted_shares, date=date,
+                                                  lookback_period=lookback_period, period=period)
     return abs(dividends_paid) / shares_outstanding
 
 
 def cash_flow_per_share(cash_flow_metric, stock, date=datetime.today(), lookback_period=timedelta(days=0),
                         period: str = '', diluted_shares=True):
     cash_flow = cash_flow_metric(stock=stock, date=date, lookback_period=lookback_period, period=period)
-    shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
-                                                     period=period, diluted_shares=diluted_shares)
+    shares_outstanding = total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
+                                                  period=period, diluted_shares=diluted_shares)
     return cash_flow / shares_outstanding
 
 
 def market_capitalization(stock: str, diluted_shares: bool = False, date: datetime = datetime.now(),
                           lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
-    shares_outstanding = fi.total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
-                                                     period=period, diluted_shares=diluted_shares)
-    output = market_price(stock, date, lookback_period) * shares_outstanding * 1000000  # TODO hotfix!
+    shares_outstanding = total_shares_outstanding(stock=stock, date=date, lookback_period=lookback_period,
+                                                  period=period, diluted_shares=diluted_shares)
+    output = read_market_price(stock, date, lookback_period) * shares_outstanding * 1000000  # TODO hotfix!
     print('Market Capitalization for {} on the {} is: {}'.format(stock, date, output))
     return output
 
@@ -68,20 +48,20 @@ def enterprise_value(stock: str, date: datetime = datetime.now(), lookback_perio
     """
     # TODO check for unfunded pension liabilities and other debt-deemed provisions, and value of associate companies
     output = market_capitalization(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-             + fi.total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+             + total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period) \
              + np.nan_to_num(
-        fi.minority_interest(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
+        minority_interest(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
              + np.nan_to_num(
-        fi.preferred_stock_value(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
-             - fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        preferred_stock_value(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
+             - cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period)
     print('Enterprise Value for {} on the {} is: {}'.format(stock, date, output))
     return output
 
 
 def gross_profit(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                  period: str = ''):
-    return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           - fi.cost_of_goods_services(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           - cost_of_goods_services(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def debt(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
@@ -93,78 +73,78 @@ def debt(stock: str, date: datetime = datetime.now(), lookback_period: timedelta
          ):
     if long_term_debt:
         if not exclude_current_portion_long_term_debt:
-            return fi.total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period)
+            return total_long_term_debt(stock=stock, date=date, lookback_period=lookback_period, period=period)
         else:
-            return fi.long_term_debt_excluding_current_portion(stock=stock, date=date, lookback_period=lookback_period,
-                                                               period=period)
+            return long_term_debt_excluding_current_portion(stock=stock, date=date, lookback_period=lookback_period,
+                                                            period=period)
 
     if all_liabilities:
-        return fi.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        return total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
     if only_interest_expense:
-        return fi.interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        return interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 # TODO Review
 def debt_service(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                  period: str = ''):
-    return fi.interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return interest_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 # TODO Review
 def net_credit_sales(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                      period: str = ''):
-    return fi.net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           - fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return net_sales(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           - net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def earnings_before_interest_and_taxes_and_depreciation_and_amortization(stock: str, date: datetime = datetime.now(),
                                                                          lookback_period: timedelta = timedelta(days=0),
                                                                          period: str = ''):
     return earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           + fi.depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period, period=period)
+           + depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def earnings_before_interest_and_taxes(stock: str, date: datetime = datetime.now(),
                                        lookback_period: timedelta = timedelta(days=0),
                                        period: str = ''):
     return earnings_before_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           + fi.income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
+           + income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def earnings_before_taxes(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                           period: str = ''):
-    directly_from_statement = fi.read_financial_statement_entry(financial_statement='Income Statement', stock=stock,
-                                                                entry_name=[
-                                                                    'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest',
-                                                                    ' '],
-                                                                date=date, lookback_period=lookback_period,
-                                                                period=period)
+    directly_from_statement = read_financial_statement_entry(financial_statement='Income Statement', stock=stock,
+                                                             entry_name=[
+                                                                 'Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest',
+                                                                 ' '],
+                                                             date=date, lookback_period=lookback_period,
+                                                             period=period)
     if not np.isnan(directly_from_statement):
         return directly_from_statement
     else:
-        return fi.net_income(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               + fi.income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        return net_income(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               + income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def effective_tax_rate(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                        period: str = ''):
-    return fi.income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+    return income_tax_expense(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / earnings_before_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def capital_expenditures(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                          period: str = ''):
-    from_cash_flow_statement = fi.acquisition_property_plant_equipment(stock=stock, date=date,
-                                                                       lookback_period=lookback_period, period=period)
+    from_cash_flow_statement = acquisition_property_plant_equipment(stock=stock, date=date,
+                                                                    lookback_period=lookback_period, period=period)
     if not np.isnan(from_cash_flow_statement):
         return from_cash_flow_statement
     else:
-        return fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               - fi.net_property_plant_equipment(stock=stock, date=date - timedelta(days=365 if period != 'Q' else 90),
-                                                 lookback_period=lookback_period, period=period) \
-               + fi.depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period,
-                                                  period=period)
+        return net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               - net_property_plant_equipment(stock=stock, date=date - timedelta(days=365 if period != 'Q' else 90),
+                                              lookback_period=lookback_period, period=period) \
+               + depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period,
+                                               period=period)
 
 
 def funds_from_operations():
@@ -185,8 +165,8 @@ def net_operating_profit_after_tax(stock: str, date: datetime = datetime.now(),
 
 def net_current_asset_value(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                             period: str = ''):
-    return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           - fi.total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return total_current_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           - total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def net_working_capital(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
@@ -195,20 +175,20 @@ def net_working_capital(stock: str, date: datetime = datetime.now(), lookback_pe
                         only_include_payables_receivables_inventory=False):
     # broadest (as it includes all accounts)
     if not (exclude_current_portion_cash_and_debt or only_include_payables_receivables_inventory):
-        return fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               - fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        return total_current_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               - total_current_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
     if exclude_current_portion_cash_and_debt:  # more narrow
-        return (fi.current_total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) -
-                fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
-               - (fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
-                  - fi.long_term_debt_current_maturities(stock=stock, date=date, lookback_period=lookback_period,
-                                                         period=period))
+        return (total_current_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) -
+                cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
+               - (total_current_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+                  - long_term_debt_current_maturities(stock=stock, date=date, lookback_period=lookback_period,
+                                                      period=period))
 
     if only_include_payables_receivables_inventory:  # most narrow
-        return fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               + fi.net_inventory(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               - fi.accounts_payable(stock=stock, date=date, lookback_period=lookback_period, period=period)
+        return net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               + net_inventory(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               - accounts_payable(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def invested_capital(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
@@ -216,30 +196,30 @@ def invested_capital(stock: str, date: datetime = datetime.now(), lookback_perio
     if operating_approach:
         return net_working_capital(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                    exclude_current_portion_cash_and_debt=True) \
-               + fi.net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               + fi.total_intangible_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
+               + net_property_plant_equipment(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               + total_intangible_assets(stock=stock, date=date, lookback_period=lookback_period, period=period)
     else:  # investing approach
-        return fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               + fi.long_term_debt_excluding_current_portion(stock, date, lookback_period=timedelta(days=0),
-                                                             period=period) \
-               + fi.total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-               + fi.cash_flow_financing_activities(stock=stock, date=date, lookback_period=lookback_period,
-                                                   period=period) \
-               + fi.cash_flow_investing_activities(stock=stock, date=date, lookback_period=lookback_period,
-                                                   period=period)
+        return total_current_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               + long_term_debt_excluding_current_portion(stock, date, lookback_period=timedelta(days=0),
+                                                          period=period) \
+               + total_shareholders_equity(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+               + cash_flow_financing_activities(stock=stock, date=date, lookback_period=lookback_period,
+                                                period=period) \
+               + cash_flow_investing_activities(stock=stock, date=date, lookback_period=lookback_period,
+                                                period=period)
 
 
 def capital_employed(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                      period: str = ''):
-    return fi.total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           - fi.current_total_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return total_assets(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           - total_current_liabilities(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def liquid_assets(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                   period: str = ''):
-    return fi.cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           + fi.current_marketable_securities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           + fi.net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period)
+    return cash_and_cash_equivalents(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           + current_marketable_securities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           + net_accounts_receivable(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 def free_cash_flow(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
@@ -255,7 +235,7 @@ def free_cash_flow(stock: str, date: datetime = datetime.now(), lookback_period:
 
     :return:
     """
-    return fi.cash_flow_operating_activities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+    return cash_flow_operating_activities(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            - abs(capital_expenditures(stock=stock, date=date, lookback_period=lookback_period, period=period))
 
 
@@ -264,7 +244,7 @@ def free_cash_flow(stock: str, date: datetime = datetime.now(), lookback_period:
 def free_cash_flow_to_equity(stock: str, date: datetime = datetime.now(),
                              lookback_period: timedelta = timedelta(days=0), period: str = ''):
     return free_cash_flow(stock=stock, date=date, lookback_period=lookback_period, period=period) \
-           + fi.net_debt_issued(stock=stock, date=date, lookback_period=lookback_period, period=period)
+           + net_debt_issued(stock=stock, date=date, lookback_period=lookback_period, period=period)
 
 
 # FCFF equires multi-step calculation and is used in DCF analysis to arrive at the enterprise value.
@@ -274,7 +254,7 @@ def free_cash_flow_to_firm(stock: str, date: datetime = datetime.now(), lookback
                            period: str = ''):
     return earnings_before_interest_and_taxes(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            * (1 - effective_tax_rate(stock=stock, date=date, lookback_period=lookback_period, period=period)) \
-           + fi.depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period, period=period) \
+           + depreciation_and_amortization(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            - (net_working_capital(stock=stock, date=date, lookback_period=lookback_period, period=period)
               - net_working_capital(stock=stock, date=date - timedelta(days=365 if period != 'Q' else 90),
                                     lookback_period=lookback_period, period=period)) \
