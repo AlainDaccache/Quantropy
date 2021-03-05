@@ -4,7 +4,7 @@ Fundamental Analysis
 Fundamental analysis assesses a company by looking at its financial statements to evaluate its health and value, and compares them across time and against
 competitors.
 
-Hi
+Hi!g
 
 Financial Statements
 ====================
