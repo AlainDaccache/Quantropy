@@ -4,21 +4,12 @@ Fundamental Analysis
 Fundamental analysis assesses a company by looking at its financial statements to evaluate its health and value, and compares them across time and against
 competitors.
 
-Hi
-
 Financial Statements
 ====================
 
 Balance Sheet
 -------------
 .. py:currentmodule:: matilda.fundamental_analysis.financial_statements.balance_sheet
-
-It's a snapshot of a company's position time, recording assets, liabillt.
-
-Assets
-++++++
-
-.. autofunction:: cash_and_cash_equivalents
 
 Income Statement
 ----------------
