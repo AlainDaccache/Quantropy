@@ -14,33 +14,8 @@ Welcome to Quantropy's documentation!
    investment-paradigms
 
 
-Example use (*needs updating, included more features now*):
 
->>>ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
->>>reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
->>>pprint(reg.params)
 
->>>stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
->>>stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
->>>stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
->>>stock_screener.run()
-
->>>lower_bounds = pd.Series(data=[40], index=['Alpha'])
->>>upper_bounds = pd.Series(data=[80], index=['MKT'])
->>>stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
->>>                                                    lower_bounds=lower_bounds, upper_bounds=upper_bounds)
->>>stock_screener.run(date=datetime(2018, 1, 1))
->>>print(stock_screener.stocks)
-
->>>class Alainps(Strategy):
->>>    def is_time_to_reschedule(self, current_date, last_rebalancing_day):
->>>        return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value
->>>
->>>
->>>strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
->>>                   starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
->>>                   net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
->>>strategy.historical_simulation()
 
 Indices and tables
 ==================

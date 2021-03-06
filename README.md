@@ -74,6 +74,32 @@ and **portfolio allocation**. Alongside it, we provide an implementation that us
 these models in real-life.
 
 ```bash
+ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
+reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
+pprint(reg.params)
+
+stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
+stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+stock_screener.run()
+
+lower_bounds = pd.Series(data=[40], index=['Alpha'])
+upper_bounds = pd.Series(data=[80], index=['MKT'])
+stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
+                                                    lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+stock_screener.run(date=datetime(2018, 1, 1))
+print(stock_screener.stocks)
+
+class Alainps(Strategy):
+    def is_time_to_reschedule(self, current_date, last_rebalancing_day):
+        return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value
+
+
+strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
+                   starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
+                   net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
+strategy.historical_simulation()
+strategy.broker_deployment(Alpaca('YOUR_API_KEY', 'YOUR_SECRET_KEY'))
 ```
 
 ## Architectural Design
@@ -81,7 +107,7 @@ these models in real-life.
 Essentially, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
 and comprehensively research models, develop strategies, and deploy them in real-time. The flow looks as such:
 
-<img src="" alt="Architecture Diagram">
+<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/architecture_diagram.png" alt="Architecture Diagram">
 
 The library attempts to:
 - Implement the low-level work to achieve **abstraction**, so that the user can swiftly translate his insights into practice, 
@@ -100,9 +126,9 @@ as reference throughout the implementation of this project:
 * Andrew Ang. *Asset Management: A Systematic Approach to Factor Investing*
 * Ernie Chan - *Algorithmic Trading: Winning Strategies and Their Rationale*
 * Ernie Chan - *Quantitative Trading: How to Build Your Own Algorithmic Trading Business*
+* Stefan Jansen - *Machine Learning for Algorithmic Trading*
 * Marcos Lopez de Prado - *Advances in Financial Machine Learning*
 * Marcos Lopez de Prado - *Machine Learning for Asset Managers*
-* Stefan Jansen - *Machine Learning for Algorithmic Trading*
 * Edward Qian - *Quantitative Equity Portfolio Management: Modern Techniques and Applications*
 
 ## Contributing
