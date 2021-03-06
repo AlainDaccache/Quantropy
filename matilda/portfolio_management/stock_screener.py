@@ -1,14 +1,10 @@
 from datetime import datetime
-from enum import Enum
-from pprint import pprint
 from functools import partial
-from config import MarketIndices, Exchanges, GICS_Sectors, SIC_Industries, GICS_Industries, Regions, SIC_Sectors
+
+from matilda import companies_in_classification, config, price_to_earnings, earnings_per_share
 from matilda.portfolio_management.Portfolio import Portfolio, TimeDataFrame
 from matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model import FactorModels
-
 import pandas as pd
-import macroeconomic_analysis.macroeconomic_analysis as macro
-import fundamental_analysis.accounting_ratios as ratios
 import inspect
 import typing
 
@@ -45,7 +41,7 @@ class StockScreener:
         self.securities_universe = securities_universe  # starting universe
 
         if securities_universe is None:
-            self.stocks = macro.companies_in_index(MarketIndices.SP_500, date=date)
+            self.stocks = companies_in_classification(class_=config.MarketIndices.SP_500)
         else:
             self.stocks = securities_universe
 
@@ -92,24 +88,7 @@ class StockScreener:
 
         # TODO DO UNION BETWEEN, AND INTERSECTION WITHIN
 
-        if isinstance(filter, Regions):
-            companies_ = macro.companies_in_location(location=filter, date=self.date)
-
-        elif isinstance(filter, Exchanges):
-            companies_ = macro.companies_in_exchange(exchange=filter, date=self.date)
-
-        elif isinstance(filter, MarketIndices):
-            companies_ = macro.companies_in_index(market_index=filter, date=self.date)
-
-        elif isinstance(filter, SIC_Sectors) or isinstance(filter, GICS_Sectors):
-            companies_ = macro.companies_in_sector(sector=filter, date=self.date)
-
-        elif isinstance(filter, SIC_Industries) or isinstance(filter, GICS_Industries):
-            companies_ = macro.companies_in_industry(industry=filter, date=self.date)
-
-        else:
-            raise Exception("'filter' doesn't match any Region, Exchange, Market Index, Sector, or Industry")
-
+        companies_ = companies_in_classification(class_=filter, date=self.date)
         self.stocks = list(set(self.stocks).intersection(companies_))
         self.conditions.append((StockScreener.filter_by_market, filter))
         return self.stocks
@@ -191,8 +170,8 @@ class StockScreener:
         :return:
         """
         if columns is None:
-            columns = [[partial(ratios.price_to_earnings, period='FY'),
-                        partial(ratios.earnings_per_share, period='FY')]]
+            columns = [[partial(price_to_earnings, period='FY'),
+                        partial(earnings_per_share, period='FY')]]
 
         stock_screener_dict = {stock: {metric.func.__name__: metric(stock, date)}
                                for stock in self.stocks
@@ -200,17 +179,3 @@ class StockScreener:
         stock_screener_df = pd.DataFrame.from_dict(stock_screener_dict, orient='index')
 
         return stock_screener_df
-
-
-if __name__ == '__main__':
-    stock_screener = StockScreener(securities_universe=['AAPL', 'AMGN', 'AXP', 'BA', 'CAT'])
-    stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
-    print(stock_screener.stocks)
-    stock_screener.filter_by_market(filter=GICS_Sectors.INFORMATION_TECHNOLOGY)
-    print(stock_screener.stocks)
-    stock_screener.run(date=datetime(2018, 1, 1))
-    lower_bounds = pd.Series(data=[40], index=['Alpha'])
-    upper_bounds = pd.Series(data=[80], index=['MKT'])
-    stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
-                                                        lower_bounds=lower_bounds, upper_bounds=upper_bounds)
-    print(stock_screener.stocks)

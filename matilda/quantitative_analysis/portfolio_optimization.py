@@ -2,16 +2,17 @@ import abc
 import inspect
 from datetime import datetime
 
-import macroeconomic_analysis.macroeconomic_analysis as macro
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import typing
 from functools import partial
 from scipy.optimize import minimize, Bounds
-from config import MarketIndices
-from fundamental_analysis.supporting_metrics import market_capitalization
+
+from matilda.fundamental_analysis.supporting_metrics import market_capitalization
+from matilda.database.db_crud import read_factor_returns
 from matilda.portfolio_management.Portfolio import Portfolio
+from matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model import CapitalAssetPricingModel
 
 np.random.seed(123)
 
@@ -138,9 +139,10 @@ class ModernPortfolioTheory(PortfolioAllocationModel):
             if use_sharpe:
                 portfolio_returns = self.portfolio.df_returns.dropna()
                 portfolio_returns = np.sum(weights * portfolio_returns, axis=1)
-                rf = macro.risk_free_rates(to_date=self.portfolio.df_returns.index[-1],
-                                           from_date=self.portfolio.df_returns.index[0],
-                                           frequency=self.portfolio.frequency)
+                rf = read_factor_returns(factor_model=CapitalAssetPricingModel, factor='RF',
+                                         to_date=self.portfolio.df_returns.index[-1],
+                                         from_date=self.portfolio.df_returns.index[0],
+                                         frequency=self.portfolio.frequency)
                 from matilda.quantitative_analysis.risk_quantification import sharpe_ratio
                 return - sharpe_ratio(portfolio_returns=portfolio_returns, risk_free_rates=rf)
 
@@ -219,7 +221,8 @@ class ModernPortfolioTheory(PortfolioAllocationModel):
                     xytext=(10, 10), textcoords='offset points')
 
         # Get yearly mean and std of market portfolio returns
-        mkt_mean, mkt_std = market_portfolio.get_mean_returns(to_freq='Y'), market_portfolio.get_volatility_returns(to_freq='Y')
+        mkt_mean, mkt_std = market_portfolio.get_mean_returns(to_freq='Y'), market_portfolio.get_volatility_returns(
+            to_freq='Y')
         if market_portfolio is not None and len(market_portfolio.df_returns.columns) == 1:
             plt.plot(mkt_std, mkt_mean, 'bo', markersize=15.0)
             ax.annotate(text=market_portfolio.df_returns.columns[0], xy=(mkt_std, mkt_mean),
@@ -306,10 +309,10 @@ class ModernPortfolioTheory(PortfolioAllocationModel):
         mean_asset_returns = portfolio_copy.get_mean_returns()
         date = portfolio_copy.df_returns.index[-1] if date is None else date
 
-        risk_free_rate = macro.risk_free_rates(lookback=regression_window, to_date=date, frequency=frequency).mean() \
-                         * portfolio.freq_to_yearly[frequency[0]]
+        risk_free_rate = risk_free_rates(lookback=regression_window, to_date=date, frequency=frequency).mean() \
+                         * freq_to_yearly[frequency[0]]
 
-        risk_premium = macro.market_premiums(lookback=regression_window, to_date=date, frequency=frequency).mean() \
+        risk_premium = market_premiums(lookback=regression_window, to_date=date, frequency=frequency).mean() \
                        * portfolio.freq_to_yearly[frequency[0]]
 
         x = np.linspace(0, max(betas) + 0.1, 100)
@@ -359,9 +362,9 @@ class PostModernPortfolioTheory(PortfolioAllocationModel):
             risk_metric = partial(risk_metric, portfolio_returns=portfolio_returns)
 
             if 'risk_free_rates' in fn_args_names.parameters.keys():
-                rf = macro.risk_free_rates(to_date=self.portfolio.df_returns.index[-1],
-                                           from_date=self.portfolio.df_returns.index[0],
-                                           frequency=self.portfolio.frequency)
+                rf = risk_free_rates(to_date=self.portfolio.df_returns.index[-1],
+                                     from_date=self.portfolio.df_returns.index[0],
+                                     frequency=self.portfolio.frequency)
                 risk_metric = partial(risk_metric, risk_free_rates=rf)
 
             if objective == 'maximize':
@@ -469,7 +472,10 @@ class NestedClusteredOptimization(PortfolioAllocationModel):
 
 
 if __name__ == '__main__':
-    assets = macro.companies_in_index(MarketIndices.DOW_JONES)
+    from matilda.database.db_crud import companies_in_classification
+    from matilda import config
+
+    assets = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
     portfolio = Portfolio(assets=assets)
     portfolio.set_frequency(frequency='M', inplace=True)
     portfolio.slice_dataframe(from_date=datetime(2016, 1, 1), to_date=datetime(2020, 1, 1), inplace=True)

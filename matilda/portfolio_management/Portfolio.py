@@ -6,8 +6,8 @@ import typing
 import numpy as np
 from datetime import timedelta
 from datetime import datetime
-import config
-from data.data_preparation_helpers import get_date_index
+from matilda import config
+from matilda.database.data_preparation_helpers import get_date_index
 
 
 class Trade:

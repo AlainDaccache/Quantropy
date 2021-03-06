@@ -1,7 +1,8 @@
-from matilda.quantitative_analysis.stochastic_modeling import ContinuousStochasticProcess
 import math
 import numpy as np
 from scipy import stats
+
+from matilda.quantitative_analysis.stochastic_modeling.base_models import ContinuousStochasticProcess
 
 
 class BrownianMotionModel(ContinuousStochasticProcess):

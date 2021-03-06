@@ -43,9 +43,9 @@ contributes to the risk and overall return of a portfolio.
 Markowitz Mean-Variance Framework (1952)
 ------------------------------------------
 
-.. autoclass:: portfolio_management.portfolio_optimization.ModernPortfolioTheory
+.. autoclass:: matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory
 
-.. autofunction:: portfolio_management.portfolio_optimization.ModernPortfolioTheory.solve_weights
+.. autofunction:: matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory.solve_weights
 
 >>> MPT = ModernPortfolioTheory(portfolio)
 >>> weights = MPT.solve_weights(use_sharpe=True)
@@ -85,7 +85,7 @@ dtype: float64
 Efficient Frontier
 ++++++++++++++++++
 
-.. autofunction:: portfolio_management.portfolio_optimization.ModernPortfolioTheory.markowitz_efficient_frontier
+.. autofunction:: matilda.quantitative_analysis.portfolio_optimization.markowitz_efficient_frontier
 
 >>> stats_df = MPT.markowitz_efficient_frontier(market_portfolio=market_portfolio, plot_assets=True, plot_cal=True)
 >>> pd.set_option('display.max_columns', None) # show all columns
@@ -167,7 +167,7 @@ Treynor-Black Model (1973)
 Unlike the **Markowitz's** approach for portfolio allocation, the **Treynor-Black model** is a type of *active* portfolio
 management.
 
-.. autoclass:: portfolio_management.portfolio_optimization.TreynorBlackModel
+.. autoclass:: matilda.quantitative_analysis.portfolio_optimization.TreynorBlackModel
 
 Black-Litterman Model (1990)
 ----------------------------
@@ -224,29 +224,28 @@ dtype: float64
 
 First, we cover some measures that are based on the *Capital Asset Pricing Model*:
 
-.. autofunction:: portfolio_management.risk_quantification.jensens_alpha
-.. autofunction:: portfolio_management.risk_quantification.capm_beta
+.. py:currentmodule:: matilda.quantitative_analysis.risk_quantification
+
+.. autofunction:: jensens_alpha
+.. autofunction:: capm_beta
 
 Risk Deviation Measures
 -----------------------
 
-.. autofunction:: portfolio_management.risk_quantification.standard_deviation
-.. autofunction:: portfolio_management.risk_quantification.average_absolute_deviation
-.. autofunction:: portfolio_management.risk_quantification.lower_semi_standard_deviation
+.. autofunction:: standard_deviation
+.. autofunction:: average_absolute_deviation
+.. autofunction:: lower_semi_standard_deviation
 
 Risk Adjusted Returns Measures Based on Volatility
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Volatility is simply the average dispersion of the returns around their mean
 
-.. autofunction:: portfolio_management.risk_quantification.treynor_ratio
-.. autofunction:: portfolio_management.risk_quantification.sharpe_ratio
-.. autofunction:: portfolio_management.risk_quantification.information_ratio
-.. autofunction:: portfolio_management.risk_quantification.modigliani_ratio
-
-
-
-.. autofunction:: portfolio_management.risk_quantification.roys_safety_first_criterion
+.. autofunction:: treynor_ratio
+.. autofunction:: sharpe_ratio
+.. autofunction:: information_ratio
+.. autofunction:: modigliani_ratio
+.. autofunction:: roys_safety_first_criterion
 
 >>> print(roys_safety_first_criterion(portfolio_returns=portfolio_returns, minimum_threshold=0.02, period=252))
 0.7591708635828361
@@ -258,22 +257,22 @@ Measures of risk-adjusted return based on volatility treat all deviations from t
 risk-adjusted return based on lower partial moments consider only deviations below some predefined minimum return
 threshold, t as risk i.e. positive deviations aren't risky. VaR is a more probabilistic view of loss as the risk of a portfolio
 
-.. autofunction:: portfolio_management.risk_quantification.value_at_risk_historical_simulation
-.. autofunction:: portfolio_management.risk_quantification.value_at_risk_variance_covariance
-.. autofunction:: portfolio_management.risk_quantification.value_at_risk_monte_carlo
-.. autofunction:: portfolio_management.risk_quantification.conditional_value_at_risk
+.. autofunction:: value_at_risk_historical_simulation
+.. autofunction:: value_at_risk_variance_covariance
+.. autofunction:: value_at_risk_monte_carlo
+.. autofunction:: conditional_value_at_risk
 
 Risk Adjusted Returns Measures Based on VaR
 +++++++++++++++++++++++++++++++++++++++++++
 Value at Risk computes the expected loss over a specified period of time given a confidence level
 
-.. autofunction:: portfolio_management.risk_quantification.excess_return_value_at_risk
-.. autofunction:: portfolio_management.risk_quantification.conditional_sharpe_ratio
+.. autofunction:: excess_return_value_at_risk
+.. autofunction:: conditional_sharpe_ratio
 
 Drawdown Risk
 -------------
 
-.. autofunction:: portfolio_management.risk_quantification.drawdown_risk
+.. autofunction:: drawdown_risk
 
 Partial Moments Risk
 --------------------
@@ -282,17 +281,17 @@ These measures consider downside risk, and do not assume that returns are normal
 The mean and variance do not completely describe the distribution, therefore using only both of
 them (i.e. the first and second moment of a distribution), would technically assume a normal distribution.
 
-.. autofunction:: portfolio_management.risk_quantification.lpm
-.. autofunction:: portfolio_management.risk_quantification.hpm
+.. autofunction:: lpm
+.. autofunction:: hpm
 
 Risk Adjusted Returns Measures Based on Partial Moments
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. autofunction:: portfolio_management.risk_quantification.omega_ratio
-.. autofunction:: portfolio_management.risk_quantification.sortino_ratio
-.. autofunction:: portfolio_management.risk_quantification.kappa_three_ratio
-.. autofunction:: portfolio_management.risk_quantification.gain_loss_ratio
-.. autofunction:: portfolio_management.risk_quantification.upside_potential_ratio
+.. autofunction:: omega_ratio
+.. autofunction:: sortino_ratio
+.. autofunction:: kappa_three_ratio
+.. autofunction:: gain_loss_ratio
+.. autofunction:: upside_potential_ratio
 
 
 Risk Parity (1996)

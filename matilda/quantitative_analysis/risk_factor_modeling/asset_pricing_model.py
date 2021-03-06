@@ -37,13 +37,10 @@ People pay subscriptions for services like that -> whats the amount for that kin
 
 import os
 from functools import partial
-
 import pandas as pd
 import statsmodels.formula.api as sm
 import matplotlib.pyplot as plt
 import typing
-
-import config
 import numpy as np
 from math import ceil, floor
 from statsmodels.regression.rolling import RollingOLS
@@ -51,14 +48,11 @@ from matilda.portfolio_management.Portfolio import TimeDataFrame
 from datetime import timedelta
 from sklearn import preprocessing
 from scipy.stats import mstats, stats
-import config
-from matilda.quantitative_analysis.portfolio_optimization import PortfolioAllocationModel, ValueWeightedPortfolio
+from matilda import config
 from datetime import datetime
 from enum import Enum
-from scipy.optimize import minimize, Bounds
 from statsmodels.iolib.summary2 import summary_col
 from matilda.portfolio_management.Portfolio import Portfolio
-import macroeconomic_analysis.macroeconomic_analysis as macro
 import abc
 
 
@@ -418,7 +412,6 @@ class CustomAssetPricingModel(AssetPricingModel):
 
 
     As an extra step, we can find the Beta exposures by regressing to the factors in asset pricing models
-    --------------------------------------------------------------------------------------
     """
 
     def __init__(self, factors: typing.List, securities_universe, start_date: datetime,
@@ -552,8 +545,7 @@ class CustomAssetPricingModel(AssetPricingModel):
 
         return pipeline_df
 
-    def portfolio_cross_section(self, pipeline_df: pd.DataFrame,
-                                allocation_method: PortfolioAllocationModel = ValueWeightedPortfolio):
+    def portfolio_cross_section(self, pipeline_df: pd.DataFrame, allocation_method): #=ValueWeightedAllocation
         """
         We cross-split the portfolio based on factors and percentiles, and pick the
         resulting portfolios to go long and short on. For example:
@@ -567,6 +559,7 @@ class CustomAssetPricingModel(AssetPricingModel):
                                 Small Neutral   |   Big Neutral
         30th BE/ME Percentile ------------------|--------------
                                 Small Growth    |   Big Growth
+        :param allocation_method:
         :param pipeline_df
         :return:
         """
@@ -659,13 +652,12 @@ class CustomAssetPricingModel(AssetPricingModel):
         factor_returns.index = factor_returns.index.droplevel(0)
         return factor_returns
 
-
-if __name__ == '__main__':
-    # sp_500_market = Portfolio(assets=['AAPL'])
-    # capm = CapitalAssetPricingModel(frequency='Monthly', to_date=datetime.today(), from_date=80)
-    # reg = capm.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
-    # print(reg.params)
-
-    ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
-    reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
-    print(reg.params)
+# if __name__ == '__main__':
+#     # sp_500_market = Portfolio(assets=['AAPL'])
+#     # capm = CapitalAssetPricingModel(frequency='Monthly', to_date=datetime.today(), from_date=80)
+#     # reg = capm.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
+#     # print(reg.params)
+#
+#     ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
+#     reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
+#     print(reg.params)

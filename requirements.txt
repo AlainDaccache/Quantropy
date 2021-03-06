@@ -74,3 +74,5 @@ setuptools~=51.0.0
 Flask~=1.1.2
 Werkzeug~=1.0.1
 Flask-Login==0.5.0
+DateTime~=4.3
+Zope~=5.1.2

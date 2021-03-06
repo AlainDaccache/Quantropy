@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Portfolio Backtesting &amp; Deployment Framework" href="portfolio-backtesting-deployment.html" />
-    <link rel="prev" title="Investment Paradigms" href="investment-paradigms.html" /> 
+    <link rel="next" title="Investment Paradigms" href="investment-paradigms.html" />
+    <link rel="prev" title="Asset Pricing Models" href="asset-pricing-models.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Allocation Models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modern-portfolio-theory">Modern Portfolio Theory</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#markowitz-mean-variance-framework-1952">Markowitz Mean-Variance Framework (1952)</a><ul>
@@ -123,7 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#universal-portfolio-algorithm-2016">Universal Portfolio Algorithm (2016)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 </ul>
 
             
@@ -230,8 +229,8 @@ contributes to the risk and overall return of a portfolio.</p>
 <div class="section" id="markowitz-mean-variance-framework-1952">
 <h3>Markowitz Mean-Variance Framework (1952)<a class="headerlink" href="#markowitz-mean-variance-framework-1952" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory">
-<em class="property">class </em><code class="sig-prename descclassname">portfolio_management.portfolio_optimization.</code><code class="sig-name descname">ModernPortfolioTheory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.portfolio_optimization.</span></code><code class="sig-name descname"><span class="pre">ModernPortfolioTheory</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">matilda.portfolio_management.Portfolio.Portfolio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The portfolio’s <em>expected return</em> is the proportion-weighted combination of the constituents assets’ returns.
 It is the weighted-average of the returns of the portfolio’s constituents.</p>
 <div class="math notranslate nohighlight">
@@ -251,8 +250,8 @@ assets. Diversification may allow for the same portfolio expected return with re
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory.solve_weights">
-<code class="sig-prename descclassname">portfolio_management.portfolio_optimization.ModernPortfolioTheory.</code><code class="sig-name descname">solve_weights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">use_sharpe</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">leverage</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">long_short_exposure</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory.solve_weights" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory.solve_weights">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory.</span></code><code class="sig-name descname"><span class="pre">solve_weights</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sharpe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leverage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_short_exposure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.portfolio_optimization.ModernPortfolioTheory.solve_weights" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -305,30 +304,6 @@ assets. Diversification may allow for the same portfolio expected return with re
 </div>
 <div class="section" id="efficient-frontier">
 <h4>Efficient Frontier<a class="headerlink" href="#efficient-frontier" title="Permalink to this headline">¶</a></h4>
-<dl class="py function">
-<dt id="portfolio_management.portfolio_optimization.ModernPortfolioTheory.markowitz_efficient_frontier">
-<code class="sig-prename descclassname">portfolio_management.portfolio_optimization.ModernPortfolioTheory.</code><code class="sig-name descname">markowitz_efficient_frontier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">market_portfolio</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>portfolio_management.Portfolio.Portfolio<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_assets</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot_cal</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.ModernPortfolioTheory.markowitz_efficient_frontier" title="Permalink to this definition">¶</a></dt>
-<dd><p>One can plot every possible combination of risky assets on the <em>risk-return space</em>, a graph with the horizontal axis
-representing the <em>variance</em> (a.k.a risk), and the vertical axis representing the <em>expected returns</em>.
-The left boundary of this region is parabolic, and the upper part of the parabolic boundary is the <strong>efficient frontier</strong>
-in the absence of a risk-free asset (sometimes called <em>the Markowitz bullet</em>). Combinations along this upper edge
-represent portfolios (including no holdings of the risk-free asset) for which there is lowest risk for a given
-level of expected return. Equivalently, a portfolio lying on the efficient frontier represents the combination
-offering the best possible expected return for given risk level.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>market_portfolio</strong> – </p></li>
-<li><p><strong>plot_assets</strong> – Plot risk/return profile of each asset in the portfolio</p></li>
-<li><p><strong>plot_cal</strong> – Plot the Capital Allocation Line</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Pandas DataFrame representing optimal weights and minimun volatilities for each level of required return.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stats_df</span> <span class="o">=</span> <span class="n">MPT</span><span class="o">.</span><span class="n">markowitz_efficient_frontier</span><span class="p">(</span><span class="n">market_portfolio</span><span class="o">=</span><span class="n">market_portfolio</span><span class="p">,</span> <span class="n">plot_assets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_cal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># show all columns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stats_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -406,8 +381,8 @@ that have had good returns historically will continue to have good returns in th
 <p>Unlike the <strong>Markowitz’s</strong> approach for portfolio allocation, the <strong>Treynor-Black model</strong> is a type of <em>active</em> portfolio
 management.</p>
 <dl class="py class">
-<dt id="portfolio_management.portfolio_optimization.TreynorBlackModel">
-<em class="property">class </em><code class="sig-prename descclassname">portfolio_management.portfolio_optimization.</code><code class="sig-name descname">TreynorBlackModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio</span><span class="p">:</span> <span class="n">portfolio_management.Portfolio.Portfolio</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.portfolio_optimization.TreynorBlackModel" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.portfolio_optimization.TreynorBlackModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.portfolio_optimization.</span></code><code class="sig-name descname"><span class="pre">TreynorBlackModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">matilda.portfolio_management.Portfolio.Portfolio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.portfolio_optimization.TreynorBlackModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Under the <strong>Treynor-Black model</strong>, an investor considers that most securities are priced efficiently,
 but believes they have information that can be used to predict the abnormal performance (captured by the alpha
 of some factor model) of a few of them. The model combines an actively managed portfolio built with a few mispriced
@@ -495,8 +470,8 @@ you can convert that volatility to be over the horizon by multiplying by <span c
 </div>
 <p>First, we cover some measures that are based on the <em>Capital Asset Pricing Model</em>:</p>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.jensens_alpha">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">jensens_alpha</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.jensens_alpha" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.jensens_alpha">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">jensens_alpha</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_returns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.jensens_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>Jensen’s alpha</strong> determines the abnormal return of a security or portfolio of securities over the theoretical
 expected return. It is a version of the standard alpha based on a theoretical performance index instead of a market index.
 The theoretical return is predicted by a market model, most commonly the capital asset pricing model (CAPM).
@@ -522,8 +497,8 @@ positive Alpha, unless by chance.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.capm_beta">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">capm_beta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.capm_beta" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.capm_beta">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">capm_beta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_returns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.capm_beta" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -540,8 +515,8 @@ positive Alpha, unless by chance.</p>
 <div class="section" id="risk-deviation-measures">
 <h3>Risk Deviation Measures<a class="headerlink" href="#risk-deviation-measures" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.standard_deviation">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">standard_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.standard_deviation" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.standard_deviation">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">standard_deviation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.standard_deviation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -556,21 +531,21 @@ positive Alpha, unless by chance.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.average_absolute_deviation">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">average_absolute_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.average_absolute_deviation" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.average_absolute_deviation">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">average_absolute_deviation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.average_absolute_deviation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.lower_semi_standard_deviation">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">lower_semi_standard_deviation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.lower_semi_standard_deviation" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.lower_semi_standard_deviation">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">lower_semi_standard_deviation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.lower_semi_standard_deviation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <div class="section" id="risk-adjusted-returns-measures-based-on-volatility">
 <h4>Risk Adjusted Returns Measures Based on Volatility<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-volatility" title="Permalink to this headline">¶</a></h4>
 <p>Volatility is simply the average dispersion of the returns around their mean</p>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.treynor_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">treynor_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.treynor_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.treynor_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">treynor_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_returns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.treynor_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>Treynor reward to volatility model</strong> is a measurement of the returns earned in excess of that which could have
 been earned on an investment that has no diversifiable risk (e.g., Treasury bills or a completely diversified portfolio),
 per unit of market risk assumed. In other words, it calculates the excess returns generated by a portfolio
@@ -601,8 +576,8 @@ rankings based on systematic risk alone, they will rank portfolios identically.<
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.sharpe_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">sharpe_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.sharpe_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.sharpe_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">sharpe_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.sharpe_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>Sharpe ratio</strong> was developed by William F. Sharpe in 1966. It is an extension of the <em>Traynor ratio</em>, as
 it discounts expected excess returns by the volatility. It measures the performance of an investment
 (e.g., a security or portfolio) compared to a risk-free asset, after adjusting for its risk.
@@ -629,8 +604,8 @@ of the asset and benchmark rather than expected returns</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.information_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">information_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.information_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.information_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">information_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.information_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>information ratio</strong> is similar to the Sharpe ratio, the main difference being that the Sharpe ratio uses a
 risk-free return as benchmark whereas the information ratio uses a risky index as benchmark (such as the S&amp;P500).</p>
 <dl class="field-list simple">
@@ -648,8 +623,8 @@ risk-free return as benchmark whereas the information ratio uses a risky index a
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.modigliani_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">modigliani_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.modigliani_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.modigliani_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">modigliani_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.modigliani_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>Modigliani risk-adjusted performance</strong> is a combination of the Sharpe and info ratios.
 It adjusts the expected excess returns of the portfolio above the risk free rate by the expected excess
 returns of a benchmark portfolio, above the risk free rate.</p>
@@ -669,8 +644,8 @@ returns of a benchmark portfolio, above the risk free rate.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.roys_safety_first_criterion">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">roys_safety_first_criterion</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">minimum_threshold</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.roys_safety_first_criterion" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.roys_safety_first_criterion">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">roys_safety_first_criterion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.series.Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.roys_safety_first_criterion" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -697,23 +672,23 @@ returns of a benchmark portfolio, above the risk free rate.</p>
 risk-adjusted return based on lower partial moments consider only deviations below some predefined minimum return
 threshold, t as risk i.e. positive deviations aren’t risky. VaR is a more probabilistic view of loss as the risk of a portfolio</p>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.value_at_risk_historical_simulation">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_historical_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_historical_simulation" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.value_at_risk_historical_simulation">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">value_at_risk_historical_simulation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.value_at_risk_historical_simulation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.value_at_risk_variance_covariance">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_variance_covariance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_variance_covariance" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.value_at_risk_variance_covariance">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">value_at_risk_variance_covariance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.value_at_risk_variance_covariance" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.value_at_risk_monte_carlo">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">value_at_risk_monte_carlo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.value_at_risk_monte_carlo" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.value_at_risk_monte_carlo">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">value_at_risk_monte_carlo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.value_at_risk_monte_carlo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.conditional_value_at_risk">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">conditional_value_at_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.conditional_value_at_risk" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.conditional_value_at_risk">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">conditional_value_at_risk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.conditional_value_at_risk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Expected Shortfall, otherwise known as CVaR, or conditional value at risk, is simply the expected loss of the worst case scenarios of returns.
 ES answers this question — What is the average loss over the whole range of outcomes in the 1% tail?
 For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be the average value of all losses exceeding -3%.</p>
@@ -735,8 +710,8 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 <h4>Risk Adjusted Returns Measures Based on VaR<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-var" title="Permalink to this headline">¶</a></h4>
 <p>Value at Risk computes the expected loss over a specified period of time given a confidence level</p>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.excess_return_value_at_risk">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">excess_return_value_at_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.excess_return_value_at_risk" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.excess_return_value_at_risk">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">excess_return_value_at_risk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.excess_return_value_at_risk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discounts the excess return of the portfolio above the risk-free rate by the value at risk of the portfolio</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -754,8 +729,8 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.conditional_sharpe_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">conditional_sharpe_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">confidence_level</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.conditional_sharpe_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.conditional_sharpe_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">conditional_sharpe_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.conditional_sharpe_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discounts the excess return of the portfolio above the risk-free rate by the conditional VaR of the portfolio</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -777,8 +752,8 @@ For example, if your portfolio has a VaR(95) of -3%, then the CVaR(95) would be 
 <div class="section" id="drawdown-risk">
 <h3>Drawdown Risk<a class="headerlink" href="#drawdown-risk" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.drawdown_risk">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">drawdown_risk</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">trailing_period</span><span class="o">=</span><span class="default_value">252</span></em>, <em class="sig-param"><span class="n">max</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.drawdown_risk" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.drawdown_risk">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">drawdown_risk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trailing_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">252</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.drawdown_risk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drawdown risk is the maximum (or average) historical ‘drawdown’ of the portfolio.
 A drawdown is the percentage loss between peak and trough.</p>
 <dl class="field-list simple">
@@ -802,8 +777,8 @@ A drawdown is the percentage loss between peak and trough.</p>
 The mean and variance do not completely describe the distribution, therefore using only both of
 them (i.e. the first and second moment of a distribution), would technically assume a normal distribution.</p>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.lpm">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">lpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returns</span></em>, <em class="sig-param"><span class="n">threshold</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.lpm" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.lpm">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">lpm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.lpm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a lower partial moment of the returns. Example usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">r</span> <span class="o">=</span> <span class="n">nrand</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lpm(0.0)_1 = &#39;</span><span class="p">,</span> <span class="n">lpm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
@@ -824,8 +799,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.hpm">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">hpm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returns</span></em>, <em class="sig-param"><span class="n">threshold</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.hpm" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.hpm">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">hpm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.hpm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a higher partial moment of the returns. Example usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">nrand</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hpm(0.0)_1 = &#39;</span><span class="p">,</span> <span class="n">hpm</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
@@ -848,8 +823,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 <div class="section" id="risk-adjusted-returns-measures-based-on-partial-moments">
 <h4>Risk Adjusted Returns Measures Based on Partial Moments<a class="headerlink" href="#risk-adjusted-returns-measures-based-on-partial-moments" title="Permalink to this headline">¶</a></h4>
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.omega_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">omega_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.omega_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.omega_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">omega_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.omega_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice the denominator is power of 1/1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -867,8 +842,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.sortino_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">sortino_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.sortino_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.sortino_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">sortino_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.sortino_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice the denominator is power of 1/2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -886,8 +861,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.kappa_three_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">kappa_three_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">risk_free_rates</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">period</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">252</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.kappa_three_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.kappa_three_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">kappa_three_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">252</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.kappa_three_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice the denominator is power of 1/3.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -905,8 +880,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.gain_loss_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">gain_loss_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.gain_loss_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.gain_loss_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">gain_loss_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.gain_loss_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -921,8 +896,8 @@ them (i.e. the first and second moment of a distribution), would technically ass
 </dd></dl>
 
 <dl class="py function">
-<dt id="portfolio_management.risk_quantification.upside_potential_ratio">
-<code class="sig-prename descclassname">portfolio_management.risk_quantification.</code><code class="sig-name descname">upside_potential_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">portfolio_returns</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#portfolio_management.risk_quantification.upside_potential_ratio" title="Permalink to this definition">¶</a></dt>
+<dt id="matilda.quantitative_analysis.risk_quantification.upside_potential_ratio">
+<code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_quantification.</span></code><code class="sig-name descname"><span class="pre">upside_potential_ratio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio_returns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_quantification.upside_potential_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <strong>upside-potential ratio</strong> is a measure of a return of an investment asset relative to the minimal acceptable
 return. The measurement allows a firm or individual to choose investments which have had relatively good upside
 performance, per unit of downside risk.</p>
@@ -961,10 +936,10 @@ performance, per unit of downside risk.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="portfolio-backtesting-deployment.html" class="btn btn-neutral float-right" title="Portfolio Backtesting &amp; Deployment Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="investment-paradigms.html" class="btn btn-neutral float-right" title="Investment Paradigms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="investment-paradigms.html" class="btn btn-neutral float-left" title="Investment Paradigms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="asset-pricing-models.html" class="btn btn-neutral float-left" title="Asset Pricing Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

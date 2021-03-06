@@ -29,7 +29,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -85,9 +84,8 @@
 <li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 </ul>
 
             
@@ -204,20 +202,7 @@
 <li class="toctree-l3"><a class="reference internal" href="asset-pricing-models.html#fama-french-five-factor-model-2015">Fama-French Five Factor Model (2015)</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#style-investing">Style Investing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#value-investing">Value Investing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#growth-investing">Growth Investing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#quality-investing">Quality Investing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#momentum-investing">Momentum Investing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#even-driven-arbitrage">Even-Driven Arbitrage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#trend-vs-mean-reversion">Trend vs. Mean Reversion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#factor-investing-smart-beta">Factor Investing (Smart-Beta)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#pairs-trading">Pairs Trading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asset-pricing-models.html#constructing-your-asset-pricing-model">Constructing your Asset Pricing Model</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a><ul>
@@ -241,19 +226,45 @@
 <li class="toctree-l2"><a class="reference internal" href="portfolio-allocation.html#universal-portfolio-algorithm-2016">Universal Portfolio Algorithm (2016)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="portfolio-backtesting-deployment.html#securities-universe">Securities Universe</a></li>
-<li class="toctree-l2"><a class="reference internal" href="portfolio-backtesting-deployment.html#market-timing">Market Timing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="portfolio-backtesting-deployment.html#portfolio-allocation">Portfolio Allocation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="portfolio-backtesting-deployment.html#other-considerations">Other Considerations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="portfolio-backtesting-deployment.html#historical-simulation">Historical Simulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="portfolio-backtesting-deployment.html#broker-deployment">Broker Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#style-investing">Style Investing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#value-investing">Value Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#growth-investing">Growth Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#quality-investing">Quality Investing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="investment-paradigms.html#momentum-investing">Momentum Investing</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#even-driven-arbitrage">Even-Driven Arbitrage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#trend-vs-mean-reversion">Trend vs. Mean Reversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#factor-investing-smart-beta">Factor Investing (Smart-Beta)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="investment-paradigms.html#pairs-trading">Pairs Trading</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<p>Example use (<em>needs updating, included more features now</em>):</p>
+<p>&gt;&gt;&gt;ff3 = FamaFrench_ThreeFactorModel(frequency=’Monthly’, to_date=datetime.today())
+&gt;&gt;&gt;reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=[‘MSFT’]))
+&gt;&gt;&gt;pprint(reg.params)</p>
+<p>&gt;&gt;&gt;stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+&gt;&gt;&gt;stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period=’FY’), ‘&gt;’, 5)
+&gt;&gt;&gt;stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+&gt;&gt;&gt;stock_screener.run()</p>
+<p>&gt;&gt;&gt;lower_bounds = pd.Series(data=[40], index=[‘Alpha’])
+&gt;&gt;&gt;upper_bounds = pd.Series(data=[80], index=[‘MKT’])
+&gt;&gt;&gt;stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
+&gt;&gt;&gt;                                                    lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+&gt;&gt;&gt;stock_screener.run(date=datetime(2018, 1, 1))
+&gt;&gt;&gt;print(stock_screener.stocks)</p>
+<p>&gt;&gt;&gt;class Alainps(Strategy):
+&gt;&gt;&gt;    def is_time_to_reschedule(self, current_date, last_rebalancing_day):
+&gt;&gt;&gt;        return (current_date - last_rebalancing_day).days &gt; config.RebalancingFrequency.Quarterly.value
+&gt;&gt;&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt;strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
+&gt;&gt;&gt;                   starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
+&gt;&gt;&gt;                   net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
+&gt;&gt;&gt;strategy.historical_simulation()</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>

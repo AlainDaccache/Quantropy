@@ -1,6 +1,7 @@
 import numpy as np
-from matilda.quantitative_analysis.stochastic_modeling import ContinuousStochasticProcess
-from matilda.quantitative_analysis.stochastic_modeling import BrownianMotionModel
+
+from matilda.quantitative_analysis.stochastic_modeling.base_models import ContinuousStochasticProcess
+from matilda.quantitative_analysis.stochastic_modeling.brownian_motion_model import BrownianMotionModel
 
 
 class MertonJumpDiffusionModel(ContinuousStochasticProcess):

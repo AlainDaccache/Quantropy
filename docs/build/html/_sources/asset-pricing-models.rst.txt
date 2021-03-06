@@ -1,12 +1,10 @@
 Asset Pricing Models
 ********************
 
-.. automodule:: quantitative_analysis.risk_factor_modeling
+.. automodule:: matilda.quantitative_analysis.risk_factor_modeling
 
 The Efficient Market Hypothesis
 ===============================
-
-There is a common question that looms in
 
 The **Efficient Market Hypothesis**, formulated by *Eugene Fama*, posits that asset prices
 reflect all available information. And therefore, if markets are indeed efficient, asset prices
@@ -40,12 +38,12 @@ So take some time to wrap your head around it; we've all been there:
 Capital Asset Pricing Model
 ===========================
 
-.. py:currentmodule:: quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel
+.. py:currentmodule:: matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model
 
 The Capital Asset Pricing Model, or CAPM for short, is a factor model that attempts to explain the returns
 of a portfolio as a function of the overall market returns.
 
-.. autofunction:: __init__
+.. autoclass:: CapitalAssetPricingModel
 
 The Intuition behind CAPM
 --------------------------
@@ -112,7 +110,7 @@ but also the *contribution* of an asset to the risk of the market portfolio, tha
 If we were to compute the value-weighted (market-cap weighted) average of the beta of all assets with respect to
 the value-weighted portfolio, we would get 1. This is why Betas with respect to different market indexes are not comparable.
 
-.. autofunction:: get_expected_returns
+.. autofunction:: asset_pricing_model.CapitalAssetPricingModel.get_expected_returns
 
 If the CAPM is correct, then using this rate of return to discount the future cash flows produced by the asset (DCF, to be covered
 in another section) should give its actual price, according to the **Efficient Market Hypothesis**,
@@ -135,7 +133,7 @@ The CAPM formula can be visualized through the Security Market Line, which compu
 expected rate of returns (`y-axis`) for different values of :math:`\beta` (`x-axis`). The slope
 is thus the market premium, :math:`(E(R_m) - R_f)`.
 
-.. autofunction:: security_market_line
+.. autofunction:: asset_pricing_model.CapitalAssetPricingModel.security_market_line
 
 The Capital Allocation Line
 ---------------------------
@@ -156,14 +154,30 @@ in financial distress and small stocks may be more sensitive to changes in busin
 provide higher historical-average return than predicted by CAPM.
 They justified their model on empirical grounds.
 
+.. autoclass:: FamaFrench_ThreeFactorModel
+
 Carhart Four Factor Model (1997)
 --------------------------------
+.. autoclass:: Carhart_FourFactorModel
 
 Pastor-Stambaugh Model (2003)
 -----------------------------
+.. autoclass:: Q_FactorModel
 
 AQR Factors (2013-2014)
 -----------------------
+.. autoclass::  AQR_FactorModel
 
 Fama-French Five Factor Model (2015)
 ------------------------------------
+.. autoclass:: FamaFrench_FiveFactorModel
+
+Constructing your Asset Pricing Model
+=====================================
+
+.. autoclass:: CustomAssetPricingModel
+.. autofunction:: CustomAssetPricingModel.pre_filter_universe
+.. autofunction:: CustomAssetPricingModel.compute_raw_factors
+.. autofunction:: CustomAssetPricingModel.normalize_factors
+.. autofunction:: CustomAssetPricingModel.factor_weighted_sum
+.. autofunction:: CustomAssetPricingModel.portfolio_cross_section

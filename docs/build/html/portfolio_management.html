@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Portfolio Backtesting &amp; Deployment Framework &mdash; Quantropy 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Quantropy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="fundamental-analysis.html">Fundamental Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-analysis.html">Technical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asset-pricing-models.html">Asset Pricing Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Quantropy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Portfolio Backtesting &amp; Deployment Framework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/portfolio_management.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="portfolio-backtesting-deployment-framework">
+<h1>Portfolio Backtesting &amp; Deployment Framework<a class="headerlink" href="#portfolio-backtesting-deployment-framework" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we investigate the framework that goes behind <strong>researching</strong> and <strong>developing</strong> investment strategies.
+It ties the previous sections together,</p>
+<p>There are several elements that are considered in academia and industry practice, which we discuss below.</p>
+<div class="section" id="securities-universe">
+<h2>Securities Universe<a class="headerlink" href="#securities-universe" title="Permalink to this headline">¶</a></h2>
+<p>The <em>securities universe</em> is a set of securities based on defined parameters.To apply this procedure,
+we make use of a <cite>StockScreener</cite> object.</p>
+<dl class="py class">
+<dt id="matilda.portfolio_management.stock_screener.StockScreener">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.portfolio_management.stock_screener.</span></code><code class="sig-name descname"><span class="pre">StockScreener</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">securities_universe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">datetime.datetime(2021,</span> <span class="pre">3,</span> <span class="pre">5,</span> <span class="pre">21,</span> <span class="pre">33,</span> <span class="pre">3,</span> <span class="pre">112117)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.portfolio_management.stock_screener.StockScreener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The process typically starts with first picking stocks that are trading in a specific region (i.e. USA, Canada, Asia…), exchange (i.e. NASDAQ, NYSE…), index (i.e. Dow Jones,
+S&amp;P 500…), sector, or industry.</p>
+<p>The process continues with conducting an initial filtering based on concerns like liquidity
+(i.e. <em>market capitalization</em>, <em>volume traded</em>). Finally, narrowing down based on types of analysis such as
+<em>technical</em>, <em>fundamental</em>, and <em>quantitative</em>, which we detail in their respective modules.</p>
+<p>We use the metrics above (either as <em>raw</em>, <em>mean</em>, or <em>growth</em> values), then compare against either a <em>number</em>, <em>another metric</em>, or <em>percentile</em> against competitors.</p>
+</div>
+<div class="section" id="market-timing">
+<h2>Market Timing<a class="headerlink" href="#market-timing" title="Permalink to this headline">¶</a></h2>
+<p>It is important that these conditions are all re-evaluated when we rebalance the portfolio, to avoid succumbing
+to mistakes like <em>survivorship bias</em>.</p>
+<p><strong>Rebalancing Frequency</strong>
+<strong>Trigger Based</strong>: Define another <cite>StockScreener</cite> object</p>
+</div>
+<div class="section" id="portfolio-allocation">
+<h2>Portfolio Allocation<a class="headerlink" href="#portfolio-allocation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="other-considerations">
+<h2>Other Considerations<a class="headerlink" href="#other-considerations" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Reinvesting dividends</p></li>
+<li><p>Including capital gain taxes</p></li>
+</ul>
+<div class="section" id="historical-simulation">
+<h3>Historical Simulation<a class="headerlink" href="#historical-simulation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="broker-deployment">
+<h3>Broker Deployment<a class="headerlink" href="#broker-deployment" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Alain Daccache
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

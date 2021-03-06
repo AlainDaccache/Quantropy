@@ -7,6 +7,7 @@ from matilda.fundamental_analysis.fundamental_factor_scores import *
 
 def piotroski_f_score(stock: str, date: datetime = datetime.now(), lookback_period: timedelta = timedelta(days=0),
                       period: str = 'TTM', diluted_shares=True):
+
     piotroski_dictio = {
         'Profitability': {},
         'Financial Leverage, Liquidity, and Source of Funds': {},

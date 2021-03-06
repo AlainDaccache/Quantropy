@@ -13,13 +13,11 @@ Such models are typically used to
 .. moduleauthor:: Alain Daccache <alain.daccache@mail.mcgill.ca>
 
 """
+from matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model import *
 
-from .asset_pricing_model import AssetPricingModel, CustomAssetPricingModel, CapitalAssetPricingModel, \
-    FamaFrench_ThreeFactorModel, FamaFrench_FiveFactorModel, Carhart_FourFactorModel, Factor, FactorModelDataset, \
-    AQR_FactorModel, Q_FactorModel
 
-if __name__ == '__main__':
-    pass
+# if __name__ == '__main__':
+#     pass
     # portfolio = Portfolio(assets=['AAPL'])
     #
     # capm = CapitalAssetPricingModel(frequency='Monthly').regress_factor_loadings(portfolio=portfolio,

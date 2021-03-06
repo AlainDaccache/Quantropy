@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Investment Paradigms" href="investment-paradigms.html" />
+    <link rel="next" title="Portfolio Allocation Models" href="portfolio-allocation.html" />
     <link rel="prev" title="Technical Analysis" href="technical-analysis.html" /> 
 </head>
 
@@ -103,11 +103,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#fama-french-five-factor-model-2015">Fama-French Five Factor Model (2015)</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#constructing-your-asset-pricing-model">Constructing your Asset Pricing Model</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="portfolio-allocation.html">Portfolio Allocation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="portfolio-backtesting-deployment.html">Portfolio Backtesting &amp; Deployment Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="investment-paradigms.html">Investment Paradigms</a></li>
 </ul>
 
             
@@ -173,8 +173,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-quantitative_analysis.risk_factor_modeling">
-<span id="asset-pricing-models"></span><h1>Asset Pricing Models<a class="headerlink" href="#module-quantitative_analysis.risk_factor_modeling" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-matilda.quantitative_analysis.risk_factor_modeling">
+<span id="asset-pricing-models"></span><h1>Asset Pricing Models<a class="headerlink" href="#module-matilda.quantitative_analysis.risk_factor_modeling" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the theory behind, and implementation of asset pricing models, which will allow you,
 in plain terms, to identify (and capitalize on) the drivers of the stock market’s returns. We will start by
 analyzing common factor models developed in academia (i.e. CAPM, Fama-French, Carhart…) and
@@ -190,7 +190,6 @@ We will then going about researching factors to define your own asset pricing mo
 </dl>
 <div class="section" id="the-efficient-market-hypothesis">
 <h2>The Efficient Market Hypothesis<a class="headerlink" href="#the-efficient-market-hypothesis" title="Permalink to this headline">¶</a></h2>
-<p>There is a common question that looms in</p>
 <p>The <strong>Efficient Market Hypothesis</strong>, formulated by <em>Eugene Fama</em>, posits that asset prices
 reflect all available information. And therefore, if markets are indeed efficient, asset prices
 should only react to new information, and it would be impossible to beat the market, consistently, in a risk-adjusted basis.
@@ -222,24 +221,10 @@ the return within the model. If you find such model, this disproves market ineff
 <h2>Capital Asset Pricing Model<a class="headerlink" href="#capital-asset-pricing-model" title="Permalink to this headline">¶</a></h2>
 <p>The Capital Asset Pricing Model, or CAPM for short, is a factor model that attempts to explain the returns
 of a portfolio as a function of the overall market returns.</p>
-<dl class="py function">
-<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">factor_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frequency</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Monthly'</span></em>, <em class="sig-param"><span class="n">to_date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">from_date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>factor_dataset</strong> – Either a pandas DataFrame/Series
-or a FactorModelDataset object. By default, takes FAMA_FRENCH_3_DATASET, i.e. the market returns
-the returns AMEX, NYSE, NASDAQ overall.</p></li>
-<li><p><strong>frequency</strong> – The desired resampling frequency of the returns.
-‘Daily’, ‘Weekly’, ‘Monthly’, ‘Quarterly’, ‘Yearly’.</p></li>
-<li><p><strong>to_date</strong> – By default, takes the last day in the factor_dataset</p></li>
-<li><p><strong>from_date</strong> – Typically datetime object. If timedelta object, then deducts from to_date.
-If int, then deducts from to_date with given frequency parameter.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">CapitalAssetPricingModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <div class="section" id="the-intuition-behind-capm">
 <h3>The Intuition behind CAPM<a class="headerlink" href="#the-intuition-behind-capm" title="Permalink to this headline">¶</a></h3>
@@ -295,24 +280,6 @@ An asset with a beta greater (less) than 1 means that, on average, its returns m
 but also the <em>contribution</em> of an asset to the risk of the market portfolio, that was not reduced by diversification.
 If we were to compute the value-weighted (market-cap weighted) average of the beta of all assets with respect to
 the value-weighted portfolio, we would get 1. This is why Betas with respect to different market indexes are not comparable.</p>
-<dl class="py function">
-<dt id="quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns">
-<code class="sig-prename descclassname">quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.</code><code class="sig-name descname">get_expected_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">portfolio</span></em>, <em class="sig-param"><span class="n">benchmark_returns</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>pandas.core.series.Series<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>datetime.datetime<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">regression_window</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">36</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantitative_analysis.risk_factor_modeling.asset_pricing_model.CapitalAssetPricingModel.get_expected_returns" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>portfolio</strong> – </p></li>
-<li><p><strong>benchmark_returns</strong> – </p></li>
-<li><p><strong>date</strong> – </p></li>
-<li><p><strong>regression_window</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
-</dd></dl>
-
 <p>If the CAPM is correct, then using this rate of return to discount the future cash flows produced by the asset (DCF, to be covered
 in another section) should give its actual price, according to the <strong>Efficient Market Hypothesis</strong>,
 which staples that all assets are correctly priced.</p>
@@ -347,19 +314,76 @@ The reason pointed out by FF that firms with high ratios of book-to-market value
 in financial distress and small stocks may be more sensitive to changes in business conditions and thus
 provide higher historical-average return than predicted by CAPM.
 They justified their model on empirical grounds.</p>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.FamaFrench_ThreeFactorModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">FamaFrench_ThreeFactorModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.FamaFrench_ThreeFactorModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="carhart-four-factor-model-1997">
 <h3>Carhart Four Factor Model (1997)<a class="headerlink" href="#carhart-four-factor-model-1997" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.Carhart_FourFactorModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">Carhart_FourFactorModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.Carhart_FourFactorModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="pastor-stambaugh-model-2003">
 <h3>Pastor-Stambaugh Model (2003)<a class="headerlink" href="#pastor-stambaugh-model-2003" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.Q_FactorModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">Q_FactorModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.Q_FactorModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="aqr-factors-2013-2014">
 <h3>AQR Factors (2013-2014)<a class="headerlink" href="#aqr-factors-2013-2014" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.AQR_FactorModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">AQR_FactorModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.AQR_FactorModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="fama-french-five-factor-model-2015">
 <h3>Fama-French Five Factor Model (2015)<a class="headerlink" href="#fama-french-five-factor-model-2015" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.FamaFrench_FiveFactorModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">FamaFrench_FiveFactorModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.FamaFrench_FiveFactorModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
+</div>
+<div class="section" id="constructing-your-asset-pricing-model">
+<h2>Constructing your Asset Pricing Model<a class="headerlink" href="#constructing-your-asset-pricing-model" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.CustomAssetPricingModel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.</span></code><code class="sig-name descname"><span class="pre">CustomAssetPricingModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factors</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">securities_universe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rebalancing_frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">matilda.config.RebalancingFrequency</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model.CustomAssetPricingModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Design your own asset pricing model</p>
+<ul>
+<li><dl>
+<dt><strong>Factors choice:</strong></dt><dd><ul class="simple">
+<li><p>We specify factors, such as Value, Growth, Quality etc.</p></li>
+<li><p>Each of those factors will be an aggregate of some metrics</p></li>
+<li><p>Each of those metrics is assigned a weight (so for each category, weights sum to 1).</p></li>
+</ul>
+<p>For example, Value is an aggregate of P/E (75%) and P/B (25%).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Ranking scheme:</strong></dt><dd><ul class="simple">
+<li><p>For each stock, we compute and normalize those metrics (can winsorize first, apply different methods like min-max, z-score).</p></li>
+<li><p>Then, we compute the weighted sum of the metrics for each stock, to make a score for each factor</p></li>
+<li><p>Now, we sum those factors once again, so each stock will have one score, and we can rank based on that</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>Portfolio construction:</strong></p></li>
+</ul>
+<p>As an extra step, we can find the Beta exposures by regressing to the factors in asset pricing models</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -371,7 +395,7 @@ They justified their model on empirical grounds.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="investment-paradigms.html" class="btn btn-neutral float-right" title="Investment Paradigms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="portfolio-allocation.html" class="btn btn-neutral float-right" title="Portfolio Allocation Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="technical-analysis.html" class="btn btn-neutral float-left" title="Technical Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

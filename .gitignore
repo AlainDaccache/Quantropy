@@ -5,4 +5,3 @@ Quantropy.iml
 matilda/database/db_tutorial.py
 dist
 *.egg-info
-#build
