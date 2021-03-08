@@ -27,3 +27,5 @@ services:
 script:
   - python -m unittest tests.test_fundamental_analysis  # run tests
   - docker build -t matilda .  # run docker
+
+# to build ReadTheDocs: sphinx-build -E -b html -d docs/build/doctrees docs/source build/html

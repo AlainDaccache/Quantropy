@@ -8,6 +8,7 @@ Leverage ratios measure the amount of capital that comes from debt. In other wor
 
 def debt_ratio(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
+
     The debt ratio measures the relative amount of a company’s assets that are provided from debt
 
     * *Category:* Leverage Ratio
@@ -83,6 +84,7 @@ def debt_to_capital(stock, date=None, lookback_period: timedelta = timedelta(day
     :param all_liabilities:
     :param long_term_debt:
     :return: .. math:: \\text{Debt to Capital Ratio} = \\frac{\\text{Debt}}{\\text{Debt + Shareholder’s equity}}
+
     '''
     total_debt = debt(stock=stock, date=date, lookback_period=lookback_period, period=period,
                          only_interest_expense=interest_expense, all_liabilities=all_liabilities,

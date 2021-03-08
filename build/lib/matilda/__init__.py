@@ -10,8 +10,8 @@ sys.path.insert(0, parent_dir_path)
 from matilda.config import *
 
 from matilda.fundamental_analysis import *
-from matilda.quantitative_analysis import *
 from matilda.portfolio_management import *
+from matilda.quantitative_analysis import *
 from matilda.broker_deployment import *
 
 from matilda.database.object_model import User

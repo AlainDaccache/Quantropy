@@ -76,3 +76,5 @@ Werkzeug~=1.0.1
 Flask-Login==0.5.0
 DateTime~=4.3
 Zope~=5.1.2
+scikit-learn~=0.23.2
+yfinance~=0.1.55

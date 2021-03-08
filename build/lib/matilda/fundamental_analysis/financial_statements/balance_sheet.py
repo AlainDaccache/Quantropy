@@ -3,20 +3,18 @@ Balance Sheet Entries
 """
 
 from datetime import timedelta
-from matilda.database.db_crud import read_financial_statement_entry
+
+from matilda import config
+from matilda.database.db_crud import read_financial_statement_entry, companies_in_classification
 
 
 def cash_and_cash_equivalents(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
     """
     **Cash and Cash Equivalents** is the amount of money on deposit in the bank. It is composed of
 
-    *   Cash: ticker(s) in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']).  t
-        icker(s) in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']). ticker(s)
-        in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']). ticker(s) in questio
-        n. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']). ticker(s) in question.
-        Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']).
+        *   Short-term investments:sfsf
 
-    *   Short-term investments:
+        *   Cash: fh;ohif
 
     :param stock: ticker(s) in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']).
     :param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().
@@ -29,8 +27,17 @@ def cash_and_cash_equivalents(stock, date=None, lookback_period: timedelta = tim
                                           entry_name=['Assets', 'CurrentAssets', 'Cash and Cash Equivalents'],
                                           date=date, lookback_period=lookback_period, period=period)
 
-
 def current_marketable_securities(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+    """
+    Hello Paola!
+    
+    :param stock: ticker(s) in question. Can be a string (i.e. 'AAPL') or a list of strings (i.e. ['AAPL', 'BA']).
+    :param date: Can be a datetime (i.e. datetime(2019, 1, 1)) or list of datetimes. The most recent date of reporting from that date will be used. By default, date=datetime.now().
+    :param lookback_period: lookback from date (used to compare against previous year or quarter etc.) i.e. timedelta(days=90).
+    :param period: 'FY' for fiscal year, 'Q' for quarter, 'YTD' for calendar year to date, 'TTM' for trailing twelve months.
+
+    :return: 
+    """
     return read_financial_statement_entry(financial_statement='BalanceSheet', stock=stock,
                                           entry_name=['Assets', 'CurrentAssets', 'CashAndShortTermInvestments',
                                                       'MarketableSecurities'],
@@ -38,6 +45,15 @@ def current_marketable_securities(stock, date=None, lookback_period: timedelta =
 
 
 def net_accounts_receivable(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):
+    """
+    Invoices
+
+    :param stock:
+    :param date:
+    :param lookback_period:
+    :param period:
+    :return:
+    """
     return read_financial_statement_entry(financial_statement='BalanceSheet', stock=stock,
                                           entry_name=['Assets', 'CurrentAssets', 'AccountsReceivable',
                                                       'NetAccountsReceivable'],

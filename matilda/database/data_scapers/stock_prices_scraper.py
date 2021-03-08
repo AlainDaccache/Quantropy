@@ -1,39 +1,175 @@
+import json
 import os
+import pickle
 from datetime import datetime, timedelta
-import pandas_datareader.data as web
 import typing
+import requests
+import yfinance as yf
+from alpha_vantage.timeseries import TimeSeries
+import re
 import pandas as pd
-import ta
-from matilda import config
-from matilda.database.data_preparation_helpers import save_into_csv, read_df_from_csv
-from matilda.database.db_crud import companies_in_classification
 
 
-def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):
-    if isinstance(stock, config.MarketIndices):
-        stock = companies_in_classification(class_=stock, date=end)
-    if isinstance(stock, typing.List):
-        stock = [stk.replace('.', '-') for stk in stock]
+class StockPriceScraper:
+
+    def __init__(self, ticker, period='1M', from_date=None, to_date=datetime.now(), frequency='1d'):
+        """
+        For the illusion of real-time, call it with period='min'
+
+        :param ticker: can be string (i.e. 'AAPL') or list of strings (i.e. ['AAPL', 'FB', 'MSFT']).
+        :param period:  use instead of from_date and to_date. This is different than frequency. Period just says take date from now to `period`
+                        time ago. Valid periods: min,1d,5d,1M,3M,6M,1Y,2Y,5Y,10Y,YTD,max.
+                        By default, '1M'. (NB: 'min' stands for minimum, not minute)
+        :param from_date: if not selected, will use the default value of period
+        :param to_date: if not selected, will use datetime.now()
+        :param frequency:   specifies the time interval between two consecutive data points in the time series.
+                            can be in ['1s', '5s', '15s', '30s', '1min', '5min', '15min', '30min',
+                            '1h', '4h', '1d', '1w', '1M', '1y'] according to implementation.
+                            i.e. it can't be lower than the minimum frequency of the implementation.
+        :return:
+        """
+        self.frequency_hierarchy = ['1s', '5s', '15s', '30s', '1min', '5min', '15min', '30min',
+                                    '1h', '4h', '1d', '1w', '1m', '1y']
+        self.lookback_period_mapper = {'1d': timedelta(days=1), '5d': timedelta(days=5),
+                                       '1M': timedelta(days=30), '3M': timedelta(days=92),
+                                       '6M': timedelta(days=183), '1Y': timedelta(days=365),
+                                       '2Y': timedelta(days=730), '5Y': timedelta(days=1826),
+                                       '10Y': timedelta(days=3652)}
+        if frequency not in self.frequency_hierarchy:
+            raise Exception('Wrong frequency')
+
+        self.ticker = [ticker] if isinstance(ticker, str) else ticker
+
+        self.period = period
+        self.from_date = from_date
+        self.to_date = to_date
+        self.frequency = frequency
+
+    def convert_format(self, format):
+        """
+
+        :param format: 'dict', 'json', 'pandas'
+        :return:
+        """
+        output = {}
+        for date, open_, high, low, close, volume in zip(self.Dates, self.Open, self.High,
+                                                         self.Low, self.Close, self.Volume):
+            output[date] = {'Open': open_, 'High': high, 'Low': low, 'Close': close, 'Volume': volume}
+
+        if re.match('dict', format, re.IGNORECASE):
+            return output
+        elif re.match('json', format, re.IGNORECASE):
+            return json.dumps(output)
+        elif re.match('pandas', format, re.IGNORECASE):
+            return pd.DataFrame.from_dict(output, orient='index')
+        else:
+            raise Exception('Please input a valid `format`')
+
+
+class AlphaVantage(StockPriceScraper):
+
+    def __init__(self, ticker, period='1M', from_date=None, to_date=datetime.now(), frequency='1d'):
+        # TODO not supporting ticker lists yet
+        super().__init__(ticker, period, from_date, to_date, frequency)
+        intraday_frequency_mapper = {'1min': '1min', '5min': '5min', '15min': '15min', '30min': '30min', '1h': '60min'}
+        api_key = os.getenv('ALPHAVANTAGE_API_KEY')
+        ts = TimeSeries(api_key)
+
+        df_cols = {'1. open': 'Open', '2. high': 'High', '3. low': 'Low',
+                   '4. close': 'Close', '5. volume': 'Volume'}
+        to_resample = False
+        if self.frequency_hierarchy.index(frequency) < self.frequency_hierarchy.index('1min'):
+            raise Exception("AlphaVantage can't support an interval lower than 1 minute")
+
+        elif frequency in intraday_frequency_mapper.keys():  # AlphaVantage has a function to get intraday
+            data, meta_data = ts.get_intraday(symbol=ticker, interval=intraday_frequency_mapper[frequency],
+                                              outputsize='full')
+
+        else:
+            if frequency == '1d':  # AlphaVantage has another function to get daily
+                data, meta_data = ts.get_daily_adjusted(symbol=ticker)
+                df_cols = {'1. open': 'Open', '2. high': 'High', '3. low': 'Low',
+                           '5. adjusted close': 'Close', '6. volume': 'Volume'}
+            else:  # not supported, but can resample
+                data, meta_data = ts.get_intraday(symbol=ticker, interval='60min', outputsize='full')
+                to_resample = True
+
+        df = pd.DataFrame.from_dict(data=data, orient='index')
+        df.index = pd.to_datetime(df.index)
+        if to_resample:
+            df = df.resample(frequency).first().dropna(how='all')
+
+        if from_date is None:
+            if period == 'YTD':
+                from_date = datetime(year=to_date.year, month=1, day=1)
+            elif period == 'min':
+                from_date, to_date = df.index[-1], df.index[-1]
+            elif period == 'max':
+                from_date = df.index[0], df.index[-1]
+            else:
+                from_date = to_date - self.lookback_period_mapper[period]
+
+        df = df[(df.index >= from_date) & (df.index <= to_date)]
+        df = df.rename(columns=df_cols)
+
+        # with open('temp_prices.pkl', 'wb') as handle:
+        #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # with open('temp_prices.pkl', 'rb') as handle:
+        #     data = pickle.load(handle)
+
+        self.Open, self.High, self.Low = df['Open'], df['High'], df['Low']
+        self.Close, self.Volume, self.Dates = df['Close'], df['Volume'], df.index.to_list()
+
+
+class YahooFinance(StockPriceScraper):
+
+    def __init__(self, ticker, from_date=None, to_date=datetime.now(), period='1M', frequency='1d'):
+        super().__init__(ticker, period, from_date, to_date, frequency)
+        if isinstance(ticker, typing.List):
+            ticker = [stk.replace('.', '-') for stk in ticker]
+        else:
+            ticker = ticker.replace('.', '-')
+
+        resp = yf.Ticker(ticker).history(from_date=from_date, to_date=to_date, period=period, interval=frequency)
+        self.Open = resp['Open']
+        self.High = resp['High']
+        self.Low = resp['Low']
+        self.Close = resp['Close']
+        self.Volume = resp['Volume']
+        self.Dates = resp.index
+
+
+class GoogleFinance(StockPriceScraper):
+    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1M', frequency='1d'):
+        super().__init__(ticker, period, from_date, to_date, frequency)
+        rsp = requests.get(f'https://finance.google.com/finance?q={ticker}&output=json')
+        if rsp.status_code in (200,):
+            # Cut out various leading characters from the JSON response, as well as trailing stuff (a terminating ']\n'
+            # sequence), and then we decode the escape sequences in the response
+            # This then allows you to load the resulting string with the JSON module.
+            print(rsp.content)
+            fin_data = json.loads(rsp.content[6:-2].decode('unicode_escape'))
+
+
+class Quandl(StockPriceScraper):
+    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1M', frequency='1d'):
+        super().__init__(ticker, period, from_date, to_date, frequency)
+
+
+def get_prices_wrapper(source: str, ticker, period, from_date, to_date, frequency):
+    if re.match('Quandl', source, re.IGNORECASE):
+        pass
+    elif re.match('Yahoo', source, re.IGNORECASE):
+        pass
+    elif re.match('Alpha Vantage', source, re.IGNORECASE):
+        pass
+    elif re.match('Google', source, re.IGNORECASE):
+        pass
     else:
-        stock = stock.replace('.', '-')
-    for stk in list(stock):
-        df: pd.DataFrame = web.DataReader(stk, data_source='yahoo', start=start, end=end)
-        df.index = df.index + timedelta(days=1) - timedelta(seconds=1)  # TODO think about EOD?
-        # path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.xlsx'.format(stk))
-        # excel.save_into_csv(path, df, overwrite_sheet=True)
-        path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(stk))
-        df.to_pickle(path=path)
-        return df
+        raise Exception("Please make sure the `source` is either 'Quandl', 'Yahoo', 'Google', or 'Alpha Vantage'.")
 
 
-def get_technical_indicators(stock):
-    df = read_df_from_csv(stock, config.technical_indicators_name)
-    if df.empty:
-        df = save_stock_prices(stock)
-        df = ta.add_all_ta_features(
-            df, open="Open", high="High", low="Low", close="Adj Close", volume="Volume", fillna=True)
-        path = '{}/{}.xlsx'.format(config.FINANCIAL_STATEMENTS_DIR_PATH, stock)
-        save_into_csv(path, df, config.technical_indicators_name)
-        return df
-    else:
-        return df
+if __name__ == '__main__':
+    # not supporting list of tickers yet
+    print(AlphaVantage(ticker='AAPL', frequency='1d').convert_format('pandas'))
+    print(YahooFinance(ticker='AAPL').convert_format('pandas'))

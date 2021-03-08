@@ -1,6 +1,8 @@
 from mongoengine import *
 from flask_login import UserMixin
 
+class Test(Document):
+    number = IntField(required=True)
 
 class User(Document, UserMixin):
     _id = ObjectIdField(required=True, primary_key=True)

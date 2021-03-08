@@ -94,12 +94,12 @@ class Alainps(Strategy):
     def is_time_to_reschedule(self, current_date, last_rebalancing_day):
         return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value
 
-
 strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
                    starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
                    net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
 strategy.historical_simulation()
-strategy.broker_deployment(Alpaca('YOUR_API_KEY', 'YOUR_SECRET_KEY'))
+alpaca = AlpacaBroker(key_id='YOUR_API_KEY_ID', secret_key='YOUR_API_SECRET_KEY', endpoint='https://paper-api.alpaca.markets')
+strategy.broker_deployment(broker=alpaca)
 ```
 
 ## Architectural Design
@@ -112,11 +112,9 @@ and comprehensively research models, develop strategies, and deploy them in real
 The library attempts to:
 - Implement the low-level work to achieve **abstraction**, so that the user can swiftly translate his insights into practice, 
 without wasting time, energy, and money, reinventing the wheel.
-- Follow good design practices to achieve **modularity**, allowing the user to swap in their components while still 
-being able to reuse and extend on our framework.
+- Follow good design practices, from both object-oriented and functional programming paradigms to achieve **modularity**, 
+allowing the user to swap in their components while still being able to reuse and extend on our framework.
 - Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies.
-
-<img src="" alt="DevOps Pipeline">
 
 ## Acknowledgment
 

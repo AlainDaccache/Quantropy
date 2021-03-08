@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
+from matilda import get_atlas_db_url, connect_to_mongo_engine, total_current_assets
 
-import matilda
 
 class TestFinancialStatementsEntries(unittest.TestCase):
     def setUp(self):
@@ -12,7 +12,7 @@ class TestFinancialStatementsEntries(unittest.TestCase):
         asserts = [76219000000, 89378000000, 304441000000, 0]
         for i, period in enumerate(['Q', 'FY', 'TTM', 'YTD']):
             with self.subTest(i=i):
-                self.assertEqual(matilda.total_current_assets(stock='AAPL', date=datetime(2016, 1, 1), period=period),
+                self.assertEqual(total_current_assets(stock='AAPL', date=datetime(2016, 1, 1), period=period),
                                  asserts[i])
 
     def tearDown(self):
