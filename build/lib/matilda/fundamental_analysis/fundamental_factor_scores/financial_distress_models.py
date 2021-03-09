@@ -1,7 +1,7 @@
 import math
 from datetime import datetime, timedelta
 
-from matilda.database import object_model
+from matilda.data_infrastructure import object_model
 from matilda.fundamental_analysis.fundamental_factor_scores import *
 
 

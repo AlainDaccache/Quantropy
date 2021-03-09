@@ -107,11 +107,11 @@ strategy.broker_deployment(broker=alpaca)
 Essentially, we standardize algorithmic trading by decoupling analytics, data providers, and brokers, to allow the user to flexibly 
 and comprehensively research models, develop strategies, and deploy them in real-time. The flow looks as such:
 
-<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/architecture_diagram.png" alt="Architecture Diagram">
+<img src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/Quantropy Architecture.png" alt="Architecture Diagram">
 
 The library attempts to:
 - Implement the low-level work to achieve **abstraction**, so that the user can swiftly translate his insights into practice, 
-without wasting time, energy, and money, reinventing the wheel.
+without wasting time, energy, and money to integrate existing solutions or reinvent the wheel if not possible.
 - Follow good design practices, from both object-oriented and functional programming paradigms to achieve **modularity**, 
 allowing the user to swap in their components while still being able to reuse and extend on our framework.
 - Make use of a DevOps pipeline to achieve **continuous integration and delivery**, integrating a stack of cutting-edge technologies.

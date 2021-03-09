@@ -11,10 +11,10 @@ from pprint import pprint
 from titlecase import titlecase
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
-import matilda.database.data_scapers.financial_statements_scraper.financial_statements_scraper as main_scraper
+import matilda.data_infrastructure.data_scapers.financial_statements_scraper.financial_statements_scraper as main_scraper
 from zope.interface import implementer
 
-from matilda.database.data_preparation_helpers import flatten_dict
+from matilda.data_infrastructure.data_preparation_helpers import flatten_dict
 
 
 def get_company_cik(ticker):

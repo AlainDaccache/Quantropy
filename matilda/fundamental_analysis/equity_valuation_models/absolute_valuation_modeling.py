@@ -10,7 +10,7 @@ from typing import Callable
 from functools import partial
 
 from matilda.fundamental_analysis.equity_valuation_models.cost_of_capital import weighted_average_cost_of_capital
-from matilda.database.db_crud import read_market_price
+from matilda.data_infrastructure.db_crud import read_market_price
 from matilda.fundamental_analysis.accounting_ratios import *
 from matilda.fundamental_analysis.financial_statements import *
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from matilda.database.db_crud import read_market_price
+from matilda.data_infrastructure.db_crud import read_market_price
 from matilda.fundamental_analysis.financial_statements import *
 
 '''

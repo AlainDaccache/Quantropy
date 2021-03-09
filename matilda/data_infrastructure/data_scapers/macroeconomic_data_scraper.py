@@ -2,7 +2,7 @@ import os
 import urllib.request
 import pandas as pd
 from matilda import config
-from matilda.database.data_preparation_helpers import read_df_from_csv, save_into_csv
+from matilda.data_infrastructure.data_preparation_helpers import read_df_from_csv, save_into_csv
 
 
 def save_gnp_price_index():

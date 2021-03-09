@@ -5,7 +5,7 @@ import zipfile
 from datetime import timedelta
 import pandas as pd
 from matilda import config
-from matilda.database.data_preparation_helpers import save_into_csv
+from matilda.data_infrastructure.data_preparation_helpers import save_into_csv
 
 
 def resample_daily_df(daily_df, path):

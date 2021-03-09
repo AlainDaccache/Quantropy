@@ -9,8 +9,8 @@ from numpy import mean
 from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
-from matilda.database.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, save_historical_sp500_tickers
-from matilda.database import object_model, data_preparation_helpers
+from matilda.data_infrastructure.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, save_historical_sp500_tickers
+from matilda.data_infrastructure import object_model, data_preparation_helpers
 
 '''
 0. Connect to MongoDB Atlas and Mongo Engine using our URL

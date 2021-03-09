@@ -2,7 +2,7 @@ from kafka.consumer import KafkaConsumer
 from json import loads
 from mongoengine import *
 
-from matilda.database import object_model
+from matilda.data_infrastructure import object_model
 
 
 consumer = KafkaConsumer(

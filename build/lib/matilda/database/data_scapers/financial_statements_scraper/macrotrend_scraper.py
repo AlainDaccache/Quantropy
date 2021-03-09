@@ -8,7 +8,7 @@ import requests
 from matilda import config
 from pprint import pprint
 
-from matilda.database.data_preparation_helpers import flatten_dict
+from matilda.data_infrastructure.data_preparation_helpers import flatten_dict
 
 regex_patterns = {
     'Balance Sheet': {

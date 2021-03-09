@@ -14,8 +14,8 @@ from matilda.portfolio_management import *
 from matilda.quantitative_analysis import *
 from matilda.broker_deployment import *
 
-from matilda.database.object_model import User
-from matilda.database.db_crud import get_atlas_db_url, connect_to_mongo_engine
+from matilda.data_infrastructure.object_model import User
+from matilda.data_infrastructure.db_crud import get_atlas_db_url, connect_to_mongo_engine
 from matilda.api_routes.auth import auth as auth_blueprint
 from matilda.api_routes.main import main as main_blueprint
 

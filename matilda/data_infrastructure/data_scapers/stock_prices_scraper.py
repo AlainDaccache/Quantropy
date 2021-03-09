@@ -111,7 +111,7 @@ class AlphaVantage(StockPriceScraper):
 
         df = df[(df.index >= from_date) & (df.index <= to_date)]
         df = df.rename(columns=df_cols)
-
+        df = df.iloc[::-1]  # AlphaVantage returns dates in reverse chronological order, so should reverse
         # with open('temp_prices.pkl', 'wb') as handle:
         #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
         # with open('temp_prices.pkl', 'rb') as handle:
@@ -171,5 +171,5 @@ def get_prices_wrapper(source: str, ticker, period, from_date, to_date, frequenc
 
 if __name__ == '__main__':
     # not supporting list of tickers yet
-    print(AlphaVantage(ticker='AAPL', frequency='1d').convert_format('pandas'))
-    print(YahooFinance(ticker='AAPL').convert_format('pandas'))
+    print(AlphaVantage(ticker='AAPL', period='YTD').convert_format('pandas').head())
+    print(YahooFinance(ticker='AAPL', period='YTD').convert_format('pandas').head())
