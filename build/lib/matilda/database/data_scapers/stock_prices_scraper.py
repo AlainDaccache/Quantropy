@@ -5,8 +5,8 @@ import typing
 import pandas as pd
 import ta
 from matilda import config
-from matilda.data_infrastructure.data_preparation_helpers import save_into_csv, read_df_from_csv
-from matilda.data_infrastructure.db_crud import companies_in_classification
+from matilda.data_pipeline.data_preparation_helpers import save_into_csv, read_df_from_csv
+from matilda.data_pipeline.db_crud import companies_in_classification
 
 
 def save_stock_prices(stock, start=datetime(1970, 1, 1), end=datetime.now()):

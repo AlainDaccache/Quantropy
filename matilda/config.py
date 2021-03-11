@@ -7,23 +7,39 @@ import sys
 from enum import Enum
 from functools import partial
 
+"""
+API Keys, Login Info
+"""
+ALPHAVANTAGE_API_KEY = 'JXBGFPVQR01JNK9G'
+ATLAS_DB_USERNAME = 'AlainDaccache'
+ATLAS_DB_PASSWORD = 'qwerty98'
+
+
+"""
+Financial Statements Periods
+"""
+
 yearly = 'Yearly'
 quarterly = 'Quarterly'
 six_months = '6 Months'
 nine_months = '9 Months'
 periods = [quarterly, six_months, nine_months, yearly]
 
+"""
+Some Paths to store data in
+"""
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
 sys.path.insert(0, parent_dir_path)
-ROOT_DIR = parent_dir_path # .../Quantropy
+ROOT_DIR = parent_dir_path  # .../Quantropy
 
 DATA_DIR_PATH = os.path.join(ROOT_DIR, 'data')
 
 MARKET_DATA_DIR_PATH = os.path.join(DATA_DIR_PATH, 'market_data')
 
 MARKET_INDICES_DIR_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'historical_indices_constituents')
-TOTAL_MARKET_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'US-Stock-Market.pkl')
+TOTAL_MARKET_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'Company Classification.pkl')
 MARKET_EXCHANGES_DIR_PATH = os.path.join(MARKET_DATA_DIR_PATH, 'historical_exchanges_constituents')
 
 FACTORS_DIR_PATH = os.path.join(DATA_DIR_PATH, 'factors_data')
@@ -75,6 +91,7 @@ class Period(Enum):
     YEARLY = 252
     MONTHLY = 21
 
+
 class Regions(Enum):
     USA = 'United States'
 
@@ -120,6 +137,7 @@ class GICS_Sectors(Enum):
 
 class SIC_Industries(Enum):
     ELECTRONIC_COMPUTERS = 'Electronic Computers'
+
 
 class GICS_Industries(Enum):
     pass

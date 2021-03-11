@@ -1,6 +1,8 @@
 import os
 import pickle
 
+import typing
+
 from matilda import config
 import pandas as pd
 
@@ -9,8 +11,15 @@ from numpy import mean
 from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
-from matilda.data_infrastructure.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, save_historical_sp500_tickers
-from matilda.data_infrastructure import object_model, data_preparation_helpers
+
+from matilda.data_pipeline.data_scapers.asset_pricing_factors import scrape_Fama_French_factors, \
+    scrape_AQR_factors
+from matilda.data_pipeline.data_scapers.company_classification import scrape_company_classification
+from matilda.data_pipeline.data_scapers.financial_statements_scraper.macrotrend_scraper import scrape_macrotrend
+from matilda.data_pipeline.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, \
+    save_historical_sp500_tickers
+from matilda.data_pipeline import object_model, data_preparation_helpers
+from matilda.data_pipeline.data_scapers.stock_prices_scraper import YahooFinance
 
 '''
 0. Connect to MongoDB Atlas and Mongo Engine using our URL
@@ -42,6 +51,9 @@ def populate_db_company_info(tickers=None):
     :param tickers: if None, then populate all
     :return:
     """
+    if not os.path.exists(config.TOTAL_MARKET_PATH):
+        scrape_company_classification(tickers=tickers)
+
     with open(config.TOTAL_MARKET_PATH, 'rb') as handle:
         company_classifications = pickle.load(handle)
 
@@ -65,7 +77,11 @@ def populate_db_financial_statements(tickers, from_date=None, to_date=None, stat
     :return:
     """
     for ticker in tickers:
+
         path = '{}/{}.pkl'.format(config.FINANCIAL_STATEMENTS_DIR_PATH_PICKLE_UNFLATTENED, ticker)
+
+        if not os.path.exists(path):
+            scrape_macrotrend(tickers=[ticker])
 
         with open(path, 'rb') as handle:
             filings_dictio = pickle.load(handle)
@@ -102,9 +118,14 @@ def populate_db_financial_statements(tickers, from_date=None, to_date=None, stat
                 filing.save()
 
 
-def db_time_series_helper(file_path, from_date=None, to_date=None):
-    with open(file_path, 'rb') as handle:
-        df = pickle.load(handle)
+def db_time_series_helper(df, from_date=None, to_date=None):
+    """
+
+    :param data: data can be a path or a dataframe
+    :param from_date:
+    :param to_date:
+    :return:
+    """
 
     from_ = 0 if from_date is None else data_preparation_helpers.get_date_index(date=from_date,
                                                                                 dates_values=df.index)
@@ -116,29 +137,44 @@ def db_time_series_helper(file_path, from_date=None, to_date=None):
     return df_conv
 
 
-def populate_db_asset_prices(tickers=None, from_date=None, to_date=None):
-    if tickers is None:
+def populate_db_asset_prices(tickers: typing.List = None, from_date: datetime = None, to_date: datetime = None):
+    if tickers is None:  # takes all stocks currently in stock prices directory
         tickers = next(os.walk(config.STOCK_PRICES_DIR_PATH))[2]
         tickers = [ticker.strip('.pkl') for ticker in tickers]
 
+    if not isinstance(tickers, list):
+        tickers = [tickers]
+
     for ticker in tickers:
-        df_conv = db_time_series_helper(file_path=f'{config.STOCK_PRICES_DIR_PATH}/{ticker}.pkl',
-                                        from_date=from_date, to_date=to_date)
+        path = f'{config.STOCK_PRICES_DIR_PATH}/{ticker}.pkl'
+        if not os.path.exists(path):
+            data = YahooFinance(ticker=ticker, from_date=from_date, to_date=to_date).convert_format('pandas')
+        else:
+            with open(path, 'rb') as handle:
+                data = pickle.load(handle)
+
+        df_conv = db_time_series_helper(df=data, from_date=from_date, to_date=to_date)
 
         object_model.AssetPrices(company=ticker, open=df_conv['Open'], high=df_conv['High'], low=df_conv['Low'],
-                                 close=df_conv['Close'], adj_close=df_conv['Adj Close']).save()
+                                 close=df_conv['Close'], volume=df_conv['Volume']).save()
 
 
 def populate_db_risk_factors(from_date=None, to_date=None):
     dir_path = f'{config.FACTORS_DIR_PATH}/pickle/'
+    scrape_Fama_French_factors()
+    scrape_AQR_factors()
     for factor_model in os.listdir(path=dir_path):
-        df_conv = db_time_series_helper(file_path=f'{dir_path}/{factor_model}', from_date=from_date, to_date=to_date)
+        path = f'{dir_path}/{factor_model}'
+        with open(path, 'rb') as handle:
+            df = pickle.load(handle)
+        df_conv = db_time_series_helper(df=df, from_date=from_date, to_date=to_date)
 
         risk_factors = [object_model.RiskFactor(name=key, series=df_conv[key]) for key, value in df_conv.items()]
         object_model.RiskFactorModel(name=factor_model.replace('.pkl', ''), risk_factors=risk_factors).save()
 
 
-def populate_db_routine(db_username, db_password, db_name,
+def populate_db_routine(db_name,
+                        db_username=config.ATLAS_DB_USERNAME, db_password=config.ATLAS_DB_PASSWORD,
                         tickers=None, from_date=None, to_date=None, reset_db=False,
                         populate_company_info=True, populate_financial_statements=True,
                         populate_asset_prices=True, populate_risk_factors=True):
@@ -371,12 +407,19 @@ IV. `Delete` routines
 '''
 
 if __name__ == '__main__':
-    # populate_db_routine(db_username='AlainDaccache', db_password='qwerty98', db_name='matilda-db',
-    #                     tickers=companies_in_index(config.MarketIndices.DOW_JONES)[:5],
-    #                     from_date=datetime(2000, 1, 1), reset_db=True)
+    # atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+    # db = connect_to_mongo_engine(atlas_url)
+    stocks = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
+    populate_db_financial_statements(tickers=stocks[0], from_date=datetime(2016, 1, 1), to_date=datetime.today())
 
-    atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
-    db = connect_to_mongo_engine(atlas_url)
+    # populate_db_routine(db_username='AlainDaccache', db_password='qwerty98', db_name='matilda-db',
+    #                     tickers=None, from_date=datetime(2016, 1, 1), to_date=datetime.today(), reset_db=True,
+    #                     populate_company_info=True, populate_financial_statements=True,
+    #                     populate_asset_prices=True, populate_risk_factors=True)
+    # populate_db_asset_prices(stocks)
+    # populate_db_asset_prices('AAPL')
+    # populate_db_risk_factors()
+    # populate_db_company_info(tickers=stocks)
 
     # object_model.Index.drop_collection()
     # populate_indices(from_file=False)
@@ -393,4 +436,4 @@ if __name__ == '__main__':
     # print(nasdaq_tickers)
     # pprint(companies_in_classification(class_=config.Exchanges.NASDAQ))
 
-    print(company_industry('AAPL', classification='SIC'))
+    # print(company_industry('AAPL', classification='SIC'))

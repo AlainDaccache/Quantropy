@@ -1,7 +1,7 @@
 from datetime import timedelta
 from matilda.fundamental_analysis.supporting_metrics import *
 from matilda.fundamental_analysis.financial_statements import *
-from matilda.data_infrastructure.db_crud import read_market_price
+from matilda.data_pipeline.db_crud import read_market_price
 
 '''
 Market value ratios are used to evaluate the share price of a company’s stock.
@@ -459,3 +459,7 @@ def enterprise_value_to_free_cash_flow(stock, date=None, lookback_period=timedel
     """
     return enterprise_value(stock=stock, date=date, lookback_period=lookback_period, period=period) \
            / free_cash_flow(stock=stock, date=date, lookback_period=lookback_period, period=period)
+
+
+if __name__ == '__main__':
+    print(earnings_per_share(stock='AMGN'))

@@ -5,7 +5,7 @@ from typing import Callable
 import numpy as np
 from scipy import stats
 
-from matilda.data_infrastructure.db_crud import *
+from matilda.data_pipeline.db_crud import *
 
 
 def mean_over_time_intervals(metric, how_many_periods=5, geometric=False, interval=timedelta(days=90)):

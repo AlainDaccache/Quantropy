@@ -9,7 +9,7 @@ from matilda import config
 import io
 import json
 from zope.interface import Interface
-from matilda.data_infrastructure.data_preparation_helpers import save_pretty_excel, read_dates_from_csv
+from matilda.data_pipeline.data_preparation_helpers import save_pretty_excel, read_dates_from_csv
 
 
 class FinancialStatementsParserInterface(Interface):

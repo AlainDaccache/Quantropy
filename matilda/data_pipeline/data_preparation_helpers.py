@@ -357,7 +357,8 @@ def save_pretty_excel(path, financials_dictio, with_pickle=True):
 
             df = pd.DataFrame.from_dict(diction)
             df = df.reindex(sorted(df.columns, reverse=True), axis=1)
-            df.dropna(axis=0, how='all', inplace=True)
+            df.dropna(axis=0, how='all', inplace=True)  # either NA
+            df = df[(df.T != 0).any()]  # or 0
             df = df.loc[:, df.any()]
             if not df.empty:
                 if with_pickle:

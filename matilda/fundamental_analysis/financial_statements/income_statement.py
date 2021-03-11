@@ -3,7 +3,7 @@ Income Statement Entries
 """
 
 from datetime import timedelta
-from matilda.data_infrastructure.db_crud import read_financial_statement_entry
+from matilda.data_pipeline.db_crud import read_financial_statement_entry
 import numpy as np
 
 

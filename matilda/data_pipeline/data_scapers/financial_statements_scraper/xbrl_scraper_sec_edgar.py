@@ -9,8 +9,8 @@ from bs4 import BeautifulSoup, NavigableString
 from zope.interface import implementer
 import numpy as np
 
-from matilda.data_infrastructure.data_preparation_helpers import flatten_dict
-from matilda.data_infrastructure.data_scapers.financial_statements_scraper import financial_statements_scraper
+from matilda.data_pipeline.data_preparation_helpers import flatten_dict
+from matilda.data_pipeline.data_scapers.financial_statements_scraper import financial_statements_scraper
 
 
 def get_company_cik(ticker):

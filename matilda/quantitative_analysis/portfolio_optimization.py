@@ -10,7 +10,7 @@ from functools import partial
 from scipy.optimize import minimize, Bounds
 
 from matilda.fundamental_analysis.supporting_metrics import market_capitalization
-from matilda.data_infrastructure.db_crud import read_factor_returns
+from matilda.data_pipeline.db_crud import read_factor_returns
 from matilda.portfolio_management.Portfolio import Portfolio
 from matilda.quantitative_analysis.risk_factor_modeling.asset_pricing_model import CapitalAssetPricingModel
 
@@ -472,7 +472,7 @@ class NestedClusteredOptimization(PortfolioAllocationModel):
 
 
 if __name__ == '__main__':
-    from matilda.data_infrastructure.db_crud import companies_in_classification
+    from matilda.data_pipeline.db_crud import companies_in_classification
     from matilda import config
 
     assets = companies_in_classification(class_=config.MarketIndices.DOW_JONES)

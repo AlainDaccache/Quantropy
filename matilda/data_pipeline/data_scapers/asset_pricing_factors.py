@@ -5,7 +5,7 @@ import zipfile
 from datetime import timedelta
 import pandas as pd
 from matilda import config
-from matilda.data_infrastructure.data_preparation_helpers import save_into_csv
+from matilda.data_pipeline.data_preparation_helpers import save_into_csv
 
 
 def resample_daily_df(daily_df, path):
@@ -15,7 +15,82 @@ def resample_daily_df(daily_df, path):
         save_into_csv(filename=path, df=df, sheet_name=freq)
 
 
+def scrape_CAPM_factor():
+    """
+    The Capital Asset Pricing Model contains one factor,
+    - The **market factor**
+    :return:
+    """
+    pass
+
+
+def scrape_Fama_French_3_factors():
+    """
+    The Fama French 3 Factor model adds 2 factors to the CAPM:
+    - The **size factor**, 'SMB' for Small Minus Big [returns spread between small and large stocks]
+    - The **value** factor,'HML' for High Minus Low [returns spread between cheap and expensive stocks]
+
+    :return:
+    """
+    url = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip'
+    urllib.request.urlretrieve(url[1], 'fama_french.zip')
+    zip_file = zipfile.ZipFile('fama_french.zip', 'r')
+    zip_file.extractall()
+    zip_file.close()
+    file_name = next(file for file in os.listdir('') if re.search('F-F', file))
+    skiprows = 4 if idx == 0 else 13 if idx == 1 else 3 if idx == 2 else Exception
+    ff_factors = pd.read_csv(file_name, skiprows=4, index_col=0)
+    ff_factors.dropna(how='all', inplace=True)
+    ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m%d')
+    ff_factors = ff_factors.apply(lambda x: x / 100)  # original is in percent
+    ff_factors.rename(columns={'Mkt-RF': 'MKT-RF'}, inplace=True)
+    ff_factors.index = ff_factors.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
+    os.remove(file_name)
+    os.remove('fama_french.zip')
+
+    excel_path = os.path.join(config.FACTORS_DIR_PATH, '{}.xlsx'.format(url[0]))
+    ff_factors.to_excel(excel_path, sheet_name='Daily')
+    resample_daily_df(daily_df=ff_factors, path=excel_path)
+    pickle_path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(url[0]))
+    ff_factors.to_pickle(pickle_path)
+
+
+def scrape_Carhart_factors():
+    """
+    Carhart adds another factor, momentum, 'UMD' for Up Minus Down
+
+    :return:
+    """
+    url = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'
+    skiprows = 13
+    ff_factors.rename(columns={'Mom   ': 'UMD'}, inplace=True)
+    three_factors = pd.read_pickle(
+        os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(factors_urls[0][0])))
+    ff_factors = three_factors.join(ff_factors, how='inner')
+
+
+def scrape_Fama_French_5_factors():
+    """
+    Fama French neglects the validity of Carhart's factor, but add two new factors to their original model.
+    However, more is not necessarily better.
+
+    - The **profitability factor**, 'RMW'
+    - The ** factor**, 'CMA'
+    :return:
+    """
+    url = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip'
+    skiprows = 3
+
+
 def scrape_AQR_factors():
+    """
+    This scrapes the factors of AQR Capital Management, namely
+    - 'QMJ' (Quality Minus Junk)
+    - 'BAB' (Betting Against Beta)
+    - 'HMLD' (High Minus Low Devil)
+
+    :return:
+    """
     url = 'https://images.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Quality-Minus-Junk-Factors-Daily.xlsx'
     path = os.path.join(config.FACTORS_DIR_PATH, "AQR Factors Data.xlsx")  # save it as this name
     urllib.request.urlretrieve(url, path)
@@ -37,10 +112,10 @@ def scrape_AQR_factors():
 def scrape_Fama_French_factors():
     factors_urls = [
         ('Fama-French 3 Factors Data',
-         'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip'),
+         ),
 
         ('Carhart 4 Factors Data',
-         'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'),
+         ),
 
         ('Fama-French 5 Factors Data',
          'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip')]
@@ -75,7 +150,6 @@ def scrape_Fama_French_factors():
 def scrape_Q_factors():
     pass
 
-
 # if __name__ == '__main__':
-    # scrape_AQR_factors()
-    # scrape_Fama_French_factors()
+# scrape_AQR_factors()
+# scrape_Fama_French_factors()

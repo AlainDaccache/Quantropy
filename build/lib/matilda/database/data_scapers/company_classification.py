@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pprint import pprint
 import os
 from matilda import config
-from matilda.data_infrastructure.db_crud import companies_in_classification
+from matilda.data_pipeline.db_crud import companies_in_classification
 
 
 def save_gics():

@@ -15,7 +15,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from pprint import pprint
 import os
 from matilda import config
-from matilda.data_infrastructure.db_crud import companies_in_classification
 
 
 def save_gics():
@@ -86,22 +85,26 @@ def save_gics():
         print(df)
 
     path = os.path.join(config.MARKET_DATA_DIR_PATH, 'Industry-Classification')
-    writer = pd.ExcelWriter(path=path+'.xlsx', engine='xlsxwriter')
+    writer = pd.ExcelWriter(path=path + '.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='GICS')
     df.to_pickle(path + '-GICS.pkl')
     writer.save()
 
 
-def get_company_meta():
+def scrape_company_classification(tickers=None):
     '''
     TODO: Need to do this for all companies ever listed, not only current.
     :return:
     '''
 
-    init_df = pd.read_csv('https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1467271812596.ajax?fileType=csv&fileName=ITOT_holdings&dataType=fund',
-                          skiprows=9, index_col=0)
-    tickers = init_df.index.tolist()
-    tickers = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
+    init_df = pd.read_csv(
+        'https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1467271812596.ajax?fileType=csv&fileName=ITOT_holdings&dataType=fund',
+        skiprows=9, index_col=0)
+    # tickers = init_df.index.tolist()
+    from matilda.data_pipeline.db_crud import companies_in_classification
+
+    if tickers is None:
+        tickers = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
     sic_codes_division = {(1, 9 + 1): 'Agriculture, Forestry, and Fishing',
@@ -115,13 +118,18 @@ def get_company_meta():
                           (70, 89 + 1): 'Services',
                           (90, 99 + 1): 'Public Administration'}
 
-    exchanges_dict = {'AMEX': companies_in_classification(config.Exchanges.AMEX),
-                      'NYSE': companies_in_classification(config.Exchanges.NYSE),
-                      'NASDAQ': companies_in_classification(config.Exchanges.NASDAQ)}
+    exchanges_dict = {exchange:
+                          list(pd.read_csv(os.path.join(config.MARKET_EXCHANGES_DIR_PATH, f'{exchange}.txt'),
+                                           sep='\t')['Symbol']) for exchange in ['AMEX', 'NYSE', 'NASDAQ']
+                      }
 
-    with open(os.path.join(config.DATA_DIR_PATH, "market_data/country_codes_dictio.pickle"),
-              "rb") as f:
+    path = os.path.join(config.DATA_DIR_PATH, "market_data/country_codes_dictio.pkl")
+    if not os.path.exists(path):
+        save_country_codes()
+
+    with open(path, 'rb') as f:
         country_codes = pickle.load(f)
+
     edgar_dict = {}
     for ticker in tickers:
         edgar_dict[ticker] = {}
@@ -211,9 +219,9 @@ def get_company_meta():
     df = edgar_df.join(init_df)
     df = df[['Company Name', 'SIC Industry', 'SIC Sector', 'GICS Sector', 'Location', 'CIK', 'Exchange', 'Asset Class']]
     # df = pd.concat([edgar_df, init_df], axis=1)
-    path = os.path.join(config.MARKET_DATA_DIR_PATH, 'US-Stock-Market')
-    df.to_excel(path+'.xlsx', engine='xlsxwriter')
-    df.to_pickle(path=path+'.pkl')
+    path = os.path.join(config.MARKET_DATA_DIR_PATH, 'Company Classification')
+    df.to_excel(path + '.xlsx', engine='xlsxwriter')
+    df.to_pickle(path=path + '.pkl')
 
 
 def save_country_codes():
@@ -233,11 +241,9 @@ def save_country_codes():
                 code = unicodedata.normalize("NFKD", tr.find_all('td')[0].text).replace('\n', '')
                 state = unicodedata.normalize("NFKD", tr.find_all('td')[1].text).replace('\n', '')
                 dictio[current_category][code] = state
-    with open(os.path.join(config.MARKET_DATA_DIR_PATH, "country_codes_dictio.pkl"),
-              "wb") as f:
-        pickle.dump(dictio, f)
+    with open(os.path.join(config.MARKET_DATA_DIR_PATH, "country_codes_dictio.pkl"), "wb") as f:
+        pickle.dump(dictio, f, protocol=pickle.HIGHEST_PROTOCOL)
     pprint(dictio)
-
 
 # if __name__ == '__main__':
 #     get_company_meta()

@@ -5,7 +5,7 @@ Balance Sheet Entries
 from datetime import timedelta
 
 from matilda import config
-from matilda.data_infrastructure.db_crud import read_financial_statement_entry, companies_in_classification
+from matilda.data_pipeline.db_crud import read_financial_statement_entry, companies_in_classification
 
 
 def cash_and_cash_equivalents(stock, date=None, lookback_period: timedelta = timedelta(days=0), period: str = 'Q'):

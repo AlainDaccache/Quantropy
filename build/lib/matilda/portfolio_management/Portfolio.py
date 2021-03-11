@@ -7,7 +7,7 @@ import numpy as np
 from datetime import timedelta
 from datetime import datetime
 from matilda import config
-from matilda.data_infrastructure.data_preparation_helpers import get_date_index
+from matilda.data_pipeline.data_preparation_helpers import get_date_index
 
 
 class Trade:

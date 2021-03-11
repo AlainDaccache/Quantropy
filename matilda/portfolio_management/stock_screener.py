@@ -40,10 +40,7 @@ class StockScreener:
 
         self.securities_universe = securities_universe  # starting universe
 
-        if securities_universe is None:
-            self.stocks = companies_in_classification(class_=config.MarketIndices.SP_500)
-        else:
-            self.stocks = securities_universe
+        self.stocks = securities_universe
 
         self.date = date
         self.conditions = []
@@ -94,8 +91,11 @@ class StockScreener:
         return self.stocks
 
     def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float):
-        self.stocks = [stock for stock in self.stocks if
+        try:
+            self.stocks = [stock for stock in self.stocks if
                        helper_condition(metric, comparator, number)(stock, self.date)]
+        except:
+            pass
         self.conditions.append((StockScreener.filter_by_comparison_to_number, metric, comparator, number))
         return self.stocks
 

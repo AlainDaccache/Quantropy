@@ -20,6 +20,11 @@ def store_to_csv(file_path, tickers):
         df.to_csv(file_path)
 
 
+def save_exchanges():
+    username, password = os.getenv('EODDATA_USERNAME'), os.getenv('EODDATA_PASSWORD')
+    # make a crawler for http://eoddata.com/default.aspx
+
+
 def save_current_nasdaq():
     urls = ['ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt',
             'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqtraded.txt']
@@ -132,10 +137,9 @@ def save_total_us_stock_market_tickers():
         url='https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf/1521942788811.ajax?fileType=xls&fileName=iShares-Core-SP-Total-US-Stock-Market-ETF_fund&dataType=fund',
         output_name='US-Stock-Market-Tickers.xls', skiprows=7)
 
-
 # if __name__ == '__main__':
-    # save_current_dow_jones_tickers()
-    # save_current_nasdaq()
-    # save_current_russell_3000_tickers()
-    # save_total_us_stock_market_tickers()
-    # save_historical_sp500_tickers()
+# save_current_dow_jones_tickers()
+# save_current_nasdaq()
+# save_current_russell_3000_tickers()
+# save_total_us_stock_market_tickers()
+# save_historical_sp500_tickers()

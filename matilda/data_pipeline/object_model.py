@@ -1,8 +1,10 @@
 from mongoengine import *
 from flask_login import UserMixin
 
+
 class Test(Document):
     number = IntField(required=True)
+
 
 class User(Document, UserMixin):
     _id = ObjectIdField(required=True, primary_key=True)
@@ -103,6 +105,7 @@ class CurrentLiabilities(EmbeddedDocument):
 class NonCurrentLiabilities(EmbeddedDocument):
     DeferredTax = IntField()
     LongTermDebtNonCurrentMaturities = IntField()
+    LongTermUnearnedRevenue = IntField()
     OperatingLease = IntField()
     DefinedBenefitPlan = IntField()
     AccruedIncomeTaxes = IntField()
@@ -297,12 +300,12 @@ class AssetPrices(Document):
     high = ListField(EmbeddedDocumentField(DatePrice))
     low = ListField(EmbeddedDocumentField(DatePrice))
     close = ListField(EmbeddedDocumentField(DatePrice))
-    adj_close = ListField(EmbeddedDocumentField(DatePrice))
     volume = ListField(EmbeddedDocumentField(DatePrice))
 
 
 class RiskFactor(EmbeddedDocument):
     name = StringField()
+
     series = ListField(EmbeddedDocumentField(DatePrice))
 
 

@@ -3,7 +3,7 @@ Cash Flow Statement
 """
 
 from datetime import timedelta
-from matilda.data_infrastructure.db_crud import read_financial_statement_entry
+from matilda.data_pipeline.db_crud import read_financial_statement_entry
 
 
 def cash_flow_operating_activities(stock, date=None, lookback_period: timedelta = timedelta(days=0),

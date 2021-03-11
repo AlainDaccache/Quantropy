@@ -1,7 +1,7 @@
 import json
 import os
 import pickle
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import typing
 import requests
 import yfinance as yf
@@ -9,41 +9,62 @@ from alpha_vantage.timeseries import TimeSeries
 import re
 import pandas as pd
 
+from matilda import config
+
 
 class StockPriceScraper:
 
-    def __init__(self, ticker, period='1M', from_date=None, to_date=datetime.now(), frequency='1d'):
+    def __init__(self, ticker, period='1mo', from_date=None, to_date=None, frequency='1d'):
         """
         For the illusion of real-time, call it with period='min'
 
         :param ticker: can be string (i.e. 'AAPL') or list of strings (i.e. ['AAPL', 'FB', 'MSFT']).
         :param period:  use instead of from_date and to_date. This is different than frequency. Period just says take date from now to `period`
-                        time ago. Valid periods: min,1d,5d,1M,3M,6M,1Y,2Y,5Y,10Y,YTD,max.
-                        By default, '1M'. (NB: 'min' stands for minimum, not minute)
+                        time ago. Valid periods: min,1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,YTD,max.
+                        By default, '1mo'. (NB: 'min' stands for minimum, not minute)
         :param from_date: if not selected, will use the default value of period
         :param to_date: if not selected, will use datetime.now()
         :param frequency:   specifies the time interval between two consecutive data points in the time series.
                             can be in ['1s', '5s', '15s', '30s', '1min', '5min', '15min', '30min',
-                            '1h', '4h', '1d', '1w', '1M', '1y'] according to implementation.
+                            '1h', '4h', '1d', '1w', '1mo', '1y'] according to implementation.
                             i.e. it can't be lower than the minimum frequency of the implementation.
         :return:
         """
         self.frequency_hierarchy = ['1s', '5s', '15s', '30s', '1min', '5min', '15min', '30min',
-                                    '1h', '4h', '1d', '1w', '1m', '1y']
-        self.lookback_period_mapper = {'1d': timedelta(days=1), '5d': timedelta(days=5),
-                                       '1M': timedelta(days=30), '3M': timedelta(days=92),
-                                       '6M': timedelta(days=183), '1Y': timedelta(days=365),
-                                       '2Y': timedelta(days=730), '5Y': timedelta(days=1826),
-                                       '10Y': timedelta(days=3652)}
+                                    '1h', '4h', '1d', '1w', '1mo', '1y']
+
+        lookback_period_mapper = {'1d': timedelta(days=1), '5d': timedelta(days=5),
+                                  '1mo': timedelta(days=30), '3M': timedelta(days=92),
+                                  '6M': timedelta(days=183), '1Y': timedelta(days=365),
+                                  '2Y': timedelta(days=730), '5Y': timedelta(days=1826),
+                                  '10Y': timedelta(days=3652)}
+
         if frequency not in self.frequency_hierarchy:
-            raise Exception('Wrong frequency')
-
-        self.ticker = [ticker] if isinstance(ticker, str) else ticker
-
-        self.period = period
-        self.from_date = from_date
-        self.to_date = to_date
+            raise Exception('Invalid frequency')
         self.frequency = frequency
+
+        if isinstance(ticker, str):
+            self.ticker = [ticker]
+        elif isinstance(ticker, list):
+            self.ticker = ticker
+        else:
+            raise Exception('Invalid ticker type')
+
+        if to_date is None:
+            to_date = datetime.now()
+        self.to_date = to_date
+
+        if from_date is None:
+            if period == 'YTD':
+                from_date = datetime(year=to_date.year, month=1, day=1)
+            elif period == 'max':
+                from_date = date.min
+            elif period == 'min':
+                from_date = to_date
+            else:
+                from_date = to_date - lookback_period_mapper[period]
+
+        self.from_date = from_date
 
     def convert_format(self, format):
         """
@@ -68,12 +89,11 @@ class StockPriceScraper:
 
 class AlphaVantage(StockPriceScraper):
 
-    def __init__(self, ticker, period='1M', from_date=None, to_date=datetime.now(), frequency='1d'):
+    def __init__(self, ticker, period='1mo', from_date=None, to_date=datetime.now(), frequency='1d'):
         # TODO not supporting ticker lists yet
         super().__init__(ticker, period, from_date, to_date, frequency)
         intraday_frequency_mapper = {'1min': '1min', '5min': '5min', '15min': '15min', '30min': '30min', '1h': '60min'}
-        api_key = os.getenv('ALPHAVANTAGE_API_KEY')
-        ts = TimeSeries(api_key)
+        ts = TimeSeries(config.ALPHAVANTAGE_API_KEY)
 
         df_cols = {'1. open': 'Open', '2. high': 'High', '3. low': 'Low',
                    '4. close': 'Close', '5. volume': 'Volume'}
@@ -99,17 +119,7 @@ class AlphaVantage(StockPriceScraper):
         if to_resample:
             df = df.resample(frequency).first().dropna(how='all')
 
-        if from_date is None:
-            if period == 'YTD':
-                from_date = datetime(year=to_date.year, month=1, day=1)
-            elif period == 'min':
-                from_date, to_date = df.index[-1], df.index[-1]
-            elif period == 'max':
-                from_date = df.index[0], df.index[-1]
-            else:
-                from_date = to_date - self.lookback_period_mapper[period]
-
-        df = df[(df.index >= from_date) & (df.index <= to_date)]
+        df = df[(df.index >= self.from_date) & (df.index <= self.to_date)]
         df = df.rename(columns=df_cols)
         df = df.iloc[::-1]  # AlphaVantage returns dates in reverse chronological order, so should reverse
         # with open('temp_prices.pkl', 'wb') as handle:
@@ -123,14 +133,18 @@ class AlphaVantage(StockPriceScraper):
 
 class YahooFinance(StockPriceScraper):
 
-    def __init__(self, ticker, from_date=None, to_date=datetime.now(), period='1M', frequency='1d'):
+    def __init__(self, ticker, from_date=None, to_date=datetime.now(), period='1mo', frequency='1d'):
         super().__init__(ticker, period, from_date, to_date, frequency)
         if isinstance(ticker, typing.List):
             ticker = [stk.replace('.', '-') for stk in ticker]
         else:
             ticker = ticker.replace('.', '-')
 
-        resp = yf.Ticker(ticker).history(from_date=from_date, to_date=to_date, period=period, interval=frequency)
+        if self.frequency_hierarchy.index(frequency) < self.frequency_hierarchy.index('1min'):
+            raise Exception("YahooFinance can't support an interval lower than 1 minute")
+
+        resp = yf.Ticker(ticker).history(from_date=self.from_date, to_date=self.to_date,
+                                         period=period, interval=frequency)
         self.Open = resp['Open']
         self.High = resp['High']
         self.Low = resp['Low']
@@ -140,7 +154,7 @@ class YahooFinance(StockPriceScraper):
 
 
 class GoogleFinance(StockPriceScraper):
-    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1M', frequency='1d'):
+    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1mo', frequency='1d'):
         super().__init__(ticker, period, from_date, to_date, frequency)
         rsp = requests.get(f'https://finance.google.com/finance?q={ticker}&output=json')
         if rsp.status_code in (200,):
@@ -152,7 +166,7 @@ class GoogleFinance(StockPriceScraper):
 
 
 class Quandl(StockPriceScraper):
-    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1M', frequency='1d'):
+    def __init__(self, ticker, from_date, to_date=datetime.now(), period='1mo', frequency='1d'):
         super().__init__(ticker, period, from_date, to_date, frequency)
 
 
