@@ -1,14 +1,15 @@
 import abc
 import os
-from datetime import datetime, timedelta
-from functools import partial
 import pandas as pd
 import numpy as np
-from abc import abstractmethod
 import matplotlib.pyplot as plt
-from enum import Enum
 
+from datetime import datetime, timedelta
+from functools import partial
+from abc import abstractmethod
+from enum import Enum
 from matilda import config
+from matilda.broker_deployment.alpaca import AlpacaBroker
 from matilda.portfolio_management.Portfolio import Portfolio
 from matilda.broker_deployment.broker_interface import Broker
 from matilda.portfolio_management.stock_screener import StockScreener
@@ -36,18 +37,13 @@ class RebalancingFrequency(Enum):
 
 class Strategy(metaclass=abc.ABCMeta):
 
-    def __init__(self, starting_date: datetime, ending_date: datetime, starting_capital: float,
-                 stock_screener: StockScreener, max_stocks_count_in_portfolio: int,
-                 net_exposure: tuple, maximum_leverage: float = 1.0,
+    def __init__(self, max_stocks_count_in_portfolio: int, net_exposure: tuple,
+                 maximum_leverage: float = 1.0,
                  reinvest_dividends: bool = False, fractional_shares: bool = False,
-                 include_slippage: bool = False, include_capital_gains_tax: bool = False, commission: int = 2):
+                 ):
 
         """
 
-        :param starting_date:
-        :param ending_date:
-        :param starting_capital:
-        :param stock_screener:
         :param max_stocks_count_in_portfolio:
         :param net_exposure: tuple that represents (long_percent, short_percent)
             * (0.5, 0.5) is Dollar Neutral Strategy
@@ -55,46 +51,51 @@ class Strategy(metaclass=abc.ABCMeta):
         :param maximum_leverage:
         :param reinvest_dividends:
         :param fractional_shares:
-        :param include_slippage:
-        :param include_capital_gains_tax:
-        :param commission:
-        """
 
-        self.starting_date = starting_date
-        self.ending_date = ending_date
-        self.starting_capital = starting_capital
-        self.stock_screener = stock_screener
+        """
         self.max_stocks_count_in_portfolio = max_stocks_count_in_portfolio
         self.net_exposure = net_exposure
         self.maximum_leverage = maximum_leverage
         self.reinvest_dividends = reinvest_dividends
         self.fractional_shares = fractional_shares
-        self.include_slippage = include_slippage
-        self.include_capital_gains_tax = include_capital_gains_tax
-        self.commission = commission
 
-    def generate_assets_to_trade(self, current_date):
+    @abstractmethod
+    def screen_stocks(self, current_date):
         """
-        This is basic implementation. You can implement for other strategies like smart-beta.
+        Filter stocks. Can use a StockScreener object
         :param current_date:
         :return: a tuple of two lists: long stocks, and short stocks.
         """
-        self.stock_screener.run(date=current_date)
-        return self.stock_screener.stocks, []
-
-    @abstractmethod
-    def allocation_regime(self, portfolio):
-        pass
-        # will cause circular import
-        # return EquallyWeightedPortfolio(portfolio).solve_weights()
-
-    @abstractmethod
-    def is_time_to_reschedule(self, current_date, last_rebalancing_day):
         pass
 
-    def historical_simulation(self):
+    @abstractmethod
+    def portfolio_allocation_regime(self, portfolio):
+        """
+        Can use our PortfolioOptimization library.
+        Example: `return EquallyWeightedPortfolio(portfolio).solve_weights()`
+        :param portfolio:
+        :return: pd.Series with indices being stock tickers (string), and value being weight to allocate (not in percentage)
+
+        """
+        pass
+
+    @abstractmethod
+    def is_market_timing(self, portfolio: Portfolio):
+        """
+        Is it time to rebalance the portfolio.
+        Example: `return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value`
+
+        :param portfolio:
+        :return: Boolean true if we need to rebalance our portfolio, False otherwise
+
+        """
+        pass
+
+    def historical_simulation(self, starting_date: datetime, ending_date: datetime, starting_capital: float,
+                              include_slippage: bool = False, include_capital_gains_tax: bool = False,
+                              commission: int = 2):
         results = []
-        portfolio = Portfolio(assets=[], balance=self.starting_capital, trades=[], date=self.starting_date)
+        portfolio = Portfolio(assets=[], balance=starting_capital, trades=[], date=starting_date)
 
         # First, populate stock returns universe
         securities_universe_prices_df = pd.DataFrame()
@@ -111,7 +112,7 @@ class Strategy(metaclass=abc.ABCMeta):
 
         securities_universe_returns_df = securities_universe_prices_df.pct_change()
 
-        for date in pd.date_range(start=self.starting_date, end=self.ending_date):
+        for date in pd.date_range(start=starting_date, end=ending_date):
             portfolio.date = datetime(year=date.year, month=date.month, day=date.day)
 
             for trade in portfolio.trades:  # update portfolio float
@@ -125,13 +126,11 @@ class Strategy(metaclass=abc.ABCMeta):
                 portfolio.float = portfolio.float + daily_doll_return if trade.direction \
                     else portfolio.float - daily_doll_return
 
-            if not (self.is_time_to_reschedule(current_date=date,
-                                               last_rebalancing_day=portfolio.last_rebalancing_day)
-                    or date == self.starting_date):
+            if not (self.is_market_timing(portfolio=portfolio) or date == starting_date):
                 continue
 
             portfolio.last_rebalancing_day = date  # rebalancing day, now can go on:
-            stocks_to_trade = self.generate_assets_to_trade(portfolio.date)
+            stocks_to_trade = self.screen_stocks(current_date=portfolio.date)
             long_stocks, short_stocks = stocks_to_trade
 
             for trade in portfolio.trades:  # close portfolio trades that no longer meet condition
@@ -141,11 +140,11 @@ class Strategy(metaclass=abc.ABCMeta):
             # Get portfolio returns of selected stocks up to current date, and optimize portfolio allocation
             portfolio.df_returns = securities_universe_returns_df[long_stocks]
             sliced_portfolio = portfolio.slice_dataframe(to_date=date, inplace=False)
-            weights = self.allocation_regime(portfolio=sliced_portfolio)
+            weights = self.portfolio_allocation_regime(portfolio=sliced_portfolio)
 
             portfolio.rebalance_portfolio(long_stocks=securities_universe_prices_df[long_stocks],
                                           short_stocks=securities_universe_prices_df[short_stocks],
-                                          weights=weights, commission=self.commission,
+                                          weights=weights, commission=commission,
                                           fractional_shares=self.fractional_shares)
 
             # Aggregate trades for better formatting in the dataframe
@@ -177,24 +176,14 @@ class Strategy(metaclass=abc.ABCMeta):
         if not issubclass(broker.__class__, Broker):
             raise Exception('Ensure that the broker object inherits from the `Broker` class.')
 
-        assets_to_long, assets_to_short = self.generate_assets_to_trade(datetime.now())
+        assets_to_long, assets_to_short = self.screen_stocks(current_date=datetime.now())
         # TODO long for now, improve optimization to include diff constraints
-        weights = self.portfolio_allocation(portfolio=Portfolio(assets_to_long)).solve_weights()
+        weights = self.portfolio_allocation_regime(portfolio=Portfolio(assets_to_long))
         broker.place_order(symbol='AAPL', side='buy')
         current_positions = broker.list_positions()
         for position in current_positions:
             print(position)
         broker.place_order()
-
-
-def sort_df(df, column_idx, key):
-    '''Takes dataframe, column index and custom function for sorting,
-    returns dataframe sorted by this column using this function'''
-
-    col = df.iloc[:, column_idx]
-    temp = np.array(col.values.tolist())
-    order = sorted(range(len(temp)), key=lambda j: key(temp[j]))
-    return df.iloc[order]
 
 
 # import pyformulas as pf
@@ -227,3 +216,57 @@ def sort_df(df, column_idx, key):
 #
 # #screen.close()
 
+if __name__ == '__main__':
+    # some imports for minimal example
+    from matilda import FactorModels, price_to_earnings, EquallyWeightedPortfolio
+
+    # initialize stock screener with an initial universe of Dow Jones stocks
+    stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
+    # filter by industry, sector, location, exchange...
+    stock_screener.filter_by_market(filter=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
+    # filter by fundamental metric against absolute number
+    stock_screener.filter_by_comparison_to_number(partial(price_to_earnings, period='FY'), '>', 5)
+    # can run it, by default based on today's values
+    stock_screener.run()
+    #
+    # # can also filter based on growth, mean, etc. over time.
+    #
+    # # can also filter these based on percentile against competitors (industry, sector...)
+    #
+    # # regress against exposure to a certain risk factor model
+    # lower_bounds = pd.Series(data=[40], index=['Alpha'])
+    # upper_bounds = pd.Series(data=[80], index=['MKT'])
+    # stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
+    #                                                     lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+    #
+    # # can also specify another date when running the stock screener
+    # stock_screener.run(date=datetime(2018, 1, 1))
+    # print(stock_screener.stocks)
+    #
+    # # # specify your strategy's rules for stock selection, portfolio allocation, and market timing
+    # # class CustomStrategy(Strategy):
+    # #     def is_market_timing(self, portfolio):
+    # #         # rebalance every quarter (3 months)
+    # #         current_date = portfolio.df_returns.index[-1]
+    # #         last_rebalancing_day = portfolio.last_rebalancing_day
+    # #         return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value
+    # #
+    # #     def screen_stocks(self, current_date):
+    # #         # use the stock screener we previous specified
+    # #         stock_screener.run(date=current_date)
+    # #         return stock_screener.stocks, []
+    # #
+    # #     def portfolio_allocation_regime(self, portfolio):
+    # #         return EquallyWeightedPortfolio(portfolio).solve_weights()
+    # #
+    # # # instantiate the custom strategy
+    # # strategy = CustomStrategy(max_stocks_count_in_portfolio=12, net_exposure=(100, 0),
+    # #                           maximum_leverage=1.0, reinvest_dividends=True, fractional_shares=True)
+    # #
+    # # # historically simulate (i.e. backtest) your strategy
+    # # strategy.historical_simulation(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
+    # #                                starting_capital=50000, include_capital_gains_tax=False,
+    # #                                include_slippage=False)
+    # #
+    # # # deploy your strategy. fill your broker's API key ID and secret in config.py
+    # # strategy.broker_deployment(broker=AlpacaBroker())

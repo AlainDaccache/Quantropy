@@ -37,11 +37,13 @@ class StockScreener:
                                         separate it from the `stocks` attribute.
         :param date: by default, now.
         '''
+        if securities_universe is None:
+            securities_universe = companies_in_classification(class_=config.MarketIndices.SP_500)
+        elif not isinstance(securities_universe, list):
+            securities_universe = companies_in_classification(class_=securities_universe)
 
         self.securities_universe = securities_universe  # starting universe
-
         self.stocks = securities_universe
-
         self.date = date
         self.conditions = []
         self.dataframe = pd.DataFrame()
@@ -91,12 +93,13 @@ class StockScreener:
         return self.stocks
 
     def filter_by_comparison_to_number(self, metric: partial, comparator: str, number: float):
-        try:
-            self.stocks = [stock for stock in self.stocks if
-                       helper_condition(metric, comparator, number)(stock, self.date)]
-        except:
-            pass
+        stocks = []
+        for stock in self.stocks:
+            if helper_condition(metric, comparator, number)(stock, self.date):
+                stocks.append(stock)
+        self.stocks = stocks
         self.conditions.append((StockScreener.filter_by_comparison_to_number, metric, comparator, number))
+
         return self.stocks
 
     def filter_by_comparison_to_other_metric(self, metric: partial, comparator: str, other_metric: typing.Callable):

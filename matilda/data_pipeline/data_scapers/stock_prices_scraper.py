@@ -185,5 +185,6 @@ def get_prices_wrapper(source: str, ticker, period, from_date, to_date, frequenc
 
 if __name__ == '__main__':
     # not supporting list of tickers yet
-    print(AlphaVantage(ticker='AAPL', period='YTD').convert_format('pandas').head())
-    print(YahooFinance(ticker='AAPL', period='YTD').convert_format('pandas').head())
+    df = YahooFinance(ticker='AAPL', period='YTD').convert_format('pandas')
+    print(df.index)
+

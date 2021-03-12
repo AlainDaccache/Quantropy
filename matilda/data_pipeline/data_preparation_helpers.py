@@ -11,6 +11,37 @@ import xlrd
 from matilda import config
 
 
+def generate_df_from_series_list(series_list):
+    """
+    Eventually will need to merge and forward fill when data preprocessing
+
+    :return:
+    """
+    macro_df = pd.DataFrame()
+    for series in series_list:
+        if macro_df.empty:
+            macro_df = series.to_frame()
+        else:
+            macro_df = macro_df.join(series, how='outer')
+
+    pd.set_option('display.max_rows', 500)
+    pd.set_option('display.max_columns', 500)
+    pd.set_option('display.width', 1000)
+    # forward fill NaN values
+    macro_df.fillna(method='ffill', inplace=True)
+    return macro_df
+
+
+def sort_df(df, column_idx, key):
+    '''Takes dataframe, column index and custom function for sorting,
+    returns dataframe sorted by this column using this function'''
+
+    col = df.iloc[:, column_idx]
+    temp = np.array(col.values.tolist())
+    order = sorted(range(len(temp)), key=lambda j: key(temp[j]))
+    return df.iloc[order]
+
+
 def get_date_index(date, dates_values, lookback_index=0):
     if isinstance(dates_values[0], str):
         dates_values = [datetime.strptime(x, '%Y-%m-%d') for x in dates_values]

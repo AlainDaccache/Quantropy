@@ -141,10 +141,38 @@ The Capital Allocation Line
 A Tale of Asset Pricing Models
 ==============================
 
+The idea of being paid a *premium* for additional risk you're exposed to inspired many researchers to empirically expand on
+the simplistic CAPM, which failed to capture other sources of risk that must be 'factored' in to explain market returns.
+
 Fama-French Three Factor Model (1992)
 -------------------------------------
 
 CAPM posited that a stock's beta alone should explain its average return.
+
+The Capital Asset Pricing Model contains one factor,
+    - The **market factor**, R_m - R_f is the excess return on the market
+
+    The Fama French 3 Factor model adds 2 factors to the CAPM:
+    - The **size factor**, 'SMB' for Small Minus Big [returns spread between small and large stocks]
+    - The **value** factor,'HML' for High Minus Low [returns spread between cheap and expensive stocks]
+
+    Carhart adds another factor to the Fama-French 3, the **momentum factor**, 'UMD' for Up Minus Down
+
+    Fama French neglects the validity of Carhart's factor, but add two new factors to their original model.
+    However, more is not necessarily better.
+
+    - The **profitability factor**, 'RMW' for Robust Minus Weak
+    - The ** factor**, 'CMA' for Conservative Minus Aggressive [returns spread of firms that invest conservatively and aggressively]
+
+AQR Capital Management, namely
+    - 'QMJ' (Quality Minus Junk)
+    - 'BAB' (Betting Against Beta)
+    - 'HML Devil' (High Minus Low Devil)
+
+Pastor and Stambaugh add another factor to Fama-French 3, the **liquidity factor** LIQ.
+
+Stambaugh_and_Yuan: Four factor model: Excess market returns, SMB, MGMT, PERF
+
 Fama and French found two anomalies:
 
 historical-average returns on stocks of small firms and on stocks with high ratios of

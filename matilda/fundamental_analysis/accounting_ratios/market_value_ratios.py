@@ -275,6 +275,7 @@ def price_to_earnings(stock, date=None, lookback_period=timedelta(days=0),
     :param deduct_preferred_dividends:
     :return: .. math:: \\text{Price-earnings ratio} = \\frac{\\text{Share Price}}{\\text{Earnings Per Share}}
     """
+
     market_price_ = read_market_price(stock=stock, date=date, lookback_period=lookback_period)
     earnings_per_share_ = earnings_per_share(stock=stock, date=date, lookback_period=lookback_period, period=period,
                                              diluted_shares=diluted_shares,
@@ -462,4 +463,8 @@ def enterprise_value_to_free_cash_flow(stock, date=None, lookback_period=timedel
 
 
 if __name__ == '__main__':
-    print(earnings_per_share(stock='AMGN'))
+    # print(price_to_earnings(stock='AAPL', period='FY'))
+    print(read_market_price(stock='AAPL'))
+    # print(earnings_per_share(stock='CRM', period='FY'))
+
+    # print(read_market_price(stock='CAT'))

@@ -1,96 +1,93 @@
 import os
+import pickle
 import re
 import urllib.request
 import zipfile
-from datetime import timedelta
+from datetime import timedelta, datetime, date
 import pandas as pd
 from matilda import config
-from matilda.data_pipeline.data_preparation_helpers import save_into_csv
 
 
-def resample_daily_df(daily_df, path):
-    for freq in ['Weekly', 'Monthly', 'Quarterly', 'Yearly']:
-        df = daily_df.resample(freq[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
+def resample_df(df: pd.DataFrame):
+    # infer frequency
+    test_0, test_1 = df.index[:2]  # take two consecutive elements
+    delta = (test_1 - test_0).days  # timedelta object, get days
+    if 1 <= delta <= 7:
+        cur_freq = 'Daily'
+    elif 7 <= delta <= 30.5:
+        cur_freq = 'Weekly'
+    elif 30.5 <= delta <= 30.5 * 4:
+        cur_freq = 'Monthly'
+    elif 30.5 * 4 <= delta <= 365.25:
+        cur_freq = 'Quarterly'
+    else:
+        cur_freq = 'Yearly'
+
+    output = {cur_freq: df}
+    freqs = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']
+    for freq in freqs[freqs.index(cur_freq) + 1:]:
+        df = df.resample(freq[0]).apply(lambda x: ((x + 1).cumprod() - 1).last("D"))
         df.index = df.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
-        save_into_csv(filename=path, df=df, sheet_name=freq)
+        output[freq] = df
+    return output
 
 
-def scrape_CAPM_factor():
-    """
-    The Capital Asset Pricing Model contains one factor,
-    - The **market factor**
-    :return:
-    """
-    pass
+def save_output_routine(factors_freq: dict, output_file_name: str):
+    file_path = os.path.join(config.FACTORS_DIR_PATH, f'{output_file_name}.xlsx')
+    writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
+    for freq, df in factors_freq.items():
+        df.to_excel(writer, sheet_name=freq)
+    writer.save()
+    pickle_path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', f'{output_file_name}.pkl')
+    with open(pickle_path, 'wb') as handle:
+        pickle.dump(factors_freq, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def scrape_Fama_French_3_factors():
-    """
-    The Fama French 3 Factor model adds 2 factors to the CAPM:
-    - The **size factor**, 'SMB' for Small Minus Big [returns spread between small and large stocks]
-    - The **value** factor,'HML' for High Minus Low [returns spread between cheap and expensive stocks]
+def scrape_factors(url: str, output_file_name: str, sep=",", skiprows=None,
+                   from_date=None, to_date=None, columns_rename=None, apply_fn=None, index_col=0):
+    if columns_rename is None:
+        columns_rename = {'MKT': 'MKT-RF'}
 
-    :return:
-    """
-    url = 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip'
-    urllib.request.urlretrieve(url[1], 'fama_french.zip')
-    zip_file = zipfile.ZipFile('fama_french.zip', 'r')
-    zip_file.extractall()
-    zip_file.close()
-    file_name = next(file for file in os.listdir('') if re.search('F-F', file))
-    skiprows = 4 if idx == 0 else 13 if idx == 1 else 3 if idx == 2 else Exception
-    ff_factors = pd.read_csv(file_name, skiprows=4, index_col=0)
-    ff_factors.dropna(how='all', inplace=True)
-    ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m%d')
-    ff_factors = ff_factors.apply(lambda x: x / 100)  # original is in percent
-    ff_factors.rename(columns={'Mkt-RF': 'MKT-RF'}, inplace=True)
-    ff_factors.index = ff_factors.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
-    os.remove(file_name)
-    os.remove('fama_french.zip')
+    format = url.split('.')[-1]
+    if format == 'zip':
+        urllib.request.urlretrieve(url, 'temp.zip')
+        zip_file = zipfile.ZipFile('temp.zip', 'r')
+        zip_file.extractall()
+        file_name = zip_file.namelist()[0]
+        zip_file.close()
+        factors_df = pd.read_csv(file_name, skiprows=skiprows, sep=sep, index_col=index_col)
+        os.remove(file_name)
+        os.remove('temp.zip')
+    else:
+        factors_df = pd.read_csv(url, skiprows=skiprows, index_col=index_col, sep=sep)
 
-    excel_path = os.path.join(config.FACTORS_DIR_PATH, '{}.xlsx'.format(url[0]))
-    ff_factors.to_excel(excel_path, sheet_name='Daily')
-    resample_daily_df(daily_df=ff_factors, path=excel_path)
-    pickle_path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(url[0]))
-    ff_factors.to_pickle(pickle_path)
+    factors_df.dropna(how='all', inplace=True)  # drop rows where all entries are NaN
 
+    for format in ['%Y%m%d', '%Y%m', '%Y']:  # convert index to datetime
+        try:
+            factors_df.index = pd.to_datetime(factors_df.index, format=format)
+            break
+        except:
+            pass
 
-def scrape_Carhart_factors():
-    """
-    Carhart adds another factor, momentum, 'UMD' for Up Minus Down
+    if apply_fn is not None:
+        factors_df = factors_df.apply(apply_fn)  # apply function
 
-    :return:
-    """
-    url = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip'
-    skiprows = 13
-    ff_factors.rename(columns={'Mom   ': 'UMD'}, inplace=True)
-    three_factors = pd.read_pickle(
-        os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(factors_urls[0][0])))
-    ff_factors = three_factors.join(ff_factors, how='inner')
+    factors_df.rename(columns=columns_rename, inplace=True)  # rename columns
+    factors_df.index = factors_df.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
 
+    if to_date is None:
+        to_date = factors_df.index[-1]
+    if from_date is None:
+        from_date = factors_df.index[0]
+    ff_factors = factors_df[(factors_df.index >= from_date) & (factors_df.index <= to_date)]  # slice dates
 
-def scrape_Fama_French_5_factors():
-    """
-    Fama French neglects the validity of Carhart's factor, but add two new factors to their original model.
-    However, more is not necessarily better.
-
-    - The **profitability factor**, 'RMW'
-    - The ** factor**, 'CMA'
-    :return:
-    """
-    url = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip'
-    skiprows = 3
+    resampled_ff_factors: dict = resample_df(df=ff_factors)  # resample frequencies
+    save_output_routine(factors_freq=resampled_ff_factors, output_file_name=output_file_name)  # save output
+    return resampled_ff_factors
 
 
-def scrape_AQR_factors():
-    """
-    This scrapes the factors of AQR Capital Management, namely
-    - 'QMJ' (Quality Minus Junk)
-    - 'BAB' (Betting Against Beta)
-    - 'HMLD' (High Minus Low Devil)
-
-    :return:
-    """
+def scrape_AQR_factors(output_file_name='AQR Factors'):
     url = 'https://images.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Quality-Minus-Junk-Factors-Daily.xlsx'
     path = os.path.join(config.FACTORS_DIR_PATH, "AQR Factors Data.xlsx")  # save it as this name
     urllib.request.urlretrieve(url, path)
@@ -101,55 +98,37 @@ def scrape_AQR_factors():
         temp.index = pd.to_datetime(temp.index)
         usa_series = pd.Series(temp['USA'] if sheet_name != 'RF' else temp['Risk Free Rate'], name=sheet_name)
         daily_df = daily_df.join(usa_series, how='outer') if not daily_df.empty else pd.DataFrame(usa_series)
-    daily_df.index = daily_df.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
-    daily_df.rename(columns={'MKT': 'MKT-RF', 'QMJ Factors': 'QMJ', 'HML Devil': 'HML'}, inplace=True)
+    daily_df.dropna(how='all', inplace=True)
     os.remove(path)
-    daily_df.to_excel(path, sheet_name='Daily')
-    resample_daily_df(daily_df=daily_df, path=path)
-    daily_df.to_pickle(os.path.join(config.FACTORS_DIR_PATH, 'pickle', "AQR Factors Data.pkl"))
+    daily_df.rename(columns={'MKT': 'MKT-RF', 'QMJ Factors': 'QMJ', 'HML Devil': 'HML'}, inplace=True)
+    resampled_df = resample_df(df=daily_df)
+    save_output_routine(factors_freq=resampled_df, output_file_name=output_file_name)
+    return resampled_df
 
+if __name__ == '__main__':
+    # Fama_French_3 = scrape_factors(
+    #     url='http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip',
+    #     skiprows=4, apply_fn=lambda x: x / 100, output_file_name='Fama-French 3 Factors')
+    #
+    # Carhart_Factor = scrape_factors(
+    #     url='https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip',
+    #     skiprows=13, columns_rename={'Mom   ': 'UMD'}, output_file_name='Carhart Factor')
+    #
+    # Fama_French_5 = scrape_factors(
+    #     url='https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip',
+    #     skiprows=3, output_file_name='Fama-French 5 Factors')
+    #
+    # Q_Factors = scrape_factors(url='http://global-q.org/uploads/1/2/2/6/122679606/q5_factors_daily_2019a.csv',
+    #                            columns_rename={'R_F': 'RF', 'R_MKT': 'MKT-RF', 'R_ME': 'ME', 'R_IA': 'IA',
+    #                                            'R_ROE': 'ROE', 'R_EG': 'EG'}, output_file_name='Q-Factors')
 
-def scrape_Fama_French_factors():
-    factors_urls = [
-        ('Fama-French 3 Factors Data',
-         ),
+    Pastor_Stambaugh_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/liq_data_1962_2019.txt',
+                                              columns_rename={'Agg Liq.': 'LIQ_AGG', 'Innov Liq (eq8)': 'LIQ_INNOV',
+                                                              'Traded Liq (LIQ_V)': 'LIQ_V'},
+                                              sep='\t|\t ', output_file_name='Pastor-Stambaugh Factors', skiprows=10)
 
-        ('Carhart 4 Factors Data',
-         ),
+    Stambaugh_Yuan_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/M4d.csv',
+                                            columns_rename={'MKTRF': 'MKT-RF'},
+                                            output_file_name='Stambaugh-Yuan Factors')
 
-        ('Fama-French 5 Factors Data',
-         'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip')]
-    for idx, url in enumerate(factors_urls):
-        urllib.request.urlretrieve(url[1], 'fama_french.zip')
-        zip_file = zipfile.ZipFile('fama_french.zip', 'r')
-        zip_file.extractall()
-        zip_file.close()
-        file_name = next(file for file in os.listdir('') if re.search('F-F', file))
-        skiprows = 4 if idx == 0 else 13 if idx == 1 else 3 if idx == 2 else Exception
-        ff_factors = pd.read_csv(file_name, skiprows=skiprows, index_col=0)
-        ff_factors.dropna(how='all', inplace=True)
-        ff_factors.index = pd.to_datetime(ff_factors.index, format='%Y%m%d')
-        ff_factors = ff_factors.apply(lambda x: x / 100)  # original is in percent
-        ff_factors.rename(columns={'Mkt-RF': 'MKT-RF'}, inplace=True)
-        ff_factors.index = ff_factors.index + timedelta(days=1) - timedelta(seconds=1)  # reindex to EOD
-        if idx == 1:  # carhart
-            ff_factors.rename(columns={'Mom   ': 'UMD'}, inplace=True)
-            three_factors = pd.read_pickle(
-                os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(factors_urls[0][0])))
-            ff_factors = three_factors.join(ff_factors, how='inner')
-        os.remove(file_name)
-        os.remove('fama_french.zip')
-
-        excel_path = os.path.join(config.FACTORS_DIR_PATH, '{}.xlsx'.format(url[0]))
-        ff_factors.to_excel(excel_path, sheet_name='Daily')
-        resample_daily_df(daily_df=ff_factors, path=excel_path)
-        pickle_path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(url[0]))
-        ff_factors.to_pickle(pickle_path)
-
-
-def scrape_Q_factors():
-    pass
-
-# if __name__ == '__main__':
-# scrape_AQR_factors()
-# scrape_Fama_French_factors()
+    AQR_Factors = scrape_AQR_factors()

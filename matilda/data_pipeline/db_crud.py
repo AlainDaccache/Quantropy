@@ -12,8 +12,6 @@ from pymongo import MongoClient
 from mongoengine import *
 from datetime import datetime, timedelta
 
-from matilda.data_pipeline.data_scapers.asset_pricing_factors import scrape_Fama_French_factors, \
-    scrape_AQR_factors
 from matilda.data_pipeline.data_scapers.company_classification import scrape_company_classification
 from matilda.data_pipeline.data_scapers.financial_statements_scraper.macrotrend_scraper import scrape_macrotrend
 from matilda.data_pipeline.data_scapers.index_exchanges_tickers import save_historical_dow_jones_tickers, \
@@ -253,9 +251,9 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
     stock, date = format_input(stock, date)
     filings = object_model.Filing.objects(company__in=object_model.Company.objects(ticker__in=stock),
-                                          date__gte=date[0] - lookback_period - timedelta(days=100) if period == 'Q'
-                                          else date[0] - lookback_period - timedelta(days=400),
-                                          date__lte=date[-1] - lookback_period,
+                                          # date__gte=date[0] - lookback_period - timedelta(days=100) if period == 'Q'
+                                          # else date[0] - lookback_period - timedelta(days=400),
+                                          # date__lte=date[-1] - lookback_period,
                                           period='Yearly' if period == 'FY' else 'Quarterly')
 
     # TODO Try aggregation https://stackoverflow.com/questions/25151042/moving-averages-with-mongodbs-aggregation-framework
@@ -295,7 +293,7 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
 
                 elif period in ['TTM', 'YTD']:
                     entries = []
-                    for i in range(4):
+                    for i in range(min(4, len(filings_for_stock))):
                         filing = filings_for_stock[idx - i]
                         if period == 'YTD' and filing['date'] < datetime(date_.year, 1, 1):
                             break
@@ -318,7 +316,7 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
     return format_output(dict(output))
 
 
-def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec='adj_close'):
+def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec='Close'):
     """
 
     :param stock:
@@ -328,11 +326,12 @@ def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec=
     :return:
     """
     stock, date = format_input(stock, date)
+
     objects = object_model.AssetPrices.objects(company__in=object_model.Company.objects(ticker__in=stock),
-                                               adj_close__date__lte=date[0])
+                                               close__date__lte=date[0])  # TODO read date list
     output = defaultdict(dict)
     for obj in objects:
-        output[date[0]][obj.company.name] = obj.adj_close[-1].price
+        output[date[0]][obj.company.name] = obj.close[-1].price
     return format_output(dict(output))
     # output = objects.filter(date__lte=date)
 
@@ -409,14 +408,16 @@ IV. `Delete` routines
 if __name__ == '__main__':
     # atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
     # db = connect_to_mongo_engine(atlas_url)
-    stocks = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
-    populate_db_financial_statements(tickers=stocks[0], from_date=datetime(2016, 1, 1), to_date=datetime.today())
+
+    # populate_db_financial_statements(tickers=stocks[0], from_date=datetime(2016, 1, 1), to_date=datetime.today())
 
     # populate_db_routine(db_username='AlainDaccache', db_password='qwerty98', db_name='matilda-db',
     #                     tickers=None, from_date=datetime(2016, 1, 1), to_date=datetime.today(), reset_db=True,
     #                     populate_company_info=True, populate_financial_statements=True,
     #                     populate_asset_prices=True, populate_risk_factors=True)
-    # populate_db_asset_prices(stocks)
+    stocks = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
+    populate_db_asset_prices(stocks)
+    populate_db_financial_statements(stocks)
     # populate_db_asset_prices('AAPL')
     # populate_db_risk_factors()
     # populate_db_company_info(tickers=stocks)

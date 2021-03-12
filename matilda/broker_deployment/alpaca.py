@@ -1,10 +1,12 @@
+from matilda import config
 from matilda.broker_deployment.broker_interface import Broker
 import alpaca_trade_api as tradeapi
 
 
 class AlpacaBroker(Broker):
-    def __init__(self, key_id, secret_key, endpoint):
-        super().__init__(key_id, secret_key, endpoint)
+    def __init__(self):
+        super().__init__(key_id=config.ALPACA_API_ID, secret_key=config.ALPACA_API_KEY,
+                         endpoint="https://paper-api.alpaca.markets")
         self.api = tradeapi.REST(key_id=self.key_id, secret_key=self.secret_key, base_url=self.endpoint)
 
     def get_account(self):
