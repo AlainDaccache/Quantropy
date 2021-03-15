@@ -6,18 +6,22 @@ from datetime import timedelta
 from datetime import datetime
 from matilda import config
 from matilda.data_pipeline.data_preparation_helpers import get_date_index
+from matilda.data_pipeline.db_crud import read_prices_series
+
 
 class TimeDataFrame:
     def __init__(self, returns):
         returns_copy = []
         cur_max_freq = 'D'
-        frequencies = ['D', 'W', 'M', 'Q', 'Y']
+        frequencies = {'D': 0, 'B': 0, 'W': 1, 'M': 2, 'Q': 3, 'Y': 4}
+        # frequencies = ['D', 'W', 'M', 'Q', 'Y']
         if not isinstance(returns, list):
             returns = [returns]
         for retrn in returns:
             if isinstance(retrn, str):
-                path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(retrn))
-                series = pd.read_pickle(path)['Adj Close'].pct_change().rename(retrn)
+                # path = os.path.join(config.STOCK_PRICES_DIR_PATH, '{}.pkl'.format(retrn))
+                series = read_prices_series(stock=retrn).pct_change().rename(retrn)
+                # series = pd.read_pickle(path)['Adj Close'].pct_change().rename(retrn)
                 returns_copy.append(series)
                 l_ = 1
             elif isinstance(retrn, pd.Series):
@@ -30,7 +34,10 @@ class TimeDataFrame:
             else:
                 raise Exception
 
-            returns_freq = returns_copy[-1].index.inferred_freq
+            try:
+                returns_freq = returns_copy[-1].index.inferred_freq
+            except:
+                pass
             if returns_freq is not None:
                 returns_copy[-1].index = pd.DatetimeIndex(returns_copy[-1].index.values, freq=returns_freq)
             else:  # usually happens when weekend days are not in dataframe
@@ -50,7 +57,7 @@ class TimeDataFrame:
             # to go through all, l_ representing the length of that dataframe
             for l in range(1, l_ + 1):
                 returns_copy[-l] = returns_copy[-l].asfreq(freq=returns_freq)
-            if frequencies.index(returns_freq) > frequencies.index(cur_max_freq):
+            if frequencies[returns_freq] > frequencies[cur_max_freq]:
                 cur_max_freq = returns_freq
 
         self.frequency = cur_max_freq
@@ -59,7 +66,7 @@ class TimeDataFrame:
             f = retrn.index.freq
             if hasattr(f, 'name'):
                 f = f.name
-            if frequencies.index(f) < frequencies.index(cur_max_freq):
+            if frequencies[f] < frequencies[cur_max_freq]:
                 resampled_returns = retrn.resample(self.frequency[0]).apply(
                     lambda x: ((x + 1).cumprod() - 1).last("D"))
 

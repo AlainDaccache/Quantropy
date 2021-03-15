@@ -46,7 +46,8 @@ def save_output_routine(factors_freq: dict, output_file_name: str):
 def scrape_factors(url: str, output_file_name: str, sep=",", skiprows=None,
                    from_date=None, to_date=None, columns_rename=None, apply_fn=None, index_col=0):
     if columns_rename is None:
-        columns_rename = {'MKT': 'MKT-RF'}
+        columns_rename = {'MKT': 'MKT-RF',
+                          'Mkt-RF': 'MKT-RF'}
 
     format = url.split('.')[-1]
     if format == 'zip':
@@ -105,11 +106,12 @@ def scrape_AQR_factors(output_file_name='AQR Factors'):
     save_output_routine(factors_freq=resampled_df, output_file_name=output_file_name)
     return resampled_df
 
+
 if __name__ == '__main__':
-    # Fama_French_3 = scrape_factors(
-    #     url='http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip',
-    #     skiprows=4, apply_fn=lambda x: x / 100, output_file_name='Fama-French 3 Factors')
-    #
+    Fama_French_3 = scrape_factors(
+        url='http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip',
+        skiprows=4, apply_fn=lambda x: x / 100, output_file_name='Fama-French 3 Factors')
+
     # Carhart_Factor = scrape_factors(
     #     url='https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip',
     #     skiprows=13, columns_rename={'Mom   ': 'UMD'}, output_file_name='Carhart Factor')
@@ -122,13 +124,13 @@ if __name__ == '__main__':
     #                            columns_rename={'R_F': 'RF', 'R_MKT': 'MKT-RF', 'R_ME': 'ME', 'R_IA': 'IA',
     #                                            'R_ROE': 'ROE', 'R_EG': 'EG'}, output_file_name='Q-Factors')
 
-    Pastor_Stambaugh_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/liq_data_1962_2019.txt',
-                                              columns_rename={'Agg Liq.': 'LIQ_AGG', 'Innov Liq (eq8)': 'LIQ_INNOV',
-                                                              'Traded Liq (LIQ_V)': 'LIQ_V'},
-                                              sep='\t|\t ', output_file_name='Pastor-Stambaugh Factors', skiprows=10)
-
-    Stambaugh_Yuan_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/M4d.csv',
-                                            columns_rename={'MKTRF': 'MKT-RF'},
-                                            output_file_name='Stambaugh-Yuan Factors')
-
-    AQR_Factors = scrape_AQR_factors()
+    # Pastor_Stambaugh_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/liq_data_1962_2019.txt',
+    #                                           columns_rename={'Agg Liq.': 'LIQ_AGG', 'Innov Liq (eq8)': 'LIQ_INNOV',
+    #                                                           'Traded Liq (LIQ_V)': 'LIQ_V'},
+    #                                           sep='\t|\t ', output_file_name='Pastor-Stambaugh Factors', skiprows=10)
+    #
+    # Stambaugh_Yuan_Factors = scrape_factors(url='http://finance.wharton.upenn.edu/~stambaug/M4d.csv',
+    #                                         columns_rename={'MKTRF': 'MKT-RF'},
+    #                                         output_file_name='Stambaugh-Yuan Factors')
+    #
+    # AQR_Factors = scrape_AQR_factors()

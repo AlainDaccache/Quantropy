@@ -105,7 +105,7 @@ class AssetPricingModel:
         elif isinstance(args[0], FactorModelDataset) and len(args) >= 2:
             self.factor_model_type = args[0]
             path = os.path.join(config.FACTORS_DIR_PATH, 'pickle', '{}.pkl'.format(args[0].value))
-            self.granular_df = pd.read_pickle(path)
+            self.granular_df = pd.read_pickle(path)[frequency]
 
             if isinstance(args[1], list):
                 factors = args[1] + ['RF']
@@ -233,11 +233,11 @@ class AssetPricingModel:
 
 
 class FactorModelDataset(Enum):
-    AQR_DATASET = 'AQR Factors Data'
-    FAMA_FRENCH_3_DATASET = 'Fama-French 3 Factors Data'
-    CARHART_4_DATASET = 'Carhart 4 Factors Data'
-    FAMA_FRENCH_5_DATASET = 'Fama-French 5 Factors Data'
-    Q_FACTOR_DATASET = 'Q Factors Data'
+    AQR_DATASET = 'AQR Factors'
+    FAMA_FRENCH_3_DATASET = 'Fama-French 3 Factors'
+    CARHART_4_DATASET = 'Carhart 4 Factors'
+    FAMA_FRENCH_5_DATASET = 'Fama-French 5 Factors'
+    Q_FACTOR_DATASET = 'Q Factors'
 
 
 class CapitalAssetPricingModel(AssetPricingModel):

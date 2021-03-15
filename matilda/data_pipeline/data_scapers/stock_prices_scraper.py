@@ -122,6 +122,7 @@ class AlphaVantage(StockPriceScraper):
         df = df[(df.index >= self.from_date) & (df.index <= self.to_date)]
         df = df.rename(columns=df_cols)
         df = df.iloc[::-1]  # AlphaVantage returns dates in reverse chronological order, so should reverse
+        df.index = df.index + timedelta(days=1) - timedelta(seconds=1)
         # with open('temp_prices.pkl', 'wb') as handle:
         #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
         # with open('temp_prices.pkl', 'rb') as handle:
@@ -145,12 +146,13 @@ class YahooFinance(StockPriceScraper):
 
         resp = yf.Ticker(ticker).history(from_date=self.from_date, to_date=self.to_date,
                                          period=period, interval=frequency)
+
         self.Open = resp['Open']
         self.High = resp['High']
         self.Low = resp['Low']
         self.Close = resp['Close']
         self.Volume = resp['Volume']
-        self.Dates = resp.index
+        self.Dates = resp.index + timedelta(days=1) - timedelta(seconds=1) # offset end of day
 
 
 class GoogleFinance(StockPriceScraper):
@@ -187,4 +189,3 @@ if __name__ == '__main__':
     # not supporting list of tickers yet
     df = YahooFinance(ticker='AAPL', period='YTD').convert_format('pandas')
     print(df.index)
-

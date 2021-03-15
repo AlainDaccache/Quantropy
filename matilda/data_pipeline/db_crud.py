@@ -316,7 +316,24 @@ def read_financial_statement_entry(stock, financial_statement: str, entry_name: 
     return format_output(dict(output))
 
 
-def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec='Close'):
+def read_prices_series(stock, from_date=None, to_date=datetime.now(),
+                       lookback_period=timedelta(days=5 * 365), spec='close'):
+    if from_date is None:
+        from_date = to_date - lookback_period
+
+    if not isinstance(stock, list):
+        stock = [stock]
+
+    objects = object_model.AssetPrices.objects.get(company__in=object_model.Company.objects(ticker__in=stock),
+                                                   close__date__lte=to_date, close__date__gte=from_date)
+    dictios = objects.to_mongo().to_dict()[spec]
+    dates, prices = [dictio['date'] for dictio in dictios], [dictio['price'] for dictio in dictios]
+    series = pd.Series(data=prices, index=dates, name=stock[0])  # TODO quick fix
+
+    return series
+
+
+def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec='close'):
     """
 
     :param stock:
@@ -343,6 +360,10 @@ def read_market_price(stock, date=None, lookback_period=timedelta(days=0), spec=
     # return output
 
 
+def get_company_classification(stock):
+    return object_model.Company.objects.get(ticker=stock).to_mongo().to_dict()
+
+
 def company_industry(stock, classification: str):
     if classification not in ['SIC', 'GICS']:
         raise Exception
@@ -358,6 +379,14 @@ def company_sector(stock, classification: str):
 
 def company_location(stock):
     return object_model.Company.objects(ticker=stock).values_list('location')[0]
+
+
+def company_indices(stock, date):
+    # TODO
+    for index in object_model.Index.objects:
+        if index.evolution:
+            pass
+    return ()
 
 
 def companies_in_classification(class_, date=datetime.now()):
@@ -385,8 +414,7 @@ def companies_in_classification(class_, date=datetime.now()):
                         'config.GICS_Industries, config.SIC_Sectors, config.GICS_Sectors,'
                         'config.Regions, config.Exchanges, or config.MarketIndices')
 
-    # return [company.ticker for company in companies]
-    return companies.values_list('ticker')
+    return [company.ticker for company in companies]
 
 
 def read_factor_returns(factor_model, factor, from_date, to_date, frequency):
@@ -415,9 +443,15 @@ if __name__ == '__main__':
     #                     tickers=None, from_date=datetime(2016, 1, 1), to_date=datetime.today(), reset_db=True,
     #                     populate_company_info=True, populate_financial_statements=True,
     #                     populate_asset_prices=True, populate_risk_factors=True)
+
+    atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+    db = connect_to_mongo_engine(atlas_url)
+    # print(get_company_classification(stock='AAPL'))
+    
+    object_model.AssetPrices.drop_collection()
     stocks = companies_in_classification(class_=config.MarketIndices.DOW_JONES)
     populate_db_asset_prices(stocks)
-    populate_db_financial_statements(stocks)
+    # populate_db_financial_statements(stocks)
     # populate_db_asset_prices('AAPL')
     # populate_db_risk_factors()
     # populate_db_company_info(tickers=stocks)
@@ -438,3 +472,4 @@ if __name__ == '__main__':
     # pprint(companies_in_classification(class_=config.Exchanges.NASDAQ))
 
     # print(company_industry('AAPL', classification='SIC'))
+    print(read_prices_series(stock='AAPL'))

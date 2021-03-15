@@ -113,7 +113,7 @@ def piotroski_f_score(stock: str, date: datetime = datetime.now(), lookback_peri
 
     piotroski_dictio['Piotroski F-Score'][' '][' '] = number_of_trues
 
-    return piotroski_dictio
+    return number_of_trues
 
 
 def probability_of_bankruptcy(score):

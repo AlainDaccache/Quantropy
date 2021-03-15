@@ -463,8 +463,7 @@ def enterprise_value_to_free_cash_flow(stock, date=None, lookback_period=timedel
 
 
 if __name__ == '__main__':
-    # print(price_to_earnings(stock='AAPL', period='FY'))
-    print(read_market_price(stock='AAPL'))
-    # print(earnings_per_share(stock='CRM', period='FY'))
-
-    # print(read_market_price(stock='CAT'))
+    pass
+    # print(earnings_per_share('AAPL'))
+    # print(net_income('AAPL'))
+    # print(net_income('AAPL', lookback_period=timedelta(365)))

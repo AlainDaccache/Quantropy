@@ -218,30 +218,42 @@ class Strategy(metaclass=abc.ABCMeta):
 
 if __name__ == '__main__':
     # some imports for minimal example
-    from matilda import FactorModels, price_to_earnings, EquallyWeightedPortfolio
+    from matilda import piotroski_f_score, current_ratio, earnings_per_share, return_on_equity, FactorModels, \
+        EquallyWeightedPortfolio, AlpacaBroker
+    from matilda.metrics_helpers import mean_metric_growth_rate, compare_against_macro
 
     # initialize stock screener with an initial universe of Dow Jones stocks
     stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
-    # filter by industry, sector, location, exchange...
-    stock_screener.filter_by_market(filter=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
-    # filter by fundamental metric against absolute number
-    stock_screener.filter_by_comparison_to_number(partial(price_to_earnings, period='FY'), '>', 5)
-    # can run it, by default based on today's values
-    stock_screener.run()
+
+    # # filter by industry, sector, location, exchange...
+    # stock_screener.filter_by_market(filter=[config.GICS_Sectors.INFORMATION_TECHNOLOGY,
+    #                                         config.GICS_Sectors.CONSUMER_DISCRETIONARY])
+    #
+    # # filter by fundamental metric against absolute number.
+    # # The Piotroski score, a criteria-based metric used to evaluate value stocks, should be above 8.
+    # stock_screener.filter_by_comparison_to_number(partial(piotroski_f_score, period='FY'), '>=', 8)
+    #
+    # stock_screener.run()  # can run the stock screener, by default based on today's values
     #
     # # can also filter based on growth, mean, etc. over time.
+    # fn = partial(mean_metric_growth_rate, metric=earnings_per_share, interval='Y-Y', periods=1)
+    # # EPS growth rates of at least 25% compared with year-ago levels suggest a company has products/services in strong demand
+    # stock_screener.filter_by_comparison_to_number(fn, '>=', 0.25)
     #
     # # can also filter these based on percentile against competitors (industry, sector...)
-    #
-    # # regress against exposure to a certain risk factor model
-    # lower_bounds = pd.Series(data=[40], index=['Alpha'])
-    # upper_bounds = pd.Series(data=[80], index=['MKT'])
-    # stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
-    #                                                     lower_bounds=lower_bounds, upper_bounds=upper_bounds)
-    #
-    # # can also specify another date when running the stock screener
-    # stock_screener.run(date=datetime(2018, 1, 1))
-    # print(stock_screener.stocks)
+    # # Ideally, ROE is equal to or just above the median for the peer group
+    # fn = partial(compare_against_macro, metric=return_on_equity, against=config.SIC_Industries)
+    # stock_screener.filter_by_comparison_to_number(fn, '>=', 50)
+
+    # regress against exposure to a certain risk factor model
+    lower_bounds = pd.Series(data=[40], index=['Alpha'])
+    upper_bounds = pd.Series(data=[80], index=['MKT'])
+    stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.FamaFrench3,
+                                                        lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+
+    # can also specify another date when running the stock screener
+    stock_screener.run(date=datetime(2018, 1, 1))
+    print(stock_screener.stocks)
     #
     # # # specify your strategy's rules for stock selection, portfolio allocation, and market timing
     # # class CustomStrategy(Strategy):
