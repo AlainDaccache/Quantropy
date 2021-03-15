@@ -19,6 +19,9 @@ Go to terminal, and do
 *   py      (to open python interpreter)
 *   import matilda
 
+Now you're ready to upload it to actual PyPi
+
+
 """
 
 import setuptools

@@ -74,32 +74,73 @@ and **portfolio allocation**. Alongside it, we provide an implementation that us
 these models in real-life.
 
 ```bash
-ff3 = FamaFrench_ThreeFactorModel(frequency='Monthly', to_date=datetime.today())
-reg = ff3.regress_factor_loadings(portfolio=Portfolio(assets=['MSFT']))
-pprint(reg.params)
+# some imports for minimal example
+from matilda import piotroski_f_score, earnings_per_share, return_on_equity, FactorModels, \
+    EquallyWeightedPortfolio, AlpacaBroker
+from matilda.metrics_helpers import mean_metric_growth_rate, compare_against_macro
 
+# initialize stock screener with an initial universe of Dow Jones stocks
 stock_screener = StockScreener(securities_universe=config.MarketIndices.DOW_JONES)
-stock_screener.filter_by_comparison_to_number(partial(ratios.price_to_earnings, period='FY'), '>', 5)
-stock_screener.filter_by_sector(sector=config.GICS_Sectors.INFORMATION_TECHNOLOGY)
-stock_screener.run()
 
+# filter by industry, sector, location, exchange...
+stock_screener.filter_by_market(filter=[config.GICS_Sectors.INFORMATION_TECHNOLOGY,
+                                        config.GICS_Sectors.CONSUMER_DISCRETIONARY])
+
+# filter by fundamental metric against absolute number.
+# The Piotroski score, a criteria-based metric used to evaluate value stocks, should be above 8.
+stock_screener.filter_by_comparison_to_number(partial(piotroski_f_score, period='FY'), '>=', 8)
+
+stock_screener.run()  # can run the stock screener, by default based on today's values
+
+# can also filter based on growth, mean, etc. over time.
+fn = partial(mean_metric_growth_rate, metric=earnings_per_share, interval='Y-Y', periods=1)
+# EPS growth rates of at least 25% compared with year-ago levels suggest a company has products/services in strong demand
+stock_screener.filter_by_comparison_to_number(fn, '>=', 0.25)
+
+# can also filter these based on percentile against competitors (industry, sector...)
+# Ideally, ROE is equal to or just above the median for the peer group
+fn = partial(compare_against_macro, metric=return_on_equity, against=config.SIC_Industries)
+stock_screener.filter_by_comparison_to_number(fn, '>=', 50)
+
+# regress against exposure to a certain risk factor model
 lower_bounds = pd.Series(data=[40], index=['Alpha'])
 upper_bounds = pd.Series(data=[80], index=['MKT'])
-stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.CAPM,
+stock_screener.filter_by_exposure_from_factor_model(factor_model=FactorModels.FamaFrench3,
                                                     lower_bounds=lower_bounds, upper_bounds=upper_bounds)
+
+# can also specify another date when running the stock screener
 stock_screener.run(date=datetime(2018, 1, 1))
 print(stock_screener.stocks)
 
-class Alainps(Strategy):
-    def is_time_to_reschedule(self, current_date, last_rebalancing_day):
+
+# specify your strategy's rules for stock selection, portfolio allocation, and market timing
+class CustomStrategy(Strategy):
+    def is_market_timing(self, portfolio):
+        # rebalance every quarter (3 months)
+        current_date = portfolio.df_returns.index[-1]
+        last_rebalancing_day = portfolio.last_rebalancing_day
         return (current_date - last_rebalancing_day).days > config.RebalancingFrequency.Quarterly.value
 
-strategy = Alainps(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
-                   starting_capital=50000, stock_screener=stock_screener, max_stocks_count_in_portfolio=12,
-                   net_exposure=(100, 0), portfolio_allocation=EquallyWeightedPortfolio)
-strategy.historical_simulation()
-alpaca = AlpacaBroker(key_id='YOUR_API_KEY_ID', secret_key='YOUR_API_SECRET_KEY', endpoint='https://paper-api.alpaca.markets')
-strategy.broker_deployment(broker=alpaca)
+    def screen_stocks(self, current_date):
+        # use the stock screener we previous specified
+        stock_screener.run(date=current_date)
+        return stock_screener.stocks, []
+
+    def portfolio_allocation_regime(self, portfolio):
+        return EquallyWeightedPortfolio(portfolio).solve_weights()
+
+
+# instantiate the custom strategy
+strategy = CustomStrategy(max_stocks_count_in_portfolio=12, net_exposure=(100, 0),
+                          maximum_leverage=1.0, reinvest_dividends=True, fractional_shares=True)
+
+# historically simulate (i.e. backtest) your strategy
+strategy.historical_simulation(starting_date=datetime(2019, 1, 1), ending_date=datetime(2020, 12, 1),
+                               starting_capital=50000, include_capital_gains_tax=False,
+                               include_slippage=False)
+
+# deploy your strategy. fill your broker's API key ID and secret in config.py
+strategy.broker_deployment(broker=AlpacaBroker())
 ```
 
 ## Architectural Design

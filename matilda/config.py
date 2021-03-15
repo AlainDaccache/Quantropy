@@ -18,7 +18,6 @@ FRED_API_KEY = 'e8aac4744b351bb140f6085db13a7fff'
 ALPACA_API_ID = ''
 ALPACA_API_KEY = ''
 
-
 """
 Financial Statements Periods
 """
