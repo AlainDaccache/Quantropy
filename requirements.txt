@@ -37,7 +37,7 @@ Pygments==2.7.3
 pyparsing==2.4.7
 python-dateutil==2.8.1
 pytz==2020.4
-PyYAML==5.3.1
+PyYAML==5.4
 regex==2020.11.13
 requests==2.25.0
 scipy==1.5.4
