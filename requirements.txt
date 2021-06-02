@@ -61,7 +61,7 @@ statsmodels==0.12.1
 ta==0.7.0
 threadpoolctl==2.1.0
 titlecase==1.1.1
-urllib3==1.25.11
+urllib3==1.26.5
 webdriver-manager==3.2.2
 websocket-client==0.57.0
 websockets==8.1
