@@ -56,7 +56,7 @@ sphinxcontrib-htmlhelp==1.0.3
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.4
-sqlparse==0.4.1
+sqlparse==0.4.2
 statsmodels==0.12.1
 ta==0.7.0
 threadpoolctl==2.1.0
