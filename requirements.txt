@@ -1,7 +1,7 @@
 alabaster==0.7.12
 alpaca-trade-api==0.51.0
 asgiref==3.3.1
-Babel==2.9.0
+Babel==2.9.1
 beautifulsoup4==4.9.3
 bs4==0.0.1
 certifi==2020.12.5
