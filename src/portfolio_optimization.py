@@ -4,6 +4,7 @@ import yfinance as yf
 import logging
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+from functools import partial
 
 """
 import importlib
@@ -122,6 +123,11 @@ def annualized_volatility(returns, frequency="daily"):
     ann_vol = returns.std() * np.sqrt(annual_factor)
     return ann_vol
 
+def calculate_covariance_matrix(returns_df: pd.DataFrame, frequency='daily'):
+    annual_factor = annualized_factor_from_freq[frequency]                
+    return returns_df.cov() * annual_factor
+
+
 def portfolio_return_from_weights(weights, returns):
     return np.dot(weights, returns)
 
@@ -176,7 +182,7 @@ def calculate_risk_contribution(w,V):
 def normalize_risk_contributions(total_risk_contrib: np.ndarray) -> np.ndarray:
     return total_risk_contrib / total_risk_contrib.sum()
 
-def sharpe_ratio(expected_return, volatility_return, risk_free_rate=0.01):
+def sharpe_ratio(expected_return: float, volatility_return: float, risk_free_rate=0.01):
     return (expected_return - risk_free_rate) / volatility_return
 
 def get_valid_assets(returns):
@@ -197,16 +203,243 @@ def risk_parity_weights(cov_matrix: pd.DataFrame) -> pd.Series:
     return weights
     # return pd.Series(weights, index=cov_matrix.columns)
 
+import scipy
+import numpy as np
 
-def portfolio_optimization(cov_matrix: pd.DataFrame,
-                           expected_returns: pd.Series=None,
-                           goal='minVol', 
-                           risk_free_rate=0.01,
-                           risk_budget = None,
+def semi_variance(returns, threshold=0, frequency='daily'):
+    # Calculate downside differences (returns below the threshold)
+    downside_diff = np.minimum(0, returns - threshold)
+    semi_var = np.mean(downside_diff**2)
+
+    # Annualize the semi-variance if required
+    assert frequency in annualized_factor_from_freq:
+    annual_factor = annualized_factor_from_freq[frequency]
+    semi_var *= annual_factor
+    
+    return semi_var
+
+def downside_deviation(returns, threshold=0, frequency='daily'):
+    return np.sqrt(semi_variance(returns, threshold, frequency=frequency))
+
+def sortino_ratio(returns, risk_free_rate=0.01, threshold=0, frequency='daily'):
+    downside_dev = downside_deviation(returns, threshold=threshold, frequency=frequency)
+    expected_return = annualized_expected_return(returns=returns, frequency=frequency)
+    return (expected_return - risk_free_rate) / downside_dev
+    
+def omega_ratio(returns, threshold=0):
+    gains = np.sum(returns[returns > threshold] - threshold)
+    losses = np.sum(threshold - returns[returns < threshold])
+    return gains / losses
+    
+def portfolio_skewness(weights, returns):
+    port_returns = np.dot(weights, returns)
+    return scipy.stats.skew(port_returns)
+    
+def portfolio_kurtosis(weights, returns):
+    port_returns = np.dot(weights, returns)
+    return scipy.stats.kurtosis(port_returns)
+
+def value_at_risk(returns, confidence_level=0.05):
+    var = np.percentile(returns, 100 * confidence_level)
+    return var
+def cvar(returns, confidence_level=0.05):
+    var = value_at_risk(returns=returns)
+    return returns[returns <= var].mean()
+def modified_var(returns, confidence_level=0.05):
+    mean = np.mean(returns)
+    std_dev = np.std(returns)
+    skewness = scipy.stats.skew(returns)
+    kurtosis = scipy.stats.kurtosis(returns)
+    z_score = scipy.stats.norm.ppf(confidence_level)
+    
+    modified_z = (z_score + (1/6) * (z_score**2 - 1) * skewness + 
+                  (1/24) * (z_score**3 - 3 * z_score) * kurtosis - 
+                  (1/36) * (2 * z_score**3 - 5 * z_score) * skewness**2)
+    
+    return mean + modified_z * std_dev
+
+from abc import ABC, abstractmethod
+import numpy as np
+
+class ObjectiveFunction(ABC):
+    
+    def __init__(self, returns_df: pd.DataFrame=None, **kwargs):
+        num_assets = None
+        if returns_df is not None:
+            num_assets = len(returns_df.columns)
+        self.num_assets = num_assets
+        
+    @abstractmethod
+    def calculate(self, weights: np.ndarray) -> float:
+        pass
+
+class SemiVarianceObjective(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        self.threshold = kwargs.get("threshold", 0)
+    
+    def calculate(self, weights: np.ndarray) -> float:
+        port_returns = np.dot(weights, self.returns_df)
+        return semi_variance(port_returns, self.threshold)
+
+class DownsideDeviationObjective(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        self.threshold = kwargs.get("threshold", 0)
+    
+    def calculate(self, weights: np.ndarray) -> float:
+        port_returns = np.dot(weights, self.returns_df)
+        return downside_deviation(port_returns, self.threshold)
+
+class MaxSortinoRatio(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        self.risk_free_rate = kwargs.get("risk_free_rate", 0.01)
+        self.threshold = kwargs.get("threshold", 0)
+        self.frequency = kwargs.get("frequency", "daily")
+        # self.expected_return = kwargs.get("expected_return", None)
+        # if self.expected_return is None:
+        #     self.expected_returns = annualized_expected_return(returns_df)
+        self.returns = returns_df
+        
+    def calculate(self, weights: np.ndarray) -> float:
+        port_returns = np.dot(self.returns, weights)
+
+        o = - sortino_ratio(returns=port_returns, 
+                            risk_free_rate=self.risk_free_rate, 
+                            threshold=self.threshold, 
+                            frequency=self.frequency)
+        return o
+
+
+class OmegaRatioObjective(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        self.threshold = kwargs.get("threshold", 0)
+    
+    def calculate(self, weights: np.ndarray) -> float:
+        port_returns = np.dot(weights, self.returns_df)
+        return -omega_ratio(port_returns, self.threshold)
+
+class SkewnessObjective(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+    
+    def calculate(self, weights: np.ndarray) -> float:
+        # positive skewness is prefered (right fat tail)
+        return -portfolio_skewness(weights, self.returns_df)
+        
+class KurtosisObjective(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+    
+    def calculate(self, weights: np.ndarray) -> float:
+        return portfolio_kurtosis(weights, self.returns_df)
+
+class MinVaR(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        var_method = kwargs.get("var_method", "value_at_risk")
+        self.var_fun = eval(var_method)
+        self.confidence_level = kwargs.get("confidence_level", None)
+            
+    def calculate(self, weights: np.ndarray) -> float:
+        var = self.var_fun(returns=returns, confidence_level=confidence_level)
+        return var
+        
+class TargetVaR(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        var_method = kwargs.get("var_method", "value_at_risk")
+        self.var_fun = eval(var_method)
+        self.confidence_level = kwargs.get("confidence_level", None)
+        self.target = kwargs["target"]
+            
+    def calculate(self, weights: np.ndarray) -> float:
+        var = self.var_fun(returns=returns, confidence_level=self.confidence_level)
+        return (var - self.target) ** 2
+
+
+class MinVolatility(ObjectiveFunction):
+    
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        frequency = kwargs.get("frequency", 'daily')
+        cov_matrix = kwargs.get("cov_matrix", None)
+
+        if cov_matrix is None:
+            cov_matrix = calculate_covariance_matrix(returns_df=returns_df, frequency=frequency)
+        
+        if returns_df is None:
+            self.num_assets = len(cov_matrix)
+
+        self.cov_matrix = cov_matrix
+
+    def calculate(self, weights: np.ndarray) -> float:
+        return calculate_portfolio_volatility(weights, self.cov_matrix)
+        
+class MaxSharpeRatio(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        super().__init__(returns_df=returns_df)
+        frequency = kwargs.get("frequency", None) # 'daily'
+        annual_factor = annualized_factor_from_freq.get(frequency, None)
+        
+        cov_matrix = kwargs.get("cov_matrix", None)
+        expected_returns = kwargs.get("expected_returns", None)
+     
+        if cov_matrix is None:
+            assert annual_factor is not None
+            cov_matrix = returns_df.cov() * annual_factor
+        if expected_returns is None:
+            expected_returns = annualized_expected_return(returns=returns_df, frequency=frequency)
+        if returns_df is None:
+            self.num_assets = len(expected_returns)
+        self.expected_returns = expected_returns
+        self.cov_matrix = cov_matrix
+        self.risk_free_rate = kwargs.get("risk_free_rate", None)
+
+    def calculate(self, weights: np.ndarray) -> float:
+        port_return = portfolio_return_from_weights(weights, self.expected_returns)
+        port_vol = calculate_portfolio_volatility(weights, self.cov_matrix)
+        temp_func = partial(sharpe_ratio, port_return, port_vol)
+        if self.risk_free_rate: 
+            return - temp_func(self.risk_free_rate)
+        else:
+            return - temp_func()
+
+class RiskContributionBudgeting(ObjectiveFunction):
+    def __init__(self, returns_df: pd.DataFrame, **kwargs):
+        frequency = kwargs["frequency"] # 'daily'
+        annual_factor = annualized_factor_from_freq[frequency]                
+        cov_matrix = returns_df.cov() * annual_factor
+        risk_budget = kwargs.get("risk_budget", None)
+        num_assets = len(cov_matrix)
+        if risk_budget is None:
+            risk_budget = np.array([1/num_assets] * num_assets)
+        self.risk_budget = risk_budget
+        
+    def risk_budget_objective(self, w, cov_matrix, risk_budget=None):
+        # calculate portfolio risk
+        V = cov_matrix
+        x_t = risk_budget
+        x = w
+        sig_p =  np.sqrt(calculate_portfolio_variance(x,V)) # portfolio sigma
+        # compute proportion of total sigma (sums to total_sigma)
+        risk_target = np.asmatrix(np.multiply(sig_p,x_t))        
+        asset_RC = calculate_risk_contribution(x,V)
+        J = np.sum((np.multiply(sig_p,x_t) - asset_RC) ** 2)
+        return J
+    def calculate(self, weights: np.ndarray) -> float:
+        # Risk parity objective calculation
+        return self.risk_budget_objective(weights, self.cov_matrix, self.risk_budget)
+
+
+def portfolio_optimization(objective: ObjectiveFunction,
                            target_return=None,
                            long_only=True,
                            total_weight=1.0,
-                           min_exposure=0.0, max_exposure=1.0) -> pd.Series:
+                           min_exposure=0.0, max_exposure=1.0,
+                           **kwargs) -> pd.Series:
     
     def target_return_constraint(x):
         return portfolio_return_from_weights(weights=x, returns=returns) - target_return
@@ -227,65 +460,32 @@ def portfolio_optimization(cov_matrix: pd.DataFrame,
         
     # constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
     
-    num_assets = cov_matrix.shape[0]
+    num_assets = objective.num_assets
     if 1 / num_assets > max_exposure:
         logging.warning(f"Max Exposure can't be {max_exposure} since there are only {num_assets} assets to optimize for with returns in this time period. Replacing max_exposure with 1 / {num_assets}")
     max_exposure = max(max_exposure, 1 / num_assets)
     bounds = tuple((min_exposure, max_exposure) for _ in range(num_assets))
     initial_guess = num_assets * [1. / num_assets]
-
-    def sharpe_ratio_maximization(w, expected_returns, cov_matrix, risk_free_rate):
-        port_return = portfolio_return_from_weights(weights=w, returns=expected_returns)
-        port_vol = calculate_portfolio_volatility(weights=w, cov_matrix=cov_matrix)
-        return - sharpe_ratio(expected_return=port_return, volatility_return=port_vol, risk_free_rate=risk_free_rate)
     
-    def risk_budget_objective(w, cov_matrix, risk_budget=None):
-        # calculate portfolio risk
-        V = cov_matrix
-        if risk_budget is None:
-            risk_budget = np.array([1/num_assets] * num_assets)
-        x_t = risk_targets
-        x = w
-        
-        sig_p =  np.sqrt(calculate_portfolio_variance(x,V)) # portfolio sigma
-    
-        # compute proportion of total sigma (sums to total_sigma)
-        risk_target = np.asmatrix(np.multiply(sig_p,x_t))        
-        asset_RC = calculate_risk_contribution(x,V)
-        J = np.sum((np.multiply(sig_p,x_t) - asset_RC) ** 2)
-        return J
-        
-    if goal == "minVol":
-        f = calculate_portfolio_volatility
-        args = (cov_matrix)
-        
-    elif goal == 'maxSharpe':
-        f = sharpe_ratio_maximization
-        args = (expected_returns, cov_matrix, risk_free_rate)
-        
-    elif goal == 'riskParity':
-        f = risk_budget_objective(w=w)
-        args = (cov_matrix, risk_budget)
-    else:
-        raise ValueError("Invalid goal specified. Use 'minVol', 'maxSharpe', or 'riskParity'.")
-    
-    result = minimize(f, initial_guess, args=args, method='SLSQP', bounds=bounds, constraints=constraints)
+    result = minimize(objective.calculate, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints)
 
     if result.success:
         optimized_weights = result.x
-        if isinstance(expected_returns, pd.Series):   
-            assets = list(expected_returns.index)
-            oppltimized_weights = pd.Series(optimized_weights, index=assets)            
+        # if isinstance(expected_returns, pd.Series):   
+        #     assets = list(expected_returns.index)
+        #     optimized_weights = pd.Series(optimized_weights, index=assets)            
     else:
         raise ValueError("Optimization did not converge")
     # return all result TODO
     return optimized_weights
 
 def get_global_minimum_variance_portfolio(cov_matrix):
-    return portfolio_optimization(goal='minVol', cov_matrix=cov_matrix)
+    min_var = MinVolatility(returns_df=None, cov_matrix=cov_matrix)
+    return portfolio_optimization(objective=min_var)
 
 def get_tangent_portfolio(expected_returns, cov_matrix, risk_free_rate=0.01):
-    return portfolio_optimization(goal="maxSharpe", cov_matrix=cov_matrix, expected_returns=expected_returns, risk_free_rate=risk_free_rate)
+    max_sharpe = MaxSharpeRatio(returns_df=None, expected_returns=expected_returns, cov_matrix=cov_matrix, risk_free_rate=risk_free_rate)
+    return portfolio_optimization(objective=max_sharpe)
 
 def generate_portfolios(returns, cov_matrix, num_portfolios=10000, risk_free_rate=0.01, seed=42):
     # Seed for reproducibility
@@ -370,20 +570,21 @@ def compute_weighted_returns(weights: pd.DataFrame, returns: pd.DataFrame):
     portfolio_returns = pd.Series(portfolio_returns.values, index=returns.index)
     return portfolio_returns
 
-def portfolio_allocation(returns, 
-                          method='minVol', 
+def calculate_historical_portfolio_allocation(
+                          returns, 
+                          objective_class: ObjectiveFunction=None,
                           rebalance_freq='Q', 
-                          frequency='daily', 
                           skip_first_n_periods=365, 
                           lookback_period=1095, 
-                          risk_free_rate=0.01,
+                          target_return=None,
                           min_exposure=0.0,
-                          max_exposure=1.0):
+                          max_exposure=1.0,
+                          long_only=True,
+                          total_weight=1.0,
+                          **kwargs):
     # Create DataFrames for storing results
     stored_weights = pd.DataFrame(index=returns.index, columns=returns.columns)
     portfolio_returns = pd.Series(index=returns.index)
-    assert frequency in annualized_factor_from_freq
-    annual_factor = annualized_factor_from_freq[frequency]
 
     def compute_weights(date):
         end_date = date
@@ -393,9 +594,7 @@ def portfolio_allocation(returns,
             stored_weights.loc[date] = pd.Series(np.nan, index=returns.columns)
         
         lookback_returns = returns.loc[start_date:end_date]
-        # Get mean returns and covariance matrix
-        expected_returns = annualized_expected_return(returns=lookback_returns)
-        cov_matrix = lookback_returns.cov() * annual_factor
+   
         # Identify valid assets (non-NaN or non-zero returns)
         assets = list(lookback_returns.columns)
         valid_assets = get_valid_assets(returns=lookback_returns)
@@ -403,21 +602,29 @@ def portfolio_allocation(returns,
         if not num_assets:
             stored_weights.loc[date] = pd.Series(0.0, index=lookback_returns.columns)
             return 
-        # Filter returns and covariance matrix to include only valid assets
-        expected_returns_filtered = expected_returns[valid_assets]
-        cov_matrix_filtered = cov_matrix.loc[valid_assets, valid_assets]
-    
-        from functools import partial
+
+        returns_filtered = lookback_returns[valid_assets]
         try:
-            if method == 'eqCont':
-                weights = equal_contribution_weights(returns=lookback_returns)
-            elif method in ('maxSharpe', 'minVol', 'riskParity'):
-                weights = portfolio_optimization(expected_returns=expected_returns_filtered, 
-                                                 cov_matrix=cov_matrix_filtered, 
-                                                 goal=method,
-                                                 min_exposure=min_exposure, max_exposure=max_exposure)
+            if objective_class is None:
+                weights = equal_contribution_weights(returns=returns_filtered)
             else:
-                raise ValueError()
+                objective_obj = objective_class(returns_df=returns_filtered,
+                                           **kwargs)
+                weights = portfolio_optimization(objective=objective_obj,
+                                             target_return=target_return,
+                                             long_only=long_only,
+                                             total_weight=total_weight,
+                                             min_exposure=min_exposure, 
+                                             max_exposure=max_exposure)
+            # if method == 'eqCont':
+            #     weights = equal_contribution_weights(returns=lookback_returns)
+            # elif method in ('maxSharpe', 'minVol', 'riskParity'):
+            #     weights = portfolio_optimization(expected_returns=expected_returns_filtered, 
+            #                                      cov_matrix=cov_matrix_filtered, 
+            #                                      goal=method,
+            #                                      min_exposure=min_exposure, max_exposure=max_exposure)
+            # else:
+            #     raise ValueError()
             # Assign weights for valid assets
             final_weights = pd.Series(index=assets, dtype=float).fillna(0)
             final_weights.loc[valid_assets] = weights
