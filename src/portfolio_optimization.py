@@ -206,24 +206,31 @@ def risk_parity_weights(cov_matrix: pd.DataFrame) -> pd.Series:
 import scipy
 import numpy as np
 
-def semi_variance(returns, threshold=0, frequency='daily'):
-    # Calculate downside differences (returns below the threshold)
-    downside_diff = np.minimum(0, returns - threshold)
-    semi_var = np.mean(downside_diff**2)
+def convert_annual_threshold_to_frequency(annual_threshold, frequency='daily'):
+    annual_factor = annualized_factor_from_freq.get(frequency, 1)
+    return (1 + annual_threshold) ** (1 / annual_factor) - 1
 
-    # Annualize the semi-variance if required
-    assert frequency in annualized_factor_from_freq:
-    annual_factor = annualized_factor_from_freq[frequency]
-    semi_var *= annual_factor
-    
-    return semi_var
+def semi_variance(returns, threshold=0, frequency='daily'):
+    # Convert threshold to the frequency of the data
+    """
+    threshold is based on frequency. if returns daily, but want to annnualize, 
+    for now we put frequency='daily', so the threshold is given as annual 
+    in the input (e.g. 2%) and in the function is converted to daily 
+    (1 + convert_annual_threshold_to_frequency(0.02, 'daily'))**252 = 0.02
+    """
+    threshold = convert_annual_threshold_to_frequency(threshold, frequency)
+    downside_diff = np.minimum(0, returns - threshold)    
+    semi_var = (downside_diff**2).mean()
+    annual_factor = annualized_factor_from_freq.get(frequency, 1)
+    return semi_var * annual_factor
 
 def downside_deviation(returns, threshold=0, frequency='daily'):
-    return np.sqrt(semi_variance(returns, threshold, frequency=frequency))
+    return np.sqrt(semi_variance(returns, threshold, frequency))
 
 def sortino_ratio(returns, risk_free_rate=0.01, threshold=0, frequency='daily'):
-    downside_dev = downside_deviation(returns, threshold=threshold, frequency=frequency)
-    expected_return = annualized_expected_return(returns=returns, frequency=frequency)
+
+    expected_return = annualized_expected_return(returns, frequency)
+    downside_dev = downside_deviation(returns, threshold, frequency)
     return (expected_return - risk_free_rate) / downside_dev
     
 def omega_ratio(returns, threshold=0):
@@ -262,16 +269,12 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 class ObjectiveFunction(ABC):
-    
     def __init__(self, returns_df: pd.DataFrame=None, **kwargs):
-        num_assets = None
-        if returns_df is not None:
-            num_assets = len(returns_df.columns)
-        self.num_assets = num_assets
-        
-    @abstractmethod
+        self.num_assets = len(returns_df.columns) if returns_df is not None else None
+
     def calculate(self, weights: np.ndarray) -> float:
-        pass
+        raise NotImplementedError("Subclasses should implement this!")
+
 
 class SemiVarianceObjective(ObjectiveFunction):
     def __init__(self, returns_df: pd.DataFrame, **kwargs):
@@ -304,7 +307,7 @@ class MaxSortinoRatio(ObjectiveFunction):
         
     def calculate(self, weights: np.ndarray) -> float:
         port_returns = np.dot(self.returns, weights)
-
+    
         o = - sortino_ratio(returns=port_returns, 
                             risk_free_rate=self.risk_free_rate, 
                             threshold=self.threshold, 
@@ -312,16 +315,16 @@ class MaxSortinoRatio(ObjectiveFunction):
         return o
 
 
-class OmegaRatioObjective(ObjectiveFunction):
+class MaxOmegaRatio(ObjectiveFunction):
     def __init__(self, returns_df: pd.DataFrame, **kwargs):
         super().__init__(returns_df=returns_df)
         self.threshold = kwargs.get("threshold", 0)
-    
+        self.returns = returns_df
     def calculate(self, weights: np.ndarray) -> float:
-        port_returns = np.dot(weights, self.returns_df)
+        port_returns = np.dot(self.returns, weights)
         return -omega_ratio(port_returns, self.threshold)
 
-class SkewnessObjective(ObjectiveFunction):
+class MaxSkewness(ObjectiveFunction):
     def __init__(self, returns_df: pd.DataFrame, **kwargs):
         super().__init__(returns_df=returns_df)
     
@@ -329,7 +332,7 @@ class SkewnessObjective(ObjectiveFunction):
         # positive skewness is prefered (right fat tail)
         return -portfolio_skewness(weights, self.returns_df)
         
-class KurtosisObjective(ObjectiveFunction):
+class MinKurtosis(ObjectiveFunction):
     def __init__(self, returns_df: pd.DataFrame, **kwargs):
         super().__init__(returns_df=returns_df)
     
@@ -341,24 +344,27 @@ class MinVaR(ObjectiveFunction):
         super().__init__(returns_df=returns_df)
         var_method = kwargs.get("var_method", "value_at_risk")
         self.var_fun = eval(var_method)
-        self.confidence_level = kwargs.get("confidence_level", None)
-            
-    def calculate(self, weights: np.ndarray) -> float:
-        var = self.var_fun(returns=returns, confidence_level=confidence_level)
-        return var
+        self.confidence_level = kwargs.get("confidence_level", 0.05)
+        self.returns = returns_df
         
+    def calculate(self, weights: np.ndarray) -> float:
+        port_returns = np.dot(self.returns, weights)
+        var = self.var_fun(port_returns, confidence_level=self.confidence_level)
+        return var
+
 class TargetVaR(ObjectiveFunction):
     def __init__(self, returns_df: pd.DataFrame, **kwargs):
         super().__init__(returns_df=returns_df)
         var_method = kwargs.get("var_method", "value_at_risk")
         self.var_fun = eval(var_method)
-        self.confidence_level = kwargs.get("confidence_level", None)
+        self.confidence_level = kwargs.get("confidence_level", 0.05)
         self.target = kwargs["target"]
-            
+        self.returns = returns_df
+        
     def calculate(self, weights: np.ndarray) -> float:
-        var = self.var_fun(returns=returns, confidence_level=self.confidence_level)
+        port_returns = np.dot(self.returns, weights)
+        var = self.var_fun(port_returns, confidence_level=self.confidence_level)
         return (var - self.target) ** 2
-
 
 class MinVolatility(ObjectiveFunction):
     
@@ -383,10 +389,9 @@ class MaxSharpeRatio(ObjectiveFunction):
         super().__init__(returns_df=returns_df)
         frequency = kwargs.get("frequency", None) # 'daily'
         annual_factor = annualized_factor_from_freq.get(frequency, None)
-        
+            
         cov_matrix = kwargs.get("cov_matrix", None)
         expected_returns = kwargs.get("expected_returns", None)
-     
         if cov_matrix is None:
             assert annual_factor is not None
             cov_matrix = returns_df.cov() * annual_factor
@@ -435,6 +440,7 @@ class RiskContributionBudgeting(ObjectiveFunction):
 
 
 def portfolio_optimization(objective: ObjectiveFunction,
+                           returns: pd.DataFrame = None,
                            target_return=None,
                            long_only=True,
                            total_weight=1.0,
@@ -445,47 +451,47 @@ def portfolio_optimization(objective: ObjectiveFunction,
         return portfolio_return_from_weights(weights=x, returns=returns) - target_return
         
     def total_weight_constraint(x):
-        return np.sum(x)-total_weight
+        return np.sum(x) - total_weight
     
     def long_only_constraint(x):
-        return x
-        
+        return x  # Ensure weights are >= 0 for long-only constraints
+    
     # Constraints and bounds for the optimization
-    constraints= ({'type': 'eq', 'fun': total_weight_constraint}, )
+    constraints = [{'type': 'eq', 'fun': total_weight_constraint}]
     
     if long_only:
-        constraints += ({'type': 'ineq', 'fun': long_only_constraint}, )
-    if target_return:
-        contraints += ({'type': 'eq', 'fun': target_return_constraint}, )
-        
-    # constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+        constraints.append({'type': 'ineq', 'fun': long_only_constraint})
+    if target_return is not None:
+        constraints.append({'type': 'eq', 'fun': target_return_constraint})
     
     num_assets = objective.num_assets
     if 1 / num_assets > max_exposure:
-        logging.warning(f"Max Exposure can't be {max_exposure} since there are only {num_assets} assets to optimize for with returns in this time period. Replacing max_exposure with 1 / {num_assets}")
-    max_exposure = max(max_exposure, 1 / num_assets)
+        logging.warning(f"Max Exposure can't be {max_exposure} since there are only {num_assets} assets. Replacing max_exposure with 1 / {num_assets}")
+        max_exposure = 1 / num_assets
+
     bounds = tuple((min_exposure, max_exposure) for _ in range(num_assets))
     initial_guess = num_assets * [1. / num_assets]
     
     result = minimize(objective.calculate, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints)
-
     if result.success:
         optimized_weights = result.x
-        # if isinstance(expected_returns, pd.Series):   
-        #     assets = list(expected_returns.index)
-        #     optimized_weights = pd.Series(optimized_weights, index=assets)            
+        # asset_names = returns.columns.tolist() if returns is not None else np.arange(0, len(optimized_weights))
+        # print("optimized_weights", optimized_weights)
+        # print("asset_names", asset_names)
+        # return pd.Series(optimized_weights, index=asset_names)
+        return optimized_weights
     else:
-        raise ValueError("Optimization did not converge")
-    # return all result TODO
-    return optimized_weights
+        logging.error("Optimization did not converge")
+        return None
+
 
 def get_global_minimum_variance_portfolio(cov_matrix):
     min_var = MinVolatility(returns_df=None, cov_matrix=cov_matrix)
-    return portfolio_optimization(objective=min_var)
+    return portfolio_optimization(objective=min_var, cov_matrix=cov_matrix)
 
 def get_tangent_portfolio(expected_returns, cov_matrix, risk_free_rate=0.01):
     max_sharpe = MaxSharpeRatio(returns_df=None, expected_returns=expected_returns, cov_matrix=cov_matrix, risk_free_rate=risk_free_rate)
-    return portfolio_optimization(objective=max_sharpe)
+    return portfolio_optimization(objective=max_sharpe, expected_returns=expected_returns, cov_matrix=cov_matrix)
 
 def generate_portfolios(returns, cov_matrix, num_portfolios=10000, risk_free_rate=0.01, seed=42):
     # Seed for reproducibility
@@ -576,7 +582,7 @@ def calculate_historical_portfolio_allocation(
                           rebalance_freq='Q', 
                           skip_first_n_periods=365, 
                           lookback_period=1095, 
-                          target_return=None,
+                          target_return=None, # use 'minimum acceptable return' instead
                           min_exposure=0.0,
                           max_exposure=1.0,
                           long_only=True,
@@ -586,6 +592,9 @@ def calculate_historical_portfolio_allocation(
     stored_weights = pd.DataFrame(index=returns.index, columns=returns.columns)
     portfolio_returns = pd.Series(index=returns.index)
 
+    def find_closest_date(date, index):
+        idx = index.get_indexer([date], method='nearest')[0]
+        return index[idx]
     def compute_weights(date):
         end_date = date
         start_date = end_date - pd.Timedelta(days=lookback_period)
@@ -611,21 +620,12 @@ def calculate_historical_portfolio_allocation(
                 objective_obj = objective_class(returns_df=returns_filtered,
                                            **kwargs)
                 weights = portfolio_optimization(objective=objective_obj,
-                                             target_return=target_return,
-                                             long_only=long_only,
-                                             total_weight=total_weight,
-                                             min_exposure=min_exposure, 
-                                             max_exposure=max_exposure)
-            # if method == 'eqCont':
-            #     weights = equal_contribution_weights(returns=lookback_returns)
-            # elif method in ('maxSharpe', 'minVol', 'riskParity'):
-            #     weights = portfolio_optimization(expected_returns=expected_returns_filtered, 
-            #                                      cov_matrix=cov_matrix_filtered, 
-            #                                      goal=method,
-            #                                      min_exposure=min_exposure, max_exposure=max_exposure)
-            # else:
-            #     raise ValueError()
-            # Assign weights for valid assets
+                                                 target_return=target_return,
+                                                 long_only=long_only,
+                                                 total_weight=total_weight,
+                                                 min_exposure=min_exposure, 
+                                                 max_exposure=max_exposure)
+
             final_weights = pd.Series(index=assets, dtype=float).fillna(0)
             final_weights.loc[valid_assets] = weights
             stored_weights.loc[date] = final_weights
@@ -633,18 +633,60 @@ def calculate_historical_portfolio_allocation(
             print(f"Error in optimization for date {date}: {e}")
             stored_weights.loc[date] = pd.Series(np.nan, index=returns.columns)
     
+    # Get rebalance dates
     rebalance_dates = returns.index.to_series().to_period(rebalance_freq).to_timestamp(rebalance_freq).sort_index().index.drop_duplicates()
-    rebalance_dates.map(compute_weights)
     
+    # Find the closest date in returns_df.index for each rebalance date
+    closest_dates = rebalance_dates.map(lambda date: find_closest_date(date, returns.index))
+    
+    # Apply the compute_weights function
+    for date in closest_dates:
+        compute_weights(date)
+    
+    # Shift weights to apply them from the day after the rebalance
     stored_weights_shifted = stored_weights.shift(1)
-    stored_weights_filled = stored_weights_shifted.ffill().fillna(0)
-
-    # Reindex to match returns_df
-    stored_weights_filled = stored_weights_filled.reindex(returns.index).ffill().fillna(0)
     
-    portfolio_returns = compute_weighted_returns(weights=stored_weights_filled, returns=returns)
-    return portfolio_returns, stored_weights_filled
-
+    """
+                         R0    R1     w0   w1
+    Returns at T = 0     2%    2%     NA   NA   (make decision about weights at end of T0, so bring it to T1)
+               T = 1     1%    10%    50%  50%
+               T = 2              50%*101%   50*110%
+                                  --------   -------   ( to get updated weights given new returns, divide old weight*return by the total return across assets)
+                                  111%        111%
+    """
+    stored_weights_shifted = stored_weights_shifted.copy().apply(pd.to_numeric, errors='coerce')
+    
+    for date, row in stored_weights_shifted.iterrows():
+        current_i = stored_weights_shifted.index.get_loc(row.name)
+        prev_i = current_i - 1
+        # Handle the case where there is no previous row
+        if prev_i < 0:
+            continue
+        prev_row = stored_weights_shifted.iloc[prev_i]
+        prev_all_nan = prev_row.isna().all()
+        cur_all_nan = stored_weights_shifted.iloc[current_i].isna().all()
+        
+        if prev_all_nan:
+            continue
+        if not cur_all_nan: # if has values, we want to keep them
+            continue
+        prev_weights = prev_row.fillna(0).astype(float)
+        prev_returns = returns.iloc[prev_i]
+        # If the current weights are all NaN, calculate new weights based on previous weights an
+    
+        # if had invested $1 and split in weights (so they sum to 1)
+        # this is how much $ I'd have currently (representation of the
+        # weights)
+        cur_returns = prev_weights * (1 + prev_returns)
+        # if above 1, positive, if below 1, negative
+        total_returns = np.dot(prev_weights, (1 + prev_returns))
+    
+        new_weights = cur_returns / total_returns if total_returns != 0 else 0
+    
+        stored_weights_shifted.loc[date] = new_weights
+    stored_weights_shifted = stored_weights_shifted.fillna(0)
+    portfolio_returns = compute_weighted_returns(weights=stored_weights_shifted, returns=returns)
+    return portfolio_returns, stored_weights_shifted
 def calculate_portfolio_cumulative_returns(portfolio_returns: pd.Series) -> pd.Series:
     return  (1 + portfolio_returns).cumprod() - 1
     
@@ -690,26 +732,33 @@ def portfolio_performance(portfolio_returns: pd.Series, frequency: str = "daily"
 
 # Define the plotting function
 
-def plot_portfolio_performance(portfolio_returns, benchmark_returns=None, portfolio_label='Portfolio', benchmark_labels=None):
+def plot_portfolio_performance(returns_df, benchmark_name=None, portfolio_label='Portfolio', benchmark_label=None):
+    """
+    Plot the cumulative returns of a portfolio and optionally compare with benchmark.
+
+    Parameters:
+    - returns_df: DataFrame with portfolio return series.
+    - benchmark_name: Optional; name of the column in returns_df to use as benchmark.
+    - portfolio_label: Label for the portfolio in the plot.
+    - benchmark_label: Optional; label for the benchmark in the plot.
+
+    """
     # Calculate cumulative returns for the portfolio
-    port_cumul = calculate_portfolio_cumulative_returns(portfolio_returns)
-    
+    port_cumul = calculate_portfolio_cumulative_returns(returns_df)
+
     # Set up the plot
     plt.figure(figsize=(14, 8))
     
-    # Plot the portfolio's cumulative returns
-    plt.plot(port_cumul, label=f'{portfolio_label} (CAGR: {annualized_expected_return(portfolio_returns):.2%}, Sharpe: {sharpe_ratio(annualized_expected_return(portfolio_returns), annualized_volatility(portfolio_returns)):.2f})', linewidth=2)
-
+    # Plot each portfolio return series
+    for col in returns_df.columns:
+        port_cumul = calculate_portfolio_cumulative_returns(returns_df[col])
+        plt.plot(port_cumul, label=f'{portfolio_label} - {col} (CAGR: {annualized_expected_return(returns_df[col]):.2%}, Sharpe: {sharpe_ratio(annualized_expected_return(returns_df[col]), annualized_volatility(returns_df[col])):.2f})', linewidth=2)
+    
     # Plot benchmark cumulative returns if provided
-    if benchmark_returns is not None:
-        if not isinstance(benchmark_returns, list):
-            benchmark_returns = [benchmark_returns]
-        if not benchmark_labels:
-            benchmark_labels = [f'Benchmark {i+1}' for i in range(len(benchmark_returns))]
-        
-        for bench_return, label in zip(benchmark_returns, benchmark_labels):
-            bench_cumul = calculate_portfolio_cumulative_returns(bench_return)
-            plt.plot(bench_cumul, label=f'{label} (CAGR: {annualized_expected_return(bench_return):.2%}, Sharpe: {sharpe_ratio(annualized_expected_return(bench_return), annualized_volatility(bench_return)):.2f})', linewidth=2)
+    if benchmark_name and benchmark_name in returns_df.columns:
+        bench_returns = returns_df[benchmark_name]
+        bench_cumul = calculate_portfolio_cumulative_returns(bench_returns)
+        plt.plot(bench_cumul, label=f'{benchmark_label or benchmark_name} (CAGR: {annualized_expected_return(bench_returns):.2%}, Sharpe: {sharpe_ratio(annualized_expected_return(bench_returns), annualized_volatility(bench_returns)):.2f})', linewidth=2, linestyle='--')
     
     # Enhance plot appearance
     plt.title('Portfolio Performance Comparison', fontsize=16)
@@ -718,6 +767,7 @@ def plot_portfolio_performance(portfolio_returns, benchmark_returns=None, portfo
     plt.legend(fontsize=12)
     plt.grid(True)
     plt.show()
+
 
 
 def plot_portfolio_allocation_history(weights_df):
