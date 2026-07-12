@@ -419,6 +419,15 @@ Cross-cutting and non-negotiable for every seat: the owner works every `[deep]`
 lesson personally and can re-derive it live (MASTER_SPEC §6.3) — a curriculum
 possessed but not internalized is interview liability, not asset.
 
+**The pipeline (getting the interview — actions, not lessons):** publish the book
+and track record publicly (the board demo *is* the outreach artifact); enter the
+visible competitions (IMC Prosperity, WorldQuant BRAIN alpha submissions, Kaggle
+finance comps — each a line recruiters search for); be present where quants are
+found (QuantNet, LinkedIn with the demo pinned); apply on-cycle for new-grad
+programs (postings open ~August–October for following-year starts); and convert the
+capstones into short public write-ups — a reproducible result note travels further
+than a resume line.
+
 ## Capstones
 
 **A.** A systematic multi-signal book: hypothesis registry → construction → VI.6
