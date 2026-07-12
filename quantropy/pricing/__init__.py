@@ -1,5 +1,6 @@
-"""Pricing: curves (fixed income) now; options later (ARCHITECTURE planned contexts)."""
+"""Pricing: curves (fixed income) and options (BSM/trees/Greeks/implied vol)."""
 
+from quantropy.pricing.options import binomial_price, bs_greeks, bs_price, implied_vol
 from quantropy.pricing.curves import (
     DiscountCurve,
     bond_price,
@@ -22,4 +23,8 @@ __all__ = [
     "dv01",
     "key_rate_durations",
     "pca_level_slope_curvature",
+    "bs_price",
+    "bs_greeks",
+    "implied_vol",
+    "binomial_price",
 ]
