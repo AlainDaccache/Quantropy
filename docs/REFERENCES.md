@@ -523,8 +523,44 @@ High-Frequency Trading.* Cambridge UP — stochastic control for trading ·
 
 ---
 
-*Verification: all §1–§6, §8, §11–§13 citations confirmed against primary
+## 14. Survey-area anchors: operational risk, ESG, currency, alternatives & ALM `[Curriculum III.1, VII.7–.8, IX.6]`
+
+**Operational risk & resilience (IX.6):** **BCBS (2017)** *Basel III: Finalising
+post-crisis reforms* (d424) — the SMA capital standard · **BCBS (2021)** *Principles
+for Operational Resilience* (d516) · **Girling (2022)** *Operational Risk
+Management*, 2nd ed. Wiley — the practitioner text · GARP *FRM Part II: Operational
+Risk and Resilience* *(annually revised — cite by exam year)*.
+
+**ESG (VII.8):** **Pedersen, Fitzgibbons & Pomorski (2021)** "Responsible Investing:
+The ESG-Efficient Frontier." *JFE* 142(2), 572–597 — the equilibrium framework ·
+**Gompers, Ishii & Metrick (2003)** *QJE* 118(1), 107–156 — the G-index governance
+result · **Matos (2020)** *ESG and Responsible Institutional Investing Around the
+World.* CFA Research Foundation — the balanced evidence survey · **Berk & van
+Binsbergen (2025)** "The Impact of Impact Investing." *JFE* 164, 103972 — the
+skeptical result (divestiture barely moves cost of capital) *(JFE 2025, not the
+earlier SSRN years)* · **CFA Institute (2021)** *Global ESG Disclosure Standards for
+Investment Products.*
+
+**Currency & international (III.1, VII.6–.7):** **Solnik (1974)** *FAJ* 30(4),
+48–54 — international diversification · **Fama (1984)** "Forward and Spot Exchange
+Rates." *J. Monetary Economics* 14(3), 319–338 — the forward-premium puzzle ·
+**Perold & Schulman (1988)** *FAJ* 44(3), 45–50 — the "free lunch" hedging-policy
+argument · **Campbell, Serfaty-de Medeiros & Viceira (2010)** "Global Currency
+Hedging." *JF* 65(1), 87–121 — optimal hedge ratios differ by currency.
+
+**Alternatives & institutional ALM (VII.8):** **CFA Institute (2021)** *Alternative
+Investments* (Investment Series). Wiley · **Kaplan & Schoar (2005)** *JF* 60(4),
+1791–1823 — PE persistence + the **PME** methodology · **Harris, Jenkinson & Kaplan
+(2014)** *JF* 69(5), 1851–1882 — the definitive PE evidence · **Fung & Hsieh (2004)**
+"Hedge Fund Benchmarks: A Risk-Based Approach." *FAJ* 60(5), 65–80 — the seven-factor
+hedge-fund model · **Zenios & Ziemba, eds. (2006/07)** *Handbook of Asset and
+Liability Management*, Vols. 1–2. North-Holland.
+
+---
+
+*Verification: all §1–§6, §8, §11–§14 citations confirmed against primary
 publisher/journal records (Wiley, Springer, Cambridge/Oxford UP, Princeton UP,
-McGraw-Hill, Pearson, JFE/JF/RFS/Econometrica/AER, SSRN/NBER, CFA Institute, Fed/BIS).
-Working papers and page-range discrepancies flagged inline. Items marked "verify
-before citing" were surfaced as leads and not independently confirmed.*
+McGraw-Hill, Pearson, JFE/JF/RFS/QJE/Econometrica/AER, SSRN/NBER, CFA Institute,
+Fed/BIS/GARP). Working papers and page-range discrepancies flagged inline. Items
+marked "verify before citing" were surfaced as leads and not independently
+confirmed.*

@@ -313,6 +313,23 @@ research shop; what institutional allocators actually diligence.
 *Outcome: you can produce a risk report, attribute a P&L to decisions, validate a
 model, and audit a research process — including your own.*
 
+## Role coverage map — which parts carry which quant seat
+
+The program is one body of knowledge, but the four quant roles weight it
+differently. Honest coverage assessment, including what a curriculum *cannot*
+confer:
+
+| Role | Core parts | Curriculum coverage | What only practice/time provides |
+|---|---|---|---|
+| **Quant researcher / modeler** | II, III, VI, VII, IX | ~95% — this program *is* that syllabus | research taste; publication-grade novelty |
+| **Quant trader** | III.6, V, VI, VIII | ~75% | market feel (→ start the paper loop early); the interview gauntlet (mental math, brainteasers) — a separate practice track |
+| **Quant engineer** | I, VIII, + the repo itself as artifact | ~70% | C++/low-latency, at-scale distributed systems, kdb+/FIX — honestly outside a retail project's reach; needs a targeted artifact if that seat is the goal |
+| **Portfolio manager** | VII, IX, III | ~80% | capital-at-risk temperament; a multi-year record (the paper track record is the legitimate substitute that starts now); stakeholder judgment |
+
+Cross-cutting and non-negotiable for every seat: the owner works every `[deep]`
+lesson personally and can re-derive it live (MASTER_SPEC §6.3) — a curriculum
+possessed but not internalized is interview liability, not asset.
+
 ## Capstones
 
 **A.** A systematic multi-signal book: hypothesis registry → construction → VI.6
