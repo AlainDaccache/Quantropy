@@ -198,6 +198,25 @@ estimate is blown by >2×, the scope (not the estimate) is what gets cut.
   Treasury quote, published table). The depth contract is enforced by this ledger's
   CI presence, not by good intentions.
 
+### 6.3 The board demo (the ten minutes that matter)
+
+Every milestone must preserve this path — it is what an evaluator actually sees:
+
+1. **Minute 0–1:** README → one paragraph, three claims, each linking to its proof.
+2. **Minute 1–4:** `examples/` — one command runs a costed backtest and produces a
+   tearsheet with deflated Sharpe and trials count on pinned data.
+3. **Minute 4–6:** the **live paper track record page** — months of dated, protocol-
+   bound results (§6.2), same code path as the backtest.
+4. **Minute 6–8:** one `[deep]` lesson executing in the book — concept → code →
+   externally verified number.
+5. **Minute 8–10:** the verification ledger + CI badge — the "nothing here can rot
+   or be faked" close.
+
+Anything that lengthens this path is scope to question. And the demo has a human
+prerequisite the repo cannot supply: **the owner must be able to re-derive, defend,
+and extend every element of it live** — the curriculum exists to produce that
+person, not just this artifact.
+
 ## 7. Provenance audit — kept vs dropped (the anti-bias ledger)
 
 Every element of prior versions was re-derived or removed:
