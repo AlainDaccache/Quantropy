@@ -171,7 +171,7 @@ estimate is blown by >2×, the scope (not the estimate) is what gets cut.
 |---|---|---|
 | M0 ✅ | Package, CI, executable-book harness, core conventions | 1 |
 | M1 ✅ | Data integrity: PIT, snapshots, universes, EDGAR/stooq | 2 |
-| T1 ◀ | **Vertical proof** [2–3 wks]: one signal → sizing → event-driven backtest → simulated venue → IBKR paper order → enforced risk limit. **Starts the track-record clock** — the longest-lead-time asset. | 11,12,14,16 (thin) |
+| T1 ◕ | **Vertical proof**: one signal → sizing → event-driven backtest → simulated venue → IBKR paper order → enforced risk limit. **Code complete & CI-green** (engine, venue seam, vol targeting, latching kill switch, 17 invariant tests, thin-thread example on pinned SPY data). Remaining: first paper order against a live IB Gateway (`examples/thin_thread.py --live`), then the micro-future leg. **Starts the track-record clock.** | 11,12,14,16 (thin) |
 | M2 | Prediction & inference deep [6–10 wks]: signal families, the honesty stack, trials ledger; **the flagship book goes live on paper**: diversified risk premia (trend/carry/value/defensive/term across futures sleeves), risk-weighted then **vol-targeted** — start 10–12% vol, scale toward S&P-comparable (~16%) once targeting proves itself; futures-implemented (micros) for financing efficiency. *Design target:* deflated net Sharpe ≈ 1 in research; *managed expectation:* 0.6–0.8 live (≈15–20% CAGR at full vol **if** the design target holds — a parameter, never a promise; §6.2 reports whatever happens) | 11, 6, 18 |
 | M3 | Valuation deep [4–6 wks]: statements→canonical models→implied expectations→quality scores (EDGAR) | 8 |
 | M4 | Fixed income deep [3–5 wks]: Treasury/GSW curves, bootstrapping, duration/key-rate risk | 9 |

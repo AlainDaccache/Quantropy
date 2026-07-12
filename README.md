@@ -22,9 +22,11 @@ labeled `[deep]`, `[integration]`, or `[survey]`.
 ## Getting started
 
 ```bash
-pip install -e ".[dev]"     # library + tests
-pytest                       # reference-value test suite
-pip install -e ".[book]"    # the executable curriculum
+pip install -e ".[dev,data]"       # library + tests + data providers
+pytest                              # reference-value & invariant test suite
+python examples/thin_thread.py     # signal -> sizing -> risk limits -> costed backtest
+                                    #   (--live routes the same decision to IBKR paper)
+pip install -e ".[book]"           # the executable curriculum
 jupyter-book build curriculum
 ```
 
