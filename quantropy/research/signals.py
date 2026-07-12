@@ -12,13 +12,43 @@ from typing import Protocol
 
 import pandas as pd
 
-__all__ = ["Signal", "MovingAverageCross"]
+__all__ = ["Signal", "MovingAverageCross", "TimeSeriesMomentum"]
 
 
 class Signal(Protocol):
     """Maps history (closes through the decision bar) to a raw weight in [-1, 1]."""
 
     def target(self, history: pd.Series) -> float: ...
+
+
+class TimeSeriesMomentum:
+    """Time-series momentum: long when the trailing return is positive.
+
+    The Moskowitz-Ooi-Pedersen (2012) effect at its simplest (REFERENCES §2):
+    sign of the ``lookback``-bar return, optionally skipping the most recent
+    ``skip`` bars (the equity convention — short-term reversal contaminates the
+    signal; futures TSMOM conventionally uses skip=0). ``long_only`` controls
+    whether a negative trend means flat (ETF-friendly) or short.
+    """
+
+    def __init__(self, lookback: int = 252, skip: int = 0, long_only: bool = True):
+        if lookback < 2 or skip < 0 or skip >= lookback:
+            raise ValueError("require lookback >= 2 and 0 <= skip < lookback")
+        self.lookback = lookback
+        self.skip = skip
+        self.long_only = long_only
+
+    def target(self, history: pd.Series) -> float:
+        if len(history) < self.lookback + 1:
+            return 0.0
+        end = -self.skip if self.skip else None
+        window = history.iloc[-(self.lookback + 1) : end]
+        if len(window) < 2:
+            return 0.0
+        trend = float(window.iloc[-1] / window.iloc[0] - 1.0)
+        if trend > 0:
+            return 1.0
+        return 0.0 if self.long_only else -1.0
 
 
 class MovingAverageCross:

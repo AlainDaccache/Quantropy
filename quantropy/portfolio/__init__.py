@@ -1,5 +1,6 @@
-"""Portfolio: sizing and (later) construction. T1 ships volatility targeting."""
+"""Portfolio: sizing (vol targeting) and sleeve combination (the book)."""
 
-from quantropy.portfolio.sizing import VolatilityTarget
+from quantropy.portfolio.combine import combine_sleeves
+from quantropy.portfolio.sizing import Sizer, VolatilityTarget
 
-__all__ = ["VolatilityTarget"]
+__all__ = ["Sizer", "VolatilityTarget", "combine_sleeves"]

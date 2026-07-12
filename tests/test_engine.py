@@ -210,3 +210,27 @@ class TestSignals:
         from quantropy.research import MovingAverageCross
 
         assert MovingAverageCross(fast=2, slow=10).target(series([100, 101])) == 0.0
+
+    def test_tsmom_long_flat_and_short(self):
+        from quantropy.research import TimeSeriesMomentum
+
+        up = series(np.linspace(100, 120, 30))
+        down = series(np.linspace(120, 100, 30))
+        long_only = TimeSeriesMomentum(lookback=20, long_only=True)
+        long_short = TimeSeriesMomentum(lookback=20, long_only=False)
+        assert long_only.target(up) == 1.0
+        assert long_only.target(down) == 0.0
+        assert long_short.target(down) == -1.0
+
+    def test_tsmom_skip_ignores_recent_reversal(self):
+        from quantropy.research import TimeSeriesMomentum
+
+        # strong 40-bar uptrend, sharp 5-bar reversal at the end
+        vals = list(np.linspace(100, 140, 40)) + list(np.linspace(140, 132, 5))
+        sig = TimeSeriesMomentum(lookback=40, skip=5)
+        assert sig.target(series(vals)) == 1.0  # skip window hides the reversal
+
+    def test_tsmom_insufficient_history_is_flat(self):
+        from quantropy.research import TimeSeriesMomentum
+
+        assert TimeSeriesMomentum(lookback=252).target(series([100] * 50)) == 0.0

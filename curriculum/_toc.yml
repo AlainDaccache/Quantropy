@@ -6,3 +6,4 @@ parts:
       - file: course00/orientation
       - file: course02/data-and-pit
       - file: course02/edgar-to-pit
+      - file: course08/backtest-mechanics

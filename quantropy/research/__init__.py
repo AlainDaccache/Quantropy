@@ -5,6 +5,7 @@ guarantees it never sees a bar past t, and fills happen at t+1 (no look-ahead,
 enforced by tests, not intentions).
 """
 
-from quantropy.research.signals import MovingAverageCross, Signal
+from quantropy.research.registry import TrialsLedger
+from quantropy.research.signals import MovingAverageCross, Signal, TimeSeriesMomentum
 
-__all__ = ["Signal", "MovingAverageCross"]
+__all__ = ["Signal", "MovingAverageCross", "TimeSeriesMomentum", "TrialsLedger"]
