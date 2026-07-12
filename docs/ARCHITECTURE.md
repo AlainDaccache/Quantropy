@@ -157,7 +157,7 @@ quantropy/
   research/    ✅ signals, registry (ledger)                      → core
   portfolio/   ✅ sizing, combine        [M5: covariance, optim]  → core
   evaluation/  ✅ metrics, robustness    [M5: attribution]        → core
-  backtest/    ✅ venue, limits, engine                           → core, data, research, portfolio
+  backtest/    ✅ venue, limits, engine, walkforward harness      → core, data, research, portfolio, evaluation (fold definitions only)
   valuation/   🔜 M3 statements, models, scores                   → core, data
   pricing/     📋 M4/M6 curves, options                           → core, data
   risk/        📋 M5 var, factor model, stress                    → core, data, portfolio

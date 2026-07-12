@@ -17,7 +17,9 @@ ALLOWED: dict[str, set[str]] = {
     "research": {"core"},
     "portfolio": {"core"},
     "evaluation": {"core"},
-    "backtest": {"core", "data", "research", "portfolio"},
+    # backtest may consume evaluation's fold DEFINITIONS (walk-forward harness);
+    # evaluation still never imports backtest — the judging arrow stays one-way
+    "backtest": {"core", "data", "research", "portfolio", "evaluation"},
     "valuation": {"core", "data"},  # M3
     "pricing": {"core", "data"},  # M4/M6
     "risk": {"core", "data", "portfolio"},  # M5
