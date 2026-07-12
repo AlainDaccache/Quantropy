@@ -19,5 +19,6 @@ build/
 .ipynb_checkpoints/
 curriculum/_build/
 
-# local data cache (versioned snapshots are managed explicitly in M1)
-data/
+# local data cache at repo root ONLY — root-anchored: an unanchored `data/`
+# would also ignore quantropy/data/, the source package (bit us once)
+/data/
