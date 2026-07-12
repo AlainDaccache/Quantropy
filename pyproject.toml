@@ -22,6 +22,7 @@ dependencies = [
     "numpy>=1.24",
     "pandas>=2.0",
     "scipy>=1.10",
+    "pyarrow>=14", # Parquet engine for the snapshot/PIT stores (offline, no network)
 ]
 
 [project.optional-dependencies]
@@ -45,6 +46,7 @@ include = ["quantropy*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = ["error::FutureWarning"] # deprecations are tomorrow's breakage
 
 [tool.ruff]
 line-length = 100
