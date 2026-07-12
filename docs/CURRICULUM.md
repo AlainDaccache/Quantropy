@@ -45,6 +45,9 @@ referenced elsewhere (§3).
 | Covariance estimation | VII.2 | IX consumes |
 | Cost *economics* (impact, spreads) vs cost *mechanics* (engine modeling) | VIII.1 vs VIII.3 | — |
 | Risk *measurement* vs live *enforcement* | IX.1–.3 vs VIII.5 | — |
+| Cross-validation: generic (II.7) vs finance-specific purging/embargo (VI.6) | II.7 teaches the method; VI.6 owns why finance breaks it | — |
+| Quality/distress scores: *computed* in IV.5, *used as signals* in VI.3 | IV.5 | VI.3 |
+| Track-record inference (luck vs skill) *applies* VI.6's statistics in IX.5 | VI.6 | IX.5 |
 
 ---
 
@@ -105,8 +108,10 @@ can defend.*
 
 ## Part III — How markets set prices
 
-**III.1 Macro context** `[survey + FRED data]` — business cycles; inflation;
-monetary policy and the policy rate; the yield curve as a macro signal; FX regimes;
+**III.1 Macro & international context** `[survey + FRED data]` — business cycles;
+inflation; monetary policy and the policy rate; the yield curve as a macro signal;
+**exchange-rate economics** (parity conditions, regimes) and what currency exposure
+does to portfolio returns (hedged vs unhedged — the management side lives in VII.6);
 where macro data lives and its revision problem (PIT applies to macro too).
 **III.2 Efficiency and its limits** `[deep]` — EMH forms and the joint-hypothesis
 problem; **Grossman-Stiglitz** (why markets can't be perfectly efficient — edges are
@@ -250,8 +255,14 @@ threshold); taxes `[survey]`.
 **VII.7 Allocation across strategies & time** `[deep/survey]` — portfolio-of-
 strategies (correlation-aware capital weighting, sleeve attribution, kill
 decisions); multi-period view (Merton problem, glide paths) `[survey]`; SAA vs TAA;
-the institutional landscape (mandates, vehicles, fees, hedge-fund strategy
-taxonomy) `[survey]`.
+**currency hedging policy** (to hedge or not, by asset class).
+**VII.8 Alternatives & institutions** `[survey]` — the alternative-investment
+landscape a PM must speak to: private equity/VC (J-curves, IRR vs PME pitfalls),
+real estate & infrastructure, commodities as an allocation, hedge-fund strategy
+taxonomy and their fee/liquidity structures; institutional context: mandates,
+vehicles, fees, **asset-liability management** (pensions/insurers); **ESG
+integration** — standards, data problems, and what the evidence does and doesn't
+show.
 *Outcome: signals + covariance → defensible weights under real constraints — and a
 demonstration of exactly how the naive route destroys value.*
 
@@ -295,8 +306,10 @@ project as a worked example.
 metrics and their traps; **Brinson attribution**; **factor-based attribution** (on
 our own live book); returns-based style analysis; luck vs skill (track-record
 inference — connecting back to VI.6); GIPS `[survey]`.
-**IX.6 Professional practice** `[survey]` — ethics of reported results; conflicts;
-governance of a research shop; what institutional allocators actually diligence.
+**IX.6 Operational risk & professional practice** `[survey]` — **operational risk &
+resilience** (process, key-person, vendor, cyber, model inventory — the FRM domain a
+research shop still owns); ethics of reported results; conflicts; governance of a
+research shop; what institutional allocators actually diligence.
 *Outcome: you can produce a risk report, attribute a P&L to decisions, validate a
 model, and audit a research process — including your own.*
 
@@ -315,6 +328,9 @@ gates → VIII engine → live paper, with a public, honestly-evaluated track re
 
 Executable Jupyter Book (MyST + jupytext); CI executes every cell, `allow_errors:
 false` — a broken lesson fails the build. Data pinned to immutable snapshots.
+**Verification ledger:** the book carries one table listing, per `[deep]` lesson,
+the externally checkable number it reproduces and its source — the depth contract's
+enforcement mechanism (MASTER_SPEC §6.2), not an honor system.
 Bibliography: `docs/REFERENCES.md` — verified citations across 13 sections, including
 the empirical-methodology toolkit (§11), fixed income (§12), and microstructure/
 execution (§13).

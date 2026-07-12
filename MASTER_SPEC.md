@@ -68,8 +68,16 @@ it; the map is complete iff every authority's demands appear. This is what
 | 16 | Live implementation: one code path to production, limits, reconciliation, decay (8) | P |
 | 17 | Performance measurement & attribution: Brinson, factor-based, the Fundamental Law (7,8) | C P |
 | 18 | Governance & professional practice: research protocol, pre-registration, trials ledger, ethics of reported results (6,8) | C P |
+| 19 | Operational risk & resilience: key-person, process, vendor, cyber, model inventory (8) | F |
+| 20 | ESG integration & standards (4,8) | C |
+| 21 | Currency & international: exchange-rate economics, hedged vs unhedged returns, currency risk management (2,7) | C |
+| 22 | Alternative investments & institutions: PE/RE/infrastructure/hedge-fund taxonomy, institutional ALM, vehicles & fees (7) | C |
 
-No cell of C, F, G, or P is unmapped: **the map is complete by construction.**
+Rows 19–22 are covered at `[survey]` depth — they are required literacy, not build
+targets. **Completeness claim, stated precisely:** every topic demanded by C, F, G,
+or P maps to a row above, *with the depth honestly tagged*; the map is falsified by
+naming a demanded topic with no row, and this table is amended when that happens
+(as rows 19–22 themselves were — found by exactly that audit).
 
 ## 3. The three artifacts (what this project *is*)
 
@@ -153,19 +161,42 @@ secrets via environment; abstractions earned, not speculated.
 ## 6. Milestones — ordered by the dependency structure of the discipline
 
 Each ships its curriculum lessons as definition-of-done; each ends demonstrable.
+Solo-effort estimates in brackets — honesty about cost is part of the plan; if an
+estimate is blown by >2×, the scope (not the estimate) is what gets cut.
 
 | # | Deliverable | Areas |
 |---|---|---|
 | M0 ✅ | Package, CI, executable-book harness, core conventions | 1 |
 | M1 ✅ | Data integrity: PIT, snapshots, universes, EDGAR/stooq | 2 |
-| T1 ◀ | **Vertical proof**: one signal → sizing → event-driven backtest → simulated venue → IBKR paper order → enforced risk limit | 11,12,14,16 (thin) |
-| M2 | Prediction & inference deep: signal families, the honesty stack, trials ledger; **begin public paper track record** | 11, 6, 18 |
-| M3 | Valuation deep: statements→canonical models→implied expectations→quality scores (EDGAR) | 8 |
-| M4 | Fixed income deep: Treasury curves, bootstrapping, duration/key-rate risk | 9 |
-| M5 | Portfolio + risk deep: covariance, robust construction, VaR/ES+backtests, factor risk model, attribution | 12, 15, 17 |
-| M6 | Derivatives: BSM/Greeks/trees deep; surface via QuantLib | 10 |
-| M7 | Breadth: econometrics, macro, efficiency theory, microstructure lessons | 3,4,5,6,13 |
-| M8 | Live hardening, decay monitoring, capstones, reporting | 16, 17 |
+| T1 ◀ | **Vertical proof** [2–3 wks]: one signal → sizing → event-driven backtest → simulated venue → IBKR paper order → enforced risk limit. **Starts the track-record clock** — the longest-lead-time asset. | 11,12,14,16 (thin) |
+| M2 | Prediction & inference deep [6–10 wks]: signal families, the honesty stack, trials ledger; **public paper track record live** | 11, 6, 18 |
+| M3 | Valuation deep [4–6 wks]: statements→canonical models→implied expectations→quality scores (EDGAR) | 8 |
+| M4 | Fixed income deep [3–5 wks]: Treasury/GSW curves, bootstrapping, duration/key-rate risk | 9 |
+| M5 | Portfolio + risk deep [5–8 wks]: covariance, robust construction, VaR/ES+backtests, factor risk model, attribution | 12, 15, 17 |
+| M6 | Derivatives [3–5 wks]: BSM/Greeks/trees deep; surface via QuantLib | 10 |
+| M7 | Breadth [rolling]: econometrics, macro, efficiency, microstructure + survey rows 19–22 | 3,4,5,6,13,19–22 |
+| M8 | Live hardening, decay monitoring, capstones, reporting [3–4 wks] | 16, 17 |
+
+### 6.1 Success criteria (what falsifies this project)
+
+- **T1 within a month of starting it**: a paper order placed through the same code
+  path as a passing backtest, or the architecture claim is false.
+- **Track record**: ≥12 months of paper results published on the protocol below —
+  whatever they show. An unpublished record = failure of nerve, not of markets.
+- **Curriculum**: every `[deep]` lesson green in CI *and* present in the
+  verification ledger (§6.2); any lesson failing its depth contract loses its tag.
+- **The map**: amended only via the falsification route in §2.
+
+### 6.2 Pre-committed protocols (rigor before results)
+
+- **Track-record protocol** (fixed *before* results exist, so reporting can't bend
+  to them): monthly publication in-repo of paper P&L, positions summary, Sharpe
+  *and deflated Sharpe with cumulative trials count*, max drawdown, cost share, and
+  benchmark comparison; no restatements — errors are corrected in a dated addendum.
+- **Verification ledger**: a single table in the book listing, for every `[deep]`
+  lesson, the externally checkable number it reproduces and its source (filing,
+  Treasury quote, published table). The depth contract is enforced by this ledger's
+  CI presence, not by good intentions.
 
 ## 7. Provenance audit — kept vs dropped (the anti-bias ledger)
 
