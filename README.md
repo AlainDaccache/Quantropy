@@ -34,9 +34,11 @@ jupyter-book build curriculum
 
 | Document | What it is |
 |---|---|
-| [`MASTER_SPEC.md`](MASTER_SPEC.md) | Requirements, architecture, milestones — the whole plan |
+| [`MASTER_SPEC.md`](MASTER_SPEC.md) | Requirements, field map, milestones — the whole plan |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Domain model, bounded contexts, the **CI-enforced** dependency law |
 | [`docs/CURRICULUM.md`](docs/CURRICULUM.md) | The full syllabus ("a CFA program for quants") |
-| [`docs/REFERENCES.md`](docs/REFERENCES.md) | ~90 verified sources, mapped to every module |
+| [`docs/REFERENCES.md`](docs/REFERENCES.md) | ~160 verified sources, mapped to every lesson |
+| [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md) / [`docs/SCRUTINY.md`](docs/SCRUTINY.md) | What's deliberately not covered; the hardest objections, pre-answered |
 
 Earlier work is archived under [`legacy/`](legacy/) and ported piece-by-piece —
 every ported formula gets a reference-value test first
