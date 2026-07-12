@@ -38,7 +38,8 @@ active research without settled practice.
 | Co-location, tick-to-trade latency, hardware | [infra] | HFT engineer | — (industry practice; no canonical text) |
 | Live market-making at scale | [infra] — retail cannot quote | MM quant | Cartea-Jaimungal-Penalva (§13 refs) |
 | kdb+/q, FIX engineering, exchange connectivity | [infra][adjacent] | Quant dev | vendor docs; Harris (§13 refs) for context |
-| C++/low-latency systems | [adjacent] — demonstrable only with a targeted artifact | Quant dev | — |
+| **Low-latency systems engineering** (lock-free, kernel-bypass, hardware) | [infra][adjacent] | HFT dev | — |
+| ~~General C++~~ — **recalibrated 2026-07**: employers and academia demand *research-grade* C++ (translating models to code, reading pricing libraries) well beyond HFT; this moves to a **planned optional artifact** (a small C++ pricing kernel + pybind11 interop), not an exclusion. Only low-latency *systems* engineering stays out. | | Quant dev / desk quant | Joshi's C++ design patterns books |
 | *Held instead at:* microstructure economics + Almgren-Chriss + Avellaneda-Stoikov in simulation `[survey/integration]` (Curriculum VIII.1–.2). | | | |
 
 ## 4. Asset classes & venues
@@ -62,10 +63,22 @@ active research without settled practice.
 
 | Topic | Why out | Seat | Entry point |
 |---|---|---|---|
-| Deep-RL execution/allocation at production scale | [frontier] — RL concepts appear in VI.4 | ML quant | Gu-Kelly-Xiu lineage (§11 refs) |
+| Deep-RL execution/allocation at production scale | [frontier] — RL concepts appear in II.7/VI.4 | ML quant | Gu-Kelly-Xiu lineage (§11 refs) |
 | DSGE/structural macro estimation | [adjacent][frontier] — nowcasting surveyed in III.1 | Macro economist | Hamilton (§5 refs) |
 | Rough volatility, signature methods | [frontier] | Vol researcher | Gatheral (§5 refs) as gateway |
 | Quantum/alternative computing in finance | [frontier] | — | — |
+| Tokenization of traditional assets | [frontier] **watch-list** — BIS calls it the next-gen system; quant-*method* content still thin (plumbing, not modeling). Revisit annually. | — | BIS Annual Economic Report 2025 |
+| Prediction-market microstructure (Polymarket/Kalshi) | [frontier] — new ecosystem category, acknowledged | — | — |
+
+## 7. Ecosystem equivalents (external validation of our designs)
+
+Not exclusions — the industrial versions of what this project builds, named so the
+reader can calibrate: **ArcticDB** (Man Group) = production PIT/snapshot store (our
+`data/` layer's design, validated); **qlib** (Microsoft) = the reference all-in-one
+research platform (useful external checklist); **skfolio** = sklearn-style portfolio
+construction with combinatorial purged CV (philosophically aligned with Part VI);
+**nautilus_trader** = the current bar for backtest/live code-path parity; **MLflow**
+= the industrial trials ledger; **Databento** = practitioner-consensus market data.
 
 ---
 

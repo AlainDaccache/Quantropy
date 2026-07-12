@@ -37,16 +37,16 @@ pre-answered in `docs/SCRUTINY.md`.
 | # | Field area | Depth | Curriculum | References |
 |---|---|---|---|---|
 | 1 | Returns, TVM, conventions | deep | I.1–.3 | §5, §8 |
-| 2 | Data integrity (PIT, survivorship, snapshots) | deep | I.4–.6 | §1, §11 |
-| 3 | Probability, statistics, simulation, numerics | deep | II.1–.2, .5–.6 | §5 |
-| 4 | Financial econometrics | deep/integration | II.3–.4 | §5, §11 |
+| 2 | Data integrity (PIT, survivorship, snapshots) + toolchain | deep | I.4–.7 | §1, §11, §15 |
+| 3 | Probability, stats, **stochastic calculus**, simulation, numerics | deep | II.1–.2, .5–.6 | §5 |
+| 4 | Financial econometrics (+GMM, copulas) | deep/integration | II.3–.4 | §5, §11 |
 | 5 | Economics & macro (+ international) | survey | III.1 | §14 |
 | 6 | Efficiency & active-management economics | deep | III.2–.3 | §2, §7 |
 | 7 | Asset pricing: theory + empirical toolkit + premia | deep | III.4–.6 | §2, §11 |
 | 8 | Equity analysis & valuation (full FSA) | deep | IV.1–.5 | §6 |
-| 9 | Fixed income | deep→survey | IV.6–.7 | §12 |
-| 10 | Derivatives & contingent claims | deep→survey | V | §5, §13 |
-| 11 | Prediction & inference discipline | deep | VI | §1, §11 |
+| 9 | Fixed income (+swap curve, vanilla IR derivatives) | deep→integration | IV.6–.8, V.5 | §12 |
+| 10 | Derivatives, vol & credit survey | deep→survey | V | §5, §13 |
+| 11 | Prediction & inference (incl. LLM era, crowding) | deep | VI | §1, §11, §15 |
 | 12 | Portfolio construction | deep | VII.1–.7 | §4 |
 | 13 | Frictions & microstructure | survey/integration | VIII.1–.2 | §13 |
 | 14 | Backtesting mechanics | deep | VIII.3 | §1, §3 |
@@ -77,6 +77,10 @@ pre-answered in `docs/SCRUTINY.md`.
 | Cost *economics* (impact, spreads) vs cost *mechanics* (engine modeling) | VIII.1 vs VIII.3 | — |
 | Risk *measurement* vs live *enforcement* | IX.1–.3 vs VIII.5 | — |
 | Cross-validation: generic (II.7) vs finance-specific purging/embargo (VI.6) | II.7 teaches the method; VI.6 owns why finance breaks it | — |
+| Copulas/tail dependence (method) vs credit application | II.4 | V.6, IX |
+| Stochastic calculus machinery vs its pricing outputs | II.5 | V applies |
+| Crowding/decay/capacity (premia lifecycle) | III.6 | VI.1 applies |
+| LLM data-contamination look-ahead: data side vs inference side | I.4 principle | VI.4 case |
 | Quality/distress scores: *computed* in IV.5, *used as signals* in VI.3 | IV.5 | VI.3 |
 | Track-record inference (luck vs skill) *applies* VI.6's statistics in IX.5 | VI.6 | IX.5 |
 
@@ -102,11 +106,22 @@ storage; restatements; survivorship and **delisting returns** (the delisting-bia
 result); immutable snapshots and reproducibility.
 **I.5 Data integrity II: filings** `[deep]` ✅ — SEC EDGAR: natively bitemporal;
 concept drift; duration ambiguity.
-**I.6 Data integrity III: prices** `[deep]` — corporate-action adjustment done by
-hand (splits, dividends — how adjusted series are actually constructed and where
-vendors disagree); outlier/error handling policy; universe construction end-to-end.
-*Outcome: you can build a reproducible, PIT-clean, survivorship-free dataset and
-demonstrate in code three distinct ways naive data inflates results.*
+**I.6 Data integrity III: prices & alternative data** `[deep/survey]` —
+corporate-action adjustment done by hand (splits, dividends — how adjusted series
+are actually constructed and where vendors disagree); outlier/error handling policy;
+universe construction end-to-end; **alternative-data craft** `[survey]`: vendor due
+diligence, entity/ticker mapping, panel and backfill bias — the alt-data analogue of
+survivorship.
+**I.7 The quant's toolchain** `[deep/integration]` — **SQL** and relational schemas
+(joining PIT datasets is daily work); columnar data (Parquet/Arrow) and the modern
+engines (**Polars, DuckDB**) vs pandas — when each; Linux/shell fluency; data
+structures & algorithmic complexity as used in research code; distributed compute
+(Dask/Spark) `[survey]`; git/testing/CI as research infrastructure (practiced
+throughout this repo). Industrial reference points: **ArcticDB** (the production
+version of this book's PIT/snapshot design), MLflow (the industrial trials ledger).
+*Outcome: you can build a reproducible, PIT-clean, survivorship-free dataset with
+professional tooling and demonstrate in code three distinct ways naive data inflates
+results.*
 
 ## Part II — Uncertainty: the statistical toolkit
 
@@ -117,23 +132,34 @@ why Gaussian assumptions fail and when they're tolerable.
 in means vs variances (why expected returns are the hardest number in finance);
 hypothesis tests; **the bootstrap (iid and block)**; Monte Carlo experiments as the
 quant's laboratory.
-**II.3 Regression for finance** `[deep/integration]` — OLS and its failure modes on
-financial data; heteroskedasticity and autocorrelation; **Newey-West/HAC and
-clustered standard errors** (overlapping horizons, panel data); logistic regression
-for defaults/events.
-**II.4 Time series** `[integration: statsmodels/arch]` — stationarity and unit
-roots (ADF); ARMA; **GARCH family** (GARCH/GJR/EGARCH) and realized volatility;
-cointegration (Engle-Granger, Johansen); VAR; regime switching (Markov); state
-space & the Kalman filter.
-**II.5 Simulation** `[deep]` — GBM, mean reversion (OU), jumps; correlated paths
-(Cholesky); variance reduction; simulation as pricing tool and as robustness tool.
+**II.3 Regression & estimation frameworks** `[deep/integration]` — OLS and its
+failure modes on financial data; heteroskedasticity and autocorrelation;
+**Newey-West/HAC and clustered standard errors** (overlapping horizons, panel data);
+**GMM** — the frame under which Fama-MacBeth, time-series, and SDF tests are all
+special cases; logistic regression for defaults/events.
+**II.4 Time series & dependence** `[integration: statsmodels/arch]` — stationarity
+and unit roots (ADF); ARMA; **GARCH family** (GARCH/GJR/EGARCH) and realized
+volatility; cointegration (Engle-Granger, Johansen); VAR; regime switching (Markov,
+and modern statistical jump models); state space & the Kalman filter; **copulas and
+tail dependence** — dependence beyond linear correlation (feeds credit and risk).
+**II.5 Stochastic calculus & simulation** `[deep]` — the continuous-time machinery
+made explicit: Brownian motion, **Itô's lemma**, SDEs; **martingales, change of
+measure (Girsanov), risk-neutral pricing theory**, change of numeraire, Feynman-Kac
+— the layer every derivatives interview tests; Poisson/jump processes; simulation:
+GBM, mean reversion (OU), jumps, correlated paths (Cholesky), variance reduction;
+simulation as pricing tool, robustness tool, and (survey) generative market
+simulation/synthetic data.
 **II.6 Optimization & numerics** `[deep]` — root finding (YTM, IRR, implied vol all
 live here); interpolation (curves); convex/quadratic programming (portfolios live
-here); penalties and regularization; trees and finite differences at teaching depth.
+here); penalties and regularization; trees and finite differences at teaching depth;
+dynamic programming & HJB `[survey]` (the method under Merton's problem and
+Almgren-Chriss).
 **II.7 Machine learning foundations** `[deep/integration]` — bias-variance;
 regularization (ridge/lasso); cross-validation **done right for dependent data**;
-trees and ensembles; neural nets at survey depth; why financial ML fails differently
-(low signal-to-noise, non-stationarity, adversarial adaptation).
+trees and ensembles; **deep learning explicitly** (a torch-based pass through MLPs
+and sequence models; embeddings); **reinforcement learning** (MDPs, where RL fits
+finance) `[survey]`; why financial ML fails differently (low signal-to-noise,
+non-stationarity, adversarial adaptation).
 *Outcome: you can estimate, test, simulate, and optimize — with standard errors you
 can defend.*
 
@@ -165,13 +191,15 @@ corrections; time-series alpha tests and the **GRS test**; factor construction
 methodology (2×3 sorts, HML-style spreads); spanning and model-comparison tests;
 **characteristics vs covariances** (Daniel-Titman); replication practice on the Ken
 French library — premia reproduced to published numbers.
-**III.6 The risk-premia catalog** `[deep]` — the complete map, each with evidence,
-economic story (risk vs behavioral vs structural), and post-cost reality: equity
-premium; size; value; **momentum (cross-sectional and time-series)**; profitability/
-quality; investment; **low-beta/betting-against-beta**; **carry** (FX, rates,
-commodities, equities); term premium; credit premium; liquidity premium;
-**volatility risk premium**; skewness/lottery. Crowding and capacity as the modern
-caveat.
+**III.6 The risk-premia catalog — and its lifecycle** `[deep]` — the complete map,
+each with evidence, economic story (risk vs behavioral vs structural), and post-cost
+reality: equity premium; size; value; **momentum (cross-sectional and time-series)**;
+profitability/quality; investment; **low-beta/betting-against-beta**; **carry** (FX,
+rates, commodities, equities); term premium; credit premium; liquidity premium;
+**volatility risk premium**; skewness/lottery. Then the modern half: premia as
+**decaying, crowdable, valuation-dependent objects** — post-publication decay,
+**crowding metrics** (valuation spreads, co-movement, positioning), capacity, and
+multi-manager/pod market structure (the 2025 quant unwind as case study).
 *Outcome: you can take a candidate premium from hypothesis to sorts to Fama-MacBeth
 to GRS, reproduce the published number, and argue all three verdicts.*
 
@@ -206,6 +234,10 @@ Svensson)** fitting; discount factors and forwards; level/slope/curvature (PCA).
 DV01, **key-rate durations**; term-structure theories (expectations hypothesis and
 its failure; term premia); TIPS and breakevens; spreads (G/Z/OAS at survey); credit
 fundamentals (ratings, default, recovery) and securitization `[survey]`.
+**IV.8 The swap-curve layer** `[integration]` — post-LIBOR **multi-curve
+construction** (SOFR compounding, OIS discounting, swap bootstrapping) via
+QuantLib/rateslib; FRAs and futures-based hedging; the plumbing between our
+sovereign curves and Part V's rate options.
 *Outcome: you can value a company from its filings and a bond book off a curve you
 built — one PV framework, two claim types — and defend every input against a
 skeptical IC.*
@@ -221,11 +253,18 @@ risk-neutral valuation as an idea; **Black-Scholes-Merton** — the formula, eve
 assumption, and each assumption's empirical failure; Greeks and the hedging
 workflow.
 **V.4 Volatility** `[deep/integration]` — implied vol; smile, skew, term structure;
-the surface via QuantLib; the volatility risk premium (bridge to III.6); local/
+**arbitrage-free surface construction (SVI/SSVI)** and risk-neutral density
+extraction; the volatility risk premium (bridge to III.6); **flow-driven vol
+dynamics** `[survey]`: 0DTE, dealer-gamma positioning, option-income supply; local/
 stochastic vol (Heston, SABR) `[survey]`.
-**V.5 Swaps & credit derivatives** `[integration/survey]` — interest-rate swaps
-priced off the Part IV curve; CDS mechanics; XVA and exotics as a map of what desks
-do `[survey]`.
+**V.5 Rate options & vanilla IR derivatives** `[integration]` — pricing under
+forward measures (the II.5 machinery at work): **Black-76 for caps/floors/
+swaptions**, Hull-White pricing, convexity adjustments — the teaching-depth layer
+academia treats as core, below the excluded desk-grade calibration.
+**V.6 Credit: a coherent survey** `[survey]` — the full arc in one place: **Merton
+structural / distance-to-default → reduced-form hazard rates → CDS pricing → credit
+VaR and default correlation (copulas from II.4)**; XVA and exotics as a map of what
+desks do.
 *Outcome: you can price and hedge a vanilla book, read a vol surface, and state
 precisely where each model stops being trustworthy.*
 
@@ -237,14 +276,25 @@ other side; expected decay and capacity *before* the first backtest.
 **VI.2 Signal construction** `[deep]` — from raw data to a score: winsorization,
 standardization, **sector/beta neutralization** — all under the **causal feature
 contract** (trailing-window transforms only; the transform-side leakage home);
-information coefficient and IC decay; quantile analysis; turnover.
+information coefficient and IC decay; quantile analysis; turnover; the **financial-ML
+labeling stack** (triple-barrier labeling, **meta-labeling**, fractional
+differentiation, bet sizing from predicted probabilities) — the data-construction
+half of the López de Prado canon, paired with VI.6's validation half.
 **VI.3 Classical signal families** `[deep]` — built and honestly evaluated: trend/
 time-series momentum; cross-sectional momentum; value (price and fundamental);
 carry; quality; mean reversion/pairs (cointegration from II.4); seasonality;
 positioning. Each: construction → IC → costs → verdict.
-**VI.4 ML & alternative-data alpha** `[deep/integration]` — feature pipelines;
-tree ensembles and regularized linear models as the workhorses; NLP on filings/news;
-why ML alpha needs *stricter* inference, not looser.
+**VI.4 ML, NLP & the LLM era** `[deep/integration]` — feature pipelines; tree
+ensembles and regularized linear models as the workhorses; text alpha from
+dictionary methods (historical context) to **embeddings and transformers** on
+filings/news/calls; **LLMs in the investment process**: research-assistant
+workflows, LLM-extracted alt-data, **automated/agentic alpha mining** (formulaic
+alphas, genetic programming, LLM factor-generation agents) — taught *and critiqued*:
+machine-scale factor generation is a multiple-testing bomb that makes VI.6 more
+binding, not less; **LLM training-data contamination as a new look-ahead channel**
+(the PIT discipline of I.4 applied to models); **genAI model risk** (herding,
+foundation-model concentration — the FSB/IOSCO agenda, feeds IX.4); RL for
+execution/sizing `[survey]`. Why ML alpha needs *stricter* inference, not looser.
 **VI.5 Combining signals** `[deep]` — from scores to expected returns (the Grinold
 rule); IC-weighting; ensembles; correlation among signals and marginal value.
 **VI.6 The inference discipline** `[deep]` — the single home: data-mining bias;
@@ -290,10 +340,12 @@ decisions); multi-period view (Merton problem, glide paths) `[survey]`; SAA vs T
 **VII.8 Alternatives & institutions** `[survey]` — the alternative-investment
 landscape a PM must speak to: private equity/VC (J-curves, IRR vs PME pitfalls),
 real estate & infrastructure, commodities as an allocation, hedge-fund strategy
-taxonomy and their fee/liquidity structures; institutional context: mandates,
-vehicles, fees, **asset-liability management** (pensions/insurers); **ESG
-integration** — standards, data problems, and what the evidence does and doesn't
-show.
+taxonomy and their fee/liquidity structures; **private-markets measurement quant**:
+return unsmoothing ("volatility laundering"), stale/discretionary NAVs, cash-flow-
+based benchmarking; institutional context: mandates, vehicles, fees,
+**asset-liability management** (pensions/insurers); **ESG & climate** — standards,
+data problems, what the evidence does and doesn't show, with the quant frontier now
+in **climate/transition risk** specifically.
 *Outcome: signals + covariance → defensible weights under real constraints — and a
 demonstration of exactly how the naive route destroys value.*
 
@@ -309,8 +361,9 @@ post-trade; the build-vs-buy reality of execution algos.
 **VIII.3 Backtesting mechanics** `[deep]` — vectorized vs event-driven engines and
 when each lies; **the look-ahead catalog** (signal timing, fill timing, same-bar
 fills); cost/borrow/financing modeling; corporate actions and delistings in the
-engine; futures roll; invariant tests (shift tests, buy-and-hold parity, cost
-monotonicity).
+engine; futures roll; **options-strategy backtest mechanics** (chains, expiry,
+assignment, IV-conditioned entries) `[survey]`; invariant tests (shift tests,
+buy-and-hold parity, cost monotonicity).
 **VIII.4 From backtest to live** `[deep]` — one code path; the venue seam; paper
 trading as a gate, not a demo; divergences modelled (partial fills, rejects,
 latency).
@@ -332,7 +385,9 @@ meaning of "factor" made concrete; stress testing and **crisis correlations**.
 CVA as a concept; funding and liquidity risk; where FRM goes deeper.
 **IX.4 Model risk** `[deep/survey]` — validation practice (the SR 11-7 spirit):
 benchmarking, sensitivity, monitoring; model inventories; every model in this
-project as a worked example.
+project as a worked example; **genAI model risk** `[survey]` — validating
+non-deterministic models, hallucination, correlated-model herding, third-party
+foundation-model concentration (the FSB/IOSCO 2025 agenda).
 **IX.5 Performance measurement & attribution** `[deep]` — TWR vs MWR; risk-adjusted
 metrics and their traps; **Brinson attribution**; **factor-based attribution** (on
 our own live book); returns-based style analysis; luck vs skill (track-record
@@ -340,7 +395,10 @@ inference — connecting back to VI.6); GIPS `[survey]`.
 **IX.6 Operational risk & professional practice** `[survey]` — **operational risk &
 resilience** (process, key-person, vendor, cyber, model inventory — the FRM domain a
 research shop still owns); ethics of reported results; conflicts; governance of a
-research shop; what institutional allocators actually diligence.
+research shop; what institutional allocators actually diligence; **communicating
+research** — presenting quantitative work to non-technical decision-makers, the
+skill every employer lists and few curricula train (practiced via the capstone
+defenses).
 *Outcome: you can produce a risk report, attribute a P&L to decisions, validate a
 model, and audit a research process — including your own.*
 
@@ -353,7 +411,7 @@ confer:
 | Role | Core parts | Curriculum coverage | What only practice/time provides |
 |---|---|---|---|
 | **Quant researcher / modeler** | II, III, VI, VII, IX | ~95% — this program *is* that syllabus | research taste; publication-grade novelty |
-| **Quant trader** | III.6, V, VI, VIII | ~75% | market feel (→ start the paper loop early); the interview gauntlet (mental math, brainteasers) — a separate practice track |
+| **Quant trader** | III.6, V, VI, VIII | ~75% | market feel (→ start the paper loop early); the interview gauntlet — mental math, probability under pressure, **game-theory/market-making games** (the SIG/Optiver/Jane Street hiring gates) — a separate practice track (references §15) |
 | **Quant engineer** | I, VIII, + the repo itself as artifact | ~70% | C++/low-latency, at-scale distributed systems, kdb+/FIX — honestly outside a retail project's reach; needs a targeted artifact if that seat is the goal |
 | **Portfolio manager** | VII, IX, III | ~80% | capital-at-risk temperament; a multi-year record (the paper track record is the legitimate substitute that starts now); stakeholder judgment |
 

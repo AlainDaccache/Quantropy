@@ -558,6 +558,34 @@ Liability Management*, Vols. 1–2. North-Holland.
 
 ---
 
+## 15. Practice, interviews & the modern stack `[Curriculum I.7, VI.4, role map]`
+
+**Recent practitioner canon (verified):** **Paleologo (2025)** *The Elements of
+Quantitative Investing.* Wiley — the closest single-book mirror of this curriculum's
+equity-quant process (his *Advanced Portfolio Management*, Wiley 2021, is the lighter
+companion) · **Isichenko (2021)** *Quantitative Portfolio Management: The Art and
+Science of Statistical Arbitrage.* Wiley — forecast combining, multi-period
+optimization with costs · **Coqueret & Guida (2020/2023)** *Machine Learning for
+Factor Investing.* Chapman & Hall/CRC (R and Python editions).
+
+**Interview preparation (verified):** **Zhou** *A Practical Guide to Quantitative
+Finance Interviews* (2008) — brainteasers through stochastic calculus ·
+**Crack** *Heard on the Street* (revised ~25th ed.) · **Joshi, Denson & Downes**
+*Quant Job Interview Questions and Answers* (2nd ed., 2013) — includes numerical
+algorithms and C++. The trader hiring gates (mental math, market-making games) are
+practiced skills these books drill.
+
+**Frontier & governance documents (verified, 2025):** **FSB (Oct 2025)** *Monitoring
+Adoption of Artificial Intelligence and Related Vulnerabilities in the Financial
+Sector* · **IOSCO (2025)** *AI in Capital Markets* — the genAI model-risk agenda
+(IX.4) · **CFA Institute (2025)** *Synthetic Data in Investment Management*.
+
+**Ecosystem reference points** (named, not cited as literature): ArcticDB, qlib,
+skfolio, nautilus_trader, rateslib, MLflow, Polars/DuckDB — see
+`docs/BOUNDARIES.md` §7.
+
+---
+
 *Verification: all §1–§6, §8, §11–§14 citations confirmed against primary
 publisher/journal records (Wiley, Springer, Cambridge/Oxford UP, Princeton UP,
 McGraw-Hill, Pearson, JFE/JF/RFS/QJE/Econometrica/AER, SSRN/NBER, CFA Institute,

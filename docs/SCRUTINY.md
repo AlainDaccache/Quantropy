@@ -40,10 +40,20 @@ verification ledger names each reproduced number, and the owner's obligation
 interview — it's the point.
 
 **"Why Python and not C++?"**
-Because the demonstrated claim is research + engineering rigor at retail scale, not
-low-latency systems. That boundary is priced explicitly (BOUNDARIES §3); the
-numerics that matter are reference-tested, and a targeted C++ artifact is the stated
-extension path if a systems seat is the goal.
+Python is where quant *research* lives; the numerics that matter are
+reference-tested. But the boundary was recalibrated after a 2026 job-market audit:
+research-grade C++ is demanded well beyond HFT, so a small C++ pricing kernel with
+pybind11 interop is a **planned optional artifact** (BOUNDARIES §3). Only
+low-latency *systems* engineering stays out.
+
+**"Why so much fundamental analysis for a quant curriculum? Jane Street won't test
+any of it."**
+Deliberate, and labeled. Pure prop-trading seats test probability and speed — the
+role map says exactly that and routes those candidates to the practice track. The
+FSA/valuation depth serves the *quantamental and equity-researcher* seats (Point72,
+Millennium fundamental pods, quality-factor construction) where it is the
+differentiator, and it feeds the quality/distress signals in Part VI. Breadth across
+seats is the design, with per-seat weighting stated honestly in the role map.
 
 **"Why no crypto? No exotics? No swaps calibration?"**
 Priced exclusions, each with reason and entry point — see `docs/BOUNDARIES.md`. The

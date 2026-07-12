@@ -55,15 +55,15 @@ it; the map is complete iff every authority's demands appear. This is what
 |---|---|---|
 | 1 | Returns, compounding, TVM, market/data conventions (1,2) | C G P |
 | 2 | Data integrity: point-in-time, survivorship, reproducibility (1) | G P |
-| 3 | Probability, statistics, simulation, optimization, numerics (3,6) | C F G |
+| 3 | Probability, statistics, **stochastic calculus (Itô/Girsanov/martingale pricing)**, simulation, optimization, numerics; **the working toolchain** (SQL, columnar data, shell) (3,6) | C F G |
 | 4 | Financial econometrics: time series, volatility, regimes, cointegration (6) | F G |
 | 5 | Economics & macro context: rates, inflation, cycles, policy (4) | C |
 | 6 | Market efficiency & the economics of active management (4) | C G P |
 | 7 | Asset pricing: theory (CAPM→APT→SDF) **and the full empirical toolkit** — portfolio sorts, Fama-MacBeth (with Shanken/HAC corrections), GRS/alpha tests, factor construction, model comparison; the complete risk-premia catalog (equity, size, value, momentum CS+TS, quality, investment, low-beta, carry, term, credit, liquidity, vol-risk-premium) (4) | C G |
 | 8 | Equity analysis & valuation, comprehensive: full FSA (statement articulation, accruals, DuPont ratio system, earnings quality) → driver-based forecasting with fade/base rates → cost of capital (beta/ERP estimation) → DDM/FCFF/FCFE/RIM/multiples → market-implied expectations → distress/manipulation/quality scores (2) | C G P |
-| 9 | Fixed income: curve construction, duration/convexity, spreads, term-structure models (2,5) | C F G |
-| 10 | Derivatives & contingent claims: forwards/futures/options, BSM, Greeks, vol surface; credit at survey (5) | C F G |
-| 11 | Prediction research: signal construction, ML, and the inference discipline (multiple testing, deflated Sharpe, PBO, purged validation) (6) | G P |
+| 9 | Fixed income: curve construction, duration/convexity, spreads, term-structure models; **multi-curve/OIS and vanilla IR derivatives (swaps, caps/floors, swaptions) at teaching depth** (2,5) | C F G |
+| 10 | Derivatives & contingent claims: forwards/futures/options, BSM, Greeks, vol surface (incl. SVI construction, flow-driven vol); **credit as a coherent survey (Merton→hazard→CDS→credit VaR)** (5) | C F G |
+| 11 | Prediction research: signal construction (incl. the labeling stack), ML through **the LLM era** (embeddings, agentic alpha mining — taught and critiqued), **crowding/decay/capacity**, and the inference discipline (multiple testing, deflated Sharpe, PBO, purged validation) (6) | G P |
 | 12 | Portfolio theory & construction under estimation error: the inputs problem (expected returns, covariance: shrinkage/factor/EWMA), MVO & its error-maximization failure, resampling/robust methods, Black-Litterman, risk parity/ERC, HRP, CVaR optimization, Kelly/vol-target sizing, constraints/turnover/TC-aware, tracking error & benchmark-relative, portfolio-of-strategies, multi-period survey (7) | C G P |
 | 13 | Frictions: transaction costs, liquidity, market microstructure, optimal execution (8) | F G P |
 | 14 | Backtesting & simulation mechanics: event-driven correctness, costs, corporate actions (6,8) | P |
