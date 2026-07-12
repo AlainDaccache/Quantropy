@@ -29,6 +29,7 @@ CONCEPT_MAP: dict[str, list[str]] = {
     "current_liabilities": ["LiabilitiesCurrent"],
     "total_liabilities": ["Liabilities"],
     "cash_from_operations": ["NetCashProvidedByUsedInOperatingActivities"],
+    "capex": ["PaymentsToAcquirePropertyPlantAndEquipment"],
     "long_term_debt": ["LongTermDebtNoncurrent", "LongTermDebt"],
     "gross_profit": ["GrossProfit"],
     "operating_income": ["OperatingIncomeLoss"],
@@ -53,6 +54,7 @@ class StatementSet:
     current_liabilities: float = float("nan")
     total_liabilities: float = float("nan")
     cash_from_operations: float = float("nan")
+    capex: float = float("nan")
     long_term_debt: float = float("nan")
     gross_profit: float = float("nan")
     operating_income: float = float("nan")

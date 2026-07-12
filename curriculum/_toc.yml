@@ -7,4 +7,5 @@ parts:
       - file: course02/data-and-pit
       - file: course02/edgar-to-pit
       - file: course03/cross-section
+      - file: course04/valuation-on-filings
       - file: course08/backtest-mechanics
