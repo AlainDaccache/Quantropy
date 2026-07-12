@@ -41,9 +41,18 @@ def fetch_daily(symbols: list[str], timeout: float = 30.0) -> dict[str, pd.DataF
     out: dict[str, pd.DataFrame] = {}
     for symbol in symbols:
         resp = requests.get(
-            _BASE, params={"s": stooq_symbol(symbol), "i": "d"}, timeout=timeout
+            _BASE,
+            params={"s": stooq_symbol(symbol), "i": "d"},
+            headers={"User-Agent": "Mozilla/5.0 (quantropy research)"},
+            timeout=timeout,
         )
         resp.raise_for_status()
+        if resp.text.lstrip().startswith("<"):
+            # stooq serves an HTML page when its daily-hits limit trips
+            raise RuntimeError(
+                "stooq returned HTML instead of CSV — daily rate limit likely "
+                "exceeded; retry tomorrow or use the yahoo provider"
+            )
         frame = pd.read_csv(io.StringIO(resp.text))
         if "Close" not in frame.columns or frame.empty:
             raise ValueError(f"stooq returned no data for {symbol!r}")
