@@ -1,0 +1,23 @@
+title: The Quantropy Quant Curriculum
+author: Alain Daccache
+copyright: "2026"
+only_build_toc_files: true
+
+execute:
+  execute_notebooks: force # every lesson runs on every build — no rot (NFR9)
+  timeout: 300
+  allow_errors: false # a broken example fails the build
+
+repository:
+  url: https://github.com/AlainDaccache/Quantropy
+  path_to_book: curriculum
+  branch: master
+
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+sphinx:
+  config:
+    nb_execution_raise_on_error: true
+    nb_execution_show_tb: true
