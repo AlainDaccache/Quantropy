@@ -5,7 +5,7 @@ from matilda import get_atlas_db_url, connect_to_mongo_engine, total_current_ass
 
 class TestFinancialStatementsEntries(unittest.TestCase):
     def setUp(self):
-        atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+        atlas_url = get_atlas_db_url(username='AlainDaccache', password='<REDACTED-ROTATE-ME>', dbname='matilda-db')
         self.client = connect_to_mongo_engine(atlas_url)
 
     def test_current_assets(self):

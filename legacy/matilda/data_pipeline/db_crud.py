@@ -434,17 +434,17 @@ IV. `Delete` routines
 '''
 
 if __name__ == '__main__':
-    # atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+    # atlas_url = get_atlas_db_url(username='AlainDaccache', password='<REDACTED-ROTATE-ME>', dbname='matilda-db')
     # db = connect_to_mongo_engine(atlas_url)
 
     # populate_db_financial_statements(tickers=stocks[0], from_date=datetime(2016, 1, 1), to_date=datetime.today())
 
-    # populate_db_routine(db_username='AlainDaccache', db_password='qwerty98', db_name='matilda-db',
+    # populate_db_routine(db_username='AlainDaccache', db_password='<REDACTED-ROTATE-ME>', db_name='matilda-db',
     #                     tickers=None, from_date=datetime(2016, 1, 1), to_date=datetime.today(), reset_db=True,
     #                     populate_company_info=True, populate_financial_statements=True,
     #                     populate_asset_prices=True, populate_risk_factors=True)
 
-    atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+    atlas_url = get_atlas_db_url(username='AlainDaccache', password='<REDACTED-ROTATE-ME>', dbname='matilda-db')
     db = connect_to_mongo_engine(atlas_url)
     # print(get_company_classification(stock='AAPL'))
     

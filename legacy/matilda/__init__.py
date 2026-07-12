@@ -20,7 +20,7 @@ from matilda.data_pipeline.db_crud import get_atlas_db_url, connect_to_mongo_eng
 from matilda.api_routes.auth import auth as auth_blueprint
 from matilda.api_routes.main import main as main_blueprint
 
-atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+atlas_url = get_atlas_db_url(username='AlainDaccache', password='<REDACTED-ROTATE-ME>', dbname='matilda-db')
 db = connect_to_mongo_engine(atlas_url)
 
 app = Flask(__name__)

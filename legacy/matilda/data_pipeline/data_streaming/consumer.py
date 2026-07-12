@@ -26,7 +26,7 @@ def get_atlas_db_url(username, password, dbname):
            f"ssl=true"
 
 
-atlas_url = get_atlas_db_url(username='AlainDaccache', password='qwerty98', dbname='matilda-db')
+atlas_url = get_atlas_db_url(username='AlainDaccache', password='<REDACTED-ROTATE-ME>', dbname='matilda-db')
 db = connect(host=atlas_url)
 
 # The consumer iterator returns ConsumerRecords, which are simple namedtuples
