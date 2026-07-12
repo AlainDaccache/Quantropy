@@ -1,5 +1,6 @@
 """Evaluation: performance metrics and the honesty statistics (PSR/DSR/bootstrap)."""
 
+from quantropy.evaluation.attribution import brinson, factor_attribution
 from quantropy.evaluation.metrics import summary
 from quantropy.evaluation.overfitting import (
     AcceptanceGates,
@@ -26,4 +27,6 @@ __all__ = [
     "min_backtest_length",
     "AcceptanceGates",
     "GateReport",
+    "brinson",
+    "factor_attribution",
 ]
