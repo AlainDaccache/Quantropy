@@ -13,7 +13,7 @@
 
 | Tag | A lesson earns it only if it… |
 |---|---|
-| **`[deep]`** | implements the concept from first principles in `quantropy`, runs on real snapshot-pinned data, **reproduces an externally checkable number**, and ends with failure modes + exercises. |
+| **`[deep]`** | implements the concept from first principles in `quantropy`, runs on real snapshot-pinned data, **reproduces an externally checkable number**, and ends with failure modes + exercises. *Mechanism carve-out:* where the subject is the machinery itself (engine invariants, inference statistics), synthetic data with controlled ground truth satisfies verification — the "external number" is an analytic truth the reader can derive. Never applies to lessons about markets. |
 | **`[integration]`** | teaches by driving a mature library (QuantLib, statsmodels/arch, PyPortfolioOpt, scikit-learn) on real data, stating what free data cannot support. |
 | **`[survey]`** | concept + small illustration + routed references; labeled as such, never dressed up. |
 

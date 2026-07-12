@@ -94,12 +94,15 @@ class TestNoLookAhead:
 class TestAccountingReferences:
     def test_equity_accounting_by_hand(self):
         """SPY, all-in decided at bar0: units = E0/P0 = 1000, bought at P1=102.
-        cash = 100000 - 1000*102 = -2000; equity@P2=101: -2000 + 1000*101 = 99000."""
+        cash = 100000 - 1000*102 = -2000 (over-invested: sized at 100, filled at
+        102) -> bar2 charges margin interest on the 2000 debit: 2000*0.06/252,
+        then equity@P2=101: -2000 - interest + 1000*101."""
         prices = series([100, 102, 101])
         res = run(prices, ConstantSignal(1.0))
+        interest = 2000 * 0.06 / 252
         assert res.equity.iloc[0] == pytest.approx(100_000)
         assert res.equity.iloc[1] == pytest.approx(100_000 + 1000 * (102 - 102))  # bought AT 102
-        assert res.equity.iloc[2] == pytest.approx(-2000 + 1000 * 101)
+        assert res.equity.iloc[2] == pytest.approx(-2000 - interest + 1000 * 101)
 
     def test_futures_daily_settlement_by_hand(self):
         """MES (x5), target 1.0 at bar0 with E0=100000, P0=100 -> 200 contracts.
@@ -114,6 +117,21 @@ class TestAccountingReferences:
         prices = series([100, np.nan, 101])
         with pytest.raises(ValueError, match="NaN"):
             run(prices, ConstantSignal(1.0))
+
+    def test_leverage_is_never_free(self):
+        """2x long on flat prices: cash = -100,000 after the fill, so margin
+        interest accrues daily at 6%/252 — first charged bar loses exactly
+        100,000 * 0.06/252 = 23.81. Free leverage flatters backtests (spec P6)."""
+        prices = series([100] * 8)
+        res = run(prices, ConstantSignal(2.0))
+        assert res.equity.iloc[1] == pytest.approx(100_000)  # levered at bar1
+        assert res.equity.iloc[2] == pytest.approx(100_000 - 100_000 * 0.06 / 252)
+        assert (res.equity.diff().iloc[2:] < 0).all()  # interest bleeds every bar
+
+    def test_unlevered_position_pays_no_financing(self):
+        prices = series([100] * 6)
+        res = run(prices, ConstantSignal(1.0))  # cash lands exactly at zero
+        assert res.equity.iloc[-1] == pytest.approx(100_000)
 
 
 class TestFrictions:

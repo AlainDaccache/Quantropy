@@ -32,10 +32,18 @@ __all__ = ["BacktestConfig", "BacktestResult", "run_backtest"]
 
 @dataclass(frozen=True, slots=True)
 class BacktestConfig:
-    """Declarative, reproducible run description (MASTER_SPEC P5)."""
+    """Declarative, reproducible run description (MASTER_SPEC P5).
+
+    ``margin_rate_annual`` — interest charged on negative cash (equity leverage is
+    never free; IBKR margin runs ~benchmark+1.5% retail). Futures embed financing
+    in the basis, so it applies to the equity accounting path only.
+    ``periods_per_year`` — accrual convention for the daily charge.
+    """
 
     initial_cash: float = 100_000.0
     snapshot_id: str = ""  # the pinned data snapshot this run used (provenance)
+    margin_rate_annual: float = 0.06
+    periods_per_year: int = 252
 
 
 @dataclass
@@ -86,10 +94,14 @@ def run_backtest(
     for t, (date, price) in enumerate(prices.items()):
         price = float(price)
 
-        # 1) settle the existing position to today's price
-        if last_price is not None and units != 0.0:
-            if instrument.asset_class is AssetClass.FUTURE:
+        # 1) settle the existing position to today's price; charge financing
+        if last_price is not None:
+            if instrument.asset_class is AssetClass.FUTURE and units != 0.0:
                 cash += units * (price - last_price) * instrument.multiplier
+            elif cash < 0.0:
+                # leveraged equity position: margin interest accrues daily —
+                # free leverage is how backtests flatter themselves (spec P2/P6)
+                cash -= abs(cash) * config.margin_rate_annual / config.periods_per_year
 
         # 2) fill the order decided on the previous bar, at today's price
         cost = 0.0

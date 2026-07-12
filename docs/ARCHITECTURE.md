@@ -14,10 +14,13 @@
 
 Four decisions shape everything below:
 
-1. **One decision path, two worlds.** Research and live trading share the exact
-   code path `Signal → Sizer → RiskLimits → Order → Venue`; only the `Venue`
+1. **One decision path, two worlds.** Research and live trading share the code
+   path `Signal → Sizer → RiskLimits → Order → Venue`; only the `Venue`
    implementation differs. Everything else in the architecture exists to protect
-   this property.
+   this property. *Current honesty note:* today the shared elements are the
+   **components**; the live entry point is a one-shot script — the fully shared
+   *loop* (decisions from actual account equity, scheduled) is the M8 live
+   runner, and until it lands "identical path" is a design target, not a claim.
 2. **Causality is structural, not behavioral.** No component *receives* future
    data: the engine slices history, transforms are trailing-only, allocation
    shifts by one bar. Prefix-invariance tests fail the build if any path peeks.
@@ -100,7 +103,7 @@ on the combiner exactly as on the engine); no measurable risk ⇒ no position.
 |---|---|---|
 | `Order` | value | signed units of an Instrument — *what*, never *how* |
 | `Fill` | value | executed units, actual price (slippage included), explicit cost |
-| `Venue` | **the contract** | `execute(Order, market_price) → Fill`; `SimulatedVenue` (adverse slippage + costs, never frictionless) and `IBKRVenue` (ib_async; `positions()` for reconciliation) |
+| `Venue` | **the contract** | `execute(Order, market_price) → Fill`; `SimulatedVenue` (adverse slippage + costs + margin financing in the engine, never frictionless; divergence injection — partial fills/rejects/latency — 📋 per spec P6) and `IBKRVenue` (ib_async; `positions()` for reconciliation; **[paper-unverified]** until first gateway run) |
 | `RiskLimits` | aggregate | leverage clamp + **latching** drawdown kill switch; re-arm requires human `reset()` |
 | `Engine` | service | the event loop: **settle → fill(yesterday's decision, today's price, via venue) → decide(history ≤ today)** ; equity & futures daily-settlement accounting |
 | `BacktestConfig` / `BacktestResult` | value / aggregate | seeded, snapshot-pinned run description; equity curve + per-bar diagnostics + costs + kill flag |
@@ -117,7 +120,9 @@ always adverse; kill switch latches.
 | `probabilistic_sharpe` | service | PSR — credibility given length, skew, kurtosis |
 | `expected_max_sharpe` + `deflated_sharpe` | service | the luck hurdle from (n_trials, trial-SR variance) — the ledger's numbers, cumulatively |
 | `sharpe_confidence_interval` | service | seeded block bootstrap |
-| `WalkForwardSplit` | value | train / embargo / test folds, disjoint, forward-only |
+| `WalkForwardSplit` | value | train / embargo / test folds, disjoint, forward-only (fold-running harness 📋 M2) |
+| `PBO` / `MinBTL` 📋 M2 | service | probability of backtest overfitting (CSCV) & minimum backtest length — the remaining honesty-stack members |
+| `AcceptanceGates` 📋 M2 | aggregate | pre-committed pass/fail criteria a strategy must clear before paper capital |
 | `Attribution` 📋 M5 | service | Brinson & factor-based, on our own books |
 | `TrackRecord` 📋 T1-live | aggregate | dated, protocol-bound paper results (spec §6.2): monthly, DSR-with-trials-count, no restatements |
 
