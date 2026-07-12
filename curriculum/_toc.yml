@@ -1,7 +1,7 @@
 format: jb-book
 root: intro
 parts:
-  - caption: "Level I — Foundations & Tools"
+  - caption: "Modules"
     chapters:
       - file: course00/orientation
       - file: course02/data-and-pit

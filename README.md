@@ -36,9 +36,9 @@ jupyter-book build curriculum
 | [`docs/CURRICULUM.md`](docs/CURRICULUM.md) | The full syllabus ("a CFA program for quants") |
 | [`docs/REFERENCES.md`](docs/REFERENCES.md) | ~90 verified sources, mapped to every module |
 
-The previous generation of this project (the `matilda` library) is archived under
-[`legacy/`](legacy/) and harvested piece-by-piece — every ported formula gets a
-reference-value test first.
+Earlier work is archived under [`legacy/`](legacy/) and ported piece-by-piece —
+every ported formula gets a reference-value test first
+([`docs/PROVENANCE.md`](docs/PROVENANCE.md)).
 
 ## License
 

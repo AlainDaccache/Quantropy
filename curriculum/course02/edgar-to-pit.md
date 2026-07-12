@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Course C2 — Filings to Point-in-Time: SEC EDGAR `[deep]`
+# Module 2 — Filings to Point-in-Time: SEC EDGAR `[deep]`
 
 **Learning objectives.** After this lesson you can: (1) pull structured fundamentals
 from SEC EDGAR's free XBRL API; (2) explain why EDGAR is *natively bitemporal* and
@@ -75,7 +75,7 @@ pit.as_of("2022-02-01")[["event_date", "knowledge_date", "value"]]
 
 Three quarters — the latest being the $123.945B holiday quarter filed four days
 earlier. Nothing from the future. This frame is safe to feed a valuation model or a
-fundamental factor *as of that date* (Course C4 does exactly that).
+fundamental factor *as of that date* (Module 3 does exactly that).
 
 ## 4. The live path
 

@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Course 0 — Orientation `[deep]`
+# Module 0 — Orientation `[deep]`
 
 **Learning objectives.** After this lesson you can: (1) explain what this curriculum
 is and how its honesty labels work; (2) run Quantropy code yourself; (3) state the two
@@ -67,7 +67,7 @@ The library's `annualize_volatility` uses the square-root-of-time rule — which
 understated. This is the pattern you will see throughout: **every formula ships with
 the assumption that breaks it.** The single largest way quantitative work goes wrong
 is not bad math but silent assumptions — look-ahead in a backtest, survivorship in a
-universe, multiple testing in a "discovery." The rigor stack (Course C9) exists to
+universe, multiple testing in a "discovery." The research-honesty module (Module 8) exists to
 catch these, and every lesson ends the way this one does: with what breaks.
 
 ## 5. Exercises

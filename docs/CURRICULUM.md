@@ -1,286 +1,163 @@
-# The Quantropy Quant Curriculum — *A CFA Program for Quants*
+# The Quantropy Curriculum
 
-> A complete, applied curriculum that teaches the entire quant body of knowledge — *deep*
-> where our own code and real data reach (systematic trading, fundamental valuation, the
-> rigor spine), *by integration* where a mature library is the right tool (QuantLib for
-> derivatives), *survey-level* where retail data can't support more (deep rates/credit,
-> HFT). Not a textbook rewrite — an *applied bridge*: concept → code → run → interpret →
-> where it breaks → the honest caveat. Every lesson executes in CI, so nothing rots. Each
-> lesson is tagged `[deep]` / `[integration]` / `[survey]` so depth is never faked.
-
-**Format:** an executable **Jupyter Book** (MyST Markdown, jupytext-paired for clean
-diffs), built to a searchable website + PDF, with BibTeX citations wired to
-`docs/REFERENCES.md` and "launch in Colab/Binder" buttons.
-**Status:** syllabus (this file). Lessons are authored per-milestone as each capability
-lands (definition-of-done, MASTER_SPEC §5 / NFR9).
+> An applied program in quantitative finance, taught *through working code*. Twelve
+> modules in learner order — each concept has exactly one home, every lesson executes
+> in CI against the `quantropy` library, and depth is a contract, not an adjective.
 
 ---
 
-## 1. Design principles
+## 1. What "depth" means here (the lesson contract)
 
-1. **Applied-first, theory-referenced.** We don't re-derive Hull or Shreve — they did it
-   better. We *reference* the derivation (REFERENCES.md) and spend our pages on the part
-   nobody else provides: making it real in code, running it, interpreting the number,
-   and showing where it breaks.
-2. **Honest depth, not fake breadth.** Breadth is the *curriculum's* job, but depth is
-   tiered by what real (retail) data and our own code support. Every lesson is labeled:
-   - **`[deep]`** — runs real data against *our* implementation (systematic trading,
-     fundamental valuation, the rigor spine). Full working depth.
-   - **`[integration]`** — teaches a topic by driving a mature library (e.g. price a
-     swaption with **QuantLib**), with an honest note on the retail data gap. We
-     *integrate, don't reinvent* (MASTER_SPEC §0).
-   - **`[survey]`** — concept + small synthetic illustration + references, where neither
-     our code nor free data supports a full treatment (deep rates/credit/XVA, HFT
-     microstructure). Honest about being a survey.
-   No fake toy examples dressed up as production depth — a sharp reader sees through them.
-3. **Honest by construction.** Every lesson ends with pitfalls and the anti-overfit /
-   point-in-time caveat. We teach *why most backtests lie* as rigorously as the methods.
-4. **Executable & reproducible.** Code runs on a pinned data snapshot; CI executes every
-   cell; a broken example fails the build. Outputs are deterministic (seeded).
-5. **Teaching is the acceptance test.** If a `[deep]` capability is hard to teach cleanly,
-   the API is wrong. Writing the lesson validates the software.
+Every lesson carries one tag, with **operational** requirements — a lesson that
+doesn't meet them doesn't get the tag:
 
-### Diátaxis positioning
-This curriculum is the **tutorials + explanation** quadrants. It is *distinct* from:
-- **How-to guides** → `examples/` (task recipes),
-- **Reference** → auto-generated API docs (Sphinx autodoc; never hand-written),
-- so the program reads as a program, not a blog.
+| Tag | A lesson earns it only if it… |
+|---|---|
+| **`[deep]`** | implements the concept **from first principles in `quantropy`**, runs on **real (snapshot-pinned) data**, **reproduces an externally checkable number** (a filing figure, a published result, a textbook value), and ends with failure modes + exercises. |
+| **`[integration]`** | drives a **mature external library** (e.g. QuantLib) on real or realistic data, teaches the concept through it, and states honestly what retail data cannot support. |
+| **`[survey]`** | explains the concept with a small illustration and routes to the literature. Explicitly labeled a survey — never dressed up as more. |
+
+Every lesson opens with **learning outcomes** ("after this you can …") and closes with
+**pitfalls** (where the method breaks) and **exercises with solutions**. Every claim
+cites `docs/REFERENCES.md`. All code cells execute in CI on every build — a broken
+example fails the build, so nothing in the book can rot.
+
+**One-home rule:** each concept is taught in exactly one module and *referenced*
+everywhere else. The map in §3 states the home of the historically homeless concepts
+(validation, leakage, GARCH, behavioral finance).
 
 ---
 
-## 2. Tooling & mechanics
+## 2. Honest status — claim never outruns artifact
 
-- **Jupyter Book** builds the site/PDF and executes content (`jupyter-book build --execute`).
-- **MyST Markdown + jupytext pairing** — lessons are `.md` (reviewable diffs) that execute
-  as notebooks; readers can download the `.ipynb` or launch Colab/Binder.
-- **CI gate** — a GitHub Action runs the full book with execution on every push; failure
-  blocks merge. This is the no-rot guarantee (NFR9).
-- **Pinned data snapshot** — lessons read a versioned snapshot (MASTER_SPEC NFR2), so
-  outputs never drift.
-- **Citations** — `{cite}` directives resolve against `references.bib` (generated from
-  `docs/REFERENCES.md`), so every claim links to a verified source.
+The curriculum ships module-by-module as the underlying capability lands (it is each
+milestone's definition-of-done). Today:
 
-### The lesson template (every lesson follows it)
-```
-1. Learning objectives   — LOS-style: "after this you can…"
-2. Intuition             — the concept in plain words
-3. The math              — compact; {cite} REFERENCES, don't re-derive
-4. Applied               — build & run with Quantropy on pinned real data
-5. Interpret             — what the number means, with plots
-6. Pitfalls              — where it breaks; anti-overfit / PIT caveat
-7. Exercises             — 2–3 problems, with worked solutions
-8. Further reading       — REFERENCES.md links
-```
+| Module | Status |
+|---|---|
+| M0 Orientation | ✅ published, executing in CI |
+| M2 Data & Point-in-Time (2 lessons: PIT/survivorship/snapshots; EDGAR filings) | ✅ published, executing in CI |
+| M1, M3–M11 | 📋 designed below, not yet written — they arrive with their capability |
 
-### Assessment (the "program" part)
-- **LOS** (learning outcome statements) open each lesson.
-- **Exercises** with solutions close each lesson.
-- **Capstones** close each Level — integrative, end-to-end projects (below).
-- Optional **self-check quizzes** per course.
+Everything below the line in §4 is a **syllabus**, not a promise of existing content.
 
 ---
 
-## 3. Structure — three CFA-style levels
+## 3. The one-home map (MECE anchors)
 
-The curriculum mirrors the platform's capability taxonomy (C1–C13). Courses are grouped
-into three levels of increasing integration, echoing the CFA I/II/III progression.
+Concepts that plausibly belong in several places, assigned one home:
 
-- **Level I — Foundations & Tools** (the building blocks; maps to M0–M1)
-- **Level II — Discipline Depth** (deep single-discipline mastery across asset classes;
-  maps to M2–M8)
-- **Level III — Integration & Practice** (synthesis, live, governance, capstones; M8–M9)
-
----
-
-## Level I — Foundations & Tools
-
-**Course 0 — Orientation.** What a quant does; the quant archetypes (buy-side
-systematic, sell-side derivatives, risk, ML, execution); how to use this book and the
-library; the reproducibility / point-in-time discipline.
-
-**Course C1 — Quant Foundations** *(math, stats, numerical methods, ML core)*
-- Probability & random variables for finance
-- Stochastic processes: random walks, Brownian motion, Itô's lemma (simulate & visualize)
-- SDEs & key processes: GBM, Ornstein-Uhlenbeck (mean reversion), Merton jump-diffusion
-- Monte Carlo: sampling, variance reduction, quasi-MC, convergence diagnostics
-- Numerical methods: root-finding, interpolation, **finite-difference PDE**, binomial/
-  trinomial trees
-- Optimization: convex, quadratic, constrained; using the solvers
-- **Automatic/adjoint differentiation (AAD)** for fast, exact Greeks
-- Linear algebra & PCA for finance
-- Statistics & inference; hypothesis testing; the bootstrap
-- Time series: stationarity, autocorrelation, AR/MA/ARIMA
-- Volatility modeling: EWMA and **GARCH**
-- State-space models & the **Kalman filter**
-- Return algebra & conventions (simple vs log, annualization); time value of money
-- ML core: the pipeline, train/validate/test, **leakage & cross-validation done right**
-
-**Course C2 — Data & Infrastructure**
-- The data landscape: market, reference, fundamental/filings, macro, alternative
-- Cleaning: adjustments, corporate actions, gap handling
-- **Survivorship bias & point-in-time data — why backtests lie**
-- Continuous-contract construction (the Panama roll)
-- Storage, versioned snapshots, reproducibility
-- Building a data pipeline with Quantropy end-to-end
-
-**Course C3 — Instruments & Market Conventions**
-- Equities & ETFs; futures (specs, multipliers, roll); options
-- Bonds & swaps; FX; credit (CDS)
-- Quoting, settlement, day-count, calendars — the plumbing that trips everyone
-
-**Capstone I —** *Build a reproducible, point-in-time data pipeline and instrument a
-survivorship-free universe; demonstrate a look-ahead bug and then fix it.*
-
----
-
-## Level II — Discipline Depth
-
-**Course C4 — Pricing & Valuation** *(Equity = `[deep]`, our engine; Rates/FX/Options =
-`[integration]` via QuantLib; Credit/exotics/XVA = `[survey]` — retail data can't support
-full depth, and we don't reinvent QuantLib)*
-- **Equity `[deep]`:** financial statements & ratios; DCF (FCFF/FCFE); DDM; **residual income**;
-  multiples/comps; **reverse-DCF & expectations investing**; archetypes (sum-of-parts,
-  serial acquirer); cost of capital (WACC/CAPM); distress (**Altman Z**), fraud
-  (**Beneish M**), quality (**Piotroski F**)
-- **Fixed income:** bond math; **yield-curve bootstrapping**; multi-curve / **OIS**
-  discounting; duration/convexity/DV01; spreads & OAS
-- **Rates derivatives:** short-rate models (Vasicek/CIR/**Hull-White**); HJM; **LMM/BGM**;
-  swaps, caps/floors, swaptions
-- **Credit:** structural (**Merton**) & reduced-form/**hazard-rate**; **CDS** pricing;
-  credit curves; portfolio credit & copulas
-- **FX:** covered-interest parity & forwards; **Garman-Kohlhagen**; FX volatility
-- **Options & volatility:** Black-Scholes (assumptions & failure modes); **Greeks**;
-  **implied vol, smile & skew**; local vol; **SABR**; **Heston**; jump models; **vol-surface
-  calibration**
-- **Exotics:** barriers/Asians/lookbacks/autocallables; American/Bermudan via
-  **Longstaff-Schwartz**; PDE finite-difference pricing
-- **XVA:** counterparty exposure; **CVA/DVA/FVA/MVA**; collateral
-- **Calibration & model risk:** fitting models to market; model validation
-
-**Course C5 — Risk** *(by concern — the risk-quant depth track)*
-- Sensitivities/Greeks & scenario P&L
-- **VaR** (historical, parametric, Monte Carlo) and **ES/CVaR**; coherent measures
-- **VaR backtesting** (Kupiec, Christoffersen)
-- Covariance estimation: sample pitfalls → **Ledoit-Wolf shrinkage** → RMT denoising
-- **Factor risk models (Barra-style):** build one; risk decomposition & attribution
-- **Credit risk:** PD/LGD/EAD; portfolio credit; default correlation; concentration
-- **Counterparty / XVA risk**
-- Tail risk & **EVT**; stress testing & scenario design
-- Model risk & validation; regulatory literacy (Basel/FRTB) *[awareness]*
-
-**Course C6 — Alpha & Strategy Research** *(buy-side + ML depth tracks)*
-- The research process, and the overfitting enemy
-- Factor construction; **the three meanings of "factor"** (pricing vs alpha vs risk)
-- **Risk premia:** trend/TSMOM; cross-sectional momentum; carry; value; quality;
-  low-vol/defensive; seasonality; positioning (COT)
-- **Statistical arbitrage:** pairs (cointegration); **PCA stat-arb**; baskets
-- **Event-driven:** earnings; **merger/risk arbitrage**; index rebalancing
-- **Volatility strategies:** vol-risk-premium; dispersion; term structure *[research]*
-- **Macro:** cross-asset; nowcasting; regime
-- **ML alpha:** features; models; leakage; deep learning for sequences (LSTM/transformers)
-- **NLP alpha:** filings, news, earnings-call sentiment
-- **Reinforcement learning** for execution/sizing
-- Signal combination & the **signal lab** (multiple-testing-deflated screening)
-
-**Course C7 — Portfolio Construction & Allocation**
-- MPT & the efficient frontier; **why naive MVO fails** (error maximization)
-- Robust construction: shrinkage, **Black-Litterman**, **entropy pooling**
-- Risk-based: **risk parity**, **HRP**, min-variance, max-diversification
-- Position sizing: **volatility targeting**, **Kelly & fractional Kelly**
-- Constraints, turnover, **transaction-cost-aware** & tax-aware allocation
-- **Dynamic/multi-period:** stochastic control (Merton problem); LDI/ALM
-- **Cross-strategy allocation** (portfolio-of-strategies)
-- **Performance attribution:** Brinson, factor-based, risk; the Fundamental Law (IR=IC·√B)
-
-**Course C8 — Backtesting & Simulation**
-- Vectorized vs event-driven engines; **no-look-ahead** & fill lag
-- Cost, financing, corporate-action modeling
-- Walk-forward, **purged/embargoed CV**, CPCV
-- Building and reconciling both engines in Quantropy
-
-**Course C9 — Evaluation & Robustness** *(the honesty layer)*
-- Performance metrics; **the Sharpe ratio and its traps**
-- Multiple testing: **deflated & probabilistic Sharpe**, **PBO**, MinBTL, haircut Sharpe
-- Bootstrap CIs; diversification & **crisis-correlation** diagnostics; acceptance gates
-- **Strategy-decay** monitoring (live vs backtest)
-
-**Course C10 — Execution & Microstructure** *(`[survey]`/`[integration]` — no retail L2
-order-book data; taught via simulation and models, honestly labeled)*
-- Market microstructure: order books, price formation, adverse selection
-- **Optimal execution:** Almgren-Chriss; implementation shortfall; VWAP/TWAP/POV
-- **Market-impact models** (linear/square-root/propagator); **TCA**; capacity
-- **Market making:** Avellaneda-Stoikov; inventory management *[research]*
-
-**Capstone II (choose per track) —**
-- *Sell-side:* price & risk-manage an options book — calibrate a vol surface, compute
-  Greeks via AAD, aggregate book VaR.
-- *Rates:* build a curve, price a swap & swaption, compute key-rate risk.
-- *Risk:* build a factor risk model and a full multi-asset risk report with VaR backtest.
-- *Buy-side/ML:* take an ML/NLP signal from raw data through the anti-overfit gates.
-
----
-
-## Level III — Integration & Practice
-
-**Course C11 — Live Trading & Operations** *(retail-limited, [live])*
-- Paper trading via IBKR through the *same code path* as the backtest
-- OMS, order types, broker-resident protective stops
-- Real-time risk limits, the **two-tier drawdown circuit breaker**, reconciliation
-
-**Course C12 — Research Governance & Meta** *(cross-cutting)*
-- Hypothesis pre-registration; the **research protocol** (Arnott-Harvey-Markowitz)
-- The cumulative **trials ledger** and why per-study deflation isn't enough
-- Reproducibility & experiment tracking
-
-**Course C13 — Platform, Reporting & Product**
-- Config, secrets, scheduling, monitoring
-- Tearsheets, dashboards, the local API
-- HPC where it pays (vectorization, numba/GPU)
-
-**Course B — Behavioral & Foundational** *(the humility layer, woven throughout)*
-- Fooled by randomness; fat tails; biases; **why edges decay** (McLean-Pontiff)
-
-**Level III Capstones (integrative, end-to-end):**
-- **Capstone A — Systematic multi-asset book:** research → both backtests → evaluation →
-  paper-trade → risk limits. The whole spine in one project.
-- **Capstone B — Fundamental equity:** value a company (PIT-clean) and build a factor
-  portfolio around the thesis.
-- **Capstone C — Derivatives desk:** price, calibrate, and risk-manage an options/rates
-  book with XVA.
-- **Capstone D — ML alpha, honestly:** an ML/NLP strategy that survives deflated-Sharpe
-  and walk-forward — or an honest write-up of why it didn't.
-
----
-
-## 4. Course → milestone → references map
-
-| Course | Ships in milestone | Primary references (`docs/REFERENCES.md`) |
+| Concept | Home | Everyone else |
 |---|---|---|
-| C1 Foundations | M0 | §5 (Shreve, Glasserman, Hamilton, Tsay), §4 (Kelly) |
-| C2 Data / C3 Instruments | M1 | §1 (PIT/leakage), §3 (continuous contracts) |
-| C4 Pricing — equity | M3 | §6 (Damodaran, Penman, scores) |
-| C4 Pricing — derivatives/rates/credit/XVA | M4 | §5 (+ supplemental: Brigo-Mercurio, Gregory) |
-| C5 Risk | M5 | §4 (Ledoit-Wolf, Jorion, ADEH, Rockafellar-Uryasev) |
-| C6 Alpha — systematic | M2 | §2 (factors/premia), §3 (Carver, Chan, Clenow) |
-| C6 Alpha — ML/NLP/RL | M6 | §1 (López de Prado), + supplemental ML |
-| C7 Portfolio | M7 | §4 (Markowitz→HRP, Roncalli, Grinold-Kahn) |
-| C8 Backtest / C9 Evaluation | M2, M8 | §1 (deflated Sharpe, PBO, protocol) |
-| C10 Execution | M8 | §3 (Johnson, Harris), + supplemental (Almgren-Chriss) |
-| C11/C12/C13 + capstones | M8–M9 | §1, §7 (behavioral) |
-
-*Note:* the derivatives, XVA, execution, and ML rows depend on the **supplemental
-references pass** (rates/credit/microstructure/ML canon) flagged in the spec — those
-sources should land before those courses are authored.
+| Leakage, look-ahead, PIT discipline (data side) | **M2** | referenced by M8, M9 |
+| Causal feature contract (transform side) | **M8** | referenced by M9 |
+| Multiple testing, deflated/haircut Sharpe, PBO, purged CV, trials ledger, research protocol | **M8** (single home for the entire overfitting discipline) | M9 references; never re-taught |
+| Volatility models (EWMA, GARCH) | **M1** (methods live once) | applied in M6, M7 |
+| Optimization, Monte Carlo, PDE/lattice methods | **M1** | applied in M5, M6 |
+| Behavioral finance — biases in **markets** (why premia/anomalies persist) | **M4** | — |
+| Behavioral finance — biases in **researchers** (why backtests lie to their authors) | **M8** | — |
+| Backtest **mechanics** (engines, fills, costs, corporate actions) | **M9** | uses M8's statistics, doesn't restate them |
+| Covariance estimation | **M6** | M7 consumes |
+| Live risk limits & circuit breakers (enforcement) | **M11** | M7 measures, M11 enforces |
 
 ---
 
-## 5. How it grows (the anti-scope-explosion plan)
+## 4. The program — twelve modules in learner order
 
-- **One course per milestone**, authored as that capability lands — never ahead (would be
-  vaporware), never behind (would rot).
-- **The book + CI harness is stood up in M0** (empty shell + one Course-0 lesson), so the
-  machine exists before there's much to teach.
-- **Depth tracks first:** C4/C5/C6-ML courses (the differentiators) get the richest
-  treatment; agnostic plumbing courses stay lean.
-- **The lesson is the integration test.** Authoring is not overhead — it's how we prove
-  each capability is correct and usable.
+Ordering is pedagogical (each module uses only what came before), not architectural.
+
+**M0 — Orientation** `[deep]` ✅
+What quants do; the honesty labels; compounding and the asymmetry of loss; run your
+first Quantropy code. *Outcome: you can execute and modify every example in this book.*
+
+**M1 — Quantitative foundations**
+Probability and distributions for returns; statistics & inference (and the bootstrap);
+time-series basics through volatility models (EWMA, GARCH); stochastic processes (GBM,
+mean reversion, jumps) and simulation; optimization; numerical methods (roots,
+interpolation, trees/PDE at survey depth). *Outcome: you can simulate, estimate, and
+test the building blocks every later module assumes.* Mostly `[deep]`.
+
+**M2 — Markets, instruments & data** ✅ (2 of ~4 lessons)
+Instruments and conventions (calendars, day count, contract specs); the data problem:
+survivorship, restatements, point-in-time storage, immutable snapshots; filings
+ingestion (SEC EDGAR — natively bitemporal). *Outcome: you can build a
+reproducible, PIT-clean dataset and demonstrate — in code — two ways naive data
+inflates a backtest.* `[deep]`.
+
+**M3 — Fundamental analysis & equity valuation**
+Financial statements to ratios; cost of capital; DCF (FCFF/FCFE), residual income,
+multiples; **reverse DCF** (reading expectations out of price); distress/fraud/quality
+scores (Altman, Beneish, Piotroski); PIT-clean fundamental data from M2. *Outcome: you
+can value a real company from its real filings and defend every input.* `[deep]` —
+values reproduce against actual filing figures.
+
+**M4 — Asset pricing & the cross-section**
+CAPM and its empirical failure; the factor program (size, value, momentum, quality,
+low-vol, carry); **the three meanings of "factor"** (pricing vs alpha vs risk — kept
+distinct from here on); why premia persist (risk vs behavioral vs limits-to-arbitrage);
+the factor zoo and the replication crisis. *Outcome: you can construct a factor from
+raw data, run the standard asset-pricing tests, and argue both sides of "is this
+real?".* `[deep]` on equity factors.
+
+**M5 — Derivatives & volatility** `[integration]` (QuantLib) + `[survey]`
+Payoffs and no-arbitrage; Black-Scholes assumptions *and their failure modes*; Greeks;
+implied vol and the surface; rates/credit instruments at survey depth; where XVA and
+exotics live in practice and why we don't pretend to trade them. *Outcome: you can
+price and risk a vanilla option book with QuantLib and explain every number.*
+
+**M6 — Portfolio construction**
+The covariance problem first (sample error → shrinkage → factor structure); why naive
+mean-variance is an error maximizer; robust construction (Black-Litterman, risk
+parity, HRP); position sizing (volatility targeting, fractional Kelly); costs and
+turnover as first-class constraints. *Outcome: you can take signals + covariance to
+defensible weights and show why the naive route fails out-of-sample.* `[deep]`.
+
+**M7 — Risk measurement & management**
+Sensitivities and scenario P&L; VaR/ES done properly (and backtested); factor risk
+models for portfolios; stress testing and crisis correlations; drawdown dynamics.
+*Outcome: you can produce and interpret a full risk report on a real portfolio.*
+`[deep]` on equity/futures books.
+
+**M8 — Strategy research & the overfitting problem** ← *the program's core*
+The economics of an edge; signal construction and the causal feature contract;
+**the single home of research honesty**: multiple testing, deflated & haircut Sharpe,
+PBO, walk-forward and purged CV, the trials ledger, pre-registration, and the
+researcher's own biases; the classic signal families (trend, cross-sectional momentum,
+value, carry, mean reversion) built and *honestly* evaluated. *Outcome: you can take a
+hypothesis to a verdict that survives adversarial scrutiny — and show your trials
+count.* `[deep]` — this module is the project's reason to exist.
+
+**M9 — Backtesting mechanics**
+Event-driven simulation; where look-ahead hides in an *engine* (fill timing, signal
+lags); cost, financing, and corporate-action modeling; sim-vs-live divergences
+(partial fills, rejects) and how to stress them. Uses M8's statistics; owns none of
+them. *Outcome: you can explain — and test for — every way an engine flatters a
+strategy.* `[deep]`.
+
+**M10 — Execution & microstructure** `[survey]`/`[integration]`
+Order books and price formation; market impact and why costs scale with size; optimal
+execution (Almgren-Chriss) in simulation; TCA. Honest scope: no retail L2 data — taught
+via models and simulation, labeled as such. *Outcome: you can reason about what your
+trading costs and capacity actually are.*
+
+**M11 — Live trading & operations**
+Paper/live trading through the same code path as the backtest; order management and
+broker-resident stops; live risk limits and drawdown circuit breakers; reconciliation;
+**strategy decay** — monitoring live vs backtest and deciding when to kill. *Outcome:
+you can run a strategy live-paper with enforced limits and an honest track record.*
+`[deep]`.
+
+**Capstones** (close the program; one per depth track)
+A. a systematic multi-signal book: research → gates → backtest → paper-live with a
+public, honestly-evaluated track record; B. a full fundamental valuation defended
+end-to-end from filings; C. an options book priced and risk-managed via integration;
+D. an ML/alt-data signal that either survives M8's gates or gets an honest post-mortem.
+
+---
+
+## 5. Mechanics
+
+Executable **Jupyter Book** (MyST + jupytext; clean diffs, downloadable notebooks).
+CI builds with `execute: force`, `allow_errors: false` — the no-rot gate. Lessons pin
+data snapshots (M2 machinery) so outputs are deterministic. Reference lookups:
+`docs/REFERENCES.md`, organized to match these modules.

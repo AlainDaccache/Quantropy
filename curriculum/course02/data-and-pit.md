@@ -10,7 +10,7 @@ kernelspec:
   name: python3
 ---
 
-# Course C2 — Data & Point-in-Time: Why Backtests Lie `[deep]`
+# Module 2 — Data & Point-in-Time: Why Backtests Lie `[deep]`
 
 **Learning objectives.** After this lesson you can: (1) explain the two dates every
 observation carries and query "the world as of a date"; (2) demonstrate — with code —
@@ -110,7 +110,7 @@ offline*.
 
 - **PIT protects data, not features.** Even with a PIT store, standardizing a factor
   over its *full-sample* mean/vol leaks the future into every historical row. The
-  feature contract (Course C8) is the other half of the defense.
+  causal feature contract (Module 8) is the other half of the defense.
 - **Knowledge dates are hard.** Filing timestamps are a good proxy, but pre-release
   leaks, after-hours filings, and vendor lag all blur "when the market knew." Treat
   the knowledge date as *no earlier than* the truth.
