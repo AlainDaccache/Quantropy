@@ -315,5 +315,6 @@ gates → VIII engine → live paper, with a public, honestly-evaluated track re
 
 Executable Jupyter Book (MyST + jupytext); CI executes every cell, `allow_errors:
 false` — a broken lesson fails the build. Data pinned to immutable snapshots.
-Bibliography: `docs/REFERENCES.md` (verified citations; supplemental clusters —
-empirical methodology, fixed income, microstructure — in progress).
+Bibliography: `docs/REFERENCES.md` — verified citations across 13 sections, including
+the empirical-methodology toolkit (§11), fixed income (§12), and microstructure/
+execution (§13).

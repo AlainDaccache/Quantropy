@@ -339,23 +339,23 @@ The humility layer — why most backtests lie and most edges decay.
 The CFA curriculum's 10 topic areas, used as an independent "no gaps" audit of our
 taxonomy. (Names/weights per current CFA Institute Level I.)
 
-| CFA topic area | Level I weight | Quantropy home |
+| CFA topic area | Level I weight | Curriculum home (`docs/CURRICULUM.md`) |
 |---|---|---|
-| Ethical & Professional Standards | 15–20% | XC (governance) |
-| Quantitative Methods | 6–9% | L0/L2/L4 |
-| Economics | 6–9% | L1 macro overlay |
-| Financial Statement Analysis | 11–14% | **L2 fundamentals** |
-| Corporate Issuers | 6–9% | L2 (value drivers, capital structure) |
-| Equity Investments | 11–14% | **L2/L4** |
-| Fixed Income | 11–14% | **L2 fixedincome** |
-| Derivatives | 5–8% | **L2 derivatives** |
-| Alternative Investments | 7–10% | L1/L4 (futures, COT; crypto is *out*, §3.4) |
-| Portfolio Management | 8–12% | **L3/L4.5/L6** |
+| Ethical & Professional Standards | 15–20% | Part IX.6, VI.7 (governance) |
+| Quantitative Methods | 6–9% | Part II |
+| Economics | 6–9% | Part III.1 |
+| Financial Statement Analysis | 11–14% | **Part IV.1–.2** |
+| Corporate Issuers | 6–9% | Part IV.2–.3 |
+| Equity Investments | 11–14% | **Parts III.5–.6, IV.4–.5** |
+| Fixed Income | 11–14% | **Part IV.6–.7** |
+| Derivatives | 5–8% | **Part V** |
+| Alternative Investments | 7–10% | V.1 futures; VII.7 institutions `[survey]`; crypto out |
+| Portfolio Management | 8–12% | **Parts VII, IX.5** |
 
 *Note:* since 2025, CFA Level III offers three specialized pathways (Portfolio
-Management, Private Markets, Private Wealth). Every CFA topic area maps to a Quantropy
-layer — the one deliberate partial is Alternative Investments (crypto/private markets
-scoped out per §3.4), which is the honest retail boundary, not a gap.
+Management, Private Markets, Private Wealth). Every CFA topic area maps to a
+curriculum Part — the one deliberate partial is Alternative Investments (crypto and
+private markets at survey depth), an honest free-data boundary, not a gap.
 
 ---
 
@@ -399,8 +399,132 @@ If you read only a handful before building each layer:
 
 ---
 
-*Verification: all §1–§6, §8 citations confirmed against primary publisher/journal
-records (Wiley, Springer, Cambridge/Oxford UP, Princeton UP, McGraw-Hill, Pearson,
-JFE/JF/RFS/Econometrica, SSRN/NBER, CFA Institute). Working papers flagged inline.
-Items marked "verify before citing" were surfaced as leads and not independently
-confirmed.*
+## 11. Empirical asset-pricing methodology — the researcher's toolkit `[Curriculum III.5]`
+
+The papers behind sorts, cross-sectional regressions, and alpha tests — the *methods*
+of Part III.5, distinct from the factors themselves (§2).
+
+**The core machinery:**
+- **Fama & MacBeth (1973)** *JPE* 81(3), 607–636 — the two-pass cross-sectional
+  regression; still the workhorse for pricing characteristics.
+- **Shanken (1992)** *RFS* 5(1), 1–33 — errors-in-variables correction: FM standard
+  errors are understated because pass-two regressors are estimated betas. *(Pages
+  1–33; the circulating "1–55" is a miscitation.)*
+- **Gibbons, Ross & Shanken (1989)** *Econometrica* 57(5), 1121–1152 — the **GRS
+  test**: exact finite-sample joint test that all alphas are zero.
+- **Black, Jensen & Scholes (1972)** in *Studies in the Theory of Capital Markets*
+  (Praeger), 79–121 — the original beta-sorted time-series tests; the flat SML.
+- **Newey & West (1987)** *Econometrica* 55(3), 703–708 — HAC standard errors.
+- **Petersen (2009)** *RFS* 22(1), 435–480 — clustered vs FM standard errors in
+  panels; the referee's reference.
+- **Hansen (1982)** *Econometrica* 50(4), 1029–1054 — GMM: the frame under which FM,
+  time-series, and SDF tests are all special cases.
+
+**Design & interpretation:**
+- **Daniel & Titman (1997)** *JF* 52(1), 1–33 — characteristics vs covariances via
+  double sorts.
+- **Kan & Zhang (1999)** *JF* 54(1), 203–235 — useless factors appear spuriously
+  priced in two-pass regressions.
+- **Lewellen, Nagel & Shanken (2010)** *JFE* 96(2), 175–194 — why high R² on 25
+  size/B-M portfolios is a low hurdle; expanded test assets, GLS R².
+- **Barillas & Shanken (2017)** *RFS* 30(4) "Which Alpha?" and **(2018)** *JF* 73(2),
+  715–754 — modern factor-model comparison (test assets drop out; Bayesian model
+  probabilities).
+- **Novy-Marx & Velikov (2016)** *RFS* 29(1), 104–147 — anomalies net of transaction
+  costs; whether a sort survives implementation.
+
+**The how-to text:** **Bali, Engle & Murray (2016)** *Empirical Asset Pricing: The
+Cross Section of Stock Returns.* Wiley — step-by-step sorts, breakpoints, FM
+mechanics, winsorization, CRSP/Compustat handling.
+
+**Modern cross-section:** **Gu, Kelly & Xiu (2020)** *RFS* 33(5), 2223–2273 (ML
+benchmark & OOS-R² protocol) · **Kelly, Pruitt & Su (2019)** *JFE* 134(3) (IPCA) ·
+**Kozak, Nagel & Santosh (2020)** *JFE* 135(2) (shrinking the SDF) · **Jensen, Kelly
+& Pedersen (2023)** *JF* 78(5), 2465–2518 (Bayesian replication counterpoint + the
+JKP global factor data).
+
+**Data conventions:** **Shumway (1997)** *JF* 52(1), 327–340 and **Shumway & Warther
+(1999)** *JF* 54(6) — delisting-bias corrections (−30% NYSE/AMEX, −55% Nasdaq) ·
+**Ken French Data Library** (factors, sorted portfolios, breakpoints — the field's
+sorting conventions) · **Chen & Zimmermann (2022)** open-source predictor library
+(§1 #14).
+
+## 12. Fixed income — curves, duration, term structure `[Curriculum IV.6–.7]`
+
+**Texts:** **Tuckman & Serrat (2022)** *Fixed Income Securities*, 4th ed. Wiley — the
+practitioner curve/duration/hedging toolkit (primary teaching text) · **CFA Institute
+(2022)** *Fixed Income Analysis*, 5th ed. Wiley · **Fabozzi (2021)** *Handbook of
+Fixed Income Securities*, 9th ed. McGraw-Hill (reference volume).
+
+**Curve construction:** **Nelson & Siegel (1987)** *J. Business* 60(4), 473–489 —
+the parsimonious functional form · **Svensson (1994)** NBER w4871 (working paper
+only) — the six-parameter extension behind most central-bank curves · **Hagan & West
+(2006)** *Applied Mathematical Finance* 13(2), 89–129 — production bootstrapping &
+monotone-convex interpolation.
+
+**Factor structure:** **Litterman & Scheinkman (1991)** *J. Fixed Income* 1(1),
+54–61 — level/slope/curvature via PCA · **Diebold & Li (2006)** *J. Econometrics*
+130(2), 337–364 — dynamic Nelson-Siegel forecasting · **Diebold & Rudebusch (2013)**
+*Yield Curve Modeling and Forecasting.* Princeton UP.
+
+**Term-structure models (lineage):** **Vasicek (1977)** *JFE* 5(2), 177–188 ·
+**Cox, Ingersoll & Ross (1985)** *Econometrica* 53(2), 385–407 · **Ho & Lee (1986)**
+*JF* 41(5) — first curve-calibrated model · **Hull & White (1990)** *RFS* 3(4),
+573–592 · **Heath, Jarrow & Morton (1992)** *Econometrica* 60(1), 77–105 *(not
+77–106)* · **Duffie & Kan (1996)** *Math. Finance* 6(4) — the affine class ·
+Black-Derman-Toy (1990) *FAJ* 46(1) *(page range secondary-sourced)*.
+
+**Expectations hypothesis & term premia:** **Fama & Bliss (1987)** *AER* 77(4),
+680–692 *(not 680–699)* · **Campbell & Shiller (1991)** *REStud* 58(3), 495–514 —
+the canonical EH-failure pair · **Cochrane & Piazzesi (2005)** *AER* 95(1), 138–160
+— the tent-shaped return-forecasting factor · **Adrian, Crump & Moench (2013)** *JFE*
+110(1), 110–138 — the ACM term premium (NY Fed publishes daily) · Kim & Wright
+(2005) FEDS WP 2005-33 (working paper; series on FRED).
+
+**Free data (what makes the deep track executable):** **Gürkaynak, Sack & Wright
+(2007)** *J. Monetary Economics* 54(8), 2291–2304 — the Fed's fitted Treasury curve,
+daily since 1961, free (+ the 2010 TIPS companion) · **Liu & Wu (2021)** *JFE*
+142(3) — modern reconstruction, free monthly zeros · **BIS Papers No. 25** — which
+method each central bank uses.
+
+## 13. Microstructure, transaction costs & execution `[Curriculum VIII.1–.2]`
+
+**Theory of spreads & impact:** **Kyle (1985)** *Econometrica* 53(6), 1315–1335 —
+lambda, depth, strategic informed trading · **Glosten & Milgrom (1985)** *JFE* 14(1),
+71–100 — adverse-selection spreads · **Roll (1984)** *JF* 39(4), 1127–1139 — the
+implicit spread estimator from prices alone.
+
+**Empirical liquidity & the impact law:** **Amihud (2002)** *J. Financial Markets*
+5(1), 31–56 — the ILLIQ measure · **Tóth et al. (2011)** *Physical Review X* 1(2),
+021006 — the square-root metaorder impact law (latent liquidity) · **Gatheral
+(2010)** *Quantitative Finance* 10(7), 749–759 — no-dynamic-arbitrage constraints on
+impact/decay · **Almgren, Thum, Hauptmann & Li (2005)** *Risk* 18(7) — fitted impact
+on ~700k real orders · **Frazzini, Israel & Moskowitz (2018)** SSRN 3229719 *(working
+paper)* — $1.7T of live institutional executions; realized costs far below academic
+estimates.
+
+**Optimal execution & market making:** **Bertsimas & Lo (1998)** *J. Financial
+Markets* 1(1), 1–50 — the first DP execution model · **Almgren & Chriss** "Optimal
+Execution of Portfolio Transactions," *J. Risk* 3(2), Winter 2000/01, 5–39 *(year
+cited both ways; this is the same issue)* — the mean-variance execution frontier ·
+**Obizhaeva & Wang (2013)** *J. Financial Markets* 16(1), 1–32 — execution with LOB
+resilience · **Perold (1988)** *JPM* 14(3), 4–9 — implementation shortfall ·
+**Avellaneda & Stoikov (2008)** *Quantitative Finance* 8(3), 217–224 — inventory-based
+market making.
+
+**Texts:** **Harris (2003)** *Trading and Exchanges.* Oxford UP — the institutional
+foundation · **Hasbrouck (2007)** *Empirical Market Microstructure.* Oxford UP —
+the econometrics · **O'Hara (1995)** *Market Microstructure Theory.* Blackwell ·
+**Foucault, Pagano & Röell (2013)** *Market Liquidity.* Oxford UP — the modern
+graduate text · **Cartea, Jaimungal & Penalva (2015)** *Algorithmic and
+High-Frequency Trading.* Cambridge UP — stochastic control for trading ·
+**Bouchaud, Bonart, Donier & Gould (2018)** *Trades, Quotes and Prices.* Cambridge UP
+— the modern empirical LOB reference.
+
+---
+
+*Verification: all §1–§6, §8, §11–§13 citations confirmed against primary
+publisher/journal records (Wiley, Springer, Cambridge/Oxford UP, Princeton UP,
+McGraw-Hill, Pearson, JFE/JF/RFS/Econometrica/AER, SSRN/NBER, CFA Institute, Fed/BIS).
+Working papers and page-range discrepancies flagged inline. Items marked "verify
+before citing" were surfaced as leads and not independently confirmed.*
