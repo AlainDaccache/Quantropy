@@ -1,7 +1,10 @@
 # Quantropy — Specification
 
-**Version 2.0 (derivation-anchored)** · Owner: Alain Daccache
-Companions: `docs/CURRICULUM.md` · `docs/REFERENCES.md` · `docs/PROVENANCE.md` (internal)
+**Version 2.1 (derivation-anchored)** · Owner: Alain Daccache
+Companions: `docs/CURRICULUM.md` (the program + coverage ledger) · `docs/REFERENCES.md`
+(verified canon) · `docs/BOUNDARIES.md` (what's deliberately not covered, and why) ·
+`docs/SCRUTINY.md` (the hardest objections, pre-answered) · `docs/PROVENANCE.md`
+(internal)
 
 > The complete body of quantitative finance, derived from first principles, audited
 > for completeness against external authorities, and delivered as three verifiable

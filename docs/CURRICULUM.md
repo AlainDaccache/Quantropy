@@ -28,6 +28,37 @@ referenced elsewhere (§3).
 | I.1 Orientation; I.4–I.5 (PIT & survivorship; EDGAR filings) | ✅ executing in CI |
 | Everything else | 📋 syllabus; ships with its milestone (MASTER_SPEC §6) |
 
+### 2.1 Coverage ledger — the one-page audit
+
+Every field area (MASTER_SPEC §2) → depth, curriculum home, reference section.
+What's *not* here is priced in `docs/BOUNDARIES.md`; the hardest objections are
+pre-answered in `docs/SCRUTINY.md`.
+
+| # | Field area | Depth | Curriculum | References |
+|---|---|---|---|---|
+| 1 | Returns, TVM, conventions | deep | I.1–.3 | §5, §8 |
+| 2 | Data integrity (PIT, survivorship, snapshots) | deep | I.4–.6 | §1, §11 |
+| 3 | Probability, statistics, simulation, numerics | deep | II.1–.2, .5–.6 | §5 |
+| 4 | Financial econometrics | deep/integration | II.3–.4 | §5, §11 |
+| 5 | Economics & macro (+ international) | survey | III.1 | §14 |
+| 6 | Efficiency & active-management economics | deep | III.2–.3 | §2, §7 |
+| 7 | Asset pricing: theory + empirical toolkit + premia | deep | III.4–.6 | §2, §11 |
+| 8 | Equity analysis & valuation (full FSA) | deep | IV.1–.5 | §6 |
+| 9 | Fixed income | deep→survey | IV.6–.7 | §12 |
+| 10 | Derivatives & contingent claims | deep→survey | V | §5, §13 |
+| 11 | Prediction & inference discipline | deep | VI | §1, §11 |
+| 12 | Portfolio construction | deep | VII.1–.7 | §4 |
+| 13 | Frictions & microstructure | survey/integration | VIII.1–.2 | §13 |
+| 14 | Backtesting mechanics | deep | VIII.3 | §1, §3 |
+| 15 | Risk management | deep→survey | IX.1–.4 | §4 |
+| 16 | Live implementation | deep | VIII.4–.5 | §3 |
+| 17 | Performance & attribution | deep | IX.5 | §4 |
+| 18 | Governance & professional practice | deep/survey | VI.7, IX.6 | §1 |
+| 19 | Operational risk & resilience | survey | IX.6 | §14 |
+| 20 | ESG | survey | VII.8 | §14 |
+| 21 | Currency & international | survey | III.1, VII.6–.7 | §14 |
+| 22 | Alternatives & institutional ALM | survey | VII.8 | §14 |
+
 ## 3. One-home map (MECE anchors for historically homeless concepts)
 
 | Concept | Home | Referenced by |
