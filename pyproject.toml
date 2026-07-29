@@ -1,6 +1,54 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantropy"
+version = "0.2.0"
+description = "An applied quant curriculum backed by a focused, deep reference implementation"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Alain Daccache", email = "alaindacc@gmail.com" }]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+# Core is network-free and deterministic (MASTER_SPEC P5): numeric stack only.
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "pyarrow>=14", # Parquet engine for the snapshot/PIT stores (offline, no network)
+]
+
+[project.optional-dependencies]
+data = ["requests>=2.31", "truststore>=0.8"]
+live = ["ib_async>=1.0"]
+ml = ["scikit-learn>=1.3"]
+report = ["matplotlib>=3.7"]
+# jupyter-book pinned <2: v2 is a rewrite (mystmd) with a different config format;
+# v1 (Sphinx) is the mature engine with reliable execution gating for CI.
+book = ["jupyter-book>=1.0,<2", "jupytext>=1.16"]
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/AlainDaccache/Quantropy"
+
+[tool.setuptools.packages.find]
+include = ["quantropy*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error::FutureWarning"] # deprecations are tomorrow's breakage
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["legacy", "venv"]

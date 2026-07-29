@@ -1,9 +1,24 @@
-venv
-.idea
+# environments & secrets
+venv/
+.venv/
+.env
+
+# IDE
+.idea/
+*.iml
+
+# python
 __pycache__/
-Quantropy.iml
-matilda/data_pipeline/db_tutorial.py
-dist
-*.egg-info
-data
-build
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# notebooks & book
+.ipynb_checkpoints/
+curriculum/_build/
+
+# local data cache at repo root ONLY — root-anchored: an unanchored `data/`
+# would also ignore quantropy/data/, the source package (bit us once)
+/data/
