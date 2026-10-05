@@ -1,0 +1,305 @@
+{
+  "edition": "2026-10-05",
+  "chapters": 46,
+  "capabilities": 466,
+  "methods": 306,
+  "strategy_families": 41,
+  "sources": 82,
+  "files": [
+    {
+      "path": "00-vision.md",
+      "bytes": 2734,
+      "sha256": "a1078ae4166670ae1034c86a1288989f18fb04d8ea49a2054118ba50aec6683a"
+    },
+    {
+      "path": "01-workflows.md",
+      "bytes": 2509,
+      "sha256": "acc117c58ed74a1551d0796082bb353b4055a63722df33b3320e9916dbadabbe"
+    },
+    {
+      "path": "02-instruments.md",
+      "bytes": 2856,
+      "sha256": "ae2241f0cf30bd87274d7e44b96876d27318374c70bf712e7a6fa63c67e521e7"
+    },
+    {
+      "path": "03-data.md",
+      "bytes": 3244,
+      "sha256": "3af808b902055f4a176c8caad61379214b4d09c277930ecb06276cd233de363f"
+    },
+    {
+      "path": "04-statements.md",
+      "bytes": 2938,
+      "sha256": "c702c0f81aecc2b302aeb795da08a28bf838a13cad8aa6e1f40a8528faa3070a"
+    },
+    {
+      "path": "05-ratios.md",
+      "bytes": 3043,
+      "sha256": "bfa13b6a56a93d203aefdc6092707ac3c980f49421d29b05fc8ccddda6e4a9e3"
+    },
+    {
+      "path": "06-valuation.md",
+      "bytes": 2870,
+      "sha256": "49cc4baf037bf1f1bf0901c78019cad54b749ad7603d2e43cb09b3af250be5be"
+    },
+    {
+      "path": "07-investor-styles.md",
+      "bytes": 3056,
+      "sha256": "3524dfe181c0764fdbd52177eb0f080ac3410324d4de374d569cc41e1e766a26"
+    },
+    {
+      "path": "08-factors.md",
+      "bytes": 2936,
+      "sha256": "dea48f5b8c0ecb022e19a1e496368ed1933f660de40e8312bef92fbd5e5eb81d"
+    },
+    {
+      "path": "09-futures-fx.md",
+      "bytes": 3055,
+      "sha256": "d335664d1dc5bc8cf6b64217b3f997069f4820d7cbbe4fa85e669dc104ee6a12"
+    },
+    {
+      "path": "10-options.md",
+      "bytes": 3180,
+      "sha256": "45fa1f2298b2e3635193bfd5e953a013a2696bd48a81a3917c0131eff2bd0010"
+    },
+    {
+      "path": "11-rates-credit.md",
+      "bytes": 2864,
+      "sha256": "1e8e84476b91dafcd4e4834c3e3bc7d0aa9c71f2f0d1d4562f8ca627a20e881e"
+    },
+    {
+      "path": "12-portfolios.md",
+      "bytes": 2740,
+      "sha256": "47874721076a8a15b6828f28681aeb772b570457ef2d7551ca2b76e9b4916edf"
+    },
+    {
+      "path": "13-risk.md",
+      "bytes": 2671,
+      "sha256": "7887636c93b8a6ce7ef752596f4772651e1bc50cfd0b373165569d6482103ff3"
+    },
+    {
+      "path": "14-research.md",
+      "bytes": 2909,
+      "sha256": "0fee06c30f5a9d53cd54b28c0433830ace449b452ee502dc245f103d4043f16b"
+    },
+    {
+      "path": "15-simulation.md",
+      "bytes": 2838,
+      "sha256": "3b3990115440b4b1b84494a3cabaaf34d26b56feef79f228b09174163b506091"
+    },
+    {
+      "path": "16-execution.md",
+      "bytes": 3115,
+      "sha256": "a88039132d93f85dcb4eaf7f4e11bb6e2ad431f7de0780ed6c65120eba811689"
+    },
+    {
+      "path": "17-accounting.md",
+      "bytes": 3138,
+      "sha256": "5fb764db0be95a5a4db981013540b19ceb9462697b3d7d802fd38217161c241c"
+    },
+    {
+      "path": "18-household.md",
+      "bytes": 2755,
+      "sha256": "c9829b6b5b49d15dd2114da11bf3b252f0fb5345cb9acd7498ad4dda0fe4eb76"
+    },
+    {
+      "path": "19-alternatives.md",
+      "bytes": 2949,
+      "sha256": "8a6ba8d4e66f842cdfc01986b07376a7b58fc6605c6eb096774d5c6c81067eb5"
+    },
+    {
+      "path": "20-operations.md",
+      "bytes": 2986,
+      "sha256": "c0c65ce925c7983dcf68561a65a41bdc2305e6721f51f17fe518f68863b0881b"
+    },
+    {
+      "path": "21-architecture.md",
+      "bytes": 2867,
+      "sha256": "6d10d6b3d36c79d80fb3b4a6be77bd4eb1c77d726f9ea6a34110626d405dbbeb"
+    },
+    {
+      "path": "22-roadmap.md",
+      "bytes": 2916,
+      "sha256": "2e022a0814da0cf96b2b20e0199abfb4760ef977ec7db8e03e73a2411ee301e7"
+    },
+    {
+      "path": "23-quality.md",
+      "bytes": 2961,
+      "sha256": "cc697391f9ecfb5d85c0ce56161fe058493d6750ac9682fc7227be2c0bbebbcd"
+    },
+    {
+      "path": "24-validation-cases.md",
+      "bytes": 2964,
+      "sha256": "512fb0e9addc379189d9b4c0408b419ef2a02d73d4405c604532bdeaecfee855"
+    },
+    {
+      "path": "25-learning.md",
+      "bytes": 3017,
+      "sha256": "1feaf7dd740562f65cd091cbc0ab6f8f8e4cec9223831d7971e2c3c914e53d4b"
+    },
+    {
+      "path": "26-open-questions.md",
+      "bytes": 3052,
+      "sha256": "564366f9c126e783e4d35484163a377c4e5a538ab8a49e5d6983e7f14123c6f5"
+    },
+    {
+      "path": "27-economics.md",
+      "bytes": 3184,
+      "sha256": "5beaf42a94f8f7c6e73b3117a85d10aa127e2d7d67db00ccf19091273c571212"
+    },
+    {
+      "path": "28-corporate-finance.md",
+      "bytes": 3089,
+      "sha256": "a3c6f0b67848ccae2716bcbcff3b2b325b9eb2199ffeacaf5fec2b551747ddb1"
+    },
+    {
+      "path": "29-ethics-behavior.md",
+      "bytes": 2854,
+      "sha256": "5e3ddf93118a4160d69d719b72fb2baa86e67337147f80032abcb08c87cf116b"
+    },
+    {
+      "path": "30-premia-alpha.md",
+      "bytes": 3422,
+      "sha256": "e260ccd0a53be6d7cfaa8704b2e1c837bf6384327a770c0c745f343581a5d024"
+    },
+    {
+      "path": "31-product-spec.md",
+      "bytes": 3116,
+      "sha256": "6d1d8e8b8d40ea89a3e7b692cb566590a18d29e0c9c5f72d4768da020f717575"
+    },
+    {
+      "path": "32-full-stack-design.md",
+      "bytes": 3364,
+      "sha256": "eb161652ee1e637be15257ed53b15aa9a3d48de8743632771513da4aabaaa3d2"
+    },
+    {
+      "path": "33-cfa-coverage.md",
+      "bytes": 4230,
+      "sha256": "799eb100a7ae063dfb709cc01c5d27c5299d77c28017aa9613d2f33eae35f59c"
+    },
+    {
+      "path": "34-product-reassessment.md",
+      "bytes": 3592,
+      "sha256": "04bcc6c8ebd34ae6f6ae3e1d897b3a7eb44946b0e68a52b12993374cba674b44"
+    },
+    {
+      "path": "35-independent-coverage.md",
+      "bytes": 3696,
+      "sha256": "2da417ef38408fff563c2c4dbb865727fb65e88da1c640a787003b88718390d0"
+    },
+    {
+      "path": "36-market-plumbing.md",
+      "bytes": 3404,
+      "sha256": "853e9072764c76858d7d25e0098cbfe1e263964514b50d887b40ac2f35e0085f"
+    },
+    {
+      "path": "37-manager-diligence.md",
+      "bytes": 3002,
+      "sha256": "b3703b944cb29e0d185c922cd8353bb9d7be2a96b5b29ae7cf97e03cddd75ef5"
+    },
+    {
+      "path": "38-numerical-model-risk.md",
+      "bytes": 3184,
+      "sha256": "f26858a1a4f29a57b0eda57fae0e988d23c851589eaeb375061be3ab855fe0bf"
+    },
+    {
+      "path": "39-research-completion.md",
+      "bytes": 3549,
+      "sha256": "26b2fe8b4f958a4a49a5d5c700f879d5cc44dbd9bc0099b6d0fd89e042923a09"
+    },
+    {
+      "path": "40-metric-specifications.md",
+      "bytes": 3795,
+      "sha256": "6024fad35be6e5602ba5fb35affe2975676bb094f2c791b186b5180b495d4f31"
+    },
+    {
+      "path": "41-sector-valuation.md",
+      "bytes": 4078,
+      "sha256": "71aa42703e3360dd7a0a6de213136c85e05d8e6b1c69cce303a3bfa9574d6608"
+    },
+    {
+      "path": "42-optimization-methods.md",
+      "bytes": 3715,
+      "sha256": "b94f1672f1453411f85577ff891b4e43fce8004eefd46056775cfd1cda788c6d"
+    },
+    {
+      "path": "43-backtest-methods.md",
+      "bytes": 3669,
+      "sha256": "bc69f8870a3215cd22c3e684347aa00a5a62b2c6dfb8a501f661d91c53652602"
+    },
+    {
+      "path": "44-household-simulation.md",
+      "bytes": 3996,
+      "sha256": "e926ef2964be4f966d8d17f0d70bede8ddfefd246ef471216d1dc237dc6ee272"
+    },
+    {
+      "path": "45-calculator-product.md",
+      "bytes": 3369,
+      "sha256": "8144882ac89873a9cf861f8693f34415919682a2e825bea49748f246362d1a73"
+    },
+    {
+      "path": "book-research-map.csv",
+      "bytes": 3113,
+      "sha256": "ace55ab64e6f8a49ea13191187c0b517a989832eca478259bdbb7710550fb923"
+    },
+    {
+      "path": "capability-register.csv",
+      "bytes": 128760,
+      "sha256": "b572c456c384a663087dbe9a29a668ebf1dd3664ba81c0a7b42300c205ba8349"
+    },
+    {
+      "path": "coverage-audit.csv",
+      "bytes": 8760,
+      "sha256": "ec384d99f00d44df227d6771d0baaf37df3597e7350de52c34b582e87a5f1797"
+    },
+    {
+      "path": "maintenance.md",
+      "bytes": 1591,
+      "sha256": "8cad602e0662e7bf15260ea7aaf789a9b2ff997289e593e626278c816f1ef2f7"
+    },
+    {
+      "path": "method-inventory.csv",
+      "bytes": 128204,
+      "sha256": "7b66c89d409d8d7a7c9177f524287614dfeff8b522247672158a1e9d397cb59f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5625,
+      "sha256": "513cd933b2fed86546bfcd3bca330aaf6872e636c4c86ec6009a24352e34d603"
+    },
+    {
+      "path": "sources.md",
+      "bytes": 26895,
+      "sha256": "2e112af0e2d8cd0f7577db780dafaf74449090a86156eeb6b87dee0a9b21d415"
+    },
+    {
+      "path": "strategy-families.csv",
+      "bytes": 9222,
+      "sha256": "b12ed64ef7b04e55deb4e4412d18089fd3e2935c1cfb764f59180d27444f643c"
+    },
+    {
+      "path": "templates/data-contract.md",
+      "bytes": 862,
+      "sha256": "822f5f0b6c816c105700df3924cf00b60a146bc23a243146179ed7535416bf97"
+    },
+    {
+      "path": "templates/decision.md",
+      "bytes": 486,
+      "sha256": "1bbb15b13146686b6b80a7e348e3418801971747f675f29465e884f5d2afdeed"
+    },
+    {
+      "path": "templates/experiment-card.md",
+      "bytes": 871,
+      "sha256": "98c300dce4c995f9f86809c3482e3ab6a6830e08d9e29adccc6c1838bd45a79c"
+    },
+    {
+      "path": "templates/live-profile.md",
+      "bytes": 952,
+      "sha256": "eff839b55de5cf41e601521e3dd04995f6dffa6e4139ce00d0b2f3277bdb5a1d"
+    },
+    {
+      "path": "templates/model-card.md",
+      "bytes": 892,
+      "sha256": "af29ca167240b57f1e42d2dc08a0fac58adc43f7ce8ea70be3199431a70b43b9"
+    }
+  ]
+}

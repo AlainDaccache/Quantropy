@@ -1,3 +1,5 @@
+> Research branch: [Quantropy platform foundation](QUANTROPY_FOUNDATION.md) describes the expanded knowledge, modeling, research, simulation and application scope. Inherited runtime code has not been certified by these documents.
+
 <p align="center">
     <img width=60% src="https://github.com/AlainDaccache/Quantropy/blob/master/docs/source/images/quantropy_logo.PNG">
 </p>
