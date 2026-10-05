@@ -661,3 +661,83 @@ Current documentation and legal/tax/data-provider policies can change. Pin the a
 - Scope/limitation: Exact theoretical/empirical derivation review pending.
 
 [Knowledge base index](README.md)
+
+## IFRS-CONCEPT
+
+[IFRS Conceptual Framework](https://www.ifrs.org/issued-standards/list-of-standards/conceptual-framework/)
+
+- Type: Primary institutional reference.
+- Review depth: Official public framework overview opened; recognition, measurement and presentation scope inspected. Full standards not reviewed.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## BASEL
+
+[BIS Basel Framework](https://www.bis.org/committees/bcbs/basel-framework)
+
+- Type: Primary institutional reference.
+- Review depth: Official framework index opened; risk/capital/liquidity scope inspected. Full chapters and local implementation not reviewed.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## IMF-SYSTEM
+
+[IMF Financial System Soundness](https://www.imf.org/en/about/factsheets/financial-system-soundness)
+
+- Type: Primary institutional reference.
+- Review depth: Official public factsheet opened. Institutional system scope only; not a complete financial-stability model.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## IMF-DEBT
+
+[IMF Q-CRAFT user guide](https://www.imf.org/-/media/files/topics/fiscal/fiscal-risks/tool/qcraft-user-guidev10.pdf)
+
+- Type: Primary institutional reference.
+- Review depth: Search excerpt identified debt-dynamics scope; full PDF review pending. Reference identity independently follows the nominal debt accounting equation.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## SOA-EDUCATION
+
+[Society of Actuaries education overview](https://www.soa.org/education/overview/)
+
+- Type: Primary institutional reference.
+- Review depth: Official education overview opened; actuarial pathway and scope inspected. Complete syllabi and methods not reviewed.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## OECD-MSME
+
+[OECD INFE MSME financial literacy framework](https://www.oecd.org/content/dam/oecd/en/publications/reports/2018/09/oecd-infe-core-competency-framework-on-financial-literacy-for-msmes_82df1708/220101c9-en.pdf)
+
+- Type: Primary institutional reference.
+- Review depth: Official document identified through search; full outcome mapping pending.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## NUMERICAL-FOUNDATIONS
+
+[Reference verification scope](https://www.itl.nist.gov/div898/handbook/)
+
+- Type: Primary institutional reference.
+- Review depth: NIST statistical handbook landing page opened but yielded no substantive text; detailed chapters remain unreviewed. Foundational example results below are locally calculated and not represented as source-verified derivations.
+- Scope/limitation: Supports domain identification; no claim of exhaustive source or regulatory review.
+
+## DAMODARAN-CASH
+
+[Damodaran cash-flow conventions](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/littlebook/cashflows.htm)
+
+- Type: Primary author/institutional material.
+- Review depth: Opened cash-flow-to-firm section, including the net-reinvestment equation and tax-shield convention. Some displayed FCFE signs elsewhere appear inconsistent with the surrounding prose; do not copy formulas without economic reconciliation.
+- Scope/limitation: Only the inspected section or abstract is evidence; no full-source certification.
+
+## ES-DEFINITION
+
+[Acerbi and Tasche expected shortfall](https://arxiv.org/abs/cond-mat/0104295)
+
+- Type: Primary author/institutional material.
+- Review depth: Abstract inspected for differences in discontinuous loss distributions; full proof not reviewed.
+- Scope/limitation: Only the inspected section or abstract is evidence; no full-source certification.
+
+## CFA-RETURNS
+
+[CFA Rates and Returns](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/rates-and-returns)
+
+- Type: Primary author/institutional material.
+- Review depth: Public refresher overview and learning outcomes opened; complete curriculum derivations not accessed.
+- Scope/limitation: Only the inspected section or abstract is evidence; no full-source certification.

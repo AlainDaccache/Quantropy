@@ -4,6 +4,10 @@ Quantropy is proposed as a financial knowledge, modeling, investment research an
 
 ## Start here
 
+- [Finance knowledge audit and completion standard](docs/knowledge-base/FINANCE-AUDIT.md)
+- [Foundational finance reference](docs/knowledge-base/reference/README.md)
+- [Independent 120-unit finance coverage](docs/knowledge-base/finance-coverage.csv)
+
 - [Knowledge base and complete index](docs/knowledge-base/README.md)
 - [Product intent and scope](docs/knowledge-base/34-product-reassessment.md)
 - [Independent coverage audit](docs/knowledge-base/35-independent-coverage.md)

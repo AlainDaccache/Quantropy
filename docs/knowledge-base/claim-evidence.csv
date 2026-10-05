@@ -1,0 +1,8 @@
+id,owner,claim,source_id,inspection_scope
+EVD-001,reference/02-accounting.md,Reporting framework includes recognition measurement presentation and reporting boundaries,IFRS-CONCEPT,Public overview; no detailed standard review
+EVD-002,reference/04-valuation.md,Conventional FCFF subtracts net reinvestment from after-tax operating income,DAMODARAN-CASH,Cash Flow to the Firm section opened; equation and economic signs cross-checked
+EVD-003,reference/08-risk.md,ES variants differ for discontinuous distributions,ES-DEFINITION,Original paper abstract; full derivation pending
+EVD-004,reference/12-institutions.md,Bank prudential scope separates risk capital and liquidity,BASEL,Framework index only; local legal details pending
+EVD-005,reference/03-economics.md,Financial soundness includes institutions and infrastructure,IMF-SYSTEM,Public factsheet; model derivation not provided
+EVD-006,reference/11-households.md,Actuarial coverage includes contingent insurance payments,SOA-EDUCATION,Education overview only; exact actuarial specifications pending
+EVD-007,reference/10-performance.md,Time and money-weighted return are distinct performance measures,CFA-RETURNS,Public learning outcomes; equation examples calculated locally

@@ -19,7 +19,7 @@ Examples of proposed core conventions follow. These are transparent definitions 
 | Interest coverage | Chosen earnings measure / interest expense | EBIT versus EBITDA versus cash variants |
 | Net debt | Defined debt minus eligible cash | Include leases? Exclude restricted cash? |
 | Enterprise value | Equity market value + defined senior/noncommon claims - eligible nonoperating cash | Dilution, minority interests, pensions and leases require a bridge |
-| FCFF | NOPAT + noncash charges - reinvestment in operations | Acquisitions and recurring investment cannot disappear |
+| FCFF | [Canonical FCFF convention](reference/04-valuation.md) | Acquisitions and recurring investment cannot disappear |
 | FCFE | Equity cash flow after operating investment and net borrowing | Financing assumptions and owner scope |
 | FCF conversion | Defined FCF / chosen earnings denominator | Negative denominators and period alignment |
 | Accrual measure | Chosen earnings-minus-cash measure / defined asset scale | Multiple published constructions exist |
@@ -49,3 +49,5 @@ Implementation gate: build independently reviewed filing-derived examples, show 
 - [IFRS](sources.md#ifrs)
 
 [Knowledge base index](README.md)
+
+Canonical foundational convention: see [valuation](reference/04-valuation.md). This discovery table is not a fully reviewed method contract.

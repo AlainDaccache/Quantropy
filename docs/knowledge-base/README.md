@@ -1,10 +1,10 @@
 # Quantropy knowledge base
 
-**A research-backed specification for a broad retail investment platform.** Edition 1, 2026-10-05. The project goal is trustworthy analysis, research, portfolios and operations across instrument families. This is a comprehensive domain map and a foundation for implementation; no feature list here certifies live readiness or investment profitability.
+**Finance reference and platform research specifications.** Edition 2, 2026-10-05. Start with the [independent finance audit](FINANCE-AUDIT.md), [self-contained foundational explanations](reference/README.md), and [120-unit research coverage register](finance-coverage.csv).
 
-Start with [the critique and vision](00-vision.md), [the build strategy](22-roadmap.md), [quality gates](23-quality.md) and [known gaps](26-open-questions.md). Then read the relevant modeling chapters. The scope was designed independently of the existing code.
+The reference explains foundational concepts locally, with equations, assumptions and fictional examples. It is **not yet a complete, independently verified body of all finance knowledge**. The audit identifies remaining specialist work and the exact completion standard. Sources distinguish opened material from identified or partially reviewed material.
 
-The governing distinction is **analysis coverage / simulation fidelity / live readiness**. A model can be useful offline while its data, lifecycle or execution support remains unsuitable for live use. Personal account and employment restrictions remain execution-policy inputs until verified.
+The existing chapters below describe product scope and candidate methods. Their presence does not certify a model or feature. Conceptual validity, data validity, simulation fidelity and live readiness require separate evidence. Read [research maintenance](RESEARCH-GOVERNANCE.md) before extending this collection.
 
 ## Domain map
 

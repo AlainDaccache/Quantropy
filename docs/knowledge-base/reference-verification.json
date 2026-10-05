@@ -1,0 +1,137 @@
+{
+  "scope": "Selected fictional example arithmetic; independent target constants and loan identity. No full method, empirical, legal, expert or runtime validation.",
+  "checks": [
+    {
+      "case": "compound_two_years",
+      "actual": 110.25,
+      "expected": 110.25,
+      "passed": true
+    },
+    {
+      "case": "annuity_three_years",
+      "actual": 272.3248029370478,
+      "expected": 272.3248029370478,
+      "passed": true
+    },
+    {
+      "case": "loan_payment",
+      "actual": 367.2085646312449,
+      "expected": 367.2085646312448,
+      "passed": true
+    },
+    {
+      "case": "loan_final_balance",
+      "actual": 6.252776074688882e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "case": "real_return",
+      "actual": 0.02941176470588247,
+      "expected": 0.02941176470588225,
+      "passed": true
+    },
+    {
+      "case": "fcff",
+      "actual": 60.0,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "case": "perpetuity",
+      "actual": 1000.0,
+      "expected": 1000,
+      "passed": true
+    },
+    {
+      "case": "sovereign_debt_ratio",
+      "actual": 0.5958252427184466,
+      "expected": 0.5958252427184466,
+      "passed": true
+    },
+    {
+      "case": "bond_par",
+      "actual": 100.0,
+      "expected": 100,
+      "passed": true
+    },
+    {
+      "case": "bond_macaulay",
+      "actual": 1.9523809523809523,
+      "expected": 1.9523809523809523,
+      "passed": true
+    },
+    {
+      "case": "bond_modified",
+      "actual": 1.859410430839002,
+      "expected": 1.8594104308390023,
+      "passed": true
+    },
+    {
+      "case": "credit_loss",
+      "actual": 8.0,
+      "expected": 8,
+      "passed": true
+    },
+    {
+      "case": "option_parity_call",
+      "actual": 10.877057549928594,
+      "expected": 10.877057549928594,
+      "passed": true
+    },
+    {
+      "case": "equal_weight_vol",
+      "actual": 0.1118033988749895,
+      "expected": 0.1118033988749895,
+      "passed": true
+    },
+    {
+      "case": "minimum_variance_vol",
+      "actual": 0.0894427190999916,
+      "expected": 0.0894427190999916,
+      "passed": true
+    },
+    {
+      "case": "linked_return",
+      "actual": 0.2100000000000002,
+      "expected": 0.21,
+      "passed": true
+    },
+    {
+      "case": "account_with_flow",
+      "actual": 231.00000000000003,
+      "expected": 231,
+      "passed": true
+    },
+    {
+      "case": "withdrawal_sequence_up_down",
+      "actual": 78.0,
+      "expected": 78,
+      "passed": true
+    },
+    {
+      "case": "withdrawal_sequence_down_up",
+      "actual": 74.0,
+      "expected": 74,
+      "passed": true
+    },
+    {
+      "case": "insurance_expected_pv",
+      "actual": 9.523809523809524,
+      "expected": 9.523809523809524,
+      "passed": true
+    },
+    {
+      "case": "ten_year_gross_fee_example",
+      "actual": 215.89249972727882,
+      "expected": 215.8924997272788,
+      "passed": true
+    },
+    {
+      "case": "ten_year_net_fee_example",
+      "actual": 179.08476965428545,
+      "expected": 179.08476965428545,
+      "passed": true
+    }
+  ]
+}

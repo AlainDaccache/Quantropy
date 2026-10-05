@@ -1,10 +1,10 @@
 {
-  "edition": "2026-10-05",
+  "edition": "2026-10-05-edition-2",
   "chapters": 46,
   "capabilities": 466,
   "methods": 306,
   "strategy_families": 41,
-  "sources": 82,
+  "sources": 92,
   "files": [
     {
       "path": "00-vision.md",
@@ -208,8 +208,8 @@
     },
     {
       "path": "40-metric-specifications.md",
-      "bytes": 3795,
-      "sha256": "6024fad35be6e5602ba5fb35affe2975676bb094f2c791b186b5180b495d4f31"
+      "bytes": 3941,
+      "sha256": "841a4080c6b71d46712980866d79943b2e27dc592176dd43eb4271adbf3dcee3"
     },
     {
       "path": "41-sector-valuation.md",
@@ -247,9 +247,24 @@
       "sha256": "b572c456c384a663087dbe9a29a668ebf1dd3664ba81c0a7b42300c205ba8349"
     },
     {
+      "path": "claim-evidence.csv",
+      "bytes": 1236,
+      "sha256": "a0f3dda4a1e38d2058aaaa6b1ab522f04366cefeb6ee401c502fcd62a2bc6e5b"
+    },
+    {
       "path": "coverage-audit.csv",
       "bytes": 8760,
       "sha256": "ec384d99f00d44df227d6771d0baaf37df3597e7350de52c34b582e87a5f1797"
+    },
+    {
+      "path": "FINANCE-AUDIT.md",
+      "bytes": 6886,
+      "sha256": "b0721b2f1f4ab539e6f6199a03e15b8cf4be537886d9c28a0a996fdcb53c0dc4"
+    },
+    {
+      "path": "finance-coverage.csv",
+      "bytes": 39376,
+      "sha256": "bbe691e30c321f59989b389343fcc710538de81eb37ad13043db46846db99d46"
     },
     {
       "path": "maintenance.md",
@@ -263,13 +278,103 @@
     },
     {
       "path": "README.md",
-      "bytes": 5625,
-      "sha256": "513cd933b2fed86546bfcd3bca330aaf6872e636c4c86ec6009a24352e34d603"
+      "bytes": 5664,
+      "sha256": "f44f9240a241eb7784bd7879643f0c858d3afca163a0c97a6608880f7a48fe59"
+    },
+    {
+      "path": "reference/01-time-money.md",
+      "bytes": 2771,
+      "sha256": "0705f83566d55b0e867eae46316122f6f7107f8ab24b80fd71b90fc62de541c1"
+    },
+    {
+      "path": "reference/02-accounting.md",
+      "bytes": 3506,
+      "sha256": "2b0f6557b45a76742872158e4fc74832d17dd1568f9fb7ab4722755981a2d45f"
+    },
+    {
+      "path": "reference/03-economics.md",
+      "bytes": 3248,
+      "sha256": "cb72de29c39c6dcbeb214bb637d104b896a437969698d40f3c962735b475a49f"
+    },
+    {
+      "path": "reference/04-valuation.md",
+      "bytes": 3713,
+      "sha256": "eb5c77be9a85debf815d643b4d0f460097f171ea0109d608c2fb567f42bf7121"
+    },
+    {
+      "path": "reference/05-rates-credit.md",
+      "bytes": 3074,
+      "sha256": "4f4ad8bbbc9c7578c9ae947051a13aaea52b6fd29b289b3003150a736461a2d3"
+    },
+    {
+      "path": "reference/06-derivatives.md",
+      "bytes": 3341,
+      "sha256": "405b2434285483bd31c8fdc452086901e51f6b7bd5e4d0aedc000760594114aa"
+    },
+    {
+      "path": "reference/07-portfolios.md",
+      "bytes": 3581,
+      "sha256": "92bc38bdb7481c59b0ffafc5103ea45efdd456e162c97d8a6c69b75e288163d0"
+    },
+    {
+      "path": "reference/08-risk.md",
+      "bytes": 3209,
+      "sha256": "4b6d66e1928c53c834c767d3c0048faf0d989acec497f77bcb663c62f4792d85"
+    },
+    {
+      "path": "reference/09-research.md",
+      "bytes": 3840,
+      "sha256": "36c136ea619bf742fa0070c1624f4971d972a5c13d5647cdb01579642d982688"
+    },
+    {
+      "path": "reference/10-performance.md",
+      "bytes": 3215,
+      "sha256": "ab7ba2c0d85dff9b285688f33027cd116717462243fc5106808de69b3401145a"
+    },
+    {
+      "path": "reference/11-households.md",
+      "bytes": 3199,
+      "sha256": "a1efde9d318cab7dc9c479f70b3b29511e38700db549256eacf43bb59420554a"
+    },
+    {
+      "path": "reference/12-institutions.md",
+      "bytes": 3324,
+      "sha256": "008272cea0b23a78e915d960042fd843b32d3fafa1a17f5f26bfda3362a3c80b"
+    },
+    {
+      "path": "reference/13-treasury.md",
+      "bytes": 3051,
+      "sha256": "b75a37fb947e0768217f8f83c7218f55dff47b8ca60d5acaa68df3038690e990"
+    },
+    {
+      "path": "reference/14-alternatives.md",
+      "bytes": 3225,
+      "sha256": "078b024a3c362f2fcf2b3bc46b3b05f74e6fc85592039bdc0e90b6178be0e50e"
+    },
+    {
+      "path": "reference/15-ethics.md",
+      "bytes": 3102,
+      "sha256": "0dd2b8d49e22aa0f966f5e6277e48e87c3d4b4cbc9563e6a9df2f6702ce75ea1"
+    },
+    {
+      "path": "reference/README.md",
+      "bytes": 2168,
+      "sha256": "cba6f50f6d1a3fbd5ae02419ba38cb4d5f02a3bd0c4a1f5c49751b4f981b9a26"
+    },
+    {
+      "path": "reference-verification.json",
+      "bytes": 3210,
+      "sha256": "8a788cbf33a75611386049e0321ebe11394db5228b996477405d1eb32c55bf67"
+    },
+    {
+      "path": "RESEARCH-GOVERNANCE.md",
+      "bytes": 2238,
+      "sha256": "34e079af8c002c069fbb73ee4d1d25b5886a24745ca6fb12dc71b998c48c72ad"
     },
     {
       "path": "sources.md",
-      "bytes": 26895,
-      "sha256": "2e112af0e2d8cd0f7577db780dafaf74449090a86156eeb6b87dee0a9b21d415"
+      "bytes": 31242,
+      "sha256": "9f0d03ed468958acf1f2bac52261b05dda88c8167133b4343343e6be817b0714"
     },
     {
       "path": "strategy-families.csv",
@@ -292,6 +397,11 @@
       "sha256": "98c300dce4c995f9f86809c3482e3ab6a6830e08d9e29adccc6c1838bd45a79c"
     },
     {
+      "path": "templates/knowledge-contract.md",
+      "bytes": 1808,
+      "sha256": "1b60cfc082bcdf64c85da42a6c507f2cefd3178246af4b11ff98edfe822955e2"
+    },
+    {
       "path": "templates/live-profile.md",
       "bytes": 952,
       "sha256": "eff839b55de5cf41e601521e3dd04995f6dffa6e4139ce00d0b2f3277bdb5a1d"
@@ -301,5 +411,7 @@
       "bytes": 892,
       "sha256": "af29ca167240b57f1e42d2dc08a0fac58adc43f7ce8ea70be3199431a70b43b9"
     }
-  ]
+  ],
+  "reference_articles": 15,
+  "finance_coverage_units": 120
 }
