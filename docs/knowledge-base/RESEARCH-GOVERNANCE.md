@@ -13,3 +13,5 @@ To validate this edition: run `python tools/verify_knowledge_base.py` from the r
 [Index](README.md)
 
 Use the [knowledge contract](templates/knowledge-contract.md). The initial [claim evidence register](claim-evidence.csv) documents seven scoped claims; it is not exhaustive claim attribution.
+
+Verify detailed drafts with `python tools/verify_finance_contracts.py`. This checks catalog membership, prerequisite acyclicity and separately calculated examples. Use `--write-evidence` only after reviewing an intentional change to the examples; then refresh the manifest and rerun both verifiers.

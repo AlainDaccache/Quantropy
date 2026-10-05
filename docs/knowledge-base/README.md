@@ -6,6 +6,10 @@ The reference explains foundational concepts locally, with equations, assumption
 
 The existing chapters below describe product scope and candidate methods. Their presence does not certify a model or feature. Conceptual validity, data validity, simulation fidelity and live readiness require separate evidence. Read [research maintenance](RESEARCH-GOVERNANCE.md) before extending this collection.
 
+## Detailed methods
+
+Read the [25 family contracts](contracts/README.md), [306-entry canonical method catalog](method-catalog.csv), [contract dependency register](contract-register.csv), and [remaining research ledger](RESEARCH-WORK-LEDGER.md). Draft coverage, numerical verification, independent review and implementation status remain separate.
+
 ## Domain map
 
 - [What Quantropy should become](00-vision.md)

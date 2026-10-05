@@ -1,0 +1,26 @@
+id,title,owner,prerequisites,source_ids,status
+KC-01,"Probability, statistics and econometric foundations",contracts/01-statistics.md,,NUMERICAL-FOUNDATIONS;STATSMODELS,substantive draft; independent review pending
+KC-02,"Linear algebra, optimization and numerical controls",contracts/02-numerics.md,01-statistics,SCIPY-ROOTS;CVXPY-QP,substantive draft; independent review pending
+KC-03,Financial metrics: exact baseline conventions,contracts/03-metrics.md,01-statistics,SEC-STATEMENTS;IFRS-CONCEPT,substantive draft; independent review pending
+KC-04,Quality and distress screens,contracts/04-forensics.md,03-metrics,ALTMAN;BENEISH;PIOTROSKI;BENEISH-TUTORIAL,substantive draft; independent review pending
+KC-05,"Returns, covariance and Bayesian estimation",contracts/05-estimators.md,01-statistics;02-numerics,SHRINKAGE;PYPORTFOLIOOPT;COCHRANE,substantive draft; independent review pending
+KC-06,Allocation objectives and constraints,contracts/06-allocation.md,05-estimators,CVXPY-QP;PYPORTFOLIOOPT;RISKFOLIO,substantive draft; independent review pending
+KC-07,"Risk budgets, hierarchical allocation and tail objectives",contracts/07-risk-hierarchy.md,06-allocation,HRP;HRP-CODE;RISKFOLIO;ES-DEFINITION,substantive draft; independent review pending
+KC-08,"Cash-flow valuation, residual income and transactions",contracts/08-valuation.md,03-metrics;02-numerics,DAMODARAN-CASH;DAMODARAN-SECTORS;BANK-VALUATION,substantive draft; independent review pending
+KC-09,Sector economics and valuation input profiles,contracts/09-sector-models.md,08-valuation,BANK-VALUATION;NAREIT-FFO;DAMODARAN-SECTORS,substantive draft; independent review pending
+KC-10,"Curves, bonds, credit and collateral",contracts/10-curves-credit.md,02-numerics,FINRA-BONDS;QUANTLIB;BASEL,substantive draft; independent review pending
+KC-11,Option pricing and numerical solvers,contracts/11-option-pricing.md,10-curves-credit;01-statistics,QUANTLIB;OIC-EXERCISE;SCIPY-ROOTS,substantive draft; independent review pending
+KC-12,"Volatility models, calibration and arbitrage",contracts/12-volatility.md,11-option-pricing,SVI;QUANTLIB,substantive draft; independent review pending
+KC-13,"Asset pricing, factor construction and attribution",contracts/13-factors.md,01-statistics;05-estimators,FRENCH-5-CONSTRUCTION;COCHRANE;OPEN-AP,substantive draft; independent review pending
+KC-14,Causal historical replay and evaluation protocols,contracts/14-backtesting.md,13-factors,OVERFIT;SKLEARN;LEAN-FILLS,substantive draft; independent review pending
+KC-15,"Bootstrap, selection bias and ML research controls",contracts/15-validation.md,14-backtesting,OVERFIT;MULTIPLE-TESTS;SKLEARN,substantive draft; independent review pending
+KC-16,Performance diagnostics and attribution conventions,contracts/16-performance.md,01-statistics;14-backtesting,GIPS;CFA-RETURNS,substantive draft; independent review pending
+KC-17,Household lifecycle and retirement simulation,contracts/17-household-model.md,01-statistics;10-curves-credit,RETIREMENT;CFP;SOA-SURVIVAL,substantive draft; independent review pending
+KC-18,"Insurance mathematics, reserves and pension obligations",contracts/18-actuarial.md,01-statistics;10-curves-credit,SOA-SURVIVAL;SOA-EDUCATION,substantive draft; independent review pending
+KC-19,"Corporate treasury, financing and public debt scenarios",contracts/19-treasury-public.md,10-curves-credit;08-valuation,PFMI;IMF-DEBT;BASEL-LCR;OECD-MSME,substantive draft; independent review pending
+KC-20,"Private markets, real assets and payoff waterfalls",contracts/20-private-markets.md,08-valuation;10-curves-credit,CAIA;CFA-III-PRIVATE;NAREIT-FFO,substantive draft; independent review pending
+KC-21,"Systematic futures, FX and strategy economics",contracts/21-systematic.md,13-factors;14-backtesting,TREND;CARRY;CME-CASH;CME-EXPIRY,substantive draft; independent review pending
+KC-22,"Execution, event state and live reconciliation",contracts/22-execution.md,14-backtesting;19-treasury-public,IBKR-ORDER;IBKR-ERRORS;LEAN-LIVE;PFMI,substantive draft; independent review pending
+KC-23,Probabilistic and deflated Sharpe: baseline formula,contracts/23-selection-statistics.md,15-validation;16-performance,DSR-PAPER,substantive draft; independent review pending
+KC-24,Merton structural credit baseline,contracts/24-structural-credit.md,11-option-pricing;10-curves-credit,MERTON-LECTURE,substantive draft; independent review pending
+KC-25,CSCV and PBO,contracts/25-pbo.md,15-validation,OVERFIT,substantive draft; independent review pending

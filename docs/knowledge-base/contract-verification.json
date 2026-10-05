@@ -1,0 +1,288 @@
+{
+  "summary": {
+    "contracts": 25,
+    "mapped_methods": 306,
+    "dependency_nodes": 25,
+    "arithmetic_cases": 46,
+    "errors": [],
+    "scope": "Draft graph/catalog consistency and selected example arithmetic and invariants; no independent domain review, all-method verification or production engine validation"
+  },
+  "checks": [
+    {
+      "case": "sample_mean",
+      "actual": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "case": "sample_variance",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "case": "ols_slope",
+      "actual": 3.0,
+      "expected": 3,
+      "passed": true
+    },
+    {
+      "case": "ols_intercept",
+      "actual": 2.0,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "case": "bracketed_sqrt2",
+      "actual": 1.4142135623730954,
+      "expected": 1.4142135623730951,
+      "passed": true
+    },
+    {
+      "case": "dso",
+      "actual": 30.0,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "case": "dio",
+      "actual": 73.0,
+      "expected": 73,
+      "passed": true
+    },
+    {
+      "case": "dpo",
+      "actual": 36.5,
+      "expected": 36.5,
+      "passed": true
+    },
+    {
+      "case": "cash_conversion_cycle",
+      "actual": 66.5,
+      "expected": 66.5,
+      "passed": true
+    },
+    {
+      "case": "dupont_identity",
+      "actual": 0.2,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "case": "altman_declared_fixture",
+      "actual": 3.09,
+      "expected": 3.09,
+      "passed": true
+    },
+    {
+      "case": "beneish_declared_fixture",
+      "actual": -2.48,
+      "expected": -2.48,
+      "passed": true
+    },
+    {
+      "case": "gaussian_posterior_mean",
+      "actual": 0.06,
+      "expected": 0.06,
+      "passed": true
+    },
+    {
+      "case": "gaussian_posterior_variance",
+      "actual": 0.005,
+      "expected": 0.005,
+      "passed": true
+    },
+    {
+      "case": "equal_risk_vol",
+      "actual": 0.09428090415820634,
+      "expected": 0.09428090415820634,
+      "passed": true
+    },
+    {
+      "case": "hrp_two_leaf_left_weight",
+      "actual": 0.7999999999999999,
+      "expected": 0.8,
+      "passed": true
+    },
+    {
+      "case": "residual_income_one_period",
+      "actual": 101.81818181818181,
+      "expected": 101.81818181818181,
+      "passed": true
+    },
+    {
+      "case": "acquisition_incremental_value",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "case": "subscription_nrr",
+      "actual": 1.05,
+      "expected": 1.05,
+      "passed": true
+    },
+    {
+      "case": "subscription_grr",
+      "actual": 0.85,
+      "expected": 0.85,
+      "passed": true
+    },
+    {
+      "case": "swap_bootstrap_two_year",
+      "actual": 0.9070294784580498,
+      "expected": 0.9070294784580498,
+      "passed": true
+    },
+    {
+      "case": "hazard_survival",
+      "actual": 0.9801986733067553,
+      "expected": 0.9801986733067553,
+      "passed": true
+    },
+    {
+      "case": "hazard_spread_approx",
+      "actual": 0.012,
+      "expected": 0.012,
+      "passed": true
+    },
+    {
+      "case": "one_step_binomial_call",
+      "actual": 5.0,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "case": "bsm_reference_call",
+      "actual": 10.450583572185565,
+      "expected": 10.450583572185565,
+      "passed": true
+    },
+    {
+      "case": "implied_vol_reference_inversion",
+      "actual": 0.2000000000000003,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "case": "svi_atm_example",
+      "actual": 0.17320508075688773,
+      "expected": 0.17320508075688773,
+      "passed": true
+    },
+    {
+      "case": "brinson_allocation",
+      "actual": 0.004999999999999999,
+      "expected": 0.005,
+      "passed": true
+    },
+    {
+      "case": "brinson_selection",
+      "actual": 0.004999999999999994,
+      "expected": 0.005,
+      "passed": true
+    },
+    {
+      "case": "brinson_interaction",
+      "actual": 0.0029999999999999988,
+      "expected": 0.003,
+      "passed": true
+    },
+    {
+      "case": "brinson_reconciliation",
+      "actual": 0.012999999999999984,
+      "expected": 0.013,
+      "passed": true
+    },
+    {
+      "case": "end_period_contribution",
+      "actual": 115.0,
+      "expected": 115,
+      "passed": true
+    },
+    {
+      "case": "begin_period_contribution",
+      "actual": 115.5,
+      "expected": 115.5,
+      "passed": true
+    },
+    {
+      "case": "inflated_spending",
+      "actual": 10.2,
+      "expected": 10.2,
+      "passed": true
+    },
+    {
+      "case": "life_annuity_two_year",
+      "actual": 182.26757369614512,
+      "expected": 182.26757369614512,
+      "passed": true
+    },
+    {
+      "case": "aggregate_loss_expectation",
+      "actual": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "case": "aggregate_loss_variance",
+      "actual": 20000,
+      "expected": 20000,
+      "passed": true
+    },
+    {
+      "case": "excess_loss_recovery",
+      "actual": 30,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "case": "private_tvpi",
+      "actual": 1.3,
+      "expected": 1.3,
+      "passed": true
+    },
+    {
+      "case": "simple_carry",
+      "actual": 10.0,
+      "expected": 10,
+      "passed": true
+    },
+    {
+      "case": "futures_multiplier_pnl",
+      "actual": 100,
+      "expected": 100,
+      "passed": true
+    },
+    {
+      "case": "psr_at_benchmark",
+      "actual": 0.5,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "case": "psr_normal_moments",
+      "actual": 0.8407413278013518,
+      "expected": 0.8407413278013518,
+      "passed": true
+    },
+    {
+      "case": "merton_maturity_reconciliation_high",
+      "actual": 120,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "case": "merton_maturity_reconciliation_low",
+      "actual": 80,
+      "expected": 80,
+      "passed": true
+    },
+    {
+      "case": "idempotent_fill_quantity",
+      "actual": 10,
+      "expected": 10,
+      "passed": true
+    }
+  ]
+}

@@ -6,3 +6,12 @@ EVD-004,reference/12-institutions.md,Bank prudential scope separates risk capita
 EVD-005,reference/03-economics.md,Financial soundness includes institutions and infrastructure,IMF-SYSTEM,Public factsheet; model derivation not provided
 EVD-006,reference/11-households.md,Actuarial coverage includes contingent insurance payments,SOA-EDUCATION,Education overview only; exact actuarial specifications pending
 EVD-007,reference/10-performance.md,Time and money-weighted return are distinct performance measures,CFA-RETURNS,Public learning outcomes; equation examples calculated locally
+EVD-008,contracts/02-numerics.md,Continuous bracketed root conditions,SCIPY-ROOTS,Official f/a/b parameter contract opened
+EVD-009,contracts/06-allocation.md,Quadratic mean variance objective with affine constraints,CVXPY-QP,Official portfolio/QP example opened
+EVD-010,contracts/07-risk-hierarchy.md,Inverse-variance cluster and recursive HRP allocation,HRP-CODE,Official implementation page inspected
+EVD-011,contracts/09-sector-models.md,Equity value and capital reinvestment for financial service firms,BANK-VALUATION,Lectures pages 11–16 scope inspected; current regulatory detail unreviewed
+EVD-012,contracts/09-sector-models.md,FFO is a supplemental defined REIT measure,NAREIT-FFO,Official glossary opened; complete definition/issuer application pending
+EVD-013,contracts/04-forensics.md,Eight variable coefficient expression and cutoff variation,BENEISH-TUTORIAL,Publisher tutorial inspected; original input/estimation details still pending
+EVD-014,contracts/23-selection-statistics.md,PSR and selection benchmark formulas,DSR-PAPER,Author paper formula sections inspected; PDF transcription/independent review pending
+EVD-015,contracts/24-structural-credit.md,Single zero-coupon debt asset-option decomposition,MERTON-LECTURE,University lecture zero-coupon section inspected
+EVD-016,contracts/25-pbo.md,CSCV rank-logit construction,OVERFIT,Author paper Algorithm 2.3 inspected; ties explicitly chosen policy

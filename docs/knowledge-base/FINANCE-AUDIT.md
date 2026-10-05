@@ -51,3 +51,7 @@ Lifecycle: identified → introductory explanation → full draft → independen
 [Verification report](reference-verification.json) records arithmetic identities and selected illustrative cases. Repository checks validate IDs, owners, internal links and hashes. They do not establish empirical alpha, full scholarly coverage, legal correctness, or live trading safety. No overall percentage-complete is reported because the ultimate denominator is open-ended.
 
 [Reference index](reference/README.md) · [Knowledge base index](README.md)
+
+## Detailed-method follow-through
+
+The next pass adds [25 family contracts](contracts/README.md), all-method ownership in [the catalog](method-catalog.csv), a checked prerequisite graph and additional worked cases. The [work ledger](RESEARCH-WORK-LEDGER.md) supersedes broad “pending” labels with specific remaining derivations. Family drafts do not close independent review or dedicated advanced-method completeness.

@@ -741,3 +741,99 @@ Current documentation and legal/tax/data-provider policies can change. Pin the a
 - Type: Primary author/institutional material.
 - Review depth: Public refresher overview and learning outcomes opened; complete curriculum derivations not accessed.
 - Scope/limitation: Only the inspected section or abstract is evidence; no full-source certification.
+
+## STATSMODELS
+
+[statsmodels linear regression](https://www.statsmodels.org/stable/regression.html)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official module overview opened; OLS/GLS and error-structure scope inspected. Exact estimator algorithms/inference proofs not fully reviewed.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## SCIPY-ROOTS
+
+[SciPy Brent root solver](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brentq.html)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official root-finding contract opened; continuity, bracket and tolerance conditions inspected. Not a financial model validation.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## CVXPY-QP
+
+[CVXPY quadratic programming](https://www.cvxpy.org/examples/basic/quadratic_program.html)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official example opened; quadratic objective, affine constraints and portfolio example inspected. Does not establish investment optimality.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## HRP-CODE
+
+[PyPortfolioOpt HRP implementation](https://pyportfolioopt.readthedocs.io/en/latest/_modules/pypfopt/hierarchical_portfolio.html)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official source page opened; cluster/inverse-variance and recursive-allocation baseline inspected. HERC/NCO are not certified by this source.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## BANK-VALUATION
+
+[Damodaran financial-service valuation lectures](https://pages.stern.nyu.edu/~adamodar/pdfiles/country/finsvce.pdf)
+
+- Type: Primary author/institution documentation.
+- Review depth: Public 53-page PDF accessed; equity/firm and regulatory-capital sections inspected. No claim of whole-course or current-rule review.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## NAREIT-FFO
+
+[Nareit Funds From Operations](https://www.reit.com/glossary/funds-operation-ffo)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official public glossary opened; definition/history scope inspected. Full white paper and issuer normalization remain pending.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## BENEISH-TUTORIAL
+
+[CFA Institute Beneish tutorial](https://rpc.cfainstitute.org/blogs/enterprising-investor/2013/detetecting-earnings-manipulation-and-fraud-a-light-tutorial-on-probit-analysis)
+
+- Type: Publisher/university educational synthesis.
+- Review depth: Publisher educational article opened; coefficients and threshold discussion inspected. This is secondary explanation, not the original coefficient-estimation study.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## FRENCH-5-CONSTRUCTION
+
+[French five-factor construction](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_5_factors_2x3.html)
+
+- Type: Primary author/institution documentation.
+- Review depth: Original data-provider definition page opened. Detailed recreation and current dataset vintage still require verification.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## BASEL-LCR
+
+[BIS Liquidity Coverage Ratio](https://www.bis.org/committees/bcbs/basel-framework/standard/lcr)
+
+- Type: Primary author/institution documentation.
+- Review depth: Official framework chapter index opened; 30-day stress horizon and HQLA/net-flow scope inspected. No current local legal interpretation.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## SOA-SURVIVAL
+
+[SOA contingent-payment study note](https://www.soa.org/globalassets/assets/files/edu/M-24-05.pdf)
+
+- Type: Primary author/institution documentation.
+- Review depth: Public 22-page note accessed; contingent cash-flow framework inspected. Historical educational source, not current reserve law.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## DSR-PAPER
+
+[Bailey and Lopez de Prado Deflated Sharpe paper](https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf)
+
+- Type: Primary author/institution documentation.
+- Review depth: Author-hosted paper accessed; PSR/DSR and expected-maximum trial discussion inspected. PDF equation extraction is imperfect; formula transcription remains subject to mathematical review.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## MERTON-LECTURE
+
+[NYU structural corporate-liability lectures](https://pages.stern.nyu.edu/~jcarpen0/pdfs/Continuous-timepdfs/lectureslides6corporateliabilities.pdf)
+
+- Type: Publisher/university educational synthesis.
+- Review depth: University lecture PDF accessed; zero-coupon asset-option section inspected. Teaching source, not original Merton article.
+- Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.

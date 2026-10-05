@@ -1,10 +1,10 @@
 {
-  "edition": "2026-10-05-edition-2",
+  "edition": "2026-10-05-edition-3",
   "chapters": 46,
   "capabilities": 466,
   "methods": 306,
   "strategy_families": 41,
-  "sources": 92,
+  "sources": 104,
   "files": [
     {
       "path": "00-vision.md",
@@ -248,8 +248,148 @@
     },
     {
       "path": "claim-evidence.csv",
-      "bytes": 1236,
-      "sha256": "a0f3dda4a1e38d2058aaaa6b1ab522f04366cefeb6ee401c502fcd62a2bc6e5b"
+      "bytes": 2665,
+      "sha256": "25ffd4639a39514b201efdf9b3dd8818a19133d25f577d2bf212a751296aeb93"
+    },
+    {
+      "path": "contract-register.csv",
+      "bytes": 4516,
+      "sha256": "2260a320e84787e6ac5f18595504268f31e8f2b878ba5e51af16c6cb1d8771e1"
+    },
+    {
+      "path": "contract-verification.json",
+      "bytes": 6317,
+      "sha256": "c79176f92f43925bd6a4289ee600af45cff30af9aaeb502b964e8110f5d7ec18"
+    },
+    {
+      "path": "contracts/01-statistics.md",
+      "bytes": 3488,
+      "sha256": "440ada3e0ecad89943b937d5f3c3560cca411edd99ad11f9d3d119e8bfa7cccc"
+    },
+    {
+      "path": "contracts/02-numerics.md",
+      "bytes": 3118,
+      "sha256": "b20fbe5253434b0f87e463c7e8485894575cd1bd06cb09b17b942b6e58baaa90"
+    },
+    {
+      "path": "contracts/03-metrics.md",
+      "bytes": 4538,
+      "sha256": "7286957b22f7c97941210b11967887073915ca3db8e3919e9153491f9d80b1d1"
+    },
+    {
+      "path": "contracts/04-forensics.md",
+      "bytes": 3641,
+      "sha256": "8f8f5bd1ec0d19590f1b6823ceae12d71547277b53172d260c648218137c61b7"
+    },
+    {
+      "path": "contracts/05-estimators.md",
+      "bytes": 3573,
+      "sha256": "bc5ac00df785f68b15447b5f53ae404661563d8caaa02cb77f4dd1c976541104"
+    },
+    {
+      "path": "contracts/06-allocation.md",
+      "bytes": 3586,
+      "sha256": "7be005261547699848b5a5f7140062baa839485d94d2363f5df77ed9bfb54284"
+    },
+    {
+      "path": "contracts/07-risk-hierarchy.md",
+      "bytes": 3306,
+      "sha256": "b56899a132546b7d93a80e2155aaa8453b351b141edeb1baeb9abb9d23457b4d"
+    },
+    {
+      "path": "contracts/08-valuation.md",
+      "bytes": 3754,
+      "sha256": "2acf6b8ac9a6eb6a32de6cb4774e927cb0b6eaeab2c69082c9ddd94577e153bc"
+    },
+    {
+      "path": "contracts/09-sector-models.md",
+      "bytes": 4015,
+      "sha256": "938fbb4924e29ba86fc1d4687866e520903fd511cf49bb8ee2ba34fc365c40b3"
+    },
+    {
+      "path": "contracts/10-curves-credit.md",
+      "bytes": 3309,
+      "sha256": "4a8d3bd4cf78688bed2875d1070ad1b82f375c92461ce480b673a6a604ab660b"
+    },
+    {
+      "path": "contracts/11-option-pricing.md",
+      "bytes": 3337,
+      "sha256": "9f872bed6cbd531144360a82f708e20d2e69fe4e000aac47b6dd1a2f3eb05e3d"
+    },
+    {
+      "path": "contracts/12-volatility.md",
+      "bytes": 3180,
+      "sha256": "f85c71e84646527c77a1a434bacbfe307c97eeaa1bfe0373b665657a561a5b4d"
+    },
+    {
+      "path": "contracts/13-factors.md",
+      "bytes": 3513,
+      "sha256": "400472a2f1baaf40859941c7ad530b69c3ac517261bc1232c37c8a5eec6a9027"
+    },
+    {
+      "path": "contracts/14-backtesting.md",
+      "bytes": 3260,
+      "sha256": "9846ee9ff0e18853383a53fdab4cd8727a73494aab7a63e7d1e430697d2b919c"
+    },
+    {
+      "path": "contracts/15-validation.md",
+      "bytes": 3537,
+      "sha256": "e27b81be7586138278e8fd1db348e82aa451a0f805cad9b066044f74698e7ffd"
+    },
+    {
+      "path": "contracts/16-performance.md",
+      "bytes": 3543,
+      "sha256": "a1e925d30fe58cc1a8acdaddfcbb1efccc8f0ab5e1a799cd4b2d8f8ba6aae8fc"
+    },
+    {
+      "path": "contracts/17-household-model.md",
+      "bytes": 3491,
+      "sha256": "e562f87902f3a737933c9d97033c9c2c797eec84417a34ed90eb3da2b77e81f9"
+    },
+    {
+      "path": "contracts/18-actuarial.md",
+      "bytes": 3290,
+      "sha256": "8ef67f6868165d44a461469fbc77ef3a5edbcead3617d8fbab17ff0b069f3f64"
+    },
+    {
+      "path": "contracts/19-treasury-public.md",
+      "bytes": 3428,
+      "sha256": "07850939b5d1b52d64f231f462b7dd3515afbf3f04828d8eb61a0e68881fa1ea"
+    },
+    {
+      "path": "contracts/20-private-markets.md",
+      "bytes": 3320,
+      "sha256": "3aac36e7be181eafea138100a6c803b27157955716e752925b979fda8a2f802e"
+    },
+    {
+      "path": "contracts/21-systematic.md",
+      "bytes": 2996,
+      "sha256": "1aebc2072e24a2539a972f9baa6a5483ea33d36402a4c8253758b17b400e3eb0"
+    },
+    {
+      "path": "contracts/22-execution.md",
+      "bytes": 3282,
+      "sha256": "6fb94e2dde589c01997551aba090467194b84dfb56fc2460ec6a87831bafb045"
+    },
+    {
+      "path": "contracts/23-selection-statistics.md",
+      "bytes": 1682,
+      "sha256": "f2ac5b584f2dece6967aa7956a2491b0c59aafa485c697d08ea32a57a3208177"
+    },
+    {
+      "path": "contracts/24-structural-credit.md",
+      "bytes": 1711,
+      "sha256": "7eeabe2054263afa40ed0d2ddc7cf92b87c3cd7abd977c9afa86c63f605e6c01"
+    },
+    {
+      "path": "contracts/25-pbo.md",
+      "bytes": 1551,
+      "sha256": "5630aa93ef49b048e0130b627708ffa6c18c37424d085ff64644e404d9dfce94"
+    },
+    {
+      "path": "contracts/README.md",
+      "bytes": 2875,
+      "sha256": "484f62b052285f38d9571eedf1dda1a0598e8dbcdd44ef395562c3ddf64bc2c5"
     },
     {
       "path": "coverage-audit.csv",
@@ -258,18 +398,23 @@
     },
     {
       "path": "FINANCE-AUDIT.md",
-      "bytes": 6886,
-      "sha256": "b0721b2f1f4ab539e6f6199a03e15b8cf4be537886d9c28a0a996fdcb53c0dc4"
+      "bytes": 7313,
+      "sha256": "94bfdf24ef630715876f2ddf8a77b7ee217c0edc49b6646065352dd1505d2eaf"
     },
     {
       "path": "finance-coverage.csv",
-      "bytes": 39376,
-      "sha256": "bbe691e30c321f59989b389343fcc710538de81eb37ad13043db46846db99d46"
+      "bytes": 45032,
+      "sha256": "effbc88378a7cc14bb992261559ca80089d9adb4cce239d5308a394847ff8c27"
     },
     {
       "path": "maintenance.md",
       "bytes": 1591,
       "sha256": "8cad602e0662e7bf15260ea7aaf789a9b2ff997289e593e626278c816f1ef2f7"
+    },
+    {
+      "path": "method-catalog.csv",
+      "bytes": 72042,
+      "sha256": "83cebcd077aa8c4324b2f6b4865e015ee2497dfdd90d6e16b80a25ee8b6746b5"
     },
     {
       "path": "method-inventory.csv",
@@ -278,8 +423,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 5664,
-      "sha256": "f44f9240a241eb7784bd7879643f0c858d3afca163a0c97a6608880f7a48fe59"
+      "bytes": 6016,
+      "sha256": "376df8cb9ee0e53faaabfdec863f5a85048d37bdb58d593359ffab3e900b16df"
     },
     {
       "path": "reference/01-time-money.md",
@@ -358,8 +503,8 @@
     },
     {
       "path": "reference/README.md",
-      "bytes": 2168,
-      "sha256": "cba6f50f6d1a3fbd5ae02419ba38cb4d5f02a3bd0c4a1f5c49751b4f981b9a26"
+      "bytes": 2274,
+      "sha256": "5660fdb5769ae1736beb85226100aae0554333117b014c438784381fb792f3b5"
     },
     {
       "path": "reference-verification.json",
@@ -368,13 +513,18 @@
     },
     {
       "path": "RESEARCH-GOVERNANCE.md",
-      "bytes": 2238,
-      "sha256": "34e079af8c002c069fbb73ee4d1d25b5886a24745ca6fb12dc71b998c48c72ad"
+      "bytes": 2540,
+      "sha256": "28bde6c76a3d9ed4a6a8a9323b9bb97f4c4c942356a9b75c3f5fb23f946f8d75"
+    },
+    {
+      "path": "RESEARCH-WORK-LEDGER.md",
+      "bytes": 3937,
+      "sha256": "16baa1c170d11716716dd6603884ff5279c55d17c0bec72cb4c74bc30913bc02"
     },
     {
       "path": "sources.md",
-      "bytes": 31242,
-      "sha256": "9f0d03ed468958acf1f2bac52261b05dda88c8167133b4343343e6be817b0714"
+      "bytes": 36617,
+      "sha256": "276c41f41f63c5abaaf9a517bd8c60aa89f4fbf34309631c14cd0668a91fec56"
     },
     {
       "path": "strategy-families.csv",
@@ -413,5 +563,7 @@
     }
   ],
   "reference_articles": 15,
-  "finance_coverage_units": 120
+  "finance_coverage_units": 120,
+  "family_contracts": 25,
+  "catalog_methods": 306
 }

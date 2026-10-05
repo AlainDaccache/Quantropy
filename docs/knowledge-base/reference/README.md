@@ -29,3 +29,5 @@ Examples use arbitrary currency units, effective rates unless specified, and exp
 Each unit in the coverage register has one reference owner. Other pages link to it. Existing chapters 00–45 remain product/method requirements and are not upgraded to verified reference material. Their detailed tables are candidate conventions until reconciled with a canonical method contract. The source register records review depth; a source link alone does not substantiate every nearby claim.
 
 [Knowledge base index](../README.md)
+
+Continue into [detailed family contracts](../contracts/README.md) after the foundational reading path.
