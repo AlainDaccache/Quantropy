@@ -29,3 +29,7 @@ Some original papers are inaccessible or only partially inspected; public summar
 Keep working through prerequisite dependencies, attaching new exact variants to existing IDs or creating scoped new IDs. Replace duplicated discovery definitions with links after reconciliation. Mark a method complete only when the knowledge contract is fulfilled; do not set every row complete because a family draft exists. Source count, article count and automated arithmetic are evidence about specific activities, not a global quality rating.
 
 [Family contracts](contracts/README.md) · [Catalog](method-catalog.csv) · [Index](README.md)
+
+## Research direction update — 2026-10-13
+
+The [reset brief](RESEARCH-RESET-BRIEF.md) establishes broad multi-role intent and separates research breadth from profile-specific feasibility. Use the [question register](research-questions.csv) to discover missing decisions and the [handoff prompt](CONTINUE-IN-FRESH-SESSION.md) to continue. These new artifacts do not certify additional methods or close the backlog above.

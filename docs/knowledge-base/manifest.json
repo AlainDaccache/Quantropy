@@ -1,5 +1,5 @@
 {
-  "edition": "2026-10-05-edition-3",
+  "edition": "2026-10-13-research-handoff",
   "chapters": 46,
   "capabilities": 466,
   "methods": 306,
@@ -252,6 +252,11 @@
       "sha256": "25ffd4639a39514b201efdf9b3dd8818a19133d25f577d2bf212a751296aeb93"
     },
     {
+      "path": "CONTINUE-IN-FRESH-SESSION.md",
+      "bytes": 5289,
+      "sha256": "b4b577df97f59a0101be1a6321dc06b76b58ba4b7701211b1aabb403674364d7"
+    },
+    {
       "path": "contract-register.csv",
       "bytes": 4516,
       "sha256": "2260a320e84787e6ac5f18595504268f31e8f2b878ba5e51af16c6cb1d8771e1"
@@ -383,8 +388,8 @@
     },
     {
       "path": "contracts/25-pbo.md",
-      "bytes": 1551,
-      "sha256": "5630aa93ef49b048e0130b627708ffa6c18c37424d085ff64644e404d9dfce94"
+      "bytes": 1564,
+      "sha256": "10e2b65d0116054b14a15d6eb377541ed722de5cf7e7e7202d52b197a66b8749"
     },
     {
       "path": "contracts/README.md",
@@ -423,8 +428,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6016,
-      "sha256": "376df8cb9ee0e53faaabfdec863f5a85048d37bdb58d593359ffab3e900b16df"
+      "bytes": 6395,
+      "sha256": "63bf585148daa3138ac01d1bf297d713f75628f35ab63e84cb5f5c1f414230fe"
     },
     {
       "path": "reference/01-time-money.md",
@@ -517,9 +522,19 @@
       "sha256": "28bde6c76a3d9ed4a6a8a9323b9bb97f4c4c942356a9b75c3f5fb23f946f8d75"
     },
     {
+      "path": "research-questions.csv",
+      "bytes": 22910,
+      "sha256": "0daaaa76b3188c1a555dd08f53ba0e789eae36716d9ff82d15011dee3f7de498"
+    },
+    {
+      "path": "RESEARCH-RESET-BRIEF.md",
+      "bytes": 11425,
+      "sha256": "6a17a6a6982d7e09fee766af91b3194e7f7a84c9faef7efe01735352f634c070"
+    },
+    {
       "path": "RESEARCH-WORK-LEDGER.md",
-      "bytes": 3937,
-      "sha256": "16baa1c170d11716716dd6603884ff5279c55d17c0bec72cb4c74bc30913bc02"
+      "bytes": 4364,
+      "sha256": "02d62e5d31287caa927d25f40375385d12a6c427271d4ccce3540d80dd47f315"
     },
     {
       "path": "sources.md",
@@ -565,5 +580,6 @@
   "reference_articles": 15,
   "finance_coverage_units": 120,
   "family_contracts": 25,
-  "catalog_methods": 306
+  "catalog_methods": 306,
+  "research_questions": 96
 }

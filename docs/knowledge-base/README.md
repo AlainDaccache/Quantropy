@@ -6,6 +6,10 @@ The reference explains foundational concepts locally, with equations, assumption
 
 The existing chapters below describe product scope and candidate methods. Their presence does not certify a model or feature. Conceptual validity, data validity, simulation fidelity and live readiness require separate evidence. Read [research maintenance](RESEARCH-GOVERNANCE.md) before extending this collection.
 
+## Current research direction
+
+Read the [research reset and product intent](RESEARCH-RESET-BRIEF.md), [96 decision questions](research-questions.csv), and [fresh-session continuation prompt](CONTINUE-IN-FRESH-SESSION.md). Quantropy serves its owner, traders, researchers and portfolio managers. Practical constraints are profile-specific; conceptual research remains broad.
+
 ## Detailed methods
 
 Read the [25 family contracts](contracts/README.md), [306-entry canonical method catalog](method-catalog.csv), [contract dependency register](contract-register.csv), and [remaining research ledger](RESEARCH-WORK-LEDGER.md). Draft coverage, numerical verification, independent review and implementation status remain separate.
