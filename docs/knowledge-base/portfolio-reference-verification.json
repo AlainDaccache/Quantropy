@@ -1,0 +1,12 @@
+{
+  "reference_url": "https://raw.githubusercontent.com/scikit-learn/scikit-learn/1.7.2/sklearn/covariance/_shrunk_covariance.py",
+  "reference_sha256": "e25d87f453b331b75452c3956832dd7d68eadd7a22df97a970482e534b90cc9e",
+  "reference_function": "ledoit_wolf_shrinkage",
+  "implementation_sha256": "802b73400fc10dd68e803e6939075efbe87cbae490f65708b11683c29a758ae9",
+  "fixtures": 85,
+  "seed": 172,
+  "passed": true,
+  "maximum_covariance_absolute_error": 3.1086244689504383e-15,
+  "maximum_intensity_absolute_error": 5.551115123125783e-16,
+  "scope": "Author-run extracted pinned numerical function comparison; validation wrapper and full installed package not executed; no empirical or expert certification"
+}

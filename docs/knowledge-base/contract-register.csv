@@ -24,3 +24,5 @@ KC-22,"Execution, event state and live reconciliation",contracts/22-execution.md
 KC-23,Probabilistic and deflated Sharpe: baseline formula,contracts/23-selection-statistics.md,15-validation;16-performance,DSR-PAPER,substantive draft; independent review pending
 KC-24,Merton structural credit baseline,contracts/24-structural-credit.md,11-option-pricing;10-curves-credit,MERTON-LECTURE,substantive draft; independent review pending
 KC-25,CSCV and PBO,contracts/25-pbo.md,15-validation,OVERFIT,substantive draft; independent review pending
+KC-26,Ledoit-Wolf covariance: scaled-identity variant,contracts/26-ledoit-wolf.md,05-estimators;02-numerics,LW-IDENTITY-2004;SKLEARN-LW-172;SHRINKAGE,source-inspected exact variant; offline numerical checks; independent review pending
+KC-27,Profile-bound portfolio comparison and funded replay,contracts/27-portfolio-comparison.md,26-ledoit-wolf;06-allocation;14-backtesting;16-performance,DGU-2009;LW-IDENTITY-2004;SKLEARN-LW-172,offline synthetic workflow checked; empirical and independent review pending

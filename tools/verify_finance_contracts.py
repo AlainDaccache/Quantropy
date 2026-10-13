@@ -1,6 +1,6 @@
 """Check authored examples, graph/catalog consistency; no expert certification."""
 from pathlib import Path
-import csv,itertools,json,math,statistics,sys
+import csv,itertools,json,math,re,statistics,sys
 
 ROOT=Path(__file__).resolve().parents[1]/'docs'/'knowledge-base'
 errors=[];checks=[]
@@ -32,8 +32,32 @@ def visit(node):
     active.remove(node);seen.add(node)
 for node in graph:visit(node)
 source_text=(ROOT/'sources.md').read_text(encoding='utf-8')
+source_ids=set(re.findall(r'^## ([A-Z0-9-]+)$',source_text,re.M))
 for r in contracts:
     require(all('\n## '+sid+'\n' in source_text for sid in r['source_ids'].split(';')),'Missing contract evidence source: '+r['id'])
+
+# Exact variants extend a family without falsely completing every family method.
+variants=rows('method-variants.csv')
+require(len({r['id'] for r in variants})==len(variants),'Duplicate variant IDs')
+method_by_id={r['id']:r for r in methods}
+for r in variants:
+    require(r['parent_method_id'] in method_by_id,'Unknown variant parent: '+r['id'])
+    require(r['owner'] in owners,'Unregistered variant owner: '+r['id'])
+    require(set(r['source_ids'].split(';'))<=source_ids,'Unknown variant source: '+r['id'])
+    if r['parent_method_id'] in method_by_id and r['owner'] in owners:
+        parent=Path(method_by_id[r['parent_method_id']]['canonical_family_owner']).stem
+        child=Path(r['owner']).stem
+        require(parent in graph[child],'Variant must depend on canonical family: '+r['id'])
+claims=rows('claim-evidence.csv')
+require(len({r['id'] for r in claims})==len(claims),'Duplicate claim IDs')
+for r in claims:
+    require((ROOT/r['owner']).is_file(),'Missing claim owner: '+r['id'])
+    require(r['source_id'] in source_ids,'Unknown claim source: '+r['id'])
+for r in methods:
+    require(set(r['source_ids'].split(';'))<=source_ids,'Unknown catalog source: '+r['id'])
+
+questions=rows('research-questions.csv')
+require(len({r['id'] for r in questions})==len(questions),'Duplicate research question IDs')
 
 case('sample_mean',statistics.mean([1,2,3]),2)
 case('sample_variance',statistics.variance([1,2,3]),1)
@@ -53,6 +77,21 @@ case('altman_declared_fixture',1.2*.2+1.4*.3+3.3*.1+.6*1+1.5,3.09)
 case('beneish_declared_fixture',-4.84+.92+.528+.404+.892+.115-.172-.327,-2.48)
 case('gaussian_posterior_mean',(.04/.01+.08/.01)/(1/.01+1/.01),.06)
 case('gaussian_posterior_variance',1/(1/.01+1/.01),.005)
+# Independent standard-library calculation of KC-26 and KC-27 hand examples.
+observations=[(1.,0.),(-1.,0.),(0.,2.),(0.,-2.)];n=len(observations);p=2
+s=[[sum(row[i]*row[j] for row in observations)/n for j in range(p)] for i in range(p)]
+mu=sum(s[i][i] for i in range(p))/p
+d2=sum((s[i][j]-(mu if i==j else 0))**2 for i in range(p) for j in range(p))/p
+b2=sum((row[i]*row[j]-s[i][j])**2 for row in observations for i in range(p) for j in range(p))/(p*n*n)
+intensity=min(b2,d2)/d2
+case('lw_identity_distance',d2,9/16)
+case('lw_identity_noise',b2,17/32)
+case('lw_identity_intensity',intensity,17/18)
+case('lw_identity_left_variance',(1-intensity)*s[0][0]+intensity*mu,29/24)
+case('lw_identity_right_variance',(1-intensity)*s[1][1]+intensity*mu,31/24)
+case('initial_cost_funded_wealth',1.05/1.01,1.0396039603960396)
+case('drift_after_ten_zero',.5*1.1/1.05,11/21)
+case('post_rebalance_net_return',.998*1.05-1,.0479)
 case('equal_risk_vol',math.sqrt((2/3)**2*.01+(1/3)**2*.04),.09428090415820634)
 case('hrp_two_leaf_left_weight',.04/(.01+.04),.8)
 case('residual_income_one_period',100+(12-.1*100)/1.1,101.81818181818181)
@@ -106,10 +145,10 @@ require(max(labels[0][0],labels[1][0])<=min(labels[0][1],labels[1][1]),'Purging 
 fill_ids=['a','b','a'];quantities={'a':4,'b':6}
 case('idempotent_fill_quantity',sum(quantities[k] for k in set(fill_ids)),10)
 
-summary=dict(contracts=len(contracts),mapped_methods=len(methods),dependency_nodes=len(seen),arithmetic_cases=len(checks),errors=errors,scope='Draft graph/catalog consistency and selected example arithmetic and invariants; no independent domain review, all-method verification or production engine validation')
+summary=dict(contracts=len(contracts),mapped_methods=len(methods),exact_variants=len(variants),claim_links=len(claims),research_questions=len(questions),dependency_nodes=len(seen),arithmetic_cases=len(checks),errors=errors,scope='Draft graph/catalog consistency and selected example arithmetic and invariants; no independent domain review, all-method verification or production engine validation')
 if '--write-evidence' in sys.argv:
     require(not errors,'Evidence must not be written on failed verification')
-    if not errors:(ROOT/'contract-verification.json').write_text(json.dumps(dict(summary=summary,checks=checks),indent=2),encoding='utf-8')
+    if not errors:(ROOT/'contract-verification.json').write_text(json.dumps(dict(summary=summary,checks=checks),indent=2),encoding='utf-8',newline='\n')
 else:
     recorded=json.loads((ROOT/'contract-verification.json').read_text(encoding='utf-8'))
     require(recorded['checks']==checks,'Stored evidence differs from recomputed examples')

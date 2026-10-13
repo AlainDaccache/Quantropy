@@ -1,0 +1,1502 @@
+{
+  "schema_version": 1,
+  "profile": {
+    "user_role": "researcher",
+    "mandate_id": "synthetic-risk-comparison",
+    "account_profile_id": "scenario-account",
+    "deployment": "offline",
+    "currency": "SCENARIO",
+    "period_label": "one_day_synthetic",
+    "permitted_labels": [
+      "A",
+      "B",
+      "C"
+    ],
+    "max_weight": 0.6,
+    "cost_bps": 10,
+    "allocation_basis": "funded_total_return"
+  },
+  "labels": [
+    "A",
+    "B",
+    "C"
+  ],
+  "lookback": 5,
+  "provenance": "Fictional arithmetic fixture: row i has .01*((i%3)-1), .005*((i%5)-2), .002*((i%7)-3); no market data",
+  "scope": "Offline funded-return comparison; no empirical or live certification",
+  "policies": {
+    "equal_weight": {
+      "terminal_wealth": 0.9965332351485522,
+      "net_compound_return": -0.003466764851447812,
+      "evaluation_periods": 13,
+      "period_mean_net_return": -0.0002608402946359795,
+      "period_sample_volatility": 0.0036810635621123767,
+      "maximum_drawdown": 0.010324333613597525,
+      "total_traded_notional_fraction": 1.056336266568869,
+      "steps": [
+        {
+          "decision_at": "2020-01-06T00:00:00+00:00",
+          "return_end": "2020-01-07T00:00:00+00:00",
+          "training_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.0013333333333333333,
+          "net_return": 0.0003330003330006548,
+          "traded_notional_fraction": 0.9990009990009991,
+          "cost_fraction": 0.0009990009990008542,
+          "wealth": 1.0003330003330007,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-07T00:00:00+00:00",
+          "return_end": "2020-01-08T00:00:00+00:00",
+          "training_indices": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.002999999999999999,
+          "net_return": -0.003007525366866548,
+          "traded_notional_fraction": 0.007548010899327662,
+          "cost_fraction": 7.548010899194324e-06,
+          "wealth": 0.9973244734591854,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-08T00:00:00+00:00",
+          "return_end": "2020-01-09T00:00:00+00:00",
+          "training_indices": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.002,
+          "net_return": -0.002006004016715024,
+          "traded_notional_fraction": 0.006016048812883257,
+          "cost_fraction": 6.016048812673702e-06,
+          "wealth": 0.9953238365594581,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-09T00:00:00+00:00",
+          "return_end": "2020-01-10T00:00:00+00:00",
+          "training_indices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.003666666666666666,
+          "net_return": 0.003663983964372175,
+          "traded_notional_fraction": 0.0026729016552611284,
+          "cost_fraction": 2.6729016551207962e-06,
+          "wealth": 0.9989706871359694,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-10T00:00:00+00:00",
+          "return_end": "2020-01-11T00:00:00+00:00",
+          "training_indices": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.0006666666666666666,
+          "net_return": -0.000671757407456397,
+          "traded_notional_fraction": 0.005094136881008404,
+          "cost_fraction": 5.094136880989808e-06,
+          "wealth": 0.998299621177054,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-11T00:00:00+00:00",
+          "return_end": "2020-01-12T00:00:00+00:00",
+          "training_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.003333333333333333,
+          "net_return": -0.0033404231055734757,
+          "traded_notional_fraction": 0.007113483853169678,
+          "cost_fraction": 7.113483853071756e-06,
+          "wealth": 0.9949648780561888,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-12T00:00:00+00:00",
+          "return_end": "2020-01-13T00:00:00+00:00",
+          "training_indices": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.002333333333333333,
+          "net_return": 0.0023288621290709077,
+          "traded_notional_fraction": 0.00446079573904784,
+          "cost_fraction": 4.460795739014145e-06,
+          "wealth": 0.9972820140804496,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-13T00:00:00+00:00",
+          "return_end": "2020-01-14T00:00:00+00:00",
+          "training_indices": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.002,
+          "net_return": -0.0020050873187485996,
+          "traded_notional_fraction": 0.005097513776308071,
+          "cost_fraction": 5.097513776197715e-06,
+          "wealth": 0.9952823765608008,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-14T00:00:00+00:00",
+          "return_end": "2020-01-15T00:00:00+00:00",
+          "training_indices": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.0036666666666666666,
+          "net_return": 0.003661301262077421,
+          "traded_notional_fraction": 0.005345803310522368,
+          "cost_fraction": 5.345803310463637e-06,
+          "wealth": 0.9989264051822262,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-15T00:00:00+00:00",
+          "return_end": "2020-01-16T00:00:00+00:00",
+          "training_indices": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.004666666666666666,
+          "net_return": 0.004664218970809486,
+          "traded_notional_fraction": 0.002436326334395167,
+          "cost_fraction": 2.436326334231964e-06,
+          "wealth": 1.0035856166717196,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-16T00:00:00+00:00",
+          "return_end": "2020-01-17T00:00:00+00:00",
+          "training_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.008,
+          "net_return": -0.008007023796695711,
+          "traded_notional_fraction": 0.007080440217520079,
+          "cost_fraction": 7.080440217466233e-06,
+          "wealth": 0.9955498827570076,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-17T00:00:00+00:00",
+          "return_end": "2020-01-18T00:00:00+00:00",
+          "training_indices": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.002333333333333333,
+          "net_return": -0.0023360143393060806,
+          "traded_notional_fraction": 0.0026872762842493625,
+          "cost_fraction": 2.6872762841634312e-06,
+          "wealth": 0.9932242639553928,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        },
+        {
+          "decision_at": "2020-01-18T00:00:00+00:00",
+          "return_end": "2020-01-19T00:00:00+00:00",
+          "training_indices": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.003333333333333333,
+          "net_return": 0.003331544861763458,
+          "traded_notional_fraction": 0.0017825298041767579,
+          "cost_fraction": 1.7825298039841897e-06,
+          "wealth": 0.9965332351485522,
+          "diagnostics": {
+            "policy": "equal_weight",
+            "training_observations": 5
+          }
+        }
+      ]
+    },
+    "inverse_volatility": {
+      "terminal_wealth": 0.9960298035171835,
+      "net_compound_return": -0.00397019648281649,
+      "evaluation_periods": 13,
+      "period_mean_net_return": -0.00030133127426346107,
+      "period_sample_volatility": 0.0031644564131846037,
+      "maximum_drawdown": 0.009832116281874526,
+      "total_traded_notional_fraction": 2.0508781841745227,
+      "steps": [
+        {
+          "decision_at": "2020-01-06T00:00:00+00:00",
+          "return_end": "2020-01-07T00:00:00+00:00",
+          "training_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "target_weights": [
+            0.21258269146937323,
+            0.22497637386589348,
+            0.5624409346647335
+          ],
+          "gross_return": 0.0021258269146937313,
+          "net_return": 0.0011247022124813988,
+          "traded_notional_fraction": 0.9990009990009995,
+          "cost_fraction": 0.0009990009990008542,
+          "wealth": 1.0011247022124814,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 1.820829440299854e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-07T00:00:00+00:00",
+          "return_end": "2020-01-08T00:00:00+00:00",
+          "training_indices": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "target_weights": [
+            0.21258269146937323,
+            0.22497637386589348,
+            0.5624409346647335
+          ],
+          "gross_return": 0.0001239368239652019,
+          "net_return": 0.00011848867732910939,
+          "traded_notional_fraction": 0.005447471493751965,
+          "cost_fraction": 5.447471493669198e-06,
+          "wealth": 1.001243324154288,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 7.098889995924596e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-08T00:00:00+00:00",
+          "return_end": "2020-01-09T00:00:00+00:00",
+          "training_indices": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "target_weights": [
+            0.18425745829224366,
+            0.23306929763078763,
+            0.5826732440769689
+          ],
+          "gross_return": -0.003496039464461813,
+          "net_return": -0.0035481701910021757,
+          "traded_notional_fraction": 0.05231361700989634,
+          "cost_fraction": 5.231361700985815e-05,
+          "wealth": 0.9976907424375838,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 2.4956865485228446e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-09T00:00:00+00:00",
+          "return_end": "2020-01-10T00:00:00+00:00",
+          "training_indices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "target_weights": [
+            0.25803721511212563,
+            0.27308092007454493,
+            0.4688818648133295
+          ],
+          "gross_return": 0.002070249292240663,
+          "net_return": 0.0018451436713307068,
+          "traded_notional_fraction": 0.22464055895171653,
+          "cost_fraction": 0.0002246405589516609,
+          "wealth": 0.9995316251969377,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 6.774197755888513e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-10T00:00:00+00:00",
+          "return_end": "2020-01-11T00:00:00+00:00",
+          "training_indices": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "target_weights": [
+            0.2721495465705836,
+            0.2880160078579022,
+            0.4398344455715143
+          ],
+          "gross_return": -0.0007210042782698422,
+          "net_return": -0.0007733743250361025,
+          "traded_notional_fraction": 0.052407833038313145,
+          "cost_fraction": 5.240783303817054e-05,
+          "wealth": 0.9987586131009488,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 7.289527419374875e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-11T00:00:00+00:00",
+          "return_end": "2020-01-12T00:00:00+00:00",
+          "training_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "target_weights": [
+            0.23828929708144397,
+            0.3014147683271506,
+            0.46029593459140555
+          ],
+          "gross_return": -0.003014147683271506,
+          "net_return": -0.003076592418786106,
+          "traded_notional_fraction": 0.06263352220062485,
+          "cost_fraction": 6.263352220048368e-05,
+          "wealth": 0.9956858399236851,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 3.6189695864999214e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-12T00:00:00+00:00",
+          "return_end": "2020-01-13T00:00:00+00:00",
+          "training_indices": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "target_weights": [
+            0.25803721511212563,
+            0.27308092007454493,
+            0.4688818648133295
+          ],
+          "gross_return": 0.0021527312803751907,
+          "net_return": 0.0021001985379736077,
+          "traded_notional_fraction": 0.05241989645096862,
+          "cost_fraction": 5.241989645088374e-05,
+          "wealth": 0.9977769778689738,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 3.9354860854617245e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-13T00:00:00+00:00",
+          "return_end": "2020-01-14T00:00:00+00:00",
+          "training_indices": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "target_weights": [
+            0.21258269146937323,
+            0.22497637386589348,
+            0.5624409346647335
+          ],
+          "gross_return": 0.0001239368239652019,
+          "net_return": -6.332405698017407e-05,
+          "traded_notional_fraction": 0.18723767530256302,
+          "cost_fraction": 0.00018723767530248736,
+          "wealth": 0.9977137945827738,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 5.131144022894993e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-14T00:00:00+00:00",
+          "return_end": "2020-01-15T00:00:00+00:00",
+          "training_indices": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "target_weights": [
+            0.18425745829224366,
+            0.23306929763078763,
+            0.5826732440769689
+          ],
+          "gross_return": 0.004661385952615751,
+          "net_return": 0.004608828481646343,
+          "traded_notional_fraction": 0.05231361700989631,
+          "cost_fraction": 5.231361700985815e-05,
+          "wealth": 1.0023120863357784,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 2.495686548522845e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-15T00:00:00+00:00",
+          "return_end": "2020-01-16T00:00:00+00:00",
+          "training_indices": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "target_weights": [
+            0.21258269146937323,
+            0.22497637386589348,
+            0.5624409346647335
+          ],
+          "gross_return": 0.0010009450453642662,
+          "net_return": 0.0009424927430399244,
+          "traded_notional_fraction": 0.05839385328654054,
+          "cost_fraction": 5.839385328632041e-05,
+          "wealth": 1.003256758203411,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 7.098889995924596e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-16T00:00:00+00:00",
+          "return_end": "2020-01-17T00:00:00+00:00",
+          "training_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "target_weights": [
+            0.25803721511212563,
+            0.27308092007454493,
+            0.4688818648133295
+          ],
+          "gross_return": -0.0071867088111200236,
+          "net_return": -0.007364660291284797,
+          "traded_notional_fraction": 0.17923962314382486,
+          "cost_fraction": 0.000179239623143701,
+          "wealth": 0.9958681129943073,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 7.617752454111423e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-17T00:00:00+00:00",
+          "return_end": "2020-01-18T00:00:00+00:00",
+          "training_indices": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "target_weights": [
+            0.23828929708144397,
+            0.3014147683271506,
+            0.46029593459140555
+          ],
+          "gross_return": -0.002427665710818564,
+          "net_return": -0.0024857627890961798,
+          "traded_notional_fraction": 0.05823846179454137,
+          "cost_fraction": 5.823846179442427e-05,
+          "wealth": 0.9933926210961787,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 2.0227658332604175e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-18T00:00:00+00:00",
+          "return_end": "2020-01-19T00:00:00+00:00",
+          "training_indices": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "target_weights": [
+            0.2721495465705836,
+            0.2880160078579022,
+            0.4398344455715143
+          ],
+          "gross_return": 0.002721495465705836,
+          "net_return": 0.002654723182959451,
+          "traded_notional_fraction": 0.06659105549088576,
+          "cost_fraction": 6.659105549067235e-05,
+          "wealth": 0.9960298035171835,
+          "diagnostics": {
+            "policy": "inverse_volatility",
+            "training_observations": 5,
+            "cap_projection_applied": false,
+            "estimated_period_variance": 2.082844126467021e-05
+          }
+        }
+      ]
+    },
+    "sample_gmv": {
+      "terminal_wealth": 0.9999201629711614,
+      "net_compound_return": -7.98370288386252e-05,
+      "evaluation_periods": 13,
+      "period_mean_net_return": -1.172249812168953e-06,
+      "period_sample_volatility": 0.0032797058086553076,
+      "maximum_drawdown": 0.008985634534920295,
+      "total_traded_notional_fraction": 2.994702246025483,
+      "steps": [
+        {
+          "decision_at": "2020-01-06T00:00:00+00:00",
+          "return_end": "2020-01-07T00:00:00+00:00",
+          "training_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "target_weights": [
+            0.2976744183764792,
+            0.10232558162352101,
+            0.6
+          ],
+          "gross_return": 0.004353488367529582,
+          "net_return": 0.0033501382293004145,
+          "traded_notional_fraction": 0.9990009990009993,
+          "cost_fraction": 0.0009990009990008542,
+          "wealth": 1.0033501382293004,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 21,
+            "normalized_objective_gap": 5.921607648673444e-11,
+            "estimated_period_variance": 1.6074418604651172e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-07T00:00:00+00:00",
+          "return_end": "2020-01-08T00:00:00+00:00",
+          "training_indices": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "target_weights": [
+            0.178313253071311,
+            0.22168674692868917,
+            0.6
+          ],
+          "gross_return": 0.0007084337346434438,
+          "net_return": 0.00046634859237570936,
+          "traded_notional_fraction": 0.24191376239789225,
+          "cost_fraction": 0.00024191376239768303,
+          "wealth": 1.0038180491539237,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 25,
+            "normalized_objective_gap": 4.2133962985246853e-11,
+            "estimated_period_variance": 7.00240963855422e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-08T00:00:00+00:00",
+          "return_end": "2020-01-09T00:00:00+00:00",
+          "training_indices": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "target_weights": [
+            0.15764705878340973,
+            0.24235294121659046,
+            0.6
+          ],
+          "gross_return": -0.0036,
+          "net_return": -0.0036437261952483313,
+          "traded_notional_fraction": 0.043884178290190035,
+          "cost_fraction": 4.388417829015445e-05,
+          "wealth": 1.0001604110329585,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 11,
+            "normalized_objective_gap": 3.669468895406425e-11,
+            "estimated_period_variance": 2.3188235294117663e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-09T00:00:00+00:00",
+          "return_end": "2020-01-10T00:00:00+00:00",
+          "training_indices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "target_weights": [
+            0.2111884697921505,
+            0.2892390377063503,
+            0.4995724925014994
+          ],
+          "gross_return": 0.001559789916447259,
+          "net_return": 0.00136151669323481,
+          "traded_notional_fraction": 0.19796444027478108,
+          "cost_fraction": 0.00019796444027475602,
+          "wealth": 1.0015221461284924,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 38,
+            "normalized_objective_gap": 6.562028698198219e-11,
+            "estimated_period_variance": 6.553071943324787e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-10T00:00:00+00:00",
+          "return_end": "2020-01-11T00:00:00+00:00",
+          "training_indices": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "target_weights": [
+            0.2140620265247249,
+            0.25255076287921124,
+            0.533387210596064
+          ],
+          "gross_return": -0.0006818870576472645,
+          "net_return": -0.0007571619512773964,
+          "traded_notional_fraction": 0.07532625763043993,
+          "cost_fraction": 7.532625763029266e-05,
+          "wealth": 1.0007638316660823,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 13,
+            "normalized_objective_gap": 7.809614066545123e-11,
+            "estimated_period_variance": 6.450146479442369e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-11T00:00:00+00:00",
+          "return_end": "2020-01-12T00:00:00+00:00",
+          "training_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "target_weights": [
+            0.16173381728264546,
+            0.3322512891298676,
+            0.5060148935874871
+          ],
+          "gross_return": -0.0033225128912986765,
+          "net_return": -0.003476054664219408,
+          "traded_notional_fraction": 0.1540536180527862,
+          "cost_fraction": 0.00015405361805265194,
+          "wealth": 0.9972851218812373,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 25,
+            "normalized_objective_gap": 7.100232207735147e-11,
+            "estimated_period_variance": 2.8069505442046962e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-12T00:00:00+00:00",
+          "return_end": "2020-01-13T00:00:00+00:00",
+          "training_indices": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "target_weights": [
+            0.22908945204070735,
+            0.20695181829878306,
+            0.5639587296605097
+          ],
+          "gross_return": 0.002384052888234178,
+          "net_return": 0.002137463643527404,
+          "traded_notional_fraction": 0.24600276111364866,
+          "cost_fraction": 0.0002460027611135285,
+          "wealth": 0.9994167825714892,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 16,
+            "normalized_objective_gap": 7.855446848559211e-11,
+            "estimated_period_variance": 3.0652108584593838e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-13T00:00:00+00:00",
+          "return_end": "2020-01-14T00:00:00+00:00",
+          "training_indices": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "target_weights": [
+            0.13424657549173535,
+            0.26575342450826483,
+            0.6
+          ],
+          "gross_return": 0.0010575342450826462,
+          "net_return": 0.0008643043932967664,
+          "traded_notional_fraction": 0.19302572047631372,
+          "cost_fraction": 0.00019302572047630306,
+          "wealth": 1.0002805828874004,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 10,
+            "normalized_objective_gap": 7.842905491717289e-11,
+            "estimated_period_variance": 4.3109589041095916e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-14T00:00:00+00:00",
+          "return_end": "2020-01-15T00:00:00+00:00",
+          "training_indices": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "target_weights": [
+            0.15764705878340973,
+            0.24235294121659046,
+            0.6
+          ],
+          "gross_return": 0.004811764706082952,
+          "net_return": 0.004761724275015533,
+          "traded_notional_fraction": 0.04980080132932124,
+          "cost_fraction": 4.980080132921394e-05,
+          "wealth": 1.0050436432207621,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 11,
+            "normalized_objective_gap": 3.669468895406425e-11,
+            "estimated_period_variance": 2.3188235294117667e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-15T00:00:00+00:00",
+          "return_end": "2020-01-16T00:00:00+00:00",
+          "training_indices": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "target_weights": [
+            0.178313253071311,
+            0.22168674692868917,
+            0.6
+          ],
+          "gross_return": 0.0004000000000000019,
+          "net_return": 0.00035711302614926943,
+          "traded_notional_fraction": 0.042869825920449134,
+          "cost_fraction": 4.286982592027755e-05,
+          "wealth": 1.0054025573976049,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 25,
+            "normalized_objective_gap": 4.213393522967124e-11,
+            "estimated_period_variance": 7.00240963855422e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-16T00:00:00+00:00",
+          "return_end": "2020-01-17T00:00:00+00:00",
+          "training_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "target_weights": [
+            0.25860465091018814,
+            0.14139534908981205,
+            0.6
+          ],
+          "gross_return": -0.006400000000000001,
+          "net_return": -0.006563665137318542,
+          "traded_notional_fraction": 0.16471934110169034,
+          "cost_fraction": 0.00016471934110162678,
+          "wealth": 0.9988034316826433,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 22,
+            "normalized_objective_gap": 8.695438813433043e-11,
+            "estimated_period_variance": 5.642790697674421e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-17T00:00:00+00:00",
+          "return_end": "2020-01-18T00:00:00+00:00",
+          "training_indices": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "target_weights": [
+            0.1828571425581826,
+            0.21714285744181758,
+            0.6
+          ],
+          "gross_return": -0.0022857142872090876,
+          "net_return": -0.002437971425654051,
+          "traded_notional_fraction": 0.15260595204999108,
+          "cost_fraction": 0.0001526059520498002,
+          "wealth": 0.9963683774563558,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 44,
+            "normalized_objective_gap": 9.16732800781972e-11,
+            "estimated_period_variance": 1.672228571428572e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-18T00:00:00+00:00",
+          "return_end": "2020-01-19T00:00:00+00:00",
+          "training_indices": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "target_weights": [
+            0.40000000000000013,
+            0.0,
+            0.6
+          ],
+          "gross_return": 0.004000000000000002,
+          "net_return": 0.003564731273259625,
+          "traded_notional_fraction": 0.4335345883869801,
+          "cost_fraction": 0.0004335345883867969,
+          "wealth": 0.9999201629711614,
+          "diagnostics": {
+            "policy": "sample_gmv",
+            "training_observations": 5,
+            "iterations": 7,
+            "normalized_objective_gap": 5.551115123125783e-17,
+            "estimated_period_variance": 1.3168000000000003e-05
+          }
+        }
+      ]
+    },
+    "lw_identity_gmv": {
+      "terminal_wealth": 0.9955879704385482,
+      "net_compound_return": -0.0044120295614518135,
+      "evaluation_periods": 13,
+      "period_mean_net_return": -0.0003341268742869706,
+      "period_sample_volatility": 0.003588619368782933,
+      "maximum_drawdown": 0.010499427344337398,
+      "total_traded_notional_fraction": 2.2154509727232554,
+      "steps": [
+        {
+          "decision_at": "2020-01-06T00:00:00+00:00",
+          "return_end": "2020-01-07T00:00:00+00:00",
+          "training_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "target_weights": [
+            0.3068308760026065,
+            0.27214718794607967,
+            0.421021936051314
+          ],
+          "gross_return": 0.0020309246247705243,
+          "net_return": 0.0010298947300406702,
+          "traded_notional_fraction": 0.9990009990009993,
+          "cost_fraction": 0.0009990009990008542,
+          "wealth": 1.0010298947300407,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.7269,
+            "iterations": 20,
+            "normalized_objective_gap": 5.357025933960813e-11,
+            "estimated_period_variance": 1.4371050840299237e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-07T00:00:00+00:00",
+          "return_end": "2020-01-08T00:00:00+00:00",
+          "training_indices": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "target_weights": [
+            0.2915671940296672,
+            0.3188594251319498,
+            0.38957338083838317
+          ],
+          "gross_return": -0.002172528780926122,
+          "net_return": -0.0022723073304800057,
+          "traded_notional_fraction": 0.09999579329280994,
+          "cost_fraction": 9.999579329278419e-05,
+          "wealth": 0.998755247162216,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.520175,
+            "iterations": 36,
+            "normalized_objective_gap": 6.556427623038985e-11,
+            "estimated_period_variance": 9.755581969168705e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-08T00:00:00+00:00",
+          "return_end": "2020-01-09T00:00:00+00:00",
+          "training_indices": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "target_weights": [
+            0.2439423057530709,
+            0.30943051309483005,
+            0.44662718115209926
+          ],
+          "gross_return": -0.0026797630869125955,
+          "net_return": -0.0027872120134707634,
+          "traded_notional_fraction": 0.10773763790335686,
+          "cost_fraction": 0.00010773763790328239,
+          "wealth": 0.9959715045388084,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.5463034188034187,
+            "iterations": 22,
+            "normalized_objective_gap": 8.013123498074037e-11,
+            "estimated_period_variance": 1.055550580459856e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-09T00:00:00+00:00",
+          "return_end": "2020-01-10T00:00:00+00:00",
+          "training_indices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.003666666666666666,
+          "net_return": 0.003442307624850871,
+          "traded_notional_fraction": 0.22353939735891684,
+          "cost_fraction": 0.00022353939735886286,
+          "wealth": 0.9993999448430165,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 1.0,
+            "iterations": 0,
+            "normalized_objective_gap": 0.0,
+            "estimated_period_variance": 1.3662222222222219e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-10T00:00:00+00:00",
+          "return_end": "2020-01-11T00:00:00+00:00",
+          "training_indices": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.0006666666666666666,
+          "net_return": -0.000671757407456397,
+          "traded_notional_fraction": 0.005094136881008404,
+          "cost_fraction": 5.094136880989808e-06,
+          "wealth": 0.9987285905270568,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 1.0,
+            "iterations": 0,
+            "normalized_objective_gap": 0.0,
+            "estimated_period_variance": 1.416e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-11T00:00:00+00:00",
+          "return_end": "2020-01-12T00:00:00+00:00",
+          "training_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "target_weights": [
+            0.3093407748484524,
+            0.3387885519917751,
+            0.3518706731597727
+          ],
+          "gross_return": -0.003387885519917751,
+          "net_return": -0.0034294869265222294,
+          "traded_notional_fraction": 0.04174282652219413,
+          "cost_fraction": 4.1742826522028764e-05,
+          "wealth": 0.9953034638827002,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.8909500971259232,
+            "iterations": 8,
+            "normalized_objective_gap": 2.413613753304844e-11,
+            "estimated_period_variance": 1.556546876227199e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-12T00:00:00+00:00",
+          "return_end": "2020-01-13T00:00:00+00:00",
+          "training_indices": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": 0.002333333333333333,
+          "net_return": 0.0022873289711340394,
+          "traded_notional_fraction": 0.045897268572711813,
+          "cost_fraction": 4.589726857262555e-05,
+          "wealth": 0.9975800503307092,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 1.0,
+            "iterations": 0,
+            "normalized_objective_gap": 0.0,
+            "estimated_period_variance": 1.3662222222222219e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-13T00:00:00+00:00",
+          "return_end": "2020-01-14T00:00:00+00:00",
+          "training_indices": [
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "target_weights": [
+            0.32660092231702714,
+            0.3334049911761535,
+            0.3399940865068193
+          ],
+          "gross_return": -0.0019060328771429945,
+          "net_return": -0.0019245551049875687,
+          "traded_notional_fraction": 0.01855759923899508,
+          "cost_fraction": 1.855759923885536e-05,
+          "wealth": 0.9956601525522114,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.9602333333333334,
+            "iterations": 7,
+            "normalized_objective_gap": 9.227063557659676e-12,
+            "estimated_period_variance": 1.2433529611027e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-14T00:00:00+00:00",
+          "return_end": "2020-01-15T00:00:00+00:00",
+          "training_indices": [
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "target_weights": [
+            0.2439423057530709,
+            0.3094305130948301,
+            0.44662718115209926
+          ],
+          "gross_return": 0.0042269156523867465,
+          "net_return": 0.004016766282036066,
+          "traded_notional_fraction": 0.20926482558398193,
+          "cost_fraction": 0.00020926482558381032,
+          "wealth": 0.99965948668135,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.5463034188034187,
+            "iterations": 22,
+            "normalized_objective_gap": 8.013112395843791e-11,
+            "estimated_period_variance": 1.055550580459856e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-15T00:00:00+00:00",
+          "return_end": "2020-01-16T00:00:00+00:00",
+          "training_indices": [
+            9,
+            10,
+            11,
+            12,
+            13
+          ],
+          "target_weights": [
+            0.2915671940296672,
+            0.3188594251319498,
+            0.38957338083838317
+          ],
+          "gross_return": 0.0037668259065858707,
+          "net_return": 0.0036507310327229536,
+          "traded_notional_fraction": 0.11565920577036146,
+          "cost_fraction": 0.00011565920577027988,
+          "wealth": 1.0033089745915336,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.520175,
+            "iterations": 36,
+            "normalized_objective_gap": 6.556422071923862e-11,
+            "estimated_period_variance": 9.755581969168705e-06
+          }
+        },
+        {
+          "decision_at": "2020-01-16T00:00:00+00:00",
+          "return_end": "2020-01-17T00:00:00+00:00",
+          "training_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "target_weights": [
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "gross_return": -0.008,
+          "net_return": -0.008104024995530201,
+          "traded_notional_fraction": 0.10486390678461777,
+          "cost_fraction": 0.00010486390678443591,
+          "wealth": 0.995178133583204,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 1.0,
+            "iterations": 0,
+            "normalized_objective_gap": 0.0,
+            "estimated_period_variance": 1.3662222222222219e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-17T00:00:00+00:00",
+          "return_end": "2020-01-18T00:00:00+00:00",
+          "training_indices": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "target_weights": [
+            0.3096508971174993,
+            0.3230677399967435,
+            0.3672813628857573
+          ],
+          "gross_return": -0.002349901425755232,
+          "net_return": -0.0024149733532251583,
+          "traded_notional_fraction": 0.06522520026120537,
+          "cost_fraction": 6.522520026108758e-05,
+          "wealth": 0.9927748049088881,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.8998136032718688,
+            "iterations": 9,
+            "normalized_objective_gap": 8.526501726890956e-11,
+            "estimated_period_variance": 1.722360758234447e-05
+          }
+        },
+        {
+          "decision_at": "2020-01-18T00:00:00+00:00",
+          "return_end": "2020-01-19T00:00:00+00:00",
+          "training_indices": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "target_weights": [
+            0.3013050251562585,
+            0.24185642959022596,
+            0.4568385452535156
+          ],
+          "gross_return": 0.003013050251562585,
+          "net_return": 0.002833639125157106,
+          "traded_notional_fraction": 0.17887217555209659,
+          "cost_fraction": 0.00017887217555201396,
+          "wealth": 0.9955879704385482,
+          "diagnostics": {
+            "policy": "lw_identity_gmv",
+            "training_observations": 5,
+            "shrinkage": 0.6761485954318719,
+            "iterations": 26,
+            "normalized_objective_gap": 5.1835646885933784e-11,
+            "estimated_period_variance": 1.5357982661444087e-05
+          }
+        }
+      ]
+    }
+  },
+  "reproducibility": {
+    "input_sha256": "49421c463520fa43f6ed69e60adaf889a8e48e180eda8c63a3632bba020ddbb8",
+    "code_sha256": {
+      "__init__.py": "ba474b42c0ce83d52452b6b3d79cae196edc79b9775829b5f71013e83b1d85e3",
+      "__main__.py": "9e8955537725252d89bdb2d511fb8958daae57e4ca6026ca16e94eabc6ba2179",
+      "covariance.py": "802b73400fc10dd68e803e6939075efbe87cbae490f65708b11683c29a758ae9",
+      "portfolio.py": "d3cc7b6b31dc0cf3041268686de5085a4f9923891931ddccba71c073f0489bcb"
+    },
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "evidence_type": "synthetic numerical demonstration"
+  }
+}

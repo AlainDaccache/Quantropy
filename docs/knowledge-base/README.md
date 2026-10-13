@@ -14,6 +14,8 @@ Read the [research reset and product intent](RESEARCH-RESET-BRIEF.md), [96 decis
 
 Read the [25 family contracts](contracts/README.md), [306-entry canonical method catalog](method-catalog.csv), [contract dependency register](contract-register.csv), and [remaining research ledger](RESEARCH-WORK-LEDGER.md). Draft coverage, numerical verification, independent review and implementation status remain separate.
 
+New scoped work: [exact Ledoit-Wolf identity variant](contracts/26-ledoit-wolf.md), [profile-bound offline portfolio comparison](contracts/27-portfolio-comparison.md), [method variants](method-variants.csv), and [synthetic comparison evidence](portfolio-comparison-verification.json). These extend the 25 family drafts to 27 registered contracts; they do not certify the full catalog or empirical performance.
+
 ## Domain map
 
 - [What Quantropy should become](00-vision.md)

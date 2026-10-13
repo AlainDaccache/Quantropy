@@ -26,6 +26,8 @@ Use a training-only window; reconcile sample dates and corporate actions. Check 
 
 ## Evidence boundary
 
+The exact centered ML scaled-identity Ledoit-Wolf variant is owned by [KC-26](26-ledoit-wolf.md). Constant-correlation, nonlinear and robust variants remain separate open work. The [offline comparison contract](27-portfolio-comparison.md) uses this variant and makes profile and cost assumptions explicit.
+
 Supporting source map: [SHRINKAGE](../sources.md#shrinkage), [PYPORTFOLIOOPT](../sources.md#pyportfolioopt), [COCHRANE](../sources.md#cochrane). Review depths are recorded there. These references support the inspected concepts, not every extension in this draft. Independent domain review and full claim-level source reconciliation remain release gates.
 
 [Contract index](README.md)

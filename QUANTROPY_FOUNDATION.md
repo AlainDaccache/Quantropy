@@ -32,4 +32,6 @@ The optimal sequence is broad domain research, detailed method/data specificatio
 
 All inventory entries remain candidates/specifications until exact source review, applicability, data contracts and independent examples are completed. No claim is made that every book or curriculum learning outcome has been reviewed, that any alpha is profitable, or that the app is implemented/live ready. Analysis, simulation and execution are separate maturity levels. Generic policy examples do not describe or authorize any particular user's account.
 
-This branch is based on this GitHub repository's existing default-branch history. Only foundation documentation is added; unrelated local repository history, laptop audit files, private datasets and account records are excluded.
+This branch is based on this GitHub repository's existing default-branch history. Foundation documentation and an isolated offline research prototype are added; unrelated local repository history, laptop audit files, private datasets and account records are excluded.
+
+The first runnable research workflow compares equal weight, inverse volatility, sample GMV and exact scaled-identity Ledoit-Wolf GMV under explicit scenario profiles. See the [comparison contract](docs/knowledge-base/contracts/27-portfolio-comparison.md) for data/timing/cost semantics, commands and limitations. `quantropy_research` imports no legacy service modules. Its committed example is synthetic; no empirical alpha or live readiness is claimed.

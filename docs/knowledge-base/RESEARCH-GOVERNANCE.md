@@ -2,6 +2,8 @@
 
 The canonical editing location is this knowledge-base directory in the Quantropy branch. Output bundles are copies, not a second source of truth. The older build scripts in a local working directory generated the original specifications; running them over this edition would discard the reference revision and must not be used as an update workflow.
 
+Hashed knowledge-base files and research implementation artifacts use LF line endings, enforced by repository `.gitattributes`. Manifest and reproducibility hashes refer to those exact portable bytes. Use LF when generating evidence; platform newline conversion must not change the meaning or verifiability of a checkout.
+
 Every new detailed topic needs a stable ID, one owner, prerequisite links, aliases, date/jurisdiction when relevant, and the completion contract in [the audit](FINANCE-AUDIT.md). Do not duplicate definitions in product pages. Curriculum/book mappings are views of the concept catalog; title identification is not chapter-level review. Existing 306 method entries need migration before an all-method DRY claim is appropriate.
 
 Source review records should identify edition, inspected section, exact claim supported and limitations. Distinguish original research, standards, official documentation, educational synthesis and author interpretation. Full derivations need primary-source review and independent mathematical checking. Conflicting conventions should be named and linked rather than flattened into one apparently universal formula.

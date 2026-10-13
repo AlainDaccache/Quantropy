@@ -1,0 +1,2 @@
+id,parent_method_id,owner,variant,status,independent_review,implementation,source_ids
+QMV-114-LW-I,QM-114,contracts/26-ledoit-wolf.md,Centered ML scaled-identity Ledoit-Wolf,source-inspected exact procedure; hand and source-function checks,pending,offline numpy implementation; empirical and production validity unassessed,LW-IDENTITY-2004;SKLEARN-LW-172

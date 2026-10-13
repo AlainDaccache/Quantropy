@@ -1,585 +1,612 @@
 {
-  "edition": "2026-10-13-research-handoff",
+  "edition": "2026-10-13-offline-estimator-workflow",
   "chapters": 46,
   "capabilities": 466,
   "methods": 306,
   "strategy_families": 41,
-  "sources": 104,
+  "sources": 107,
   "files": [
     {
       "path": "00-vision.md",
-      "bytes": 2734,
-      "sha256": "a1078ae4166670ae1034c86a1288989f18fb04d8ea49a2054118ba50aec6683a"
+      "bytes": 2704,
+      "sha256": "7f04eaedd12a3172fe09c805ad05fbdbba0401bfab5a4b12ba95c97e8e8e7d3d"
     },
     {
       "path": "01-workflows.md",
-      "bytes": 2509,
-      "sha256": "acc117c58ed74a1551d0796082bb353b4055a63722df33b3320e9916dbadabbe"
+      "bytes": 2478,
+      "sha256": "434a7091df998f6bf35007a0700bee7ec82861cc8e48b80308147ae5f0f910c2"
     },
     {
       "path": "02-instruments.md",
-      "bytes": 2856,
-      "sha256": "ae2241f0cf30bd87274d7e44b96876d27318374c70bf712e7a6fa63c67e521e7"
+      "bytes": 2818,
+      "sha256": "59ec60ceed9015a3fbc287a39c37b829b89ab3f9e602bee87633b3fbecefa9d2"
     },
     {
       "path": "03-data.md",
-      "bytes": 3244,
-      "sha256": "3af808b902055f4a176c8caad61379214b4d09c277930ecb06276cd233de363f"
+      "bytes": 3202,
+      "sha256": "22d917a7e4b800d6e3087a30200ba7c7ddc73244536ccbb2509dedaa61794c2a"
     },
     {
       "path": "04-statements.md",
-      "bytes": 2938,
-      "sha256": "c702c0f81aecc2b302aeb795da08a28bf838a13cad8aa6e1f40a8528faa3070a"
+      "bytes": 2904,
+      "sha256": "3952e3f33cadfbb4b64b045c91c54bac0dc44fd892a00991015d1b412448e255"
     },
     {
       "path": "05-ratios.md",
-      "bytes": 3043,
-      "sha256": "bfa13b6a56a93d203aefdc6092707ac3c980f49421d29b05fc8ccddda6e4a9e3"
+      "bytes": 3009,
+      "sha256": "0d8034662aa245058b6688c27dc4c4f7a554adbcd153f4d2246bf457ff7fc381"
     },
     {
       "path": "06-valuation.md",
-      "bytes": 2870,
-      "sha256": "49cc4baf037bf1f1bf0901c78019cad54b749ad7603d2e43cb09b3af250be5be"
+      "bytes": 2834,
+      "sha256": "4cc1ce127ff97029a5f8a94ca98a79a97f4f2e66bb9f3eae39fb8b5214094e7a"
     },
     {
       "path": "07-investor-styles.md",
-      "bytes": 3056,
-      "sha256": "3524dfe181c0764fdbd52177eb0f080ac3410324d4de374d569cc41e1e766a26"
+      "bytes": 3020,
+      "sha256": "70b4e1db2b6258febff49ad171dde46ea38e36ce0188f5059ebe683747a18d3c"
     },
     {
       "path": "08-factors.md",
-      "bytes": 2936,
-      "sha256": "dea48f5b8c0ecb022e19a1e496368ed1933f660de40e8312bef92fbd5e5eb81d"
+      "bytes": 2901,
+      "sha256": "6b34b7391ce408b3a28c534dc310891140046ee21bf6279b1cf9ecd590623221"
     },
     {
       "path": "09-futures-fx.md",
-      "bytes": 3055,
-      "sha256": "d335664d1dc5bc8cf6b64217b3f997069f4820d7cbbe4fa85e669dc104ee6a12"
+      "bytes": 3016,
+      "sha256": "f4fbf033d14acb8a2e6aceaba851e2153cbeb103c1f31c8674e29bcf326ded95"
     },
     {
       "path": "10-options.md",
-      "bytes": 3180,
-      "sha256": "45fa1f2298b2e3635193bfd5e953a013a2696bd48a81a3917c0131eff2bd0010"
+      "bytes": 3139,
+      "sha256": "62835babdceb3a7d1c39dc6e09de2ba7d7296b9f6945d9af1407358f3b590e73"
     },
     {
       "path": "11-rates-credit.md",
-      "bytes": 2864,
-      "sha256": "1e8e84476b91dafcd4e4834c3e3bc7d0aa9c71f2f0d1d4562f8ca627a20e881e"
+      "bytes": 2828,
+      "sha256": "545a4062596749b1f10216b9fb29c6234417af79cbe1c311f39fdc2039e0a8c7"
     },
     {
       "path": "12-portfolios.md",
-      "bytes": 2740,
-      "sha256": "47874721076a8a15b6828f28681aeb772b570457ef2d7551ca2b76e9b4916edf"
+      "bytes": 2705,
+      "sha256": "faa53c75ced0ab668c9506284dc65b2a86a949df678cc4f0ab78424468265e0d"
     },
     {
       "path": "13-risk.md",
-      "bytes": 2671,
-      "sha256": "7887636c93b8a6ce7ef752596f4772651e1bc50cfd0b373165569d6482103ff3"
+      "bytes": 2637,
+      "sha256": "74ba89d9619dd974ecfceaa9ec52d8ee1a74414f6b04973e075bf5aad3bdb1cf"
     },
     {
       "path": "14-research.md",
-      "bytes": 2909,
-      "sha256": "0fee06c30f5a9d53cd54b28c0433830ace449b452ee502dc245f103d4043f16b"
+      "bytes": 2873,
+      "sha256": "5114d808107f31cd59d52efc021cd0effa1caa75af8ae01468e5632360cba66d"
     },
     {
       "path": "15-simulation.md",
-      "bytes": 2838,
-      "sha256": "3b3990115440b4b1b84494a3cabaaf34d26b56feef79f228b09174163b506091"
+      "bytes": 2801,
+      "sha256": "c76f352b83d5443c098ea4b20f01007ab0395ea5f0cd33583fa17c1d9aea7c85"
     },
     {
       "path": "16-execution.md",
-      "bytes": 3115,
-      "sha256": "a88039132d93f85dcb4eaf7f4e11bb6e2ad431f7de0780ed6c65120eba811689"
+      "bytes": 3077,
+      "sha256": "c22fad7fae0716886ef56b3624ba1968bd0a930883e808d78ea2c2b3a61003fe"
     },
     {
       "path": "17-accounting.md",
-      "bytes": 3138,
-      "sha256": "5fb764db0be95a5a4db981013540b19ceb9462697b3d7d802fd38217161c241c"
+      "bytes": 3102,
+      "sha256": "29284cc2c672b5682b77a80222a8aa9fbb8801cf20a36e5f89848b822261f846"
     },
     {
       "path": "18-household.md",
-      "bytes": 2755,
-      "sha256": "c9829b6b5b49d15dd2114da11bf3b252f0fb5345cb9acd7498ad4dda0fe4eb76"
+      "bytes": 2722,
+      "sha256": "098d1144847af6d3813f5ed04f2bc1d5f53d616ce46424694c2639afe943181c"
     },
     {
       "path": "19-alternatives.md",
-      "bytes": 2949,
-      "sha256": "8a6ba8d4e66f842cdfc01986b07376a7b58fc6605c6eb096774d5c6c81067eb5"
+      "bytes": 2915,
+      "sha256": "06de2f7270a61eb6f67eaf1f6733c775233dba56ad00fd98c924ae07b72bd26f"
     },
     {
       "path": "20-operations.md",
-      "bytes": 2986,
-      "sha256": "c0c65ce925c7983dcf68561a65a41bdc2305e6721f51f17fe518f68863b0881b"
+      "bytes": 2951,
+      "sha256": "bcda740005db1da6d607a7e4d748ef30901f70cd9582e169aef68d78a18ef835"
     },
     {
       "path": "21-architecture.md",
-      "bytes": 2867,
-      "sha256": "6d10d6b3d36c79d80fb3b4a6be77bd4eb1c77d726f9ea6a34110626d405dbbeb"
+      "bytes": 2833,
+      "sha256": "f79377b2f7e5aedd033ea8bbe5a6923665233273ba233d09f88e000bc68dbcb7"
     },
     {
       "path": "22-roadmap.md",
-      "bytes": 2916,
-      "sha256": "2e022a0814da0cf96b2b20e0199abfb4760ef977ec7db8e03e73a2411ee301e7"
+      "bytes": 2883,
+      "sha256": "344182254e59f26137885783bc359c6b58ca2e43a2e498ce7e6cc2b6ae7c1168"
     },
     {
       "path": "23-quality.md",
-      "bytes": 2961,
-      "sha256": "cc697391f9ecfb5d85c0ce56161fe058493d6750ac9682fc7227be2c0bbebbcd"
+      "bytes": 2926,
+      "sha256": "784c2c2049963bbb0c2d1f8fb2a0a388e809da4716561b97c7a7a819aaacca06"
     },
     {
       "path": "24-validation-cases.md",
-      "bytes": 2964,
-      "sha256": "512fb0e9addc379189d9b4c0408b419ef2a02d73d4405c604532bdeaecfee855"
+      "bytes": 2924,
+      "sha256": "2754a83ad8f8a2a3f0fb807dc606c2fd0a9c8e8f3aced33e732d6103e35796ba"
     },
     {
       "path": "25-learning.md",
-      "bytes": 3017,
-      "sha256": "1feaf7dd740562f65cd091cbc0ab6f8f8e4cec9223831d7971e2c3c914e53d4b"
+      "bytes": 2985,
+      "sha256": "b3e1a185de3be4ddf25d0bb4f804eb211e8f3eb10f40943ca1956088fd561908"
     },
     {
       "path": "26-open-questions.md",
-      "bytes": 3052,
-      "sha256": "564366f9c126e783e4d35484163a377c4e5a538ab8a49e5d6983e7f14123c6f5"
+      "bytes": 3017,
+      "sha256": "ad1cda62fb6cb3fabd38adfff4fe9d03be779f60a2704330910ac23063fa68ef"
     },
     {
       "path": "27-economics.md",
-      "bytes": 3184,
-      "sha256": "5beaf42a94f8f7c6e73b3117a85d10aa127e2d7d67db00ccf19091273c571212"
+      "bytes": 3150,
+      "sha256": "4df4730cac8135629348cd89b6b116d1498aef471feeb07111207379f5dad20e"
     },
     {
       "path": "28-corporate-finance.md",
-      "bytes": 3089,
-      "sha256": "a3c6f0b67848ccae2716bcbcff3b2b325b9eb2199ffeacaf5fec2b551747ddb1"
+      "bytes": 3053,
+      "sha256": "a6012b9eea46b23d9ae5e68f8dfed1ebec71de2b72ea0cdcc0dca951e51dd3c2"
     },
     {
       "path": "29-ethics-behavior.md",
-      "bytes": 2854,
-      "sha256": "5e3ddf93118a4160d69d719b72fb2baa86e67337147f80032abcb08c87cf116b"
+      "bytes": 2820,
+      "sha256": "c52a24cb30e0f4509f6c2a7a03155a4b12f9040172df879141718332605df6d0"
     },
     {
       "path": "30-premia-alpha.md",
-      "bytes": 3422,
-      "sha256": "e260ccd0a53be6d7cfaa8704b2e1c837bf6384327a770c0c745f343581a5d024"
+      "bytes": 3383,
+      "sha256": "6f1a9613be8035e1a53501b59a404640cb3e322b70cf8049160dbfb7098c0b96"
     },
     {
       "path": "31-product-spec.md",
-      "bytes": 3116,
-      "sha256": "6d1d8e8b8d40ea89a3e7b692cb566590a18d29e0c9c5f72d4768da020f717575"
+      "bytes": 3081,
+      "sha256": "34e2ba8d3c8b6cdeca4f616063037fc5422f963db34bf14d7972ed890d0c9866"
     },
     {
       "path": "32-full-stack-design.md",
-      "bytes": 3364,
-      "sha256": "eb161652ee1e637be15257ed53b15aa9a3d48de8743632771513da4aabaaa3d2"
+      "bytes": 3327,
+      "sha256": "7e8ebf270206df2dfa6b17643bf43866d64052022f322f1cef12aa387e97853b"
     },
     {
       "path": "33-cfa-coverage.md",
-      "bytes": 4230,
-      "sha256": "799eb100a7ae063dfb709cc01c5d27c5299d77c28017aa9613d2f33eae35f59c"
+      "bytes": 4175,
+      "sha256": "c43e7d9f15bf92b0ef632594a924aee0c5c07dcb19f3e7e827aff40b3e1e1bc7"
     },
     {
       "path": "34-product-reassessment.md",
-      "bytes": 3592,
-      "sha256": "04bcc6c8ebd34ae6f6ae3e1d897b3a7eb44946b0e68a52b12993374cba674b44"
+      "bytes": 3557,
+      "sha256": "a46dd37650a8b6cbca123ae72c7734546f593790dce1debe8da0042d1a5f5a98"
     },
     {
       "path": "35-independent-coverage.md",
-      "bytes": 3696,
-      "sha256": "2da417ef38408fff563c2c4dbb865727fb65e88da1c640a787003b88718390d0"
+      "bytes": 3659,
+      "sha256": "b979243f1deb0b8c7bac0287542a65c6ee0ade358ca927729dff695c0647c26d"
     },
     {
       "path": "36-market-plumbing.md",
-      "bytes": 3404,
-      "sha256": "853e9072764c76858d7d25e0098cbfe1e263964514b50d887b40ac2f35e0085f"
+      "bytes": 3368,
+      "sha256": "c8ab443b1961daa4d4f08effd83eabcfbda7201acc5d04a714c9601ee9397629"
     },
     {
       "path": "37-manager-diligence.md",
-      "bytes": 3002,
-      "sha256": "b3703b944cb29e0d185c922cd8353bb9d7be2a96b5b29ae7cf97e03cddd75ef5"
+      "bytes": 2966,
+      "sha256": "673202a536f8a893a46cfbb5cebd205925e4eba0f2a818e9e564bf881a2a401f"
     },
     {
       "path": "38-numerical-model-risk.md",
-      "bytes": 3184,
-      "sha256": "f26858a1a4f29a57b0eda57fae0e988d23c851589eaeb375061be3ab855fe0bf"
+      "bytes": 3148,
+      "sha256": "c8928f8650691aec39b8ed6378623c7be95e0b361f759d8642750135f7944eb9"
     },
     {
       "path": "39-research-completion.md",
-      "bytes": 3549,
-      "sha256": "26b2fe8b4f958a4a49a5d5c700f879d5cc44dbd9bc0099b6d0fd89e042923a09"
+      "bytes": 3512,
+      "sha256": "ea721c4317c31967b90cbf220cc614318479a0ac226cdd93b211d96febb7c4de"
     },
     {
       "path": "40-metric-specifications.md",
-      "bytes": 3941,
-      "sha256": "841a4080c6b71d46712980866d79943b2e27dc592176dd43eb4271adbf3dcee3"
+      "bytes": 3888,
+      "sha256": "036b50fc1b5a4095a92ab0c956b72aa4ab37a623332df940d400d8261503baf4"
     },
     {
       "path": "41-sector-valuation.md",
-      "bytes": 4078,
-      "sha256": "71aa42703e3360dd7a0a6de213136c85e05d8e6b1c69cce303a3bfa9574d6608"
+      "bytes": 4029,
+      "sha256": "ec8837f6a210e2077e8a8f4a85e8fe07e470b3fdf10ef91e7ba11aa8c8fe3313"
     },
     {
       "path": "42-optimization-methods.md",
-      "bytes": 3715,
-      "sha256": "b94f1672f1453411f85577ff891b4e43fce8004eefd46056775cfd1cda788c6d"
+      "bytes": 3675,
+      "sha256": "86243bbc999dbc45de4cdd5373ed34c494e65ef4d34961168eec33623bc8955e"
     },
     {
       "path": "43-backtest-methods.md",
-      "bytes": 3669,
-      "sha256": "bc69f8870a3215cd22c3e684347aa00a5a62b2c6dfb8a501f661d91c53652602"
+      "bytes": 3630,
+      "sha256": "51223affe0a6de5e4ecb2ef85c08e4fb737fb93e3ba38758f6c80be57cc646f8"
     },
     {
       "path": "44-household-simulation.md",
-      "bytes": 3996,
-      "sha256": "e926ef2964be4f966d8d17f0d70bede8ddfefd246ef471216d1dc237dc6ee272"
+      "bytes": 3955,
+      "sha256": "41b89b609bcd3802b9968a932c316cd232e7cb2d3db624c1b865944c40b62e19"
     },
     {
       "path": "45-calculator-product.md",
-      "bytes": 3369,
-      "sha256": "8144882ac89873a9cf861f8693f34415919682a2e825bea49748f246362d1a73"
+      "bytes": 3334,
+      "sha256": "1701a4331611f82b2a729c441e1fd40e0485c0c9d2f7af90643bea13ef5fb826"
     },
     {
       "path": "book-research-map.csv",
-      "bytes": 3113,
-      "sha256": "ace55ab64e6f8a49ea13191187c0b517a989832eca478259bdbb7710550fb923"
+      "bytes": 3102,
+      "sha256": "f6b2e718b845c87a214d408f4d3d95e34f93edfd437efe340b925406ed6272b3"
     },
     {
       "path": "capability-register.csv",
-      "bytes": 128760,
-      "sha256": "b572c456c384a663087dbe9a29a668ebf1dd3664ba81c0a7b42300c205ba8349"
+      "bytes": 128293,
+      "sha256": "0d9d0b1f5e70281f3946747a6e1a8cf20b2af686e1c4ec5e6dab7e4429e810d8"
     },
     {
       "path": "claim-evidence.csv",
-      "bytes": 2665,
-      "sha256": "25ffd4639a39514b201efdf9b3dd8818a19133d25f577d2bf212a751296aeb93"
+      "bytes": 3788,
+      "sha256": "3f710d71ceb04fce91b409f8737023d57827ab313c51ac150f901584909af27c"
     },
     {
       "path": "CONTINUE-IN-FRESH-SESSION.md",
-      "bytes": 5289,
-      "sha256": "b4b577df97f59a0101be1a6321dc06b76b58ba4b7701211b1aabb403674364d7"
+      "bytes": 5260,
+      "sha256": "666398586a756c6941be4f2d5993387e219e978d549005a0c751bfe8b39d8e88"
     },
     {
       "path": "contract-register.csv",
-      "bytes": 4516,
-      "sha256": "2260a320e84787e6ac5f18595504268f31e8f2b878ba5e51af16c6cb1d8771e1"
+      "bytes": 4998,
+      "sha256": "3344cc45029e4133f50b16f0a780cc1dc53b3a4b2536ce8a6e62cd622150bcda"
     },
     {
       "path": "contract-verification.json",
-      "bytes": 6317,
-      "sha256": "c79176f92f43925bd6a4289ee600af45cff30af9aaeb502b964e8110f5d7ec18"
+      "bytes": 7240,
+      "sha256": "61a24781e507c1ed4c21cc75fd9f8571526a9ec0dc130eb24645fc3d6e033bc9"
     },
     {
       "path": "contracts/01-statistics.md",
-      "bytes": 3488,
-      "sha256": "440ada3e0ecad89943b937d5f3c3560cca411edd99ad11f9d3d119e8bfa7cccc"
+      "bytes": 3459,
+      "sha256": "48f7c773ed91d11e206c3677f62a896ac54b1742cfba6f16c116e59c64b484ae"
     },
     {
       "path": "contracts/02-numerics.md",
-      "bytes": 3118,
-      "sha256": "b20fbe5253434b0f87e463c7e8485894575cd1bd06cb09b17b942b6e58baaa90"
+      "bytes": 3087,
+      "sha256": "b5b3549df8e009ac8c04e419842af2acc1c95bfee8335aeece8c346a1f146536"
     },
     {
       "path": "contracts/03-metrics.md",
-      "bytes": 4538,
-      "sha256": "7286957b22f7c97941210b11967887073915ca3db8e3919e9153491f9d80b1d1"
+      "bytes": 4498,
+      "sha256": "0de6b22405bc8e57395581678c013d8e0a9e0e705e059e5419c0a908714e88a7"
     },
     {
       "path": "contracts/04-forensics.md",
-      "bytes": 3641,
-      "sha256": "8f8f5bd1ec0d19590f1b6823ceae12d71547277b53172d260c648218137c61b7"
+      "bytes": 3616,
+      "sha256": "3d12630a3ca5758b54185552a51605fb4d5d68f454d07fbeceb5d3c2176f72ed"
     },
     {
       "path": "contracts/05-estimators.md",
-      "bytes": 3573,
-      "sha256": "bc5ac00df785f68b15447b5f53ae404661563d8caaa02cb77f4dd1c976541104"
+      "bytes": 3849,
+      "sha256": "f01850ae5d82852159501691a00dc21e5c59c34b6aafab815b33376ed4b4af35"
     },
     {
       "path": "contracts/06-allocation.md",
-      "bytes": 3586,
-      "sha256": "7be005261547699848b5a5f7140062baa839485d94d2363f5df77ed9bfb54284"
+      "bytes": 3550,
+      "sha256": "d213d7dc14a898801647c859e3843905fde32691e6073b912e33912379431d4e"
     },
     {
       "path": "contracts/07-risk-hierarchy.md",
-      "bytes": 3306,
-      "sha256": "b56899a132546b7d93a80e2155aaa8453b351b141edeb1baeb9abb9d23457b4d"
+      "bytes": 3273,
+      "sha256": "38ce1382d263c4e183fd2b26f17dda2a19ccb2ec5c5823cae808e075490fc80a"
     },
     {
       "path": "contracts/08-valuation.md",
-      "bytes": 3754,
-      "sha256": "2acf6b8ac9a6eb6a32de6cb4774e927cb0b6eaeab2c69082c9ddd94577e153bc"
+      "bytes": 3725,
+      "sha256": "f113b27b3af711fa1fa7e7ea0c68f1712a08f4ff81bab859b3cf402c7e19a4eb"
     },
     {
       "path": "contracts/09-sector-models.md",
-      "bytes": 4015,
-      "sha256": "938fbb4924e29ba86fc1d4687866e520903fd511cf49bb8ee2ba34fc365c40b3"
+      "bytes": 3986,
+      "sha256": "3c74985175aeaf9b9c8da3c8d0963d8c137a22a4a1adccb3f79b99295db54b77"
     },
     {
       "path": "contracts/10-curves-credit.md",
-      "bytes": 3309,
-      "sha256": "4a8d3bd4cf78688bed2875d1070ad1b82f375c92461ce480b673a6a604ab660b"
+      "bytes": 3282,
+      "sha256": "81c911d8c9172cf25ee716486b8aa0146280b7d73c7d6e9d39b1589f9f07548e"
     },
     {
       "path": "contracts/11-option-pricing.md",
-      "bytes": 3337,
-      "sha256": "9f872bed6cbd531144360a82f708e20d2e69fe4e000aac47b6dd1a2f3eb05e3d"
+      "bytes": 3312,
+      "sha256": "80a213a56f4b9cfbdf752859d8d38e690a3f474b1220b209e63042d6ecf66ccc"
     },
     {
       "path": "contracts/12-volatility.md",
-      "bytes": 3180,
-      "sha256": "f85c71e84646527c77a1a434bacbfe307c97eeaa1bfe0373b665657a561a5b4d"
+      "bytes": 3155,
+      "sha256": "d9c7d647663cf4b8549c9cd818a105f8c8ad37134d2b3649484d0ca3b1fdc202"
     },
     {
       "path": "contracts/13-factors.md",
-      "bytes": 3513,
-      "sha256": "400472a2f1baaf40859941c7ad530b69c3ac517261bc1232c37c8a5eec6a9027"
+      "bytes": 3482,
+      "sha256": "167bf390dbd4f398f321e0e767cffc3d320dc3c0c785309bdaec9c9df67a5bab"
     },
     {
       "path": "contracts/14-backtesting.md",
-      "bytes": 3260,
-      "sha256": "9846ee9ff0e18853383a53fdab4cd8727a73494aab7a63e7d1e430697d2b919c"
+      "bytes": 3233,
+      "sha256": "6e6f632ef67a58afe872ff176c5182b1dc812b5a0c8a76cb6e8d54069dea9036"
     },
     {
       "path": "contracts/15-validation.md",
-      "bytes": 3537,
-      "sha256": "e27b81be7586138278e8fd1db348e82aa451a0f805cad9b066044f74698e7ffd"
+      "bytes": 3508,
+      "sha256": "c13d81606de2df441861760a7083c11c6be6a424b1f25e04997ad1084bc81f1f"
     },
     {
       "path": "contracts/16-performance.md",
-      "bytes": 3543,
-      "sha256": "a1e925d30fe58cc1a8acdaddfcbb1efccc8f0ab5e1a799cd4b2d8f8ba6aae8fc"
+      "bytes": 3505,
+      "sha256": "2c0aa0880acc9a4e1f7d7fcb197ac0aa68bc22823824be719ce4109560a3d9b6"
     },
     {
       "path": "contracts/17-household-model.md",
-      "bytes": 3491,
-      "sha256": "e562f87902f3a737933c9d97033c9c2c797eec84417a34ed90eb3da2b77e81f9"
+      "bytes": 3462,
+      "sha256": "18424799891f3f7d57ac2a61dedd6eae1776f189f2e9ee95ab3635a25391bb56"
     },
     {
       "path": "contracts/18-actuarial.md",
-      "bytes": 3290,
-      "sha256": "8ef67f6868165d44a461469fbc77ef3a5edbcead3617d8fbab17ff0b069f3f64"
+      "bytes": 3263,
+      "sha256": "987303d929d6992e3ae45d7d01f4a9feeb5a0133991dd197ffa0134478d2ddb0"
     },
     {
       "path": "contracts/19-treasury-public.md",
-      "bytes": 3428,
-      "sha256": "07850939b5d1b52d64f231f462b7dd3515afbf3f04828d8eb61a0e68881fa1ea"
+      "bytes": 3401,
+      "sha256": "dd09070c6003bef34a84b618b2a99c78d3ff6ed6d372c20f63ea6a3c129a0dd8"
     },
     {
       "path": "contracts/20-private-markets.md",
-      "bytes": 3320,
-      "sha256": "3aac36e7be181eafea138100a6c803b27157955716e752925b979fda8a2f802e"
+      "bytes": 3293,
+      "sha256": "394e8442780906c9a81a19131d3d6a60adbb2a12a92990cf03e556ae2e7c2b90"
     },
     {
       "path": "contracts/21-systematic.md",
-      "bytes": 2996,
-      "sha256": "1aebc2072e24a2539a972f9baa6a5483ea33d36402a4c8253758b17b400e3eb0"
+      "bytes": 2971,
+      "sha256": "06963bb77172feeadf8b7d6c704f0eaf9d3c9b3e57c7d0cf4d371c13c33fe57b"
     },
     {
       "path": "contracts/22-execution.md",
-      "bytes": 3282,
-      "sha256": "6fb94e2dde589c01997551aba090467194b84dfb56fc2460ec6a87831bafb045"
+      "bytes": 3253,
+      "sha256": "ff194f839fa7cc90b79e30f4ae641d89fb0fd76606858362ae34bbb188f82965"
     },
     {
       "path": "contracts/23-selection-statistics.md",
-      "bytes": 1682,
-      "sha256": "f2ac5b584f2dece6967aa7956a2491b0c59aafa485c697d08ea32a57a3208177"
+      "bytes": 1665,
+      "sha256": "bc4b4cf11b1f2960422669dc80edfab21bf6c34d9ad09c906845b915ab604eb8"
     },
     {
       "path": "contracts/24-structural-credit.md",
-      "bytes": 1711,
-      "sha256": "7eeabe2054263afa40ed0d2ddc7cf92b87c3cd7abd977c9afa86c63f605e6c01"
+      "bytes": 1694,
+      "sha256": "2a0e3bd1fa985df810f3cbe026cb0c9c87fbfdd86d816c6cec0c9b42a2abcc09"
     },
     {
       "path": "contracts/25-pbo.md",
-      "bytes": 1564,
-      "sha256": "10e2b65d0116054b14a15d6eb377541ed722de5cf7e7e7202d52b197a66b8749"
+      "bytes": 1551,
+      "sha256": "5630aa93ef49b048e0130b627708ffa6c18c37424d085ff64644e404d9dfce94"
+    },
+    {
+      "path": "contracts/26-ledoit-wolf.md",
+      "bytes": 7094,
+      "sha256": "6d6a52aabbcd7ae044e37798a50b44d36494af15239257dd6b559b497abe706e"
+    },
+    {
+      "path": "contracts/27-portfolio-comparison.md",
+      "bytes": 10173,
+      "sha256": "7c34c776e9e91083833da4d167c24181f7bbb2c4f37761b6f403a014e4fa0f31"
     },
     {
       "path": "contracts/README.md",
-      "bytes": 2875,
-      "sha256": "484f62b052285f38d9571eedf1dda1a0598e8dbcdd44ef395562c3ddf64bc2c5"
+      "bytes": 3020,
+      "sha256": "67bb5ed40fc879b23cd4a806056e5ddbc991f03b1a7b6f26f8bd99e919d4e717"
     },
     {
       "path": "coverage-audit.csv",
-      "bytes": 8760,
-      "sha256": "ec384d99f00d44df227d6771d0baaf37df3597e7350de52c34b582e87a5f1797"
+      "bytes": 8723,
+      "sha256": "b0d8c7b65303d939ca0f448cf98d229081b5fa2266245ee3fd4e386209e6bf9a"
     },
     {
       "path": "FINANCE-AUDIT.md",
-      "bytes": 7313,
-      "sha256": "94bfdf24ef630715876f2ddf8a77b7ee217c0edc49b6646065352dd1505d2eaf"
+      "bytes": 7256,
+      "sha256": "b45e837e3ae8bbc5773c4855c0ce687157dff8d6f4c229b38592ec3c25500c65"
     },
     {
       "path": "finance-coverage.csv",
-      "bytes": 45032,
-      "sha256": "effbc88378a7cc14bb992261559ca80089d9adb4cce239d5308a394847ff8c27"
+      "bytes": 44911,
+      "sha256": "afd4f9386702e57a16b1186571e41a62680750e3aa2f55f5820af40760780f25"
     },
     {
       "path": "maintenance.md",
-      "bytes": 1591,
-      "sha256": "8cad602e0662e7bf15260ea7aaf789a9b2ff997289e593e626278c816f1ef2f7"
+      "bytes": 1578,
+      "sha256": "596be4733a6e854c4b554f0902f47dfdd58be371abc6d4e2bc968027ebaa0f1f"
     },
     {
       "path": "method-catalog.csv",
-      "bytes": 72042,
-      "sha256": "83cebcd077aa8c4324b2f6b4865e015ee2497dfdd90d6e16b80a25ee8b6746b5"
+      "bytes": 71821,
+      "sha256": "8dd1289d18decc214c088356cc7f53825c2170354c9b683a08cffb869706aad5"
     },
     {
       "path": "method-inventory.csv",
-      "bytes": 128204,
-      "sha256": "7b66c89d409d8d7a7c9177f524287614dfeff8b522247672158a1e9d397cb59f"
+      "bytes": 127897,
+      "sha256": "643127ffafd8d60a84cbe93740462006ee3ae2ae7f78b9be92ceebbfc54b0e36"
+    },
+    {
+      "path": "method-variants.csv",
+      "bytes": 355,
+      "sha256": "caf75488b5f95b2c949fea9dc9c9dc2d2ee41f316d6e61f3b3c86020e9d2f2ef"
+    },
+    {
+      "path": "portfolio-comparison-verification.json",
+      "bytes": 47665,
+      "sha256": "dd14c18741f0b66b0f8fffbc24c62b81970ce49edd3b79a86518af24dcb355cd"
+    },
+    {
+      "path": "portfolio-reference-verification.json",
+      "bytes": 711,
+      "sha256": "4b0a7239a59249ab44571b4675fc637afea3da010b56c9420e23b143d74dbb00"
     },
     {
       "path": "README.md",
-      "bytes": 6395,
-      "sha256": "63bf585148daa3138ac01d1bf297d713f75628f35ab63e84cb5f5c1f414230fe"
+      "bytes": 6725,
+      "sha256": "a5bf02512ffd92cf4b12f888fb9b27ad38f7434b9189c8dac7e33f17c798505f"
     },
     {
       "path": "reference/01-time-money.md",
-      "bytes": 2771,
-      "sha256": "0705f83566d55b0e867eae46316122f6f7107f8ab24b80fd71b90fc62de541c1"
+      "bytes": 2750,
+      "sha256": "d6e6c9e484574b10de10f976a6ab9e22714bd1b6c2cd3b73d752c81e5646445a"
     },
     {
       "path": "reference/02-accounting.md",
-      "bytes": 3506,
-      "sha256": "2b0f6557b45a76742872158e4fc74832d17dd1568f9fb7ab4722755981a2d45f"
+      "bytes": 3485,
+      "sha256": "c750faf94383da4c92705b077ddc2c3aeef198b3e13ea5ae7b3ff49195ddfb82"
     },
     {
       "path": "reference/03-economics.md",
-      "bytes": 3248,
-      "sha256": "cb72de29c39c6dcbeb214bb637d104b896a437969698d40f3c962735b475a49f"
+      "bytes": 3227,
+      "sha256": "1b92941baed9779fe4165f74815d6975e74494221d321d2e483d77b2fb2fda09"
     },
     {
       "path": "reference/04-valuation.md",
-      "bytes": 3713,
-      "sha256": "eb5c77be9a85debf815d643b4d0f460097f171ea0109d608c2fb567f42bf7121"
+      "bytes": 3692,
+      "sha256": "7675021a04085cfeeacb7ab7d64d0712fc340c84900ebab4720598c4ad665803"
     },
     {
       "path": "reference/05-rates-credit.md",
-      "bytes": 3074,
-      "sha256": "4f4ad8bbbc9c7578c9ae947051a13aaea52b6fd29b289b3003150a736461a2d3"
+      "bytes": 3053,
+      "sha256": "ddb30cc90c7006e2579f9c9628bb4a996b4676f9cae16b05090fcfae4f041919"
     },
     {
       "path": "reference/06-derivatives.md",
-      "bytes": 3341,
-      "sha256": "405b2434285483bd31c8fdc452086901e51f6b7bd5e4d0aedc000760594114aa"
+      "bytes": 3320,
+      "sha256": "ded22ce271dae19d1be0b29a74d131573c457bee604bb91a57d7b1973e771f2d"
     },
     {
       "path": "reference/07-portfolios.md",
-      "bytes": 3581,
-      "sha256": "92bc38bdb7481c59b0ffafc5103ea45efdd456e162c97d8a6c69b75e288163d0"
+      "bytes": 3560,
+      "sha256": "8f2489fe276b600e96b2948f239c7b77419bff68f6394c789a68889571d8c89b"
     },
     {
       "path": "reference/08-risk.md",
-      "bytes": 3209,
-      "sha256": "4b6d66e1928c53c834c767d3c0048faf0d989acec497f77bcb663c62f4792d85"
+      "bytes": 3188,
+      "sha256": "e8c5dec06e7505ab4950bd5af4c1860a0dcbb8f941c82d2528954ec50f919d6b"
     },
     {
       "path": "reference/09-research.md",
-      "bytes": 3840,
-      "sha256": "36c136ea619bf742fa0070c1624f4971d972a5c13d5647cdb01579642d982688"
+      "bytes": 3817,
+      "sha256": "e129315af3a744be9079748d7e0b32861cfd3f6842818516bd80c49b67ed95db"
     },
     {
       "path": "reference/10-performance.md",
-      "bytes": 3215,
-      "sha256": "ab7ba2c0d85dff9b285688f33027cd116717462243fc5106808de69b3401145a"
+      "bytes": 3192,
+      "sha256": "d08bf9258b2181b9bf6271ede859d28ae4b820663c9a13e8f37948d024924a2c"
     },
     {
       "path": "reference/11-households.md",
-      "bytes": 3199,
-      "sha256": "a1efde9d318cab7dc9c479f70b3b29511e38700db549256eacf43bb59420554a"
+      "bytes": 3178,
+      "sha256": "3c525f109fb7ac60426c1d077c1570df515043348011543a0ecf79646466e884"
     },
     {
       "path": "reference/12-institutions.md",
-      "bytes": 3324,
-      "sha256": "008272cea0b23a78e915d960042fd843b32d3fafa1a17f5f26bfda3362a3c80b"
+      "bytes": 3303,
+      "sha256": "4a20a5f0277a01b142e6b36c81b053f7d527d5423b80ff11b62e667b092ce19d"
     },
     {
       "path": "reference/13-treasury.md",
-      "bytes": 3051,
-      "sha256": "b75a37fb947e0768217f8f83c7218f55dff47b8ca60d5acaa68df3038690e990"
+      "bytes": 3030,
+      "sha256": "2186292e3f2a490670f1ffee28ec4b397282a9bf0e666eab472616c645b34ccf"
     },
     {
       "path": "reference/14-alternatives.md",
-      "bytes": 3225,
-      "sha256": "078b024a3c362f2fcf2b3bc46b3b05f74e6fc85592039bdc0e90b6178be0e50e"
+      "bytes": 3204,
+      "sha256": "6e453f1d02dfbba612f7fcc2a694ef20cfd4b141fc073b26afdd91c654711930"
     },
     {
       "path": "reference/15-ethics.md",
-      "bytes": 3102,
-      "sha256": "0dd2b8d49e22aa0f966f5e6277e48e87c3d4b4cbc9563e6a9df2f6702ce75ea1"
+      "bytes": 3081,
+      "sha256": "2aa5718f65f7ebef90f8ef053e351af1bac1da2d1f61906e8c283146db3884c4"
     },
     {
       "path": "reference/README.md",
-      "bytes": 2274,
-      "sha256": "5660fdb5769ae1736beb85226100aae0554333117b014c438784381fb792f3b5"
+      "bytes": 2241,
+      "sha256": "deb197eee7a2007b7d1d5275f2da574e4a17b0b30b5f66d8c23efb037a9e4641"
     },
     {
       "path": "reference-verification.json",
-      "bytes": 3210,
-      "sha256": "8a788cbf33a75611386049e0321ebe11394db5228b996477405d1eb32c55bf67"
+      "bytes": 3074,
+      "sha256": "fa1760684498364b9c8e6675f981d7ba7fc0cce40b1d204da21062c0f7136e8c"
     },
     {
       "path": "RESEARCH-GOVERNANCE.md",
-      "bytes": 2540,
-      "sha256": "28bde6c76a3d9ed4a6a8a9323b9bb97f4c4c942356a9b75c3f5fb23f946f8d75"
+      "bytes": 2846,
+      "sha256": "8f3abe9a0de16adbb404c22b727539c82a29f7add20a743dc4dd849af6cc9b07"
     },
     {
       "path": "research-questions.csv",
-      "bytes": 22910,
-      "sha256": "0daaaa76b3188c1a555dd08f53ba0e789eae36716d9ff82d15011dee3f7de498"
+      "bytes": 23506,
+      "sha256": "4bf987b78e325e686eec605eb88ab49795fa114069ba415c37c86ca0896bf8e6"
     },
     {
       "path": "RESEARCH-RESET-BRIEF.md",
-      "bytes": 11425,
-      "sha256": "6a17a6a6982d7e09fee766af91b3194e7f7a84c9faef7efe01735352f634c070"
+      "bytes": 11341,
+      "sha256": "8682ae0b6c0c462211d50849b66001dcf8f88a416a0685653c64569f8c194300"
     },
     {
       "path": "RESEARCH-WORK-LEDGER.md",
-      "bytes": 4364,
-      "sha256": "02d62e5d31287caa927d25f40375385d12a6c427271d4ccce3540d80dd47f315"
+      "bytes": 7729,
+      "sha256": "7a942d66a26c236cc3a99dbe19760fe442a13bd466a207647e2585775eeac4ca"
     },
     {
       "path": "sources.md",
-      "bytes": 36617,
-      "sha256": "276c41f41f63c5abaaf9a517bd8c60aa89f4fbf34309631c14cd0668a91fec56"
+      "bytes": 39408,
+      "sha256": "1cdfeb5c4e1262e1dd6096e37c70e1f9138c6683232e5d573a0a5cbc0a02d84d"
     },
     {
       "path": "strategy-families.csv",
-      "bytes": 9222,
-      "sha256": "b12ed64ef7b04e55deb4e4412d18089fd3e2935c1cfb764f59180d27444f643c"
+      "bytes": 9180,
+      "sha256": "5ec6ad150b97a6576990a38063b5ecd2d11c89a377af11df86c3a62143f9ceee"
     },
     {
       "path": "templates/data-contract.md",
-      "bytes": 862,
-      "sha256": "822f5f0b6c816c105700df3924cf00b60a146bc23a243146179ed7535416bf97"
+      "bytes": 837,
+      "sha256": "a9ad83105b23d9522c141177a7ddc106d795f7df95ed59893f55c12c684d9684"
     },
     {
       "path": "templates/decision.md",
-      "bytes": 486,
-      "sha256": "1bbb15b13146686b6b80a7e348e3418801971747f675f29465e884f5d2afdeed"
+      "bytes": 469,
+      "sha256": "ad8ce6262406231a3a1d5db673f8c425ec2f3ded0faca90305d64acb45c8df8b"
     },
     {
       "path": "templates/experiment-card.md",
-      "bytes": 871,
-      "sha256": "98c300dce4c995f9f86809c3482e3ab6a6830e08d9e29adccc6c1838bd45a79c"
+      "bytes": 846,
+      "sha256": "835e1db998c4da78eb076ddd0c143d007546d45b7252f2cf94631af26708a27f"
     },
     {
       "path": "templates/knowledge-contract.md",
-      "bytes": 1808,
-      "sha256": "1b60cfc082bcdf64c85da42a6c507f2cefd3178246af4b11ff98edfe822955e2"
+      "bytes": 1777,
+      "sha256": "194db13e34bef08bae4008d3edad050ad7d85c310f378c201a52f735b8e80a39"
     },
     {
       "path": "templates/live-profile.md",
-      "bytes": 952,
-      "sha256": "eff839b55de5cf41e601521e3dd04995f6dffa6e4139ce00d0b2f3277bdb5a1d"
+      "bytes": 927,
+      "sha256": "93d611c53619498f22e0aae3a609a983ac77ca0a746a01476c40476c7055ba80"
     },
     {
       "path": "templates/model-card.md",
-      "bytes": 892,
-      "sha256": "af29ca167240b57f1e42d2dc08a0fac58adc43f7ce8ea70be3199431a70b43b9"
+      "bytes": 867,
+      "sha256": "f45f666d85310dd07248656de0c084299155967651f82ac16202e3475438aeb1"
     }
   ],
   "reference_articles": 15,
   "finance_coverage_units": 120,
   "family_contracts": 25,
   "catalog_methods": 306,
-  "research_questions": 96
+  "research_questions": 96,
+  "registered_contracts": 27,
+  "exact_method_variants": 1
 }

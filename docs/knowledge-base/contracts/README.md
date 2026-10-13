@@ -1,6 +1,6 @@
 # Detailed finance family contracts
 
-These twenty-five substantive drafts extend the introductory reference with reusable definitions, procedures, assumptions, worked cases and failure conditions. Family coverage is not a completed derivation of every named advanced variant. The [method catalog](../method-catalog.csv) maps every one of the existing 306 methods to one family owner, with dedicated review still pending. No independent expert review is claimed.
+The original twenty-five family drafts are extended with scoped exact-variant and workflow contracts. Family coverage is not a completed derivation of every named advanced variant. The [method catalog](../method-catalog.csv) maps every one of the existing 306 methods to one family owner; the [variant register](../method-variants.csv) identifies exact child procedures without assigning completeness to the whole family. No independent expert review is claimed.
 
 ## Dependency order
 
@@ -31,6 +31,9 @@ These twenty-five substantive drafts extend the introductory reference with reus
 - [Merton structural credit baseline](24-structural-credit.md)
 
 - [CSCV and PBO](25-pbo.md)
+
+- [Ledoit-Wolf scaled-identity covariance](26-ledoit-wolf.md)
+- [Profile-bound portfolio comparison and funded replay](27-portfolio-comparison.md)
 
 ## Ownership and status
 

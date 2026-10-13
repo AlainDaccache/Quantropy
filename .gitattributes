@@ -1,0 +1,6 @@
+# Hashed research artifacts must retain the same bytes on every checkout.
+docs/knowledge-base/** text eol=lf
+quantropy_research/*.py text eol=lf
+tools/*.py text eol=lf
+tests/test_research_portfolio.py text eol=lf
+examples/portfolio-comparison.json text eol=lf

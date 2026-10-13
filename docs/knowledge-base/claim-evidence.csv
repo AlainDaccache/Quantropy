@@ -15,3 +15,8 @@ EVD-013,contracts/04-forensics.md,Eight variable coefficient expression and cuto
 EVD-014,contracts/23-selection-statistics.md,PSR and selection benchmark formulas,DSR-PAPER,Author paper formula sections inspected; PDF transcription/independent review pending
 EVD-015,contracts/24-structural-credit.md,Single zero-coupon debt asset-option decomposition,MERTON-LECTURE,University lecture zero-coupon section inspected
 EVD-016,contracts/25-pbo.md,CSCV rank-logit construction,OVERFIT,Author paper Algorithm 2.3 inspected; ties explicitly chosen policy
+EVD-017,contracts/26-ledoit-wolf.md,Scaled-identity target and capped intensity with normalized Frobenius loss,LW-IDENTITY-2004,Sections 3.1-3.3; Lemmas 3.2-3.5 and equation 14; printed page 380 visually checked; proofs not fully reviewed
+EVD-018,contracts/26-ledoit-wolf.md,Centered ML denominator and zero-intensity convention in the pinned implementation,SKLEARN-LW-172,Source functions inspected; extracted numerical function checked on 85 fixtures; full package not run
+EVD-019,contracts/26-ledoit-wolf.md,Honey uses a constant-correlation target rather than scaled identity,SHRINKAGE,Scanned published pages 112-113 visually inspected; appendices not reviewed
+EVD-020,contracts/27-portfolio-comparison.md,Simple equal-weight benchmark challenges optimizer dominance in the studied settings,DGU-2009,Abstract and introduction/model list inspected; empirical study not independently replicated
+EVD-021,contracts/27-portfolio-comparison.md,Rolling estimation and drift-aware turnover support common-policy comparisons,DGU-2009,Section 3 printed pages 1927-1929 inspected; prototype cost equation is an authored self-financing derivation

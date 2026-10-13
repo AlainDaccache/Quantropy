@@ -1,9 +1,12 @@
 {
   "summary": {
-    "contracts": 25,
+    "contracts": 27,
     "mapped_methods": 306,
-    "dependency_nodes": 25,
-    "arithmetic_cases": 46,
+    "exact_variants": 1,
+    "claim_links": 21,
+    "research_questions": 96,
+    "dependency_nodes": 27,
+    "arithmetic_cases": 54,
     "errors": [],
     "scope": "Draft graph/catalog consistency and selected example arithmetic and invariants; no independent domain review, all-method verification or production engine validation"
   },
@@ -90,6 +93,54 @@
       "case": "gaussian_posterior_variance",
       "actual": 0.005,
       "expected": 0.005,
+      "passed": true
+    },
+    {
+      "case": "lw_identity_distance",
+      "actual": 0.5625,
+      "expected": 0.5625,
+      "passed": true
+    },
+    {
+      "case": "lw_identity_noise",
+      "actual": 0.53125,
+      "expected": 0.53125,
+      "passed": true
+    },
+    {
+      "case": "lw_identity_intensity",
+      "actual": 0.9444444444444444,
+      "expected": 0.9444444444444444,
+      "passed": true
+    },
+    {
+      "case": "lw_identity_left_variance",
+      "actual": 1.2083333333333335,
+      "expected": 1.2083333333333333,
+      "passed": true
+    },
+    {
+      "case": "lw_identity_right_variance",
+      "actual": 1.2916666666666667,
+      "expected": 1.2916666666666667,
+      "passed": true
+    },
+    {
+      "case": "initial_cost_funded_wealth",
+      "actual": 1.0396039603960396,
+      "expected": 1.0396039603960396,
+      "passed": true
+    },
+    {
+      "case": "drift_after_ten_zero",
+      "actual": 0.5238095238095238,
+      "expected": 0.5238095238095238,
+      "passed": true
+    },
+    {
+      "case": "post_rebalance_net_return",
+      "actual": 0.047900000000000054,
+      "expected": 0.0479,
       "passed": true
     },
     {

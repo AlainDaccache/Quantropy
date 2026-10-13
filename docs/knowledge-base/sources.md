@@ -353,8 +353,8 @@ Current documentation and legal/tax/data-provider policies can change. Pin the a
 [Ledoit and Wolf: Honey, I Shrunk the Sample Covariance Matrix](https://ledoit.net/honey_abstract.htm)
 
 - Type: Author paper page.
-- Review depth: Search abstract only; page open failed.
-- Scope/limitation: Concept candidate; full derivation and independent numerical checks pending.
+- Review depth: Earlier pass inspected search abstract only. On 2026-10-13 the [author university copy](https://www.econ.uzh.ch/dam/jcr:8a18d37f-3238-4c14-a276-66392e82961b/jpm_2004..pdf) was retrieved; scanned published pages 112-113 were visually inspected for the shrinkage discussion and constant-correlation target. Text extraction yielded no substantive text. Appendices and study tables were not fully reviewed.
+- Scope/limitation: Establishes the variant distinction only. Its constant-correlation intensity and empirical performance remain unreplicated; it is not evidence for an identity-target implementation.
 
 ## GIPS
 
@@ -837,3 +837,27 @@ Current documentation and legal/tax/data-provider policies can change. Pin the a
 - Type: Publisher/university educational synthesis.
 - Review depth: University lecture PDF accessed; zero-coupon asset-option section inspected. Teaching source, not original Merton article.
 - Scope/limitation: Only inspected material supports claims; no exhaustive full-source verification.
+
+## LW-IDENTITY-2004
+
+[Ledoit and Wolf: A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices](https://www.econ.uzh.ch/dam/jcr:ffffffff-935a-b0d6-ffff-ffffceb83f14/wellCond.pdf)
+
+- Type: Original published paper, author university copy; Journal of Multivariate Analysis 88 (2004), 365-411; DOI 10.1016/S0047-259X(03)00096-4.
+- Review depth: Retrieved 47-page PDF on 2026-10-13. Sections 3.1-3.3 inspected by text extraction; equation (14), Lemmas 3.4-3.5 on printed page 380 visually checked. Section 3.4 opening inspected for the loss/optimality boundary. Full appendix proofs and Monte Carlo section not reviewed.
+- Scope/limitation: Scaled-identity target, normalized matrix norm, estimated intensity and stated assumptions. This is not a constant-correlation estimator, a universal finite-sample guarantee or an investment-return forecast.
+
+## SKLEARN-LW-172
+
+[scikit-learn 1.7.2 covariance source](https://raw.githubusercontent.com/scikit-learn/scikit-learn/1.7.2/sklearn/covariance/_shrunk_covariance.py) · [Versioned parameter documentation](https://scikit-learn.org/1.7/modules/generated/sklearn.covariance.ledoit_wolf_shrinkage.html)
+
+- Type: Official library source and documentation, pinned version.
+- Review depth: Retrieved source on 2026-10-13; `_ledoit_wolf` and `ledoit_wolf_shrinkage` inspected for denominator, centering, target, fourth-moment accumulation and degenerate conventions. File SHA-256: e25d87f453b331b75452c3956832dd7d68eadd7a22df97a970482e534b90cc9e. Official parameter/target documentation opened. Author-run 85-fixture comparison executes the extracted numerical shrinkage function, with decorators removed and `check_array` replaced on prevalidated arrays; covariance blending cross-checked separately.
+- Scope/limitation: Numerical reference for this scoped variant. No full installed scikit-learn package, validation wrapper or precision estimator was tested. Source agreement is not independent expert review or empirical validation.
+
+## DGU-2009
+
+[DeMiguel, Garlappi and Uppal: Optimal Versus Naive Diversification](https://doi.org/10.1093/rfs/hhm075) · [Author-linked manuscript](https://www.dropbox.com/scl/fi/agah1b08o6lj6crth7131/DeMiguel-Garlappi-Uppal-RFS.pdf?dl=1&rlkey=xd7i0iq03gvgllar3iwr09tod) · [Author resource index](https://sites.google.com/view/victor-demiguel)
+
+- Type: Original published research; Review of Financial Studies 22(5), 1915-1953 (2009).
+- Review depth: Retrieved 39-page PDF through the author's manuscript link on 2026-10-13. Abstract, introduction/model list and Section 3 (printed pages 1927-1929) inspected for rolling windows, evaluation metrics, drift-aware turnover and transaction-cost convention. Opening findings in the introduction inspected; detailed result tables, appendix/code and independent replication remain pending.
+- Scope/limitation: Challenges consistent optimizer dominance in the tested setting and supports a simple common-data benchmark. Does not establish equal weight as universally optimal or refute covariance estimation theory. Quantropy's synthetic comparison is a new arithmetic fixture, not a reproduction of their empirical experiment.
